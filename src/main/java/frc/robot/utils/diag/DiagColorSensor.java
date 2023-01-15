@@ -7,6 +7,7 @@
 
 package frc.robot.utils.diag;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.utils.ColorSensor;
@@ -21,7 +22,7 @@ public class DiagColorSensor implements Diagnosable {
 
     private ColorSensor colorsensor;
     private String name;
-    private NetworkTableEntry networkTableEntry;
+    private GenericEntry networkTableEntry;
     private Map<ColorSensor.ColorValue, Boolean> colorMap;
 
     public DiagColorSensor(String name, ColorSensor colorsensor) {

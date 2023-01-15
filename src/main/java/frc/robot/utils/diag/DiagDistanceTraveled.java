@@ -1,5 +1,6 @@
 package frc.robot.utils.diag;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -11,7 +12,7 @@ public abstract class DiagDistanceTraveled implements Diagnosable {
 
     protected String name;
     protected int requiredTravel;
-    protected NetworkTableEntry networkTableEntry;
+    protected GenericEntry networkTableEntry;
     private int initialValue;
     private boolean traveledDistance;
 

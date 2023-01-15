@@ -1,5 +1,6 @@
 package frc.robot.utils.diag;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public abstract class DiagBoolean implements Diagnosable {
 
     private String name;
-    private NetworkTableEntry networkTableEntry;
+    private GenericEntry networkTableEntry;
 
     private boolean seenFalse;
     private boolean seenTrue;

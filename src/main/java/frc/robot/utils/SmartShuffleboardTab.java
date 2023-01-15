@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -56,7 +57,7 @@ public class SmartShuffleboardTab {
         SimpleWidget widget = widgetMap.get(fieldName);
         if (widget != null)
         {
-            NetworkTableEntry ntEntry= widget.getEntry();
+            GenericEntry ntEntry= widget.getEntry();
             ntEntry.setValue(value);
         }
         else
@@ -79,7 +80,7 @@ public class SmartShuffleboardTab {
         SimpleWidget widget = widgetMap.get(fieldName);
         if (widget != null)
         {
-            NetworkTableEntry ntEntry= widget.getEntry();
+            GenericEntry ntEntry= widget.getEntry();
             ntEntry.setValue(value);
         }
         else
@@ -121,7 +122,7 @@ public class SmartShuffleboardTab {
         if (widget == null) {
             return null;
         } else {
-            return widget.getEntry().getValue();
+            return widget.getEntry().get();
         }
     }
 

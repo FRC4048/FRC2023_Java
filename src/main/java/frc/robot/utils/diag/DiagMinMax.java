@@ -1,5 +1,6 @@
 package frc.robot.utils.diag;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -12,7 +13,7 @@ public abstract class DiagMinMax implements Diagnosable {
     private String name;
     private double minValue;
     private double maxValue;
-    private NetworkTableEntry networkTableEntry;
+    private GenericEntry networkTableEntry;
 
     private boolean seenMinValue;
     private boolean seenMaxValue;
