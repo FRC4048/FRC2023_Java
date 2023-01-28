@@ -4,12 +4,36 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.SmartShuffleboard;
 
 public class ExampleSubsystem extends SubsystemBase {
+
+  private ADIS16470_IMU gyro;
+  
   /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+  public ExampleSubsystem() {
+    gyro = new ADIS16470_IMU();
+  }
+  
+  public void resetGyro() {
+    gyro.reset();
+    gyro.calibrate();
+  }
+
+  public double getAccelY() {
+    return gyro.getAccelY();
+  }
+
+  public double getAccelX() {
+    return gyro.getAccelX();
+  }
+
+  public ADIS16470_IMU getGyro() {
+    return gyro;
+  }
 
   /**
    * Example command factory method.
@@ -38,6 +62,8 @@ public class ExampleSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartShuffleboard.put("Gyro", "Yangle", getAccelY());
+    SmartShuffleboard.put("Gyro", "Xangle", getAccelX());
   }
 
   @Override
