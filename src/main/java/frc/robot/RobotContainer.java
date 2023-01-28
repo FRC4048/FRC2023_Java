@@ -9,6 +9,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -30,6 +31,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    exampleSubsystem.setDefaultCommand(new ExampleCommand(exampleSubsystem));
   }
 
   /**
@@ -43,12 +45,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(exampleSubsystem));
+    //new Trigger(exampleSubsystem::exampleCondition)
+        //.onTrue(new ExampleCommand(exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
+    //m_driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
   }
 
   /**

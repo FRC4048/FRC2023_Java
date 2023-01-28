@@ -31,39 +31,34 @@ public class ExampleSubsystem extends SubsystemBase {
     return gyro.getAccelX();
   }
 
+  public double getAccelZ() {
+    return gyro.getAccelZ();
+  }
+
   public ADIS16470_IMU getGyro() {
     return gyro;
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
+
+
+  
   public CommandBase exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          /* one-time action goes here */
         });
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
+  
   public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+    return true;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartShuffleboard.put("Gyro", "Yangle", getAccelY());
-    SmartShuffleboard.put("Gyro", "Xangle", getAccelX());
+    SmartShuffleboard.put("Gyro", "Y accel", getAccelY());
+    SmartShuffleboard.put("Gyro", "X accel", getAccelX());
+    SmartShuffleboard.put("Gyro", "Z accel", getAccelZ());
   }
 
   @Override
