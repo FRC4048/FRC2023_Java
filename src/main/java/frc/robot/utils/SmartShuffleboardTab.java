@@ -67,6 +67,21 @@ public class SmartShuffleboardTab {
         }
     }
  
+    public void putDoubleArray(String fieldName, double[] value)
+    {
+        SimpleWidget widget = widgetMap.get(fieldName);
+        if (widget != null)
+        {
+            GenericEntry ntEntry= widget.getEntry();
+            ntEntry.setDoubleArray(value);
+        }
+        else
+        {
+            widget = tab.add(fieldName, value);
+            widgetMap.put(fieldName, widget);
+        }
+    }
+
     public void put(String fieldName, String layoutName, Object value)   //primitive
     {
         ShuffleboardLayout layout;

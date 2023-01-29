@@ -44,6 +44,12 @@ public class SmartShuffleboard {
         smartTab.put(fieldName, layoutName, value);
     }
 
+    public static void putDoubleArray(String tabName, String fieldName, double[] value)
+    {
+        SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
+        smartTab.putDoubleArray(fieldName, value);
+    }
+
     public static boolean getBoolean(String tabName, String fieldName, boolean defaultValue) {
         SmartShuffleboardTab smartTab = smartTabMap.get(tabName);
         if (smartTab == null) {
