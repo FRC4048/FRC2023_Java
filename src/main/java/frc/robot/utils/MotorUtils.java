@@ -7,10 +7,10 @@
 
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.utils.logging.Logging;
 
 /**
  * Add your docs here.
@@ -44,7 +44,7 @@ public class MotorUtils {
             DriverStation.reportError("Motor stall, PDP Channel=" + PDPChannel, false);
             if (now - time > timeout) {
                 everStalled = true;
-                Logging.instance().traceMessage(Logging.MessageLevel.INFORMATION, "Motor stall, PDP channel =" + PDPChannel);
+                DataLogManager.log("Motor stall, PDP channel =" + PDPChannel);
                 return true;
             }
         }

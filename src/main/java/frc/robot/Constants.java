@@ -16,4 +16,18 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  
+//CAN ID
+public static final int PDP_CAN_ID = 0;
+public static final int DRIVE_LEFT1_ID = 8;
+public static final int DRIVE_LEFT2_ID = 7;
+public static final int DRIVE_RIGHT1_ID = 3;
+public static final int DRIVE_RIGHT2_ID = 6;
+
+//PDP
+public static final int PDP_DRIVE_L1 = 13;
+public static final int PDP_DRIVE_L2 = 15;
+public static final int PDP_DRIVE_R1 = 0;
+public static final int PDP_DRIVE_R2 = 1;
+
 }

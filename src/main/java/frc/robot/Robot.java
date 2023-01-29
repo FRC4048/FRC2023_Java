@@ -33,6 +33,10 @@ public class Robot extends TimedRobot {
    DoubleLogEntry myDoubleLog;
    StringLogEntry myStringLog;
    BooleanLogEntry myBoolLog;
+   DoubleLogEntry R1Log;
+   DoubleLogEntry R2Log;
+   DoubleLogEntry L1Log;
+   DoubleLogEntry L2Log;
 
   @Override
   public void robotInit() {
@@ -48,6 +52,10 @@ public class Robot extends TimedRobot {
     myBoolLog = new BooleanLogEntry(log, "/my/boolean_log_example");
     myDoubleLog = new DoubleLogEntry(log, "/my/double_log_example");
     myStringLog = new StringLogEntry(log, "/my/string_log_example");
+    R1Log = new DoubleLogEntry(log, "R1Log");
+    R2Log = new DoubleLogEntry(log, "R2Log");
+    L1Log = new DoubleLogEntry(log, "L1Log");
+    L2Log = new DoubleLogEntry(log, "L2Log");
   }
 
   /**
@@ -71,6 +79,10 @@ public class Robot extends TimedRobot {
     myDoubleLog.append(exampleDouble);
     myStringLog.append("example String");
     myBoolLog.append(m_robotContainer.m_exampleSubsystem.exampleCondition());
+    R1Log.append(m_robotContainer.m_PowerDistPanel.getPDP().getCurrent(Constants.PDP_DRIVE_R1));
+    R2Log.append(m_robotContainer.m_PowerDistPanel.getPDP().getCurrent(Constants.PDP_DRIVE_R2));
+    L1Log.append(m_robotContainer.m_PowerDistPanel.getPDP().getCurrent(Constants.PDP_DRIVE_L1));
+    L2Log.append(m_robotContainer.m_PowerDistPanel.getPDP().getCurrent(Constants.PDP_DRIVE_L2));
 
   }
 
