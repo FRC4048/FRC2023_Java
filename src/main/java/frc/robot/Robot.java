@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,11 +28,26 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+   // Creates variables that are logged by the robot. Can be a double, string, or boolean, as in these examples
+   DoubleLogEntry myDoubleLog;
+   StringLogEntry myStringLog;
+   BooleanLogEntry myBoolLog;
+
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // Starts recording to data log. Datalog can be read by the AdvantageScope program.
+    DataLogManager.start();
+
+    // Set up custom log entries
+    DataLog log = DataLogManager.getLog();
+    myBoolLog = new BooleanLogEntry(log, "/my/boolean_log_example");
+    myDoubleLog = new DoubleLogEntry(log, "/my/double_log_example");
+    myStringLog = new StringLogEntry(log, "/my/string_log_example");
   }
 
   /**
@@ -44,6 +64,14 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    // Update datalogs. (Inputs may be other variables or methods.) Logs could also be updated during disabled, 
+    // autonomous, teleop, or test periodic, as well as during a command.
+    double exampleDouble = 0;
+    myDoubleLog.append(exampleDouble);
+    myStringLog.append("example String");
+    myBoolLog.append(m_robotContainer.m_exampleSubsystem.exampleCondition());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
