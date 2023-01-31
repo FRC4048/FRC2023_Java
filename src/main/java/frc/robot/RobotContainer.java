@@ -20,16 +20,20 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  public AutonomousChooser autonomousChooser = new AutonomousChooser(m_exampleSubsystem);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    autonomousChooser.addOptions();
     // Configure the trigger bindings
     configureBindings();
+    autonomousChooser.initialize();
   }
 
   /**
@@ -58,6 +62,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return autonomousChooser.getAutonomousCommand(autonomousChooser.getAction());
   }
 }
