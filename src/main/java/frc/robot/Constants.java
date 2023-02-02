@@ -16,4 +16,23 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  //CAN ID
+  public static final int EXTENDER_MOTOR_ID = 0;
+
+
+  //SPEEDS
+  public static final int EXTENDER_SPEED = 5;
+  
+
+  //BSed numbers for potentiometer
+  public static final int EXTENDER_POTENTIOMETER = 1; 
+  public static final int EXTENDER_RANGE_OF_MOTION = 2;
+  public static final int EXTENDER_STARTING_POINT = 3; 
+
+
+  //TIME OUT
+  public static final int EXTENDER_TIMEOUT = 2; 
+
+
 }
