@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autonomous.Cube;
+import frc.robot.commands.Autonomous.Cone;
+import frc.robot.commands.Autonomous.DO_NOTHING;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.commands.Autonomous.*;
 
 public class AutonomousChooser {
     private SendableChooser<Action> actionChooser;
@@ -24,7 +25,7 @@ public class AutonomousChooser {
     }
 
     public void addOptions() {
-        actionChooser.setDefaultOption(Action.DO_NOTHING.name(), Action.DO_NOTHING);
+        actionChooser.setDefaultOption(Action.CUBE.name(), Action.CUBE);
         actionChooser.addOption(Action.CUBE.name(), Action.CUBE);
         actionChooser.addOption(Action.CONE.name(), Action.CONE);
         actionChooser.addOption(Action.DO_NOTHING.name(), Action.DO_NOTHING);
@@ -43,12 +44,21 @@ public class AutonomousChooser {
         }
     }
 
-    public Command getAutonomousCommand(Action action) {
+    public Command getAutonomousCommand(Action a) {
         return null;
-
+        /*
+        if (a == Action.CUBE) {
+            return new Cube(exampleSubsystem);
+        }
+        if (a == Action.CONE) {
+            return new Cone(exampleSubsystem);
+        }
+        
+        if (a == Action.DO_NOTHING) {
+            return new DO_NOTHING(exampleSubsystem);
+        }
+        */
     }
-
-
 }
     
     
