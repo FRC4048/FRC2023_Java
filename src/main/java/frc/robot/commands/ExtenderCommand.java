@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ExtenderSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 
@@ -57,6 +57,6 @@ public class ExtenderCommand extends CommandBase {
         ||
         (extenderSubsystem.getBottomSwitch() && (direction == ExtenderDirection.RETRACTFULL)) 
         ||
-        ((Timer.getFPGATimestamp() - initTime) >= Constants.EXTENDER_TIMEOUT)));
+        ((Timer.getFPGATimestamp() - initTime) >= Constants.EXTENDER_MOTOR_TIMEOUT)));
   }
 }
