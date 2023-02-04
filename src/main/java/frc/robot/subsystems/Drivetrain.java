@@ -9,6 +9,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -16,6 +17,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.SmartShuffleboard;
@@ -57,6 +60,8 @@ public class Drivetrain extends SubsystemBase{
 
   private final ADIS16470_IMU gyro;
 
+  private final Field2d m_field = new Field2d();
+
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
           m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
@@ -67,6 +72,8 @@ public class Drivetrain extends SubsystemBase{
   public Drivetrain() {
     gyro = new ADIS16470_IMU();
 
+    SmartDashboard.putData("Field", m_field);
+    
     m_frontLeftDrive = new CANSparkMax(Constants.DRIVE_FRONT_LEFT_D, MotorType.kBrushless);
     m_frontRightDrive = new CANSparkMax(Constants.DRIVE_FRONT_RIGHT_D, MotorType.kBrushless);
     m_backLeftDrive = new CANSparkMax(Constants.DRIVE_BACK_LEFT_D, MotorType.kBrushless);
@@ -98,7 +105,7 @@ public class Drivetrain extends SubsystemBase{
             m_frontRight.getPosition(),
             m_backLeft.getPosition(),
             m_backRight.getPosition()
-        });
+        }, new Pose2d(5.0, 13.5, new Rotation2d())); 
   }
 
   public double getGyro() {
@@ -175,5 +182,11 @@ public class Drivetrain extends SubsystemBase{
     SmartShuffleboard.put("Drive", "Drive Encoders", "Front Right D", m_frontRight.getDriveEncPosition());
     SmartShuffleboard.put("Drive", "Drive Encoders", "Front Left D", m_frontLeft.getDriveEncPosition());
 
+    m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
+    new SwerveModulePosition[] {
+      m_frontLeft.getPosition(), m_frontRight.getPosition(),
+      m_backLeft.getPosition(), m_backRight.getPosition()
+    });
+    m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 }
