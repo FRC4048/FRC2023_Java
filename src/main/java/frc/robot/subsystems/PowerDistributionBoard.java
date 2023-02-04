@@ -2,18 +2,20 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.SmartShuffleboard;
 
-public class PowerDistributionBoard {
+public class PowerDistributionBoard extends SubsystemBase {
     PowerDistribution PowerDB = new PowerDistribution(1, ModuleType.kRev);
 
-    public PowerDistributionBoard() {
+    public PowerDistributionBoard() {}
+    public void periodic() {
         double robotVoltage = PowerDB.getVoltage();
         SmartShuffleboard.put("Power", "Pannels", "Voltage", robotVoltage);
 
         double temperatureCelcius = PowerDB.getTemperature();
         SmartShuffleboard.put("Power", "Pannels", "Temp in C", temperatureCelcius);
-        
+
         double totalCurrent = PowerDB.getTotalCurrent();
         SmartShuffleboard.put("Power", "Pannels", "Total Current", totalCurrent);
 
