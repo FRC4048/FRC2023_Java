@@ -94,8 +94,10 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft = new SwerveModule(m_backLeftDrive, m_backLeftTurn, backLeftCanCoder, 3);
     m_backRight = new SwerveModule(m_backRightDrive, m_backRightTurn, backRightCanCoder, 4);
 
-    m_frontLeftDrive.setInverted(true);
+    m_frontLeftDrive.setInverted(false);
+    m_frontRightDrive.setInverted(true);
     m_backRightDrive.setInverted(true);
+    m_backLeftDrive.setInverted(false);
     
     m_odometry = new SwerveDriveOdometry(
         m_kinematics,
@@ -109,6 +111,7 @@ public class Drivetrain extends SubsystemBase{
   }
 
   public double getGyro() {
+    //returns value between 360 and -360
     return ((0 - gyro.getAngle()) % 360);
   }
 
@@ -163,14 +166,35 @@ public class Drivetrain extends SubsystemBase{
     }
   }
 
-  public void init(){
-    m_backLeft.goToZero(BL_ZERO);
-    m_backRight.goToZero(BR_ZERO);
-    m_frontLeft.goToZero(FL_ZERO);
-    m_frontRight.goToZero(FR_ZERO);
+//   public void init(){
+//     m_backLeft.goToAbsEnc(Constants.BACK_LEFT_ABS_ENCODER_ZERO);
+//     m_backRight.goToAbsEnc(Constants.BACK_RIGHT_ABS_ENCODER_ZERO);
+//     m_frontLeft.goToAbsEnc(Constants.FRONT_LEFT_ABS_ENCODER_ZERO);
+//     m_frontRight.goToAbsEnc(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO);
+    
+
+  //}
+  public void SetRelEncZero(){
+    m_backLeft.ResetRelEnc();
+    m_backRight.ResetRelEnc();
+    m_frontLeft.ResetRelEnc();
+    m_frontRight.ResetRelEnc();
+  }
+  public void AlignWheel(){
+    m_backLeft.goToAbsEnc(Constants.BACK_LEFT_ABS_ENCODER_ZERO);
+    m_backRight.goToAbsEnc(Constants.BACK_RIGHT_ABS_ENCODER_ZERO);
+    m_frontLeft.goToAbsEnc(Constants.FRONT_LEFT_ABS_ENCODER_ZERO);
+    m_frontRight.goToAbsEnc(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO);
+    
+
   }
   @Override
   public void periodic(){
+    SmartShuffleboard.put("Diag", "Abs Encoder", "FR", frontRightCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("Diag", "Abs Encoder", "FL", frontLeftCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("Diag", "Abs Encoder", "BR", backRightCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("Diag", "Abs Encoder", "BL", backLeftCanCoder.getAbsolutePosition());
+
     SmartShuffleboard.put("Drive", "Gyro", getGyro());
     SmartShuffleboard.put("Drive", "Steer Encoders", "Back Right S", m_backRight.getSteerEncPosition());
     SmartShuffleboard.put("Drive", "Steer Encoders", "Back Left S", m_backLeft.getSteerEncPosition());

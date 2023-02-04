@@ -5,10 +5,13 @@
 package frc.robot;
 
 import frc.robot.commands.Drive;
+import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,21 +23,25 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain = new Drivetrain();
 
+  public Drivetrain getDrivetrain() {
+    return drivetrain;
+   }
+  private final PowerDistributionBoard m_PDB = new PowerDistributionBoard();
+
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
   
-
+  private JoystickButton button_1= new JoystickButton(joyLeft, 1);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getX(), () -> joyLeft.getY(), ()-> joyRight.getX()));
+ // drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
   }
-  
-  private void configureBindings() {
 
+  private void configureBindings() {
+  //  button_1.onTrue(new WheelAlign(drivetrain));
   }
-  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
