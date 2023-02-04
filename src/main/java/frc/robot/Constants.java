@@ -13,7 +13,36 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  //S = STEER, D = DRIVE
+  public static final int DRIVE_FRONT_RIGHT_S = 48;
+  public static final int DRIVE_FRONT_RIGHT_D = 49;
+  public static final int DRIVE_BACK_RIGHT_S = 46;
+  public static final int DRIVE_BACK_RIGHT_D = 43;
+
+  public static final int DRIVE_FRONT_LEFT_S = 50;
+  public static final int DRIVE_FRONT_LEFT_D = 51;
+  public static final int DRIVE_BACK_LEFT_S = 31;
+  public static final int DRIVE_BACK_LEFT_D = 34;
+
+  public static final int DRIVE_CANCODER_FRONT_RIGHT = 59;
+  public static final int DRIVE_CANCODER_BACK_RIGHT = 57;
+  public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
+  public static final int DRIVE_CANCODER_BACK_LEFT = 58;
+
+  public static final double WHEEL_RADIUS = 0.0508;
+  public static final int ENCODER_RESOLUTION = 4096;
+  public static final double CHASSIS_DRIVE_GEAR_RATIO = 8.142857; // this value should be x:1
+  public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
+
+  public static final double kMaxSpeed = 3.0; // 3 meters per second
+  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+
+  public static final double ROBOT_WIDTH = 0.5969;
+  public static final double ROBOT_LENGTH = 0.5969;
+  public static final int IMU = 42;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+     
+ 
   }
 }
