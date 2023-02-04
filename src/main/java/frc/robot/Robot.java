@@ -55,7 +55,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     autonomousCommand = robotContainer.getAutonomousCommand();
-    //SmartShuffleboard.put("DriverInfo", "Chosen Command", autonomousCommand.getName());
+    if( autonomousCommand != null) {
+      SmartShuffleboard.put("Autonomous", "Chosen Command", autonomousCommand.getName());
+    }
+    else {
+      SmartShuffleboard.put("Autonomous", "Chosen Command", "       ");
+    }
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

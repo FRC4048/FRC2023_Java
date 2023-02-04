@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Autonomous.Cube;
 import frc.robot.commands.Autonomous.Cone;
-import frc.robot.commands.Autonomous.DO_NOTHING;
+import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.utils.SmartShuffleboard;
 
 public class AutonomousChooser {
     private SendableChooser<Action> actionChooser;
     private ExampleSubsystem exampleSubsystem;
 
     enum Action {
-        CUBE, CONE, DO_NOTHING;
+        CUBE, CONE, DONOTHING
     }
 
     public AutonomousChooser(ExampleSubsystem exampleSubsystem) {
@@ -28,7 +29,7 @@ public class AutonomousChooser {
         actionChooser.setDefaultOption(Action.CUBE.name(), Action.CUBE);
         actionChooser.addOption(Action.CUBE.name(), Action.CUBE);
         actionChooser.addOption(Action.CONE.name(), Action.CONE);
-        actionChooser.addOption(Action.DO_NOTHING.name(), Action.DO_NOTHING);
+        actionChooser.addOption(Action.DONOTHING.name(), Action.DONOTHING);
     }
     
     public void initialize() {
@@ -39,25 +40,20 @@ public class AutonomousChooser {
     public Action getAction() {
         if(actionChooser.getSelected() != null){
             return actionChooser.getSelected();
-        } else{
-            return Action.DO_NOTHING;
+        } 
+        else{
+            return Action.DONOTHING;
         }
     }
 
     public Command getAutonomousCommand(Action a) {
-        return null;
-        /*
         if (a == Action.CUBE) {
             return new Cube(exampleSubsystem);
         }
-        if (a == Action.CONE) {
+        else if (a == Action.CONE) {
             return new Cone(exampleSubsystem);
         }
-        
-        if (a == Action.DO_NOTHING) {
-            return new DO_NOTHING(exampleSubsystem);
-        }
-        */
+        return new DoNothing(exampleSubsystem);
     }
 }
     
