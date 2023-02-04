@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.LocationChooser;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
@@ -23,6 +24,7 @@ public class RobotContainer {
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public AutonomousChooser autonomousChooser = new AutonomousChooser(m_exampleSubsystem);
+  public LocationChooser locationChooser = new LocationChooser(m_exampleSubsystem);
 
 
   
@@ -34,9 +36,12 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     autonomousChooser.addOptions();
+    locationChooser.addOptions();
+
+    autonomousChooser.initialize();
+    locationChooser.initialize();
     // Configure the trigger bindings
     configureBindings();
-    autonomousChooser.initialize();
   }
 
   /**
@@ -66,5 +71,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autonomousChooser.getAutonomousCommand(autonomousChooser.getAction());
+  }
+
+  public int getLocation() {
+    return locationChooser.getLocation(locationChooser.getAction());
   }
 }

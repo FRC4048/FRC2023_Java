@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.LocationChooser;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -19,8 +20,9 @@ import frc.robot.utils.SmartShuffleboard;
  */
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
-
+  private LocationChooser locationChooser;
   private RobotContainer robotContainer;
+  private int location;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -56,11 +58,25 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     autonomousCommand = robotContainer.getAutonomousCommand();
+    location = robotContainer.getLocation();
+
     if( autonomousCommand != null) {
       SmartShuffleboard.put("Autonomous", "Chosen Command", autonomousCommand.getName());
     }
     else {
-      SmartShuffleboard.put("Autonomous", "Chosen Command", "       ");
+      SmartShuffleboard.put("Autonomous", "Chosen Command", " ");
+    }
+    if(location == -1) {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", "Left");
+    }
+    else if(location == 0) {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", "Middle");
+    }
+    else if(location == 1) {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", "Right");
+    }
+    else {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", " ");
     }
   }
 
