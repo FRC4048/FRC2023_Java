@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 
-public class MoveToPos extends CommandBase {
+public class ExtenderMovePos extends CommandBase {
     private ExtenderSubsystem extenderSubsystem;
     private double initTime;
     private ExtenderPosition extenderPosition;
 
-  public MoveToPos(ExtenderSubsystem extenderSubsystem,ExtenderPosition extenderPosition) {
+  public ExtenderMovePos(ExtenderSubsystem extenderSubsystem,ExtenderPosition extenderPosition) {
     addRequirements(extenderSubsystem);
     this.extenderSubsystem = extenderSubsystem;
     this.extenderPosition = extenderPosition;
@@ -25,10 +25,10 @@ public class MoveToPos extends CommandBase {
   @Override
   public void initialize() {
     initTime = Timer.getFPGATimestamp();
-    
+    extenderSubsystem.setManualMode(false);
+    extenderSubsystem.extendToPosition(extenderPosition);
   }
 
- 
   @Override
   public void execute() {
     
@@ -39,10 +39,9 @@ public class MoveToPos extends CommandBase {
     extenderSubsystem.stopExtender();
   }
 
-
   @Override
   public boolean isFinished() {
-    return extenderSubsystem.extendAtPos(extenderPosition); //add time out later
+    return extenderSubsystem.extendAtPos(extenderPosition); 
   }
 }
 

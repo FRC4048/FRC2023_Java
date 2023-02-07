@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.MoveToPos;
+import frc.robot.commands.ExtenderMovePos;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ExtenderSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,7 +49,7 @@ public class RobotContainer {
     // cancelling on release.
     
     
-    MoveToPos command = new MoveToPos(position);
+    ExtenderMovePos command = new ExtenderMovePos(position);
     m_driverController.b().onTrue(command);
   }
 

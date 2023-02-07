@@ -26,9 +26,9 @@ public class ExtenderSubsystem extends SubsystemBase {
 
   private double extenderSetPoint;
   private boolean isManualControl;
-  public static final double ELEVATOR_ENCODER_SCALE = 256/20;
-  private final double ELEVATOR_UP_SCALE_FACTOR = 1.0;
-  private final double ELEVATOR_DOWN_SCALE_FACTOR = 1.0;
+  //public static final double EXTENDER_ENCODER_SCALE = 256/20;
+  private final double EXTENDER_UP_SCALE_FACTOR = 1.0;
+  private final double EXTENDER_DOWN_SCALE_FACTOR = 1.0;
   //private WPI_TalonSRX extenderMotor2;
   //private AnalogPotentiometer potentiometer;
 
@@ -38,10 +38,10 @@ public class ExtenderSubsystem extends SubsystemBase {
 
     //motor configs
     extenderMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.EXTENDER_MOTOR_TIMEOUT);
-    extenderMotor.configNominalOutputForward(0, Constants.EXTENDER_MOTOR_TIMEOUT);
-    extenderMotor.configNominalOutputReverse(0, Constants.EXTENDER_MOTOR_TIMEOUT);
-    extenderMotor.configPeakOutputForward(ELEVATOR_UP_SCALE_FACTOR, Constants.EXTENDER_MOTOR_TIMEOUT);
-    extenderMotor.configPeakOutputReverse(-ELEVATOR_DOWN_SCALE_FACTOR, Constants.EXTENDER_MOTOR_TIMEOUT);
+    //extenderMotor.configNominalOutputForward(0, Constants.EXTENDER_MOTOR_TIMEOUT);   -> might be needed later
+    //extenderMotor.configNominalOutputReverse(0, Constants.EXTENDER_MOTOR_TIMEOUT);
+    //extenderMotor.configPeakOutputForward(EXTENDER_UP_SCALE_FACTOR, Constants.EXTENDER_MOTOR_TIMEOUT);
+    //extenderMotor.configPeakOutputReverse(-EXTENDER_DOWN_SCALE_FACTOR, Constants.EXTENDER_MOTOR_TIMEOUT);
     extenderMotor.setNeutralMode(NeutralMode.Brake);
     extenderMotor.selectProfileSlot(0, 0);
     extenderMotor.configAllowableClosedloopError(0, Constants.EXTENDER_POSITION_ERROR, Constants.EXTENDER_MOTOR_TIMEOUT);
@@ -60,45 +60,48 @@ public class ExtenderSubsystem extends SubsystemBase {
     //extenderMotor2.follow(extenderMotor);
     //potentiometer = new AnalogPotentiometer(Constants.EXTENDER_POTENTIOMETER, Constants.EXTENDER_RANGE_OF_MOTION,Constants.EXTENDER_STARTING_POINT);
   }
+  public void setManualMode(boolean manualMode ){
+    isManualControl = manualMode;
 
- public void setEntenderSpeed(double speed){
-    extenderMotor.set(speed);
- }
+  }
+  public void setExtenderSpeed(double speed){
+      extenderMotor.set(speed);
+  }
 
- public void stopExtender(){
-    extenderMotor.set(0);
- }
+  public void stopExtender(){
+      extenderMotor.stopMotor();
+  }
 
- public double getExtenderEncoder() {
-  return extenderMotor.getSelectedSensorPosition();
-}
+  public double getExtenderEncoder() {
+    return extenderMotor.getSelectedSensorPosition();
+  }
 
-public void moveExtender() {
-  double position = extenderSetPoint;
-  extenderMotor.set(ControlMode.Position, (int)position);
-}
+  private void moveExtender() {
+    double position = extenderSetPoint;
+    extenderMotor.set(ControlMode.Position, (int)position);
+  }
 
-public void extendToPosition(ExtenderPosition elevatorPosition) {
-  extenderSetPoint = elevatorPosition.getPosition();
-}
+  public void extendToPosition(ExtenderPosition elevatorPosition) {
+    extenderSetPoint = elevatorPosition.getPosition();
+  }
 
-public boolean extendAtPos(ExtenderPosition elevatorPosition) {
-  return Math.abs(elevatorPosition.getPosition() - getExtenderEncoder()) < Constants.EXTENDER_POSITION_ERROR*2;
-}
+  public boolean extendAtPos(ExtenderPosition elevatorPosition) {
+    return Math.abs(elevatorPosition.getPosition() - getExtenderEncoder()) < Constants.EXTENDER_POSITION_ERROR*2;
+  }
 
-public double getError() {
-  return extenderMotor.getClosedLoopError(0);
-}
-public void resetEncoder() {
-  extenderMotor.setSelectedSensorPosition(0, 0, Constants.EXTENDER_MOTOR_TIMEOUT);
-}
+  public double getError() {
+    return extenderMotor.getClosedLoopError(0);
+  }
+  public void resetEncoder() {
+    extenderMotor.setSelectedSensorPosition(0, 0, Constants.EXTENDER_MOTOR_TIMEOUT);
+  }
 
-public boolean getTopSwitch() {
-  return extenderMotor.getSensorCollection().isRevLimitSwitchClosed();
-}
-public boolean getBottomSwitch(){
-  return extenderMotor.getSensorCollection().isFwdLimitSwitchClosed();
-}
+  public boolean getTopSwitch() {
+    return extenderMotor.getSensorCollection().isRevLimitSwitchClosed();
+  }
+  public boolean getBottomSwitch(){
+    return extenderMotor.getSensorCollection().isFwdLimitSwitchClosed();
+  }
 
   @Override
   public void periodic() {
