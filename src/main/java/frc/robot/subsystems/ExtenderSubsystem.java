@@ -29,12 +29,14 @@ public class ExtenderSubsystem extends SubsystemBase {
   public static final double ELEVATOR_ENCODER_SCALE = 256/20;
   private final double ELEVATOR_UP_SCALE_FACTOR = 1.0;
   private final double ELEVATOR_DOWN_SCALE_FACTOR = 1.0;
-  private WPI_TalonSRX extenderMotor2;
+  //private WPI_TalonSRX extenderMotor2;
   //private AnalogPotentiometer potentiometer;
 
   public ExtenderSubsystem() {
     isManualControl = false;
     extenderMotor = new WPI_TalonSRX(0);
+
+    //motor configs
     extenderMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.EXTENDER_MOTOR_TIMEOUT);
     extenderMotor.configNominalOutputForward(0, Constants.EXTENDER_MOTOR_TIMEOUT);
     extenderMotor.configNominalOutputReverse(0, Constants.EXTENDER_MOTOR_TIMEOUT);
@@ -43,15 +45,19 @@ public class ExtenderSubsystem extends SubsystemBase {
     extenderMotor.setNeutralMode(NeutralMode.Brake);
     extenderMotor.selectProfileSlot(0, 0);
     extenderMotor.configAllowableClosedloopError(0, Constants.EXTENDER_POSITION_ERROR, Constants.EXTENDER_MOTOR_TIMEOUT);
-    setPID();
+    extenderMotor.config_kP(0, Constants.EXTENDER_P, Constants.EXTENDER_MOTOR_TIMEOUT);
+    extenderMotor.config_kI(0,Constants.EXTENDER_I, Constants.EXTENDER_MOTOR_TIMEOUT);
+    extenderMotor.config_kD(0,Constants.EXTENDER_D , Constants.EXTENDER_MOTOR_TIMEOUT);
+    extenderMotor.config_kF(0, Constants.EXTENDER_F, Constants.EXTENDER_MOTOR_TIMEOUT);
 
+    //limit switch
     extenderMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     extenderMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
     resetEncoder();
     extenderSetPoint = getExtenderEncoder();
-    extenderMotor2 = new WPI_TalonSRX(1);
-    extenderMotor2.follow(extenderMotor);
+    //extenderMotor2 = new WPI_TalonSRX(1);
+    //extenderMotor2.follow(extenderMotor);
     //potentiometer = new AnalogPotentiometer(Constants.EXTENDER_POTENTIOMETER, Constants.EXTENDER_RANGE_OF_MOTION,Constants.EXTENDER_STARTING_POINT);
   }
 
@@ -93,19 +99,6 @@ public boolean getTopSwitch() {
 public boolean getBottomSwitch(){
   return extenderMotor.getSensorCollection().isFwdLimitSwitchClosed();
 }
-
-public void setPID() {
-  extenderMotor.config_kP(0, Constants.EXTENDER_P, Constants.EXTENDER_MOTOR_TIMEOUT);
-  extenderMotor.config_kI(0,Constants.EXTENDER_I, Constants.EXTENDER_MOTOR_TIMEOUT);
-  extenderMotor.config_kD(0,Constants.EXTENDER_D , Constants.EXTENDER_MOTOR_TIMEOUT);
-  extenderMotor.config_kF(0, Constants.EXTENDER_F, Constants.EXTENDER_MOTOR_TIMEOUT);
-}
-
-/*
-public double getPotentiometer() {
-  return potentiometer.get();
-}
- */
 
   @Override
   public void periodic() {

@@ -7,8 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ExtenderCommand;
-import frc.robot.commands.ExtenderCommand.ExtenderDirection;
+import frc.robot.commands.MoveToPos;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ExtenderSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,7 +47,9 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    ExtenderCommand command = new ExtenderCommand(subsystem, ExtenderDirection.EXTENDFULL);
+    
+    
+    MoveToPos command = new MoveToPos(position);
     m_driverController.b().onTrue(command);
   }
 
