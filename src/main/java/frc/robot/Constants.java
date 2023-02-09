@@ -18,7 +18,7 @@ public final class Constants {
   }
 
   //CAN ID
-  public static final int EXTENDER_MOTOR_ID = 0;
+  public static final int EXTENDER_MOTOR_ID = 12;
 
 
   //motor speed

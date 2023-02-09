@@ -13,7 +13,7 @@ import frc.robot.Constants;
 
 public class ExtenderMovePos extends CommandBase {
     private ExtenderSubsystem extenderSubsystem;
-    private double initTime;
+
     private ExtenderPosition extenderPosition;
 
   public ExtenderMovePos(ExtenderSubsystem extenderSubsystem,ExtenderPosition extenderPosition) {
@@ -24,13 +24,15 @@ public class ExtenderMovePos extends CommandBase {
   
   @Override
   public void initialize() {
-    initTime = Timer.getFPGATimestamp();
     extenderSubsystem.setManualMode(false);
     extenderSubsystem.extendToPosition(extenderPosition);
   }
 
   @Override
   public void execute() {
+
+    //extenderSubsystem.setExtenderSpeed(0.5);
+    //System.out.println("it works?");
     
   }
 
@@ -44,42 +46,3 @@ public class ExtenderMovePos extends CommandBase {
     return extenderSubsystem.extendAtPos(extenderPosition); 
   }
 }
-
- /* 
- @Override
-
-    public enum ExtenderDirection {
-        EXTENDFULL, RETRACTFULL
-    }    
-
-     private ExtenderDirection direction;
-
-
-    public ExtenderCommand(ExtenderSubsystem extenderSubsystem, ExtenderDirection direction) {
-        addRequirements(extenderSubsystem);
-        this.extenderSubsystem = extenderSubsystem;
-        this.direction = direction;
-    }
-
-    execute:
-    double speed = 0;
-    if(direction==ExtenderDirection.EXTENDFULL && !extenderSubsystem.getBottomSwitch()){
-        speed = -Constants.EXTENDER_SPEED;
-    }else if(direction ==ExtenderDirection.RETRACTFULL &&!extenderSubsystem.getTopSwitch()){
-        speed = Constants.EXTENDER_SPEED;
-    }
-    extenderSubsystem.setEntenderSpeed(speed);
-
-  
-    public boolean isFinished() {
-    return
-        (((extenderSubsystem.getTopSwitch() && (direction == ExtenderDirection.EXTENDFULL)) 
-        ||
-        (extenderSubsystem.getBottomSwitch() && (direction == ExtenderDirection.RETRACTFULL)) 
-        ||
-        ((Timer.getFPGATimestamp() - initTime) >= Constants.EXTENDER_MOTOR_TIMEOUT)));
-  }
-}
-
-  */
- 

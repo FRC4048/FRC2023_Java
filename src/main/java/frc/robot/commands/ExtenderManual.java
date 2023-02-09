@@ -26,6 +26,7 @@ public class ExtenderManual extends CommandBase {
 
   @Override
   public void execute() {
+    extenderSubsystem.setManualMode(true);
     if(direction == true){
         extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
     }else{
