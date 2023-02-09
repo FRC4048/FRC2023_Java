@@ -92,7 +92,7 @@ public class SwerveModule {
     // resolution.
     //driveEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
     driveEncoder.setVelocityConversionFactor((2 * Constants.WHEEL_RADIUS * Math.PI) / (Constants.CHASSIS_DRIVE_GEAR_RATIO * 60));
-        
+    driveEncoder.setPositionConversionFactor((2 * Constants.WHEEL_RADIUS * Math.PI) / (Constants.CHASSIS_DRIVE_GEAR_RATIO));
     // Set the distance (in this case, angle) in radians per pulse for the turning encoder.
     // This is the the angle through an entire rotation (2 * pi) divided by the
     // encoder resolution.
@@ -113,7 +113,7 @@ public class SwerveModule {
    */
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-        driveEncoder.getVelocity(), new Rotation2d(steerEncoder.getPosition()));
+        driveEncoder.getVelocity(), new Rotation2d(getSteerEncPosition()));
   }
 
     /**
@@ -123,7 +123,7 @@ public class SwerveModule {
    */
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
-        driveEncoder.getPosition(), new Rotation2d(steerEncoder.getPosition()));
+        driveEncoder.getPosition(), new Rotation2d(getSteerEncPosition()));
   }
 
   /**

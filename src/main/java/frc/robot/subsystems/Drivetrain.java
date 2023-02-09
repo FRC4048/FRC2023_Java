@@ -188,6 +188,33 @@ public class Drivetrain extends SubsystemBase{
     
 
   }
+  public double getRelEnc(int CAN){
+    switch (CAN){
+      case Constants.DRIVE_BACK_RIGHT_D:
+          return m_backRight.getDriveEncPosition();
+        case Constants.DRIVE_BACK_LEFT_D:
+          return m_backLeft.getDriveEncPosition();
+        case Constants.DRIVE_FRONT_RIGHT_D:
+          return m_frontRight.getDriveEncPosition();          
+        case Constants.DRIVE_FRONT_LEFT_D:
+          return m_frontLeft.getDriveEncPosition();
+            
+        // case Constants.DRIVE_BACK_RIGHT_S:
+        //     m_backRightTurn.set(value);
+        //     break;
+        // case Constants.DRIVE_BACK_LEFT_S:
+        //     m_backLeftTurn.set(value);
+        //     break;
+        // case Constants.DRIVE_FRONT_RIGHT_S:
+        //     m_frontRightTurn.set(value);
+        //     break;
+        // case Constants.DRIVE_FRONT_LEFT_S:
+        //     m_frontLeftTurn.set(value);=
+        //     break;
+        default: return CAN;
+    }
+  }
+
   @Override
   public void periodic(){
     SmartShuffleboard.put("Diag", "Abs Encoder", "FR", frontRightCanCoder.getAbsolutePosition());
