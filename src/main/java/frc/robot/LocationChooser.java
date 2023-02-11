@@ -1,14 +1,9 @@
 package frc.robot;
 
-import javax.swing.Action;
-
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.utils.SmartShuffleboard;
 
 public class LocationChooser {
     private SendableChooser<Action> actionChooser;
