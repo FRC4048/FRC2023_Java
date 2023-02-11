@@ -41,10 +41,6 @@ public final class Constants {
   public static final double STEER_PID_D = 0;
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
-
-  public static final double WHEEL_ALIGN_PID_P = 2;
-  public static final double WHEEL_ALIGN_PID_I = 0.1;
-  public static final double WHEEL_ALIGN_PID_D = 0;
   //End of PID Contants- might need tuning?
 
   public static final double WHEEL_RADIUS = 0.0508;

@@ -49,13 +49,6 @@ public class SwerveModule {
               kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
           // TODO: Adjust gains
-  private final ProfiledPIDController m_turningWheelAlighPIDController =
-      new ProfiledPIDController(
-        Constants.WHEEL_ALIGN_PID_P,
-        Constants.WHEEL_ALIGN_PID_I,
-        Constants.WHEEL_ALIGN_PID_D,
-          new TrapezoidProfile.Constraints(
-              kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
   // TODO: Adjust gains
   private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(Constants.DRIVE_PID_FF_S, Constants.DRIVE_PID_FF_V);
@@ -111,7 +104,6 @@ public class SwerveModule {
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(0, Math.PI * 2);
-    m_turningWheelAlighPIDController.enableContinuousInput(0, Math.PI * 2);
 
   }
 
