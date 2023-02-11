@@ -42,6 +42,15 @@ public class SwerveModule {
   // TODO: Adjust gains
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
+          0.7,
+          0.0,
+          0,
+          new TrapezoidProfile.Constraints(
+              kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
+
+          // TODO: Adjust gains
+  private final ProfiledPIDController m_turningWheelAlighPIDController =
+      new ProfiledPIDController(
           4,
           0.0,
           0,
@@ -186,10 +195,10 @@ public class SwerveModule {
   public void goToAbsEnc(double encZero){
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
-        m_turningPIDController.calculate(Math.toRadians(absEncoder.getAbsolutePosition()), Math.toRadians(encZero));
+        m_turningWheelAlighPIDController.calculate(Math.toRadians(absEncoder.getAbsolutePosition()), Math.toRadians(encZero));
 
     final double turnFeedforward =
-        m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+        m_turnFeedforward.calculate(m_turningWheelAlighPIDController.getSetpoint().velocity);
 
     steerMotor.setVoltage(turnOutput + turnFeedforward);    
   }
