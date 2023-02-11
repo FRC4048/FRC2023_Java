@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -16,6 +15,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,29 +30,23 @@ public class Drivetrain extends SubsystemBase{
   private final CANSparkMax m_frontRightDrive;
   private final CANSparkMax m_backLeftDrive;
   private final CANSparkMax m_backRightDrive;
-
   private final CANSparkMax m_frontLeftTurn;
   private final CANSparkMax m_frontRightTurn;
   private final CANSparkMax m_backLeftTurn;
   private final CANSparkMax m_backRightTurn;
+
+  
 
   private final WPI_CANCoder frontLeftCanCoder;
   private final WPI_CANCoder frontRightCanCoder;
   private final WPI_CANCoder backLeftCanCoder;
   private final WPI_CANCoder backRightCanCoder;
 
-  //TODO: Change these
-  private final double FR_ZERO = 0;
-  private final double FL_ZERO = 0;
-  private final double BL_ZERO = 0;
-  private final double BR_ZERO = 0;
-
   private final Translation2d m_frontLeftLocation = new Translation2d(Constants.ROBOT_LENGTH/2, Constants.ROBOT_WIDTH/2);
   private final Translation2d m_frontRightLocation = new Translation2d(Constants.ROBOT_LENGTH/2, -Constants.ROBOT_WIDTH/2);
   private final Translation2d m_backLeftLocation = new Translation2d(-Constants.ROBOT_LENGTH/2, Constants.ROBOT_WIDTH/2);
   private final Translation2d m_backRightLocation = new Translation2d(-Constants.ROBOT_LENGTH/2, -Constants.ROBOT_WIDTH/2);
 
-  
   private final SwerveModule m_frontLeft;
   private final SwerveModule m_frontRight;
   private final SwerveModule m_backLeft;
@@ -124,7 +118,7 @@ public class Drivetrain extends SubsystemBase{
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    var swerveModuleStates =
+    SwerveModuleState[] swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, new Rotation2d(getGyro()))
@@ -166,28 +160,13 @@ public class Drivetrain extends SubsystemBase{
     }
   }
 
-//   public void init(){
-//     m_backLeft.goToAbsEnc(Constants.BACK_LEFT_ABS_ENCODER_ZERO);
-//     m_backRight.goToAbsEnc(Constants.BACK_RIGHT_ABS_ENCODER_ZERO);
-//     m_frontLeft.goToAbsEnc(Constants.FRONT_LEFT_ABS_ENCODER_ZERO);
-//     m_frontRight.goToAbsEnc(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO);
-    
-
-  //}
   public void SetRelEncZero(){
     m_backLeft.ResetRelEnc();
     m_backRight.ResetRelEnc();
     m_frontLeft.ResetRelEnc();
     m_frontRight.ResetRelEnc();
-  }
-  public void AlignWheel(){
-    m_backLeft.goToAbsEnc(Constants.BACK_LEFT_ABS_ENCODER_ZERO);
-    m_backRight.goToAbsEnc(Constants.BACK_RIGHT_ABS_ENCODER_ZERO);
-    m_frontLeft.goToAbsEnc(Constants.FRONT_LEFT_ABS_ENCODER_ZERO);
-    m_frontRight.goToAbsEnc(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO);
-    
+  }  
 
-  }
   public double getRelEnc(int CAN){
     switch (CAN){
       case Constants.DRIVE_BACK_RIGHT_D:
@@ -240,4 +219,54 @@ public class Drivetrain extends SubsystemBase{
     });
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
+ 
+  public CANSparkMax getM_frontLeftTurn() {
+    return m_frontLeftTurn;
+  }
+
+  public CANSparkMax getM_frontRightTurn() {
+    return m_frontRightTurn;
+  }
+
+  public CANSparkMax getM_backLeftTurn() {
+    return m_backLeftTurn;
+  }
+
+  public CANSparkMax getM_backRightTurn() {
+    return m_backRightTurn;
+  }
+
+  public SwerveModule getM_frontLeft() {
+    return m_frontLeft;
+  }
+
+  public SwerveModule getM_frontRight() {
+    return m_frontRight;
+  }
+
+  public SwerveModule getM_backLeft() {
+    return m_backLeft;
+  }
+
+  public SwerveModule getM_backRight() {
+    return m_backRight;
+  }
+
+  public WPI_CANCoder getFrontLeftCanCoder() {
+    return frontLeftCanCoder;
+  }
+
+  public WPI_CANCoder getFrontRightCanCoder() {
+    return frontRightCanCoder;
+  }
+
+  public WPI_CANCoder getBackLeftCanCoder() {
+    return backLeftCanCoder;
+  }
+
+  public WPI_CANCoder getBackRightCanCoder() {
+    return backRightCanCoder;
+  }
+
+  
 }

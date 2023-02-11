@@ -13,7 +13,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  //S = STEER, D = DRIVE
+  //S = STEER, D = DRIVE, Drivetrain ConstantsS
   public static final int DRIVE_FRONT_RIGHT_S = 48;
   public static final int DRIVE_FRONT_RIGHT_D = 49;
   public static final int DRIVE_BACK_RIGHT_S = 46;
@@ -28,6 +28,24 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_RIGHT = 57;
   public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
+
+  //PID Constants
+  public static final double DRIVE_PID_P = 0.25;
+  public static final double DRIVE_PID_I = 0;
+  public static final double DRIVE_PID_D = 0;
+  public static final double DRIVE_PID_FF_S = 0.015;
+  public static final double DRIVE_PID_FF_V = 0.285;
+
+  public static final double STEER_PID_P = 0.7;
+  public static final double STEER_PID_I = 0;
+  public static final double STEER_PID_D = 0;
+  public static final double STEER_PID_FF_S = 0;//0.2;
+  public static final double STEER_PID_FF_V = 0;//0.8;
+
+  public static final double WHEEL_ALIGN_PID_P = 2;
+  public static final double WHEEL_ALIGN_PID_I = 0.1;
+  public static final double WHEEL_ALIGN_PID_D = 0;
+  //End of PID Contants- might need tuning?
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;

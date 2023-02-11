@@ -35,31 +35,31 @@ public class SwerveModule {
   // TODO: Adjust gains
   private final PIDController m_drivePIDController =
      new PIDController(
-          0.25, 
-          0, 
-          0);
+          Constants.DRIVE_PID_P, 
+          Constants.DRIVE_PID_I, 
+          Constants.DRIVE_PID_D);
 
   // TODO: Adjust gains
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
-          0.7,
-          0.0,
-          0,
+        Constants.STEER_PID_P,
+        Constants.STEER_PID_I,
+        Constants.STEER_PID_D,
           new TrapezoidProfile.Constraints(
               kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
           // TODO: Adjust gains
   private final ProfiledPIDController m_turningWheelAlighPIDController =
       new ProfiledPIDController(
-          4,
-          0.0,
-          0,
+        Constants.WHEEL_ALIGN_PID_P,
+        Constants.WHEEL_ALIGN_PID_I,
+        Constants.WHEEL_ALIGN_PID_D,
           new TrapezoidProfile.Constraints(
               kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
 
   // TODO: Adjust gains
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.015, 0.285);
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(0.2, 0.8);
+  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(Constants.DRIVE_PID_FF_S, Constants.DRIVE_PID_FF_V);
+  private final SimpleMotorFeedforward m_turnFeedforward  = new SimpleMotorFeedforward(Constants.STEER_PID_FF_S, Constants.STEER_PID_FF_V);
 
   private int id;
   /**
@@ -111,7 +111,7 @@ public class SwerveModule {
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController.enableContinuousInput(0, Math.PI * 2);
-
+    m_turningWheelAlighPIDController.enableContinuousInput(0, Math.PI * 2);
 
   }
 
@@ -191,16 +191,6 @@ public class SwerveModule {
   public void ResetRelEnc() {
     steerEncoder.setPosition(0);
     driveEncoder.setPosition(0);
-  }
-  public void goToAbsEnc(double encZero){
-    // Calculate the turning motor output from the turning PID controller.
-    final double turnOutput =
-        m_turningWheelAlighPIDController.calculate(Math.toRadians(absEncoder.getAbsolutePosition()), Math.toRadians(encZero));
-
-    final double turnFeedforward =
-        m_turnFeedforward.calculate(m_turningWheelAlighPIDController.getSetpoint().velocity);
-
-    steerMotor.setVoltage(turnOutput + turnFeedforward);    
   }
 
   public double getDriveEncPosition(){
