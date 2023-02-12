@@ -151,6 +151,7 @@ public class SwerveModule {
     final double driveOutput =
         m_drivePIDController.calculate(driveEncoder.getVelocity(), state.speedMetersPerSecond);
 
+
     if (id == 1) {
     SmartShuffleboard.put("Drive", "CSpeed" + id, driveEncoder.getVelocity());
     SmartShuffleboard.put("Drive", "DSpeed" + id, state.speedMetersPerSecond);
@@ -170,12 +171,12 @@ public class SwerveModule {
           SmartShuffleboard.put("Drive", "CPos" + id, getSteerEncPosition());
           SmartShuffleboard.put("Drive", "DPos" + id, state.angle.getRadians());
         }
-    driveMotor.set(driveOutput + driveFeedforward); 
+    driveMotor.setVoltage(driveOutput + driveFeedforward); 
     steerMotor.set(turnOutput + turnFeedforward);
 
     if (id == 1) {
-    //SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
-    //SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
+    SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
+    SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
     SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
     SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
   }

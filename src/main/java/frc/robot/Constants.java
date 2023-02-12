@@ -30,11 +30,11 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
   //PID Constants
-  public static final double DRIVE_PID_P = 0.25;
+  public static final double DRIVE_PID_P = 0.0012091816;
   public static final double DRIVE_PID_I = 0;
   public static final double DRIVE_PID_D = 0;
-  public static final double DRIVE_PID_FF_S = 0.015;
-  public static final double DRIVE_PID_FF_V = 0.285;
+  public static final double DRIVE_PID_FF_S = 1.8;
+  public static final double DRIVE_PID_FF_V = 3.26;
 
   public static final double STEER_PID_P = 0.7;
   public static final double STEER_PID_I = 0;
