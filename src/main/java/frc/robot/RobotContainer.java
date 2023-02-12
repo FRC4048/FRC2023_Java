@@ -21,22 +21,19 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Drivetrain drivetrain = new Drivetrain();
-
-  public Drivetrain getDrivetrain() {
-    return drivetrain;
-   }
-  private final PowerDistributionBoard m_PDB = new PowerDistributionBoard();
-
+  private Drivetrain drivetrain;
+  private PowerDistributionBoard m_PDB;
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
-  
   private JoystickButton button_1= new JoystickButton(joyLeft, 1);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
   public RobotContainer() {
-    // Configure the trigger bindings
+    drivetrain = new Drivetrain();
+    m_PDB = new PowerDistributionBoard();
+
     configureBindings();
-  drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
+    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
   }
 
   private void configureBindings() {
@@ -51,5 +48,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return new PrintCommand("hi");
+  }
+
+  public Drivetrain getDrivetrain() {
+    return drivetrain;
   }
 }
