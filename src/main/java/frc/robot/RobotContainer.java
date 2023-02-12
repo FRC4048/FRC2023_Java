@@ -8,9 +8,24 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PowerDistributionBoard;
+
+import java.util.List;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -47,7 +62,37 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PrintCommand("hi");
+    TrajectoryConfig config = 
+      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(drivetrain.getKinematics());
+
+    Trajectory testTrajectory = 
+      TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)), 
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        new Pose2d(3, 0, new Rotation2d(0)), 
+        config);
+    
+    var thetaController =
+      new ProfiledPIDController(
+          Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand =
+        new SwerveControllerCommand(
+            testTrajectory,
+            drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
+            drivetrain.getKinematics(),
+            new PIDController(Constants.kP_X, 0, 0),
+            new PIDController(Constants.kP_Y, 0, 0),
+            thetaController,
+            drivetrain::setModuleStates,
+            drivetrain);
+
+    // Reset odometry to the starting pose of the trajectory.
+    drivetrain.resetOdometry(testTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
   }
 
   public Drivetrain getDrivetrain() {

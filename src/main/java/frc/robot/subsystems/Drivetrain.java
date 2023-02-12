@@ -123,11 +123,18 @@ public class Drivetrain extends SubsystemBase{
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, new Rotation2d(getGyro()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_VELOCITY);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    m_frontLeft.setDesiredState(desiredStates[0]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_backLeft.setDesiredState(desiredStates[2]);
+    m_backRight.setDesiredState(desiredStates[3]);
   }
 
   public void setPower(int motorID, double value){
@@ -219,6 +226,14 @@ public class Drivetrain extends SubsystemBase{
     });
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
+
+  public void resetOdometry (Pose2d pose) {
+    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
+    new SwerveModulePosition[] {
+      m_frontLeft.getPosition(), m_frontRight.getPosition(),
+      m_backLeft.getPosition(), m_backRight.getPosition()
+    }, pose);
+  }
  
   public CANSparkMax getM_frontLeftTurn() {
     return m_frontLeftTurn;
@@ -268,5 +283,11 @@ public class Drivetrain extends SubsystemBase{
     return backRightCanCoder;
   }
 
-  
+  public SwerveDriveKinematics getKinematics () {
+    return m_kinematics;
+  }
+
+  public SwerveDriveOdometry getOdometry () {
+    return m_odometry;
+  }
 }

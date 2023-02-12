@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -48,8 +50,16 @@ public final class Constants {
   public static final double CHASSIS_DRIVE_GEAR_RATIO = 8.142857; // this value should be x:1
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
-  public static final double kMaxSpeed = 3.0; // 3 meters per second
-  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  public static final double MAX_VELOCITY = 3.0; // 3 meters per second
+  public static final double MAX_ACCELERATION = 2.0;
+  public static final double MAX_ANGULAR_SPEED = Math.PI; // 1/2 rotation per second
+  public static final double MAX_ANGULAR_ACCELERATION = Math.PI;
+  public static final double kP_THETA = 1;
+  public static final double kP_X = 1;
+  public static final double kP_Y = 1;
+  public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS =
+        new TrapezoidProfile.Constraints(
+            MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCELERATION);
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
