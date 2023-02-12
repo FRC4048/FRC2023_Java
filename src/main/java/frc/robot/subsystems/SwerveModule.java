@@ -59,7 +59,7 @@ public class SwerveModule {
    * Constructs a SwerveModule with a drive motor, turning motor, drive encoder and turning encoder.
    *
    * @param driveMotor
-   * @param turningMotor
+   * @param steerMotor
    * @param absEncoder 
    * */
 
@@ -151,11 +151,6 @@ public class SwerveModule {
     final double driveOutput =
         m_drivePIDController.calculate(driveEncoder.getVelocity(), state.speedMetersPerSecond);
 
-    if (id == 1) {
-    SmartShuffleboard.put("Drive", "CSpeed" + id, driveEncoder.getVelocity());
-    SmartShuffleboard.put("Drive", "DSpeed" + id, state.speedMetersPerSecond);
-  }
-
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
@@ -165,20 +160,22 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
+    if (id == 1) {
+      SmartShuffleboard.put("Diag", "aTurnPID" + id, turnOutput);
+      SmartShuffleboard.put("Diag", "aTurnFF" + id, turnFeedforward);
+      SmartShuffleboard.put("Diag", "aDrivePID" + id, driveOutput);
+      SmartShuffleboard.put("Diag", "aDriveFF" + id, driveFeedforward);
+    }
 
-        if (id == 1) {
-          SmartShuffleboard.put("Drive", "CPos" + id, getSteerEncPosition());
-          SmartShuffleboard.put("Drive", "DPos" + id, state.angle.getRadians());
-        }
-    driveMotor.set(driveOutput + driveFeedforward); 
+    driveMotor.setVoltage(driveOutput + driveFeedforward);
     steerMotor.set(turnOutput + turnFeedforward);
 
     if (id == 1) {
-    //SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
-    //SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
-    SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
-    SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
-  }
+      //SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
+      //SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
+      SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
+      SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
+    }
   }
   public void ResetRelEnc() {
     steerEncoder.setPosition(0);
