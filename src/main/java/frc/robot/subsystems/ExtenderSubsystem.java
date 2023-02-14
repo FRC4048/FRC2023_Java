@@ -23,9 +23,9 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 public class ExtenderSubsystem extends SubsystemBase {
 
   private WPI_TalonSRX extenderMotor;
-
   private double extenderSetPoint;
   private boolean isManualControl;
+
   //public static final double EXTENDER_ENCODER_SCALE = 256/20;
   private final double EXTENDER_UP_SCALE_FACTOR = 1.0;
   private final double EXTENDER_DOWN_SCALE_FACTOR = 1.0;
@@ -53,6 +53,8 @@ public class ExtenderSubsystem extends SubsystemBase {
     //limit switch
     extenderMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     extenderMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    extenderMotor.setInverted(true); //check this
+    extenderMotor.setSensorPhase(true);
 
     resetEncoder();
     extenderSetPoint = getExtenderEncoder();

@@ -10,9 +10,9 @@ import frc.robot.Constants;
 
 public class ExtenderManual extends CommandBase {
     private ExtenderSubsystem extenderSubsystem;
-    private boolean direction; 
-
-  public ExtenderManual(ExtenderSubsystem extenderSubsystem, boolean direction) {
+    private int direction; 
+    // -1: left, 0: stop, 1: right
+  public ExtenderManual(ExtenderSubsystem extenderSubsystem, int direction) {
     addRequirements(extenderSubsystem);
     this.extenderSubsystem = extenderSubsystem;
     this.direction = direction;
@@ -20,23 +20,24 @@ public class ExtenderManual extends CommandBase {
   
   @Override
   public void initialize() {
-    extenderSubsystem.setManualMode(true);
 
   }
 
   @Override
   public void execute() {
     extenderSubsystem.setManualMode(true);
-    if(direction == true){
+    if(direction == 1){
         extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
-    }else{
+    }else if(direction==-1){
         extenderSubsystem.setExtenderSpeed(-Constants.EXTENDER_SPEED);
+    }else{
+      extenderSubsystem.stopExtender();
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    extenderSubsystem.stopExtender();
+   
   }
 
   @Override
