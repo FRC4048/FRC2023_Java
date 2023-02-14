@@ -89,10 +89,10 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft = new SwerveModule(m_backLeftDrive, m_backLeftTurn, backLeftCanCoder, 3);
     m_backRight = new SwerveModule(m_backRightDrive, m_backRightTurn, backRightCanCoder, 4);
 
-    m_frontLeftDrive.setInverted(false);
-    m_frontRightDrive.setInverted(true);
-    m_backRightDrive.setInverted(true);
-    m_backLeftDrive.setInverted(false);
+    m_frontLeftDrive.setInverted(true);
+    m_frontRightDrive.setInverted(false);
+    m_backRightDrive.setInverted(false);
+    m_backLeftDrive.setInverted(true);
     
     m_odometry = new SwerveDriveOdometry(
         m_kinematics,
@@ -106,7 +106,7 @@ public class Drivetrain extends SubsystemBase{
   }
 
   public double getGyro() {
-    return navxGyro.getAngle() % 360;
+    return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
   }
 
   /**
@@ -165,6 +165,10 @@ public class Drivetrain extends SubsystemBase{
     m_frontLeft.ResetRelEnc();
     m_frontRight.ResetRelEnc();
   }  
+
+  public void resetGyro(){
+    navxGyro.reset();
+  }
 
   public double getRelEnc(int CAN){
     switch (CAN){

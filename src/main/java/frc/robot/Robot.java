@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Forward;
+import frc.robot.commands.ResetGyro;
 import frc.robot.commands.WheelAlign;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -38,6 +39,8 @@ public class Robot extends TimedRobot {
     wheelsAligned=false;
     SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
+    m_robotContainer.getDrivetrain().resetGyro();
   }
 
   /**
@@ -58,7 +61,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
+  }
 
   @Override
   public void disabledPeriodic() {}
