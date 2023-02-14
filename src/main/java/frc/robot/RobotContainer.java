@@ -50,6 +50,10 @@ public class RobotContainer {
     return new PrintCommand("hi");
   }
 
+  public Command getWheelAlign(){
+    return new WheelAlign(drivetrain);
+  }
+
   public Drivetrain getDrivetrain() {
     return drivetrain;
   }
