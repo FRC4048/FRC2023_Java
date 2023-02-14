@@ -62,4 +62,8 @@ public final class Constants {
   public static final double FRONT_LEFT_ABS_ENCODER_ZERO = 9.0;
   public static final double BACK_LEFT_ABS_ENCODER_ZERO = 351.3;
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
+
+
+  public static final double GRIPPER_OPENING_SPEED = 0.7;
+  public static final double GRIPPER_CLOSING_SPEED = -0.7;
 }
