@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -16,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,8 +37,6 @@ public class Drivetrain extends SubsystemBase{
   private final CANSparkMax m_backLeftTurn;
   private final CANSparkMax m_backRightTurn;
 
-  
-
   private final WPI_CANCoder frontLeftCanCoder;
   private final WPI_CANCoder frontRightCanCoder;
   private final WPI_CANCoder backLeftCanCoder;
@@ -52,7 +52,7 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backLeft;
   private final SwerveModule m_backRight;
 
-  private final ADIS16470_IMU gyro;
+  private final AHRS navxGyro;
 
   private final Field2d m_field = new Field2d();
 
@@ -64,7 +64,8 @@ public class Drivetrain extends SubsystemBase{
    
 
   public Drivetrain() {
-    gyro = new ADIS16470_IMU();
+    navxGyro = new AHRS();
+    navxGyro.reset();
 
     SmartDashboard.putData("Field", m_field);
     
@@ -88,10 +89,10 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft = new SwerveModule(m_backLeftDrive, m_backLeftTurn, backLeftCanCoder, 3);
     m_backRight = new SwerveModule(m_backRightDrive, m_backRightTurn, backRightCanCoder, 4);
 
-    m_frontLeftDrive.setInverted(false);
-    m_frontRightDrive.setInverted(true);
-    m_backRightDrive.setInverted(true);
-    m_backLeftDrive.setInverted(false);
+    m_frontLeftDrive.setInverted(true);
+    m_frontRightDrive.setInverted(false);
+    m_backRightDrive.setInverted(false);
+    m_backLeftDrive.setInverted(true);
     
     m_odometry = new SwerveDriveOdometry(
         m_kinematics,
@@ -101,12 +102,11 @@ public class Drivetrain extends SubsystemBase{
             m_frontRight.getPosition(),
             m_backLeft.getPosition(),
             m_backRight.getPosition()
-        }, new Pose2d(5.0, 13.5, new Rotation2d())); 
+        }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(13.5), new Rotation2d()));
   }
 
   public double getGyro() {
-    //returns value between 360 and -360
-    return ((0 - gyro.getAngle()) % 360);
+    return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
   }
 
   /**
@@ -118,10 +118,9 @@ public class Drivetrain extends SubsystemBase{
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    SwerveModuleState[] swerveModuleStates =
-        m_kinematics.toSwerveModuleStates(
-            fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, new Rotation2d(getGyro()))
+    SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
+              fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, navxGyro.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_VELOCITY);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -173,6 +172,10 @@ public class Drivetrain extends SubsystemBase{
     m_frontLeft.ResetRelEnc();
     m_frontRight.ResetRelEnc();
   }  
+
+  public void resetGyro(){
+    navxGyro.reset();
+  }
 
   public double getRelEnc(int CAN){
     switch (CAN){

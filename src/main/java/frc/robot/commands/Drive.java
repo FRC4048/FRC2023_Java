@@ -42,8 +42,7 @@ public class Drive extends CommandBase{
         rcw = rcw * rcw * Math.signum(rcw);
 
         // TODO: Call drivetrain
-        drivetrain.drive(fwd, str, rcw, false); 
-
+        drivetrain.drive(-fwd, -str, rcw, true);
     }
 
 

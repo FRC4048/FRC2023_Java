@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.WheelAlign;
 import frc.robot.commands.Forward;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.commands.ResetGyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,6 +23,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private Command m_wheelAlign;
+
   private boolean wheelsAligned;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -32,9 +35,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_wheelAlign = m_robotContainer.getWheelAlign();
     wheelsAligned=false;
     SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
+    m_robotContainer.getDrivetrain().resetGyro();
   }
 
   /**
@@ -55,7 +61,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -71,6 +79,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    if (wheelsAligned == false){
+      m_wheelAlign.schedule();
+      wheelsAligned = true;
+    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -85,6 +98,10 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
+
+    if (wheelsAligned == false){
+      m_wheelAlign.schedule();
     }
   }
 

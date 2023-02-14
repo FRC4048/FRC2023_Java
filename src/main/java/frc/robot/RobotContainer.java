@@ -102,6 +102,10 @@ public class RobotContainer {
     return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
   }
 
+  public Command getWheelAlign(){
+    return new WheelAlign(drivetrain);
+  }
+
   public Drivetrain getDrivetrain() {
     return drivetrain;
   }

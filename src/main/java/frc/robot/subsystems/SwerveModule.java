@@ -59,7 +59,7 @@ public class SwerveModule {
    * Constructs a SwerveModule with a drive motor, turning motor, drive encoder and turning encoder.
    *
    * @param driveMotor
-   * @param turningMotor
+   * @param steerMotor
    * @param absEncoder 
    * */
 
@@ -166,6 +166,12 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
+    if (id == 1) {
+      SmartShuffleboard.put("Diag", "aTurnPID" + id, turnOutput);
+      SmartShuffleboard.put("Diag", "aTurnFF" + id, turnFeedforward);
+      SmartShuffleboard.put("Diag", "aDrivePID" + id, driveOutput);
+      SmartShuffleboard.put("Diag", "aDriveFF" + id, driveFeedforward);
+    }
 
         if (id == 1) {
           SmartShuffleboard.put("Drive", "CPos" + id, getSteerEncPosition());
