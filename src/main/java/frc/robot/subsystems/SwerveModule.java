@@ -22,7 +22,7 @@ import frc.robot.commands.Drive;
 import frc.robot.utils.SmartShuffleboard;
 
 public class SwerveModule {
-  private static final double kModuleMaxAngularVelocity = Constants.kMaxAngularSpeed;
+  private static final double kModuleMaxAngularVelocity = Constants.MAX_ANGULAR_SPEED;
   private static final double kModuleMaxAngularAcceleration =
       2 * Math.PI; // radians per second squared
 
