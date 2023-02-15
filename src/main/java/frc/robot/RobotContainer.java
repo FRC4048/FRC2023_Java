@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.ArmController;
 import frc.robot.commands.Drive;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
@@ -11,6 +12,7 @@ import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -26,6 +28,7 @@ public class RobotContainer {
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
   private JoystickButton button_1= new JoystickButton(joyLeft, 1);
+  private CommandXboxController cmdController = new CommandXboxController(0);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -37,7 +40,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-  //  button_1.onTrue(new WheelAlign(drivetrain));
+    cmdController.leftTrigger(0).onTrue(new ArmController(drivetrain, 0.5));
+    cmdController.rightTrigger(0).onTrue(new ArmController(drivetrain, -0.5));
   }
 
   /**
