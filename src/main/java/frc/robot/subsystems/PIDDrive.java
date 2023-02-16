@@ -11,27 +11,28 @@ import frc.robot.utils.SmartShuffleboard;
 
 public class PIDDrive extends SubsystemBase {
   private double angle;
-  private CANSparkMax m_motor;
+  private CANSparkMax neoMotor;
   private SparkMaxPIDController pidController;
   private RelativeEncoder encoder;
   private double encoderValue;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, maxVel, minVel, maxAcc, allowedErr;
+  public double kP, kI, kD, kIz, kFF, kVoltage;
   private int deviceID;
   
   public PIDDrive() {
-    angle = 0;
+    angle = 1;
     deviceID = 45;
-    m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
+    neoMotor = new CANSparkMax(deviceID, MotorType.kBrushless);
 
-    m_motor.restoreFactoryDefaults();
+    neoMotor.restoreFactoryDefaults();
 
-    pidController = m_motor.getPIDController();
-    encoder = m_motor.getEncoder();
+    pidController = neoMotor.getPIDController();
+    encoder = neoMotor.getEncoder();
     encoderValue = encoder.getPosition();
 
     kP = 1; 
     kI = 0;
     kD = 0;
+    kVoltage = 0;
 
 
     pidController.setP(kP);
@@ -41,6 +42,7 @@ public class PIDDrive extends SubsystemBase {
     SmartShuffleboard.put("PID", "P Gain", kP);
     SmartShuffleboard.put("PID", "I Gain", kI);
     SmartShuffleboard.put("PID", "D Gain", kD);
+    SmartShuffleboard.put("PID", "encoder", encoderValue);
   }
 
   @Override
@@ -60,7 +62,9 @@ public class PIDDrive extends SubsystemBase {
     if((d != kD)) { 
       pidController.setD(d); 
       kD = d; 
-    }    pidController.setReference(angle, ControlType.kPosition);
+    }
+
+    pidController.setReference(angle, ControlType.kPosition);
   }
 
   @Override
@@ -69,7 +73,7 @@ public class PIDDrive extends SubsystemBase {
   }
 
   public void setVoltage(double voltage) {
-    m_motor.set(voltage);
+    neoMotor.set(voltage);
   }
 
   public double getAngle() {

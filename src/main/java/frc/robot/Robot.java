@@ -33,11 +33,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    pidDrive = new PIDDrive();
+    //pidDrive = new PIDDrive();
     m_robotContainer = new RobotContainer();
     wheelsAligned=false;
-    SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
-    SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
+    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
+    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
   }
 
   /**
@@ -89,15 +89,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    SmartShuffleboard.put("pid", "anglee", pidDrive.getAngle());
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {

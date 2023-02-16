@@ -8,6 +8,7 @@ import frc.robot.commands.ArmController;
 import frc.robot.commands.Drive;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PIDDrive;
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,25 +24,26 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Drivetrain drivetrain;
+  //private Drivetrain drivetrain;
+  private PIDDrive pidDrive;
   private PowerDistributionBoard m_PDB;
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
-  private JoystickButton button_1= new JoystickButton(joyLeft, 1);
   private CommandXboxController cmdController = new CommandXboxController(0);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-    drivetrain = new Drivetrain();
+    //drivetrain = new Drivetrain();
+    pidDrive = new PIDDrive();
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
-    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
+    //drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
   }
 
   private void configureBindings() {
-    cmdController.leftTrigger(0).onTrue(new ArmController(drivetrain, 0.5));
-    cmdController.rightTrigger(0).onTrue(new ArmController(drivetrain, -0.5));
+    cmdController.rightBumper().whileTrue(new ArmController(pidDrive, 1));
+    cmdController.leftBumper().whileTrue(new ArmController(pidDrive, -1));
   }
 
   /**
@@ -54,7 +56,11 @@ public class RobotContainer {
     return new PrintCommand("hi");
   }
 
-  public Drivetrain getDrivetrain() {
-    return drivetrain;
+  //public Drivetrain getDrivetrain() {
+    //return drivetrain;
+  //}
+
+  public PIDDrive getPidDrive() {
+    return pidDrive;
   }
 }
