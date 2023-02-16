@@ -18,7 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -51,6 +50,8 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_frontRight;
   private final SwerveModule m_backLeft;
   private final SwerveModule m_backRight;
+
+  private double gyroOffset = 0;
 
   private final AHRS navxGyro;
 
@@ -204,7 +205,7 @@ public class Drivetrain extends SubsystemBase{
     SmartShuffleboard.put("Diag", "Abs Encoder", "BR", backRightCanCoder.getAbsolutePosition());
     SmartShuffleboard.put("Diag", "Abs Encoder", "BL", backLeftCanCoder.getAbsolutePosition());
 
-    SmartShuffleboard.put("Drive", "Gyro", getGyro());
+    SmartShuffleboard.put("Diag", "Gyro", getGyro());
     SmartShuffleboard.put("Drive", "Steer Encoders", "Back Right S", m_backRight.getSteerEncPosition());
     SmartShuffleboard.put("Drive", "Steer Encoders", "Back Left S", m_backLeft.getSteerEncPosition());
     SmartShuffleboard.put("Drive", "Steer Encoders", "Front Right S", m_frontRight.getSteerEncPosition());
@@ -214,6 +215,11 @@ public class Drivetrain extends SubsystemBase{
     SmartShuffleboard.put("Drive", "Drive Encoders", "Back Left D", m_backLeft.getDriveEncPosition());
     SmartShuffleboard.put("Drive", "Drive Encoders", "Front Right D", m_frontRight.getDriveEncPosition());
     SmartShuffleboard.put("Drive", "Drive Encoders", "Front Left D", m_frontLeft.getDriveEncPosition());
+
+    SmartShuffleboard.put("Diag", "Offset", getGyroOffset());
+    SmartShuffleboard.put("Diag", "Gyro Adjust", navxGyro.getAngleAdjustment());
+    SmartShuffleboard.put("Diag", "Rotate Adjust", navxGyro.getRotation2d().getDegrees());
+
 
     m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
     new SwerveModulePosition[] {
@@ -271,5 +277,11 @@ public class Drivetrain extends SubsystemBase{
     return backRightCanCoder;
   }
 
-  
+  public void setGyroOffset(double offset) {
+    gyroOffset = offset;
+    navxGyro.setAngleAdjustment(gyroOffset);
+  }
+  public double getGyroOffset() {
+    return gyroOffset;
+  }
 }

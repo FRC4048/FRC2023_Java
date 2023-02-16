@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Drive;
+import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PowerDistributionBoard;
@@ -25,7 +26,9 @@ public class RobotContainer {
   private PowerDistributionBoard m_PDB;
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
-  private JoystickButton button_1= new JoystickButton(joyLeft, 1);
+  private JoystickButton LeftGyroButton= new JoystickButton(joyLeft, 1);
+  private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -37,7 +40,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-  //  button_1.onTrue(new WheelAlign(drivetrain));
+       LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
+       RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
   }
 
   /**
