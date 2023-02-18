@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
@@ -52,10 +51,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return new PrintCommand("hi");
-  }
-
-  public Command getWheelAlign(){
-    return new WheelAlign(drivetrain);
   }
 
   public Drivetrain getDrivetrain() {

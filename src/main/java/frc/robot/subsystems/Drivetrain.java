@@ -200,21 +200,26 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic(){
-    SmartShuffleboard.put("Diag", "Abs Encoder", "FR", frontRightCanCoder.getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "Abs Encoder", "FL", frontLeftCanCoder.getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "Abs Encoder", "BR", backRightCanCoder.getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "Abs Encoder", "BL", backLeftCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("BZ", "Abs Encoder", "FR", frontRightCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("BZ", "Abs Encoder", "FL", frontLeftCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("BZ", "Abs Encoder", "BR", backRightCanCoder.getAbsolutePosition());
+    SmartShuffleboard.put("BZ", "Abs Encoder", "BL", backLeftCanCoder.getAbsolutePosition());
 
     SmartShuffleboard.put("Diag", "Gyro", getGyro());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Back Right S", m_backRight.getSteerEncPosition());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Back Left S", m_backLeft.getSteerEncPosition());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Front Right S", m_frontRight.getSteerEncPosition());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Front Left S", m_frontLeft.getSteerEncPosition());
+    SmartShuffleboard.put("BZ", "Steer Encoders", "Back Right S", Math.toDegrees(m_backRight.getSteerEncPosition()));
+    SmartShuffleboard.put("BZ", "Steer Encoders", "Back Left S", Math.toDegrees(m_backLeft.getSteerEncPosition()));
+    SmartShuffleboard.put("BZ", "Steer Encoders", "Front Right S", Math.toDegrees(m_frontRight.getSteerEncPosition()));
+    SmartShuffleboard.put("BZ", "Steer Encoders", "Front Left S", Math.toDegrees(m_frontLeft.getSteerEncPosition()));
 
     SmartShuffleboard.put("Drive", "Drive Encoders", "Back Right D", m_backRight.getDriveEncPosition());
     SmartShuffleboard.put("Drive", "Drive Encoders", "Back Left D", m_backLeft.getDriveEncPosition());
     SmartShuffleboard.put("Drive", "Drive Encoders", "Front Right D", m_frontRight.getDriveEncPosition());
     SmartShuffleboard.put("Drive", "Drive Encoders", "Front Left D", m_frontLeft.getDriveEncPosition());
+
+    SmartShuffleboard.put("BZ", "Offsets", "BR offset", Math.toDegrees(m_backRight.getSteerOffset()));
+    SmartShuffleboard.put("BZ", "Offsets", "BL offset", Math.toDegrees(m_backLeft.getSteerOffset()));
+    SmartShuffleboard.put("BZ", "Offsets", "FR offset", Math.toDegrees(m_frontRight.getSteerOffset()));
+    SmartShuffleboard.put("BZ", "Offsets", "FL offset", Math.toDegrees(m_frontLeft.getSteerOffset()));
 
     SmartShuffleboard.put("Diag", "Offset", getGyroOffset());
     SmartShuffleboard.put("Diag", "Gyro Adjust", navxGyro.getAngleAdjustment());
@@ -280,6 +285,7 @@ public class Drivetrain extends SubsystemBase{
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
+    navxGyro.getFusedHeading();
   }
   public double getGyroOffset() {
     return gyroOffset;

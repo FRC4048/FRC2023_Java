@@ -21,17 +21,8 @@ import frc.robot.utils.SmartShuffleboard;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
 
-  private Command m_wheelAlign;
-
-  private boolean wheelsAligned;
-
-  public double frontLeftOffset;
-  public double frontRightOffset;
-  public double backLeftOffset;
-  public double backRightOffset;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -41,21 +32,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_wheelAlign = m_robotContainer.getWheelAlign();
-    wheelsAligned=false;
-    SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
+    SmartShuffleboard.putCommand("BZ", "Set Offset", new WheelAlign(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
+    new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     m_robotContainer.getDrivetrain().resetGyro();
-
-    frontLeftOffset=m_robotContainer.getDrivetrain().getM_frontLeftTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getFrontLeftCanCoder().getAbsolutePosition());
-    frontRightOffset=m_robotContainer.getDrivetrain().getM_frontRightTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getFrontRightCanCoder().getAbsolutePosition());
-    backLeftOffset=m_robotContainer.getDrivetrain().getM_backLeftTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getBackLeftCanCoder().getAbsolutePosition());
-    backRightOffset=m_robotContainer.getDrivetrain().getM_backRightTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getBackRightCanCoder().getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "FL Offset", frontLeftOffset);
-    SmartShuffleboard.put("Diag", "FR Offset", frontRightOffset);
-    SmartShuffleboard.put("Diag", "BL Offset", backLeftOffset);
-    SmartShuffleboard.put("Diag", "BR Offset", backRightOffset);
   }
 
   /**
@@ -94,11 +75,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-
-//    if (wheelsAligned == false){
-//      m_wheelAlign.schedule();
-//      wheelsAligned = true;
-//    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -114,10 +90,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-//    if (wheelsAligned == false){
-//      m_wheelAlign.schedule();
-//    }
   }
 
   /** This function is called periodically during operator control. */

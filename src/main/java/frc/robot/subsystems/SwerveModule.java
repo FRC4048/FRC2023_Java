@@ -28,6 +28,7 @@ public class SwerveModule {
   private final RelativeEncoder driveEncoder;
   private final RelativeEncoder steerEncoder;
   private final WPI_CANCoder absEncoder;
+  private double steerOffset = 0;
 
   // TODO: Adjust gains
   private final PIDController m_drivePIDController =
@@ -83,8 +84,8 @@ public class SwerveModule {
     driveEncoder = driveMotor.getEncoder();
     steerEncoder = steerMotor.getEncoder();
 
-    //steerEncoder.setPosition(0);
-    //driveEncoder.setPosition(0);
+    steerEncoder.setPosition(0);
+    driveEncoder.setPosition(0);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -179,16 +180,33 @@ public class SwerveModule {
     driveEncoder.setPosition(0);
   }
 
-  public double getDriveEncPosition(){
+  public double getDriveEncPosition() {
     return driveEncoder.getPosition();
   }
 
+  public void setSteerOffset(double zeroAbs) {
+    steerEncoder.setPosition(0);
+    steerOffset = Math.toRadians(zeroAbs - absEncoder.getAbsolutePosition());
+    steerOffset %= 2 * Math.PI;
+    if (steerOffset < 0) {
+      steerOffset += 2 * Math.PI;
+    }
+  }
+
   public double getSteerEncPosition(){
-    double value = steerEncoder.getPosition();
+    double value = steerEncoder.getPosition() - steerOffset;
     value %= 2 * Math.PI;
     if (value < 0) {
       value += 2 * Math.PI;
     } 
     return (value);
+  }
+
+  public void resetSteerEncoder() {
+    steerEncoder.setPosition(0);
+  }
+
+  public double getSteerOffset() {
+    return steerOffset;
   }
 }
