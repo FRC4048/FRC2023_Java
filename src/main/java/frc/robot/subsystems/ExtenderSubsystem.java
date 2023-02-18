@@ -109,9 +109,7 @@ public class ExtenderSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(!isManualControl){
-      moveExtender();
-    }
+    moveExtender();
   
    SmartShuffleboard.put("test", "encoder", getExtenderEncoder());
 

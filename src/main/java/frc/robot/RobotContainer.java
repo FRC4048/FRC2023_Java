@@ -27,10 +27,9 @@ import edu.wpi.first.wpilibj.Joystick;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExtenderSubsystem m_extenderSubsystem = new ExtenderSubsystem();
-  private final ExtenderPosition position = ExtenderPosition.BOTTOM_ROW;
+  private final ExtenderPosition position = ExtenderPosition.RETRACT_FULL;
   private final CommandXboxController m_driverController =
       new CommandXboxController(2);
-  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings

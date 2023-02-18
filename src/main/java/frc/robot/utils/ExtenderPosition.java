@@ -2,11 +2,11 @@ package frc.robot.utils;
 import frc.robot.subsystems.ExtenderSubsystem;
 
 public enum ExtenderPosition {
-    BOTTOM_ROW(5000), 
-    MIDDLE_ROW(5050), 
-    TOP_ROW(10100), 
+    BOTTOM_ROW(500), 
+    MIDDLE_ROW(1000), 
+    TOP_ROW(1500), 
     RETRACT_FULL(0), 
-    EXTEND_FULL(10500);
+    EXTEND_FULL(2000);
 
     public double position;
 

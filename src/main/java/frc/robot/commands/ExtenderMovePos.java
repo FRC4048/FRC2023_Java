@@ -35,8 +35,6 @@ public class ExtenderMovePos extends CommandBase {
   public void execute() {
   
   extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
-
-    //System.out.println("it works?");
     
   }
 
@@ -53,7 +51,6 @@ public class ExtenderMovePos extends CommandBase {
   //  if ((Timer.getFPGATimestamp() - initTime) > 5000 ) {
   //    return true;
   //  }
-    
     return extenderSubsystem.extendAtPos(extenderPosition); 
     
   }
