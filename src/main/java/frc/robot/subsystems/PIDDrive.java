@@ -7,6 +7,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.SetArmAngle;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PIDDrive extends SubsystemBase {
@@ -19,15 +20,14 @@ public class PIDDrive extends SubsystemBase {
   private int deviceID;
   
   public PIDDrive() {
-    angle = 1;
+    angle = 0;
     deviceID = 45;
     neoMotor = new CANSparkMax(deviceID, MotorType.kBrushless);
 
     neoMotor.restoreFactoryDefaults();
 
     pidController = neoMotor.getPIDController();
-    encoder = neoMotor.getEncoder();
-    encoderValue = encoder.getPosition();
+    
 
     kP = 1; 
     kI = 0;
@@ -42,14 +42,19 @@ public class PIDDrive extends SubsystemBase {
     SmartShuffleboard.put("PID", "P Gain", kP);
     SmartShuffleboard.put("PID", "I Gain", kI);
     SmartShuffleboard.put("PID", "D Gain", kD);
-    SmartShuffleboard.put("PID", "encoder", encoderValue);
+    
   }
 
   @Override
   public void periodic() {
+    encoder = neoMotor.getEncoder();
+    encoderValue = encoder.getPosition();
+    
+    
     double p = SmartShuffleboard.getDouble("PID", "P Gain", 1);
     double i = SmartShuffleboard.getDouble("PID", "I Gain", 0);
     double d = SmartShuffleboard.getDouble("PID", "D Gain", 0);
+    //SmartShuffleboard.put("PID", "encoder", encoderValue);
 
     if((p != kP)) { 
       pidController.setP(p); 
@@ -67,6 +72,14 @@ public class PIDDrive extends SubsystemBase {
     pidController.setReference(angle, ControlType.kPosition);
   }
 
+  public double getEncoderValue() {
+    return encoderValue;
+  }
+
+  public void setEncoderValue(double encoderValue) {
+    this.encoderValue = encoderValue;
+  }
+
   @Override
   public void simulationPeriodic() {
 
@@ -79,6 +92,7 @@ public class PIDDrive extends SubsystemBase {
   public double getAngle() {
     return angle;
   }
+
   public void setAngle(double angle) {
     this.angle = angle;
   }

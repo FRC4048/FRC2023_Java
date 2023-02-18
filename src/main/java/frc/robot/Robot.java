@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Forward;
+import frc.robot.commands.SetArmAngle;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.PIDDrive;
 import frc.robot.utils.SmartShuffleboard;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
     //pidDrive = new PIDDrive();
     m_robotContainer = new RobotContainer();
     wheelsAligned=false;
+    pidDrive = m_robotContainer.getPidDrive();
     //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
     //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
   }
@@ -93,7 +95,15 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(pidDrive, 0));
+    SmartShuffleboard.putCommand("PID", "setAngle=90", new SetArmAngle(pidDrive, 90));
+    SmartShuffleboard.putCommand("PID", "setAngle=180", new SetArmAngle(pidDrive, 180));
+
+    SmartShuffleboard.put("PID", "encoder", pidDrive.getEncoderValue());
+
+    SmartShuffleboard.put("PID", "angle", pidDrive.getAngle());
+  }
 
   @Override
   public void testInit() {

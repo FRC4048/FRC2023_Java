@@ -11,8 +11,8 @@ public class ArmController extends CommandBase{
     private double change;
 
     public ArmController(PIDDrive pidDrive, double change) {
-        this.pidDrive = pidDrive;
         this.change = change;
+        this.pidDrive = pidDrive;
     }
 
 
@@ -30,19 +30,12 @@ public class ArmController extends CommandBase{
         }
         pidDrive.setAngle(desiredAngle);
 
-        SmartShuffleboard.put("PID", "angle", pidDrive.getAngle());
-
-        double changedAngle = SmartShuffleboard.getDouble("PID", "angle", pidDrive.getAngle());
-
-        if((changedAngle != pidDrive.getAngle())) { 
-            pidDrive.setAngle(changedAngle);
-            changedAngle = pidDrive.getAngle(); 
-        }
+        //SmartShuffleboard.put("PID", "angle", pidDrive.getAngle());
     }
 
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

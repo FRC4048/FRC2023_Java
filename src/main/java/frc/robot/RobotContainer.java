@@ -42,8 +42,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    cmdController.rightBumper().whileTrue(new ArmController(pidDrive, 1));
-    cmdController.leftBumper().whileTrue(new ArmController(pidDrive, -1));
+    cmdController.rightBumper().whileTrue(new ArmController(pidDrive, 5));
+    cmdController.leftBumper().whileTrue(new ArmController(pidDrive, -5));
   }
 
   /**
