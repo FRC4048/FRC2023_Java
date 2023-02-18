@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.drive.Forward;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.WheelAlign;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -26,6 +27,11 @@ public class Robot extends TimedRobot {
   private Command m_wheelAlign;
 
   private boolean wheelsAligned;
+
+  public double frontLeftOffset;
+  public double frontRightOffset;
+  public double backLeftOffset;
+  public double backRightOffset;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -41,6 +47,15 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
     m_robotContainer.getDrivetrain().resetGyro();
+
+    frontLeftOffset=m_robotContainer.getDrivetrain().getM_frontLeftTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getFrontLeftCanCoder().getAbsolutePosition());
+    frontRightOffset=m_robotContainer.getDrivetrain().getM_frontRightTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getFrontRightCanCoder().getAbsolutePosition());
+    backLeftOffset=m_robotContainer.getDrivetrain().getM_backLeftTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getBackLeftCanCoder().getAbsolutePosition());
+    backRightOffset=m_robotContainer.getDrivetrain().getM_backRightTurn().getEncoder().getPosition()- Math.toRadians(m_robotContainer.getDrivetrain().getBackRightCanCoder().getAbsolutePosition());
+    SmartShuffleboard.put("Diag", "FL Offset", frontLeftOffset);
+    SmartShuffleboard.put("Diag", "FR Offset", frontRightOffset);
+    SmartShuffleboard.put("Diag", "BL Offset", backLeftOffset);
+    SmartShuffleboard.put("Diag", "BR Offset", backRightOffset);
   }
 
   /**
@@ -80,10 +95,10 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
-    if (wheelsAligned == false){
-      m_wheelAlign.schedule();
-      wheelsAligned = true;
-    }
+//    if (wheelsAligned == false){
+//      m_wheelAlign.schedule();
+//      wheelsAligned = true;
+//    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -100,9 +115,9 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    if (wheelsAligned == false){
-      m_wheelAlign.schedule();
-    }
+//    if (wheelsAligned == false){
+//      m_wheelAlign.schedule();
+//    }
   }
 
   /** This function is called periodically during operator control. */
