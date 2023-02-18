@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Constants;
-import frc.robot.utils.SmartShuffleboard;
 
 public class SwerveModule {
   private static final double kModuleMaxAngularVelocity = Constants.kMaxAngularSpeed;
@@ -158,22 +157,8 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
-    if (id == 1) {
-      SmartShuffleboard.put("Diag", "aTurnPID" + id, turnOutput);
-      SmartShuffleboard.put("Diag", "aTurnFF" + id, turnFeedforward);
-      SmartShuffleboard.put("Diag", "aDrivePID" + id, driveOutput);
-      SmartShuffleboard.put("Diag", "aDriveFF" + id, driveFeedforward);
-    }
-
     driveMotor.setVoltage(driveOutput + driveFeedforward);
     steerMotor.set(turnOutput + turnFeedforward);
-
-    if (id == 1) {
-      //SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
-      //SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
-      SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
-      SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
-    }
   }
   public void ResetRelEnc() {
     steerEncoder.setPosition(0);

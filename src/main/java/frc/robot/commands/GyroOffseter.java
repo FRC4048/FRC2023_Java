@@ -12,7 +12,6 @@ public class GyroOffseter extends CommandBase {
     }
 
     public void end(boolean interrupted) {
-
     }
 
     @Override
@@ -22,7 +21,6 @@ public class GyroOffseter extends CommandBase {
     @Override
     public void execute(){
         drivetrain.setGyroOffset(drivetrain.getGyroOffset()+ offset);
-
     }
 
     @Override

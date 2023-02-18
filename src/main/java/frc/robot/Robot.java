@@ -32,9 +32,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartShuffleboard.putCommand("BZ", "Set Offset", new WheelAlign(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-    SmartShuffleboard.putCommand("BZ", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
   }
