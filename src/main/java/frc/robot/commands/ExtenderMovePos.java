@@ -26,7 +26,8 @@ public class ExtenderMovePos extends CommandBase {
   
   @Override
   public void initialize() {
-    extenderSubsystem.resetEncoder();
+    //extenderSubsystem.resetEncoder();
+    extenderSubsystem.extendToPosition(extenderPosition);
     extenderSubsystem.setManualMode(false);
     extenderSubsystem.stopExtender();
   }

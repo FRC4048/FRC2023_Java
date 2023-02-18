@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtenderManual;
 import frc.robot.commands.ExtenderMovePos;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ExtenderSubsystem;
@@ -26,9 +27,9 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExtenderSubsystem m_extenderSubsystem = new ExtenderSubsystem();
-  private final ExtenderPosition position = ExtenderPosition.RETRACT_FULL;
-  private final CommandXboxController m_driverController =
+  private final ExtenderSubsystem extenderSubsystem = new ExtenderSubsystem();
+  private ExtenderPosition position = ExtenderPosition.RETRACT_FULL;
+  private final CommandXboxController extenderController =
       new CommandXboxController(2);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,8 +50,14 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    ExtenderMovePos command = new ExtenderMovePos(m_extenderSubsystem,position);
-    SmartShuffleboard.putCommand("test", "command", new ExtenderMovePos(m_extenderSubsystem,position));
+    extenderController.a().whileTrue(new ExtenderMovePos(extenderSubsystem, ExtenderPosition.BOTTOM_ROW));
+    extenderController.b().whileTrue(new ExtenderMovePos(extenderSubsystem, ExtenderPosition.MIDDLE_ROW));
+    extenderController.x().whileTrue(new ExtenderMovePos(extenderSubsystem, ExtenderPosition.TOP_ROW));
+    extenderController.y().whileTrue(new ExtenderMovePos(extenderSubsystem, ExtenderPosition.EXTEND_FULL));
+    extenderController.leftTrigger().whileTrue(new ExtenderManual(extenderSubsystem,false));
+    extenderController.rightTrigger().whileTrue(new ExtenderManual(extenderSubsystem,true));
+    //ExtenderMovePos command = new ExtenderMovePos(extenderSubsystem,position);
+    SmartShuffleboard.putCommand("test", "command", new ExtenderMovePos(extenderSubsystem,position));
     SmartShuffleboard.put("test", "set pos", position.getPosition());
   }
 
@@ -63,5 +70,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
+  }
+
+  public CommandXboxController getController() {
+    return extenderController;
   }
 }

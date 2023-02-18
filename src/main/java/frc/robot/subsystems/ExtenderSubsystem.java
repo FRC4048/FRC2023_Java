@@ -86,7 +86,13 @@ public class ExtenderSubsystem extends SubsystemBase {
   }
 
   public void extendToPosition(ExtenderPosition elevatorPosition) {
+    isManualControl=false;
     extenderSetPoint = elevatorPosition.getPosition();
+  }
+
+  public void extendToPositionManual(double value){
+    isManualControl=true;
+    extenderMotor.set(ControlMode.Position, getExtenderEncoder()+value);
   }
 
   public boolean extendAtPos(ExtenderPosition elevatorPosition) {
@@ -109,7 +115,10 @@ public class ExtenderSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    moveExtender();
+    if(!isManualControl){
+      moveExtender();
+    }
+    
   
    SmartShuffleboard.put("test", "encoder", getExtenderEncoder());
 

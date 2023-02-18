@@ -7,32 +7,31 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class ExtenderManual extends CommandBase {
     private ExtenderSubsystem extenderSubsystem;
-    private int direction; 
-    // -1: left, 0: stop, 1: right
-  public ExtenderManual(ExtenderSubsystem extenderSubsystem, int direction) {
+    private boolean direction;
+  public ExtenderManual(ExtenderSubsystem extenderSubsystem, boolean direction) {
     addRequirements(extenderSubsystem);
     this.extenderSubsystem = extenderSubsystem;
-    this.direction = direction;
+    this.direction =direction;
   }
   
   @Override
   public void initialize() {
-
+     
   }
 
   @Override
   public void execute() {
-    extenderSubsystem.setManualMode(true);
-    if(direction == 1){
-        extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
-    }else if(direction==-1){
-        extenderSubsystem.setExtenderSpeed(-Constants.EXTENDER_SPEED);
+    extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
+    if(direction){
+      extenderSubsystem.extendToPositionManual(500);
     }else{
-      extenderSubsystem.stopExtender();
+      extenderSubsystem.extendToPositionManual(-500);
     }
+    
   }
 
   @Override
