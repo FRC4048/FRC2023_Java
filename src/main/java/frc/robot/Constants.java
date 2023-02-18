@@ -36,7 +36,7 @@ public final class Constants {
   public static final double DRIVE_PID_FF_S = 1.8;  //0.015
   public static final double DRIVE_PID_FF_V = 3.26;  //0.285
 
-  public static final double STEER_PID_P = 0.7;
+  public static final double STEER_PID_P = 0.3;
   public static final double STEER_PID_I = 0;
   public static final double STEER_PID_D = 0;
   public static final double STEER_PID_FF_S = 0;//0.2;

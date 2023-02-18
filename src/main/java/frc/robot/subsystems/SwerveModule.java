@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -16,9 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
-import frc.robot.commands.Drive;
 import frc.robot.utils.SmartShuffleboard;
 
 public class SwerveModule {
@@ -46,7 +43,7 @@ public class SwerveModule {
         Constants.STEER_PID_I,
         Constants.STEER_PID_D,
           new TrapezoidProfile.Constraints(
-              kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
+              kModuleMaxAngularVelocity * 4, kModuleMaxAngularAcceleration * 10));
 
           // TODO: Adjust gains
 
@@ -86,8 +83,8 @@ public class SwerveModule {
     driveEncoder = driveMotor.getEncoder();
     steerEncoder = steerMotor.getEncoder();
 
-    steerEncoder.setPosition(0);
-    driveEncoder.setPosition(0);
+    //steerEncoder.setPosition(0);
+    //driveEncoder.setPosition(0);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder

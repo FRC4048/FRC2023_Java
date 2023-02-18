@@ -4,9 +4,9 @@
 
 package frc.robot;
 
-import frc.robot.commands.Drive;
+import frc.robot.commands.drive.Drive;
 import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.WheelAlign;
+import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;

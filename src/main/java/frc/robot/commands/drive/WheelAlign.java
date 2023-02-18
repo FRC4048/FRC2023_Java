@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -69,8 +69,8 @@ public class WheelAlign extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return MathUtil.applyDeadband(Math.toRadians(drivetrain.getFrontLeftCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.FRONT_LEFT_ABS_ENCODER_ZERO), 0.1) == 0 && MathUtil.applyDeadband(Math.toRadians(drivetrain.getFrontRightCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO), 0.1) == 0 && MathUtil.applyDeadband(Math.toRadians(drivetrain.getBackLeftCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.BACK_LEFT_ABS_ENCODER_ZERO), 0.1) == 0 && MathUtil.applyDeadband(Math.toRadians(drivetrain.getBackRightCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.BACK_RIGHT_ABS_ENCODER_ZERO), 0.1) == 0;
-        //return Timer.getFPGATimestamp() - startTime > 3;
+        return MathUtil.applyDeadband(Math.toRadians(drivetrain.getFrontLeftCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.FRONT_LEFT_ABS_ENCODER_ZERO), 0.1) == 0 && MathUtil.applyDeadband(Math.toRadians(drivetrain.getFrontRightCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO), 0.1) == 0 && MathUtil.applyDeadband(Math.toRadians(drivetrain.getBackLeftCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.BACK_LEFT_ABS_ENCODER_ZERO), 0.1) == 0 && MathUtil.applyDeadband(Math.toRadians(drivetrain.getBackRightCanCoder().getAbsolutePosition()) - Math.toRadians(Constants.BACK_RIGHT_ABS_ENCODER_ZERO), 0.1) == 0 || Timer.getFPGATimestamp() - startTime > 3;
+
     }  
    
     public double calculateAngle(double RelEncoderPos, double DesiredAbsEncPos, double StartingAbsEncPos) {
