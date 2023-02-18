@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ExtenderSubsystem;
 import frc.robot.utils.ExtenderPosition;
+import frc.robot.utils.SmartShuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,6 +16,7 @@ public class ExtenderMovePos extends CommandBase {
     private ExtenderSubsystem extenderSubsystem;
 
     private ExtenderPosition extenderPosition;
+    private double initTime = Timer.getFPGATimestamp(); 
 
   public ExtenderMovePos(ExtenderSubsystem extenderSubsystem,ExtenderPosition extenderPosition) {
     addRequirements(extenderSubsystem);
@@ -24,25 +26,35 @@ public class ExtenderMovePos extends CommandBase {
   
   @Override
   public void initialize() {
+    extenderSubsystem.resetEncoder();
     extenderSubsystem.setManualMode(false);
-    extenderSubsystem.extendToPosition(extenderPosition);
+    extenderSubsystem.stopExtender();
   }
 
   @Override
   public void execute() {
+  
+  extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
 
-    //extenderSubsystem.setExtenderSpeed(0.5);
     //System.out.println("it works?");
     
   }
 
   @Override
   public void end(boolean interrupted) {
-    extenderSubsystem.stopExtender();
+
+
+    extenderSubsystem.setExtenderSpeed(0);
   }
 
   @Override
   public boolean isFinished() {
+
+  //  if ((Timer.getFPGATimestamp() - initTime) > 5000 ) {
+  //    return true;
+  //  }
+    
     return extenderSubsystem.extendAtPos(extenderPosition); 
+    
   }
 }

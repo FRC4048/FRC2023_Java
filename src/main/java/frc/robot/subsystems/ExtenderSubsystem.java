@@ -12,9 +12,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 //import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.ExtenderPosition;
+import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagTalonSrxEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
 import frc.robot.Constants;
+
 
 //import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -34,7 +36,7 @@ public class ExtenderSubsystem extends SubsystemBase {
 
   public ExtenderSubsystem() {
     isManualControl = false;
-    extenderMotor = new WPI_TalonSRX(0);
+    extenderMotor = new WPI_TalonSRX(Constants.EXTENDER_MOTOR_ID);
 
     //motor configs
     extenderMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.EXTENDER_MOTOR_TIMEOUT);
@@ -69,7 +71,7 @@ public class ExtenderSubsystem extends SubsystemBase {
   }
 
   public void stopExtender(){
-      extenderMotor.stopMotor();
+      extenderMotor.set(0);
   }
 
   public double getExtenderEncoder() {
@@ -86,7 +88,7 @@ public class ExtenderSubsystem extends SubsystemBase {
   }
 
   public boolean extendAtPos(ExtenderPosition elevatorPosition) {
-    return Math.abs(elevatorPosition.getPosition() - getExtenderEncoder()) < Constants.EXTENDER_POSITION_ERROR*2;
+    return Math.abs(elevatorPosition.getPosition() - Math.abs(getExtenderEncoder())) < Constants.EXTENDER_POSITION_ERROR;
   }
 
   public double getError() {
@@ -108,5 +110,8 @@ public class ExtenderSubsystem extends SubsystemBase {
     if(!isManualControl){
       moveExtender();
     }
+  
+   SmartShuffleboard.put("test", "encoder", getExtenderEncoder());
+
   }
 }

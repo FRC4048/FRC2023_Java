@@ -22,7 +22,7 @@ public final class Constants {
 
 
   //motor speed
-  public static final double EXTENDER_SPEED = 0.5;
+  public static final double EXTENDER_SPEED = 0.1;
   
 
   //AIO 
@@ -37,7 +37,7 @@ public final class Constants {
   //TIME OUT
   public static final int EXTENDER_MOTOR_TIMEOUT = 2; 
   public static final double EXTENDER_TARGET_TIMEOUT = 1;
-  public static final int EXTENDER_POSITION_ERROR = 1; 
+  public static final int EXTENDER_POSITION_ERROR = 100; 
 
   public static final double EXTENDER_P = 1;
   public static final double EXTENDER_I = 0.01;
