@@ -42,8 +42,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    cmdController.rightBumper().whileTrue(new ArmController(pidDrive, 5));
-    cmdController.leftBumper().whileTrue(new ArmController(pidDrive, -5));
+    cmdController.rightBumper().whileTrue(new ArmController(pidDrive, Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.leftBumper().whileTrue(new ArmController(pidDrive, -1 * Constants.ARM_CONTROLLER_CHANGE));
   }
 
   /**
@@ -57,10 +57,14 @@ public class RobotContainer {
   }
 
   //public Drivetrain getDrivetrain() {
-    //return drivetrain;
+  //  return drivetrain;
   //}
 
   public PIDDrive getPidDrive() {
     return pidDrive;
+  }
+
+  public CommandXboxController getController() {
+    return cmdController;
   }
 }

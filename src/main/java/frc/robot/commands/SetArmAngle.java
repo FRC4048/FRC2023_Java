@@ -11,20 +11,14 @@ public class SetArmAngle extends CommandBase {
     public SetArmAngle(PIDDrive pidDrive, double degrees) {
         this.pidDrive = pidDrive;
         this.degrees = degrees;
+        addRequirements(pidDrive);
     }
 
     @Override
     public void initialize() {
         pidDrive.setAngle(degrees);
-
     }
-
-    @Override
-    public void execute() {
-        
-    }
-
-
+    
     @Override
     public boolean isFinished() {
         return true;

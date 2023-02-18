@@ -1,13 +1,15 @@
 package frc.robot.subsystems;
 
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.SetArmAngle;
+import frc.robot.Constants;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PIDDrive extends SubsystemBase {
@@ -17,44 +19,43 @@ public class PIDDrive extends SubsystemBase {
   private RelativeEncoder encoder;
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
-  private int deviceID;
   
   public PIDDrive() {
     angle = 0;
-    deviceID = 45;
-    neoMotor = new CANSparkMax(deviceID, MotorType.kBrushless);
+
+    neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
+    encoder = neoMotor.getEncoder();
 
     neoMotor.restoreFactoryDefaults();
+    neoMotor.setIdleMode(IdleMode.kBrake);
+    encoder.setPosition(0);
 
     pidController = neoMotor.getPIDController();
     
-
-    kP = 1; 
-    kI = 0;
-    kD = 0;
-    kVoltage = 0;
-
-
+    kP = Constants.ARM_PID_P; 
+    kI = Constants.ARM_PID_I;
+    kD = Constants.ARM_PID_D;
+    kFF = Constants.ARM_PID_FF;
+  
     pidController.setP(kP);
     pidController.setI(kI);
     pidController.setD(kD);
+    pidController.setFF(kFF);
     
     SmartShuffleboard.put("PID", "P Gain", kP);
     SmartShuffleboard.put("PID", "I Gain", kI);
     SmartShuffleboard.put("PID", "D Gain", kD);
-    
+    SmartShuffleboard.put("PID", "FF Gain", kFF);
   }
 
   @Override
   public void periodic() {
-    encoder = neoMotor.getEncoder();
     encoderValue = encoder.getPosition();
-    
     
     double p = SmartShuffleboard.getDouble("PID", "P Gain", 1);
     double i = SmartShuffleboard.getDouble("PID", "I Gain", 0);
     double d = SmartShuffleboard.getDouble("PID", "D Gain", 0);
-    //SmartShuffleboard.put("PID", "encoder", encoderValue);
+    double ff = SmartShuffleboard.getDouble("PID", "FF Gain", 0);
 
     if((p != kP)) { 
       pidController.setP(p); 
@@ -68,25 +69,16 @@ public class PIDDrive extends SubsystemBase {
       pidController.setD(d); 
       kD = d; 
     }
+    if((ff != kFF)) { 
+      pidController.setFF(ff); 
+      kFF = ff; 
+    }
 
-    pidController.setReference(angle, ControlType.kPosition);
+    pidController.setReference(Math.toRadians(angle), ControlType.kPosition);
   }
 
   public double getEncoderValue() {
     return encoderValue;
-  }
-
-  public void setEncoderValue(double encoderValue) {
-    this.encoderValue = encoderValue;
-  }
-
-  @Override
-  public void simulationPeriodic() {
-
-  }
-
-  public void setVoltage(double voltage) {
-    neoMotor.set(voltage);
   }
 
   public double getAngle() {
