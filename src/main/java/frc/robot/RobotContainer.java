@@ -8,7 +8,7 @@ import frc.robot.commands.ArmController;
 import frc.robot.commands.Drive;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PIDDrive;
+import frc.robot.subsystems.ArmMotor;
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   //private Drivetrain drivetrain;
-  private PIDDrive pidDrive;
+  private ArmMotor armMotor;
   private PowerDistributionBoard m_PDB;
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
@@ -34,7 +34,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     //drivetrain = new Drivetrain();
-    pidDrive = new PIDDrive();
+    armMotor = new ArmMotor();
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
@@ -42,8 +42,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    cmdController.rightBumper().whileTrue(new ArmController(pidDrive, Constants.ARM_CONTROLLER_CHANGE));
-    cmdController.leftBumper().whileTrue(new ArmController(pidDrive, -1 * Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.rightBumper().whileTrue(new ArmController(armMotor, Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.leftBumper().whileTrue(new ArmController(armMotor, -1 * Constants.ARM_CONTROLLER_CHANGE));
   }
 
   /**
@@ -60,8 +60,8 @@ public class RobotContainer {
   //  return drivetrain;
   //}
 
-  public PIDDrive getPidDrive() {
-    return pidDrive;
+  public ArmMotor geArmMotor() {
+    return armMotor;
   }
 
   public CommandXboxController getController() {

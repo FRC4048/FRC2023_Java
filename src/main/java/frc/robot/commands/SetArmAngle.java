@@ -1,22 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PIDDrive;
+import frc.robot.subsystems.ArmMotor;
 
 public class SetArmAngle extends CommandBase {
     private double degrees;
-    private PIDDrive pidDrive;
+    private ArmMotor armMotor;
 
 
-    public SetArmAngle(PIDDrive pidDrive, double degrees) {
-        this.pidDrive = pidDrive;
+    public SetArmAngle(ArmMotor armMotor, double degrees) {
+        this.armMotor = armMotor;
         this.degrees = degrees;
-        addRequirements(pidDrive);
+        addRequirements(armMotor);
     }
 
     @Override
     public void initialize() {
-        pidDrive.setAngle(degrees);
+        armMotor.setAngle(degrees);
     }
     
     @Override

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SetArmAngle;
-import frc.robot.subsystems.PIDDrive;
+import frc.robot.subsystems.ArmMotor;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private PIDDrive pidDrive;
+  private ArmMotor armMotor;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -31,9 +31,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    //pidDrive = new PIDDrive();
+    //armMotor = new armMotor();
     m_robotContainer = new RobotContainer();
-    pidDrive = m_robotContainer.getPidDrive();
+    armMotor = m_robotContainer.getArmMotor();
     //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
     //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
   }
@@ -53,13 +53,13 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(pidDrive, 0));
-    SmartShuffleboard.putCommand("PID", "setAngle=90", new SetArmAngle(pidDrive, 90));
-    SmartShuffleboard.putCommand("PID", "setAngle=180", new SetArmAngle(pidDrive, 180));
+    SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(armMotor, 0));
+    SmartShuffleboard.putCommand("PID", "setAngle=90", new SetArmAngle(armMotor, 90));
+    SmartShuffleboard.putCommand("PID", "setAngle=180", new SetArmAngle(armMotor, 180));
 
-    SmartShuffleboard.put("PID", "encoder", Math.toDegrees(Math.toDegrees(pidDrive.getEncoderValue())));
+    SmartShuffleboard.put("PID", "encoder", Math.toDegrees(Math.toDegrees(armMotor.getEncoderValue())));
 
-    SmartShuffleboard.put("PID", "angle", pidDrive.getAngle());
+    SmartShuffleboard.put("PID", "angle", armMotor.getAngle());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

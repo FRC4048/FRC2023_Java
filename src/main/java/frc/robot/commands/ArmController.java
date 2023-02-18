@@ -1,22 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PIDDrive;
+import frc.robot.subsystems.ArmMotor;
 
 public class ArmController extends CommandBase{
     private double desiredAngle;
-    private PIDDrive pidDrive;
+    private ArmMotor armMotor;
     private double change;
 
-    public ArmController(PIDDrive pidDrive, double change) {
+    public ArmController(ArmMotor armMotor, double change) {
         this.change = change;
-        this.pidDrive = pidDrive;
-        addRequirements(pidDrive);
+        this.armMotor = armMotor;
+        addRequirements(armMotor);
     }
 
     @Override
     public void execute() {
-        desiredAngle = pidDrive.getAngle() + change;
+        desiredAngle = armMotor.getAngle() + change;
         
         if(desiredAngle > 180) {
             desiredAngle = 180;
@@ -25,7 +25,7 @@ public class ArmController extends CommandBase{
             desiredAngle = 0;
         }
         
-        pidDrive.setAngle(desiredAngle);
+        armMotor.setAngle(desiredAngle);
     }
 
     @Override
