@@ -66,7 +66,6 @@ public class Drivetrain extends SubsystemBase{
 
   public Drivetrain() {
     navxGyro = new AHRS();
-    navxGyro.reset();
 
     SmartDashboard.putData("Field", m_field);
     

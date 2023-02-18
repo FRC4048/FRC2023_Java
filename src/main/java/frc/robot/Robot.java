@@ -34,9 +34,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SmartShuffleboard.putCommand("BZ", "Set Offset", new WheelAlign(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
+    SmartShuffleboard.putCommand("BZ", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
-    m_robotContainer.getDrivetrain().resetGyro();
+    new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
   }
 
   /**
@@ -53,16 +53,18 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartShuffleboard.put("BZ", "Gyro angle", m_robotContainer.getDrivetrain().getGyro());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
