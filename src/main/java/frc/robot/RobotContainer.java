@@ -60,7 +60,7 @@ public class RobotContainer {
   //  return drivetrain;
   //}
 
-  public ArmMotor geArmMotor() {
+  public ArmMotor getArmMotor() {
     return armMotor;
   }
 
