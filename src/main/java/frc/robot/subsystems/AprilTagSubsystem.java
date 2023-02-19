@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -10,8 +13,11 @@ public class AprilTagSubsystem extends SubsystemBase {
   NetworkTableEntry tagId;
   NetworkTableEntry xAxis;
   NetworkTableEntry zAxis;
-  NetworkTableEntry rotation;
+  NetworkTableEntry yRotation;
+  NetworkTableEntry xRotation;
+  NetworkTableEntry zRotaton;
   NetworkTable table;
+
 
   public AprilTagSubsystem() {
 
@@ -19,8 +25,11 @@ public class AprilTagSubsystem extends SubsystemBase {
     this.tagId = table.getEntry("tagId");
     this.xAxis = table.getEntry("xAxis");
     this.zAxis = table.getEntry("zAxis");
-    this.rotation = table.getEntry("rot");
-
+    this.yRotation = table.getEntry("rot");
+    this.xRotation = table.getEntry("angleX");
+    this.zRotaton = table.getEntry("angleZ");
+    
+    
   }
 
   @Override
@@ -39,8 +48,21 @@ public class AprilTagSubsystem extends SubsystemBase {
     return zAxis.getDouble(0.0);
   }
 
-  public double getRotation() {
-    return rotation.getDouble(0.0);
+  public double getRotationY() {
+    return yRotation.getDouble(0.0);
+  }
+
+  public double getRotationX() {
+    return xRotation.getDouble(0.0);
+  }
+
+  public double getRotationZ() {
+    return zRotaton.getDouble(0.0);
+  }
+
+  public Pose2d getPose2d() {
+    Pose2d pose2d = new Pose2d(new Translation2d(getxAxis(), getzAxis()), new Rotation2d(getRotationY()));
+    return pose2d;
   }
 
 }
