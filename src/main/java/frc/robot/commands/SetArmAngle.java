@@ -1,22 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmMotor;
+import frc.robot.subsystems.Arm;
 
 public class SetArmAngle extends CommandBase {
     private double degrees;
-    private ArmMotor armMotor;
+    private Arm arm;
 
 
-    public SetArmAngle(ArmMotor armMotor, double degrees) {
-        this.armMotor = armMotor;
+    public SetArmAngle(Arm arm, double degrees) {
+        this.arm = arm;
         this.degrees = degrees;
-        addRequirements(armMotor);
+        addRequirements(arm);
     }
 
     @Override
     public void initialize() {
-        armMotor.setAngle(degrees);
+        arm.setAngle(degrees);
     }
     
     @Override

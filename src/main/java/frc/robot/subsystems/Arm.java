@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.SmartShuffleboard;
 
-public class ArmMotor extends SubsystemBase {
+public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
   private SparkMaxPIDController pidController;
@@ -20,7 +20,7 @@ public class ArmMotor extends SubsystemBase {
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   
-  public ArmMotor() {
+  public Arm() {
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);

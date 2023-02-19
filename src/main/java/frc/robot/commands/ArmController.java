@@ -1,31 +1,32 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmMotor;
+import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 
 public class ArmController extends CommandBase{
     private double desiredAngle;
-    private ArmMotor armMotor;
+    private Arm arm;
     private double change;
 
-    public ArmController(ArmMotor armMotor, double change) {
+    public ArmController(Arm arm, double change) {
         this.change = change;
-        this.armMotor = armMotor;
-        addRequirements(armMotor);
+        this.arm = arm;
+        addRequirements(arm);
     }
 
     @Override
     public void execute() {
-        desiredAngle = armMotor.getAngle() + change;
+        desiredAngle = arm.getAngle() + change;
         
-        if(desiredAngle > 180) {
-            desiredAngle = 180;
+        if(desiredAngle > Constants.ARM_MAX_ANGLE) {
+            desiredAngle = Constants.ARM_MAX_ANGLE;
         }
         if(desiredAngle < 0) {
             desiredAngle = 0;
         }
         
-        armMotor.setAngle(desiredAngle);
+        arm.setAngle(desiredAngle);
     }
 
     @Override

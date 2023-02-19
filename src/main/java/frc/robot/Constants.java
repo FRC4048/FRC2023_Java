@@ -56,7 +56,9 @@ public final class Constants {
 
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+
   public static final double ARM_CONTROLLER_CHANGE = 1;
+  public static final double ARM_MAX_ANGLE = 180;
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
