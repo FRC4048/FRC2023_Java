@@ -10,19 +10,19 @@ public class PowerDistributionBoard extends SubsystemBase {
 
     public PowerDistributionBoard() {}
     public void periodic() {
-        double robotVoltage = PowerDB.getVoltage();
-        SmartShuffleboard.put("Power", "Pannels", "Voltage", robotVoltage);
-
-        double temperatureCelcius = PowerDB.getTemperature();
-        SmartShuffleboard.put("Power", "Pannels", "Temp in C", temperatureCelcius);
-
-        double totalCurrent = PowerDB.getTotalCurrent();
-        SmartShuffleboard.put("Power", "Pannels", "Total Current", totalCurrent);
-
-        double current1 = PowerDB.getCurrent(1);
-        SmartShuffleboard.put("Power", "Current Channels", "Channel 1", current1);
-
-        double current2 = PowerDB.getCurrent(2);
-        SmartShuffleboard.put("Power", "Current Channels", "Channel 2", current2);
+//        double robotVoltage = PowerDB.getVoltage();
+//        SmartShuffleboard.put("Power", "Pannels", "Voltage", robotVoltage);
+//
+//        double temperatureCelcius = PowerDB.getTemperature();
+//        SmartShuffleboard.put("Power", "Pannels", "Temp in C", temperatureCelcius);
+//
+//        double totalCurrent = PowerDB.getTotalCurrent();
+//        SmartShuffleboard.put("Power", "Pannels", "Total Current", totalCurrent);
+//
+//        double current1 = PowerDB.getCurrent(1);
+//        SmartShuffleboard.put("Power", "Current Channels", "Channel 1", current1);
+//
+//        double current2 = PowerDB.getCurrent(2);
+//        SmartShuffleboard.put("Power", "Current Channels", "Channel 2", current2);
     }
 }

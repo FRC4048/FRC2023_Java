@@ -54,6 +54,13 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
+
+  public static final int NEO_TEST_1 = 45;
+  public static final int TALON_TEST_1 = 11;
+  public static final int TALON_TEST_2 = 12;
+  public static final String TEST_MOTOR = "MotorTest";
+  public static final double MOTOR_TEST_SPEED = 0.25;
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
