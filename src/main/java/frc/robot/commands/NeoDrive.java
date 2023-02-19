@@ -31,6 +31,10 @@ public class NeoDrive extends CommandBase {
     @Override
     public void execute() {
         subsystem.drive(speed);
+        double checkSpeed = SmartShuffleboard.getDouble(Constants.TEST_MOTOR, "TestSpeed", 0.25);
+        if((checkSpeed != speed)) {
+            speed = checkSpeed; 
+        }
     }
 
     @Override

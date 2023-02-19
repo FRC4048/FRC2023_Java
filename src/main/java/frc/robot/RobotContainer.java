@@ -56,6 +56,8 @@ public class RobotContainer {
     SmartShuffleboard.putCommand(Constants.TEST_MOTOR, "NeoDrive",  new NeoDrive("Neo drive", getNeo1()));
     SmartShuffleboard.putCommand(Constants.TEST_MOTOR, "Talon1Drive",  new TalonDrive("Talon Drive 1", getTalon1()));
     SmartShuffleboard.putCommand(Constants.TEST_MOTOR, "Talon2Drive",  new TalonDrive("Talon Drive 2", getTalon2()));
+    SmartShuffleboard.put(Constants.TEST_MOTOR, "TestSpeed", Constants.MOTOR_TEST_SPEED);
+
   }
 
   /**
