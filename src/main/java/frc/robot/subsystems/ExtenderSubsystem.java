@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-//import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.ExtenderPosition;
 import frc.robot.utils.SmartShuffleboard;
@@ -28,22 +27,12 @@ public class ExtenderSubsystem extends SubsystemBase {
   private double extenderSetPoint;
   private boolean isManualControl;
 
-  //public static final double EXTENDER_ENCODER_SCALE = 256/20;
-  private final double EXTENDER_UP_SCALE_FACTOR = 1.0;
-  private final double EXTENDER_DOWN_SCALE_FACTOR = 1.0;
-  //private WPI_TalonSRX extenderMotor2;
-  //private AnalogPotentiometer potentiometer;
-
   public ExtenderSubsystem() {
     isManualControl = false;
     extenderMotor = new WPI_TalonSRX(Constants.EXTENDER_MOTOR_ID);
 
     //motor configs
     extenderMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.EXTENDER_MOTOR_TIMEOUT);
-    //extenderMotor.configNominalOutputForward(0, Constants.EXTENDER_MOTOR_TIMEOUT);   -> might be needed later
-    //extenderMotor.configNominalOutputReverse(0, Constants.EXTENDER_MOTOR_TIMEOUT);
-    //extenderMotor.configPeakOutputForward(EXTENDER_UP_SCALE_FACTOR, Constants.EXTENDER_MOTOR_TIMEOUT);
-    //extenderMotor.configPeakOutputReverse(-EXTENDER_DOWN_SCALE_FACTOR, Constants.EXTENDER_MOTOR_TIMEOUT);
     extenderMotor.setNeutralMode(NeutralMode.Brake);
     extenderMotor.selectProfileSlot(0, 0);
     extenderMotor.configAllowableClosedloopError(0, Constants.EXTENDER_POSITION_ERROR, Constants.EXTENDER_MOTOR_TIMEOUT);
@@ -55,14 +44,13 @@ public class ExtenderSubsystem extends SubsystemBase {
     //limit switch
     extenderMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     extenderMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-    extenderMotor.setInverted(true); //check this
-    extenderMotor.setSensorPhase(true);
+    
+    extenderMotor.setInverted(true); 
+    extenderMotor.setSensorPhase(true); 
 
     resetEncoder();
     extenderSetPoint = getExtenderEncoder();
-    //extenderMotor2 = new WPI_TalonSRX(1);
-    //extenderMotor2.follow(extenderMotor);
-    //potentiometer = new AnalogPotentiometer(Constants.EXTENDER_POTENTIOMETER, Constants.EXTENDER_RANGE_OF_MOTION,Constants.EXTENDER_STARTING_POINT);
+    
   }
   public void setManualMode(boolean manualMode ){
     isManualControl = manualMode;
@@ -118,7 +106,6 @@ public class ExtenderSubsystem extends SubsystemBase {
     if(!isManualControl){
       moveExtender();
     }
-    
   
    SmartShuffleboard.put("test", "encoder", getExtenderEncoder());
 

@@ -17,31 +17,26 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  //CAN ID
   public static final int EXTENDER_MOTOR_ID = 12;
 
-
-  //motor speed
-  public static final double EXTENDER_SPEED = 0.1;
-  
-
-  //AIO 
-  
-  /*
-   * public static final int EXTENDER_POTENTIOMETER = 1; 
-   * public static final int EXTENDER_RANGE_OF_MOTION = 100;
-   * public static final int EXTENDER_STARTING_POINT = 0; 
-   * public static final double HOOD_ERROR_THRESHOLD = 1;
-   */
-
-  //TIME OUT
   public static final int EXTENDER_MOTOR_TIMEOUT = 2; 
   public static final double EXTENDER_TARGET_TIMEOUT = 1;
   public static final int EXTENDER_POSITION_ERROR = 100; 
 
+  public static final double EXTENDER_SPEED = 0.1;
+
+  //PID
   public static final double EXTENDER_P = 1;
   public static final double EXTENDER_I = 0.01;
   public static final double EXTENDER_D = 0;
   public static final double EXTENDER_F = 0;
+
+  //Extender EncoderValues
+  public static final double EXTENDER_BOTTOM_ROW = 10000;
+  public static final double EXTENDER_MIDDLE_ROW = 20000;
+  public static final double EXTENDER_TOP_ROW = 30000;
+  public static final double EXTENDER_RETRACTFULL = 0;
+  public static final double EXTENDER_ENCODER_MANUAL = 500;
+
 
 }

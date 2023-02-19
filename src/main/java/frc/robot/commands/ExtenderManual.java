@@ -2,20 +2,18 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ExtenderSubsystem;
-import frc.robot.utils.ExtenderPosition;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-//import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class ExtenderManual extends CommandBase {
     private ExtenderSubsystem extenderSubsystem;
     private boolean direction;
+    
   public ExtenderManual(ExtenderSubsystem extenderSubsystem, boolean direction) {
     addRequirements(extenderSubsystem);
     this.extenderSubsystem = extenderSubsystem;
-    this.direction =direction;
+    this.direction = direction;
   }
   
   @Override
@@ -27,11 +25,10 @@ public class ExtenderManual extends CommandBase {
   public void execute() {
     extenderSubsystem.setExtenderSpeed(Constants.EXTENDER_SPEED);
     if(direction){
-      extenderSubsystem.extendToPositionManual(500);
+      extenderSubsystem.extendToPositionManual(Constants.EXTENDER_ENCODER_MANUAL);
     }else{
-      extenderSubsystem.extendToPositionManual(-500);
+      extenderSubsystem.extendToPositionManual(-Constants.EXTENDER_ENCODER_MANUAL);
     }
-    
   }
 
   @Override
