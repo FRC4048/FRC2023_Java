@@ -10,6 +10,9 @@ import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.PowerDistributionBoard;
+
+import java.sql.Driver;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -25,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain;
+  public AutonomousChooser autonomousChooser;
+  public LocationChooser locationChooser;
   private Arm arm;
   private PowerDistributionBoard m_PDB;
   private Joystick joyLeft = new Joystick(0);
@@ -34,8 +39,15 @@ public class RobotContainer {
 
   public RobotContainer() {
     drivetrain = new Drivetrain();
+    autonomousChooser = new AutonomousChooser(drivetrain);
+    locationChooser = new LocationChooser(drivetrain);
     arm = new Arm();
     m_PDB = new PowerDistributionBoard();
+
+    autonomousChooser.addOptions();
+    locationChooser.addOptions();
+    autonomousChooser.initialize();
+    locationChooser.initialize();
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
@@ -51,10 +63,6 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return new PrintCommand("hi");
-  }
 
   public Drivetrain getDrivetrain() {
     return drivetrain;
@@ -62,5 +70,13 @@ public class RobotContainer {
 
   public Arm getArm() {
     return arm;
+  }
+
+  public int getLocation() {
+    return locationChooser.getLocation(locationChooser.getAction());
+  }
+  
+  public Command getAutonomousCommand() {
+    return autonomousChooser.getAutonomousCommand(autonomousChooser.getAction());
   }
 }

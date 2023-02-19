@@ -20,7 +20,10 @@ import frc.robot.utils.SmartShuffleboard;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private Command autonomousCommand;
+  private LocationChooser locationChooser;
+  private RobotContainer robotContainer;
+  private int location;
   private Arm arm;
 
   /**
@@ -31,10 +34,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    arm = m_robotContainer.getArm();
-    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
-    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
+    robotContainer = new RobotContainer();
+    arm = robotContainer.getArm();
+    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(robotContainer.getDrivetrain()));
+    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(robotContainer.getDrivetrain()));
   }
 
   /**
@@ -66,14 +69,36 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    autonomousCommand = robotContainer.getAutonomousCommand();
+    location = robotContainer.getLocation();
+
+    if( autonomousCommand != null) {
+      SmartShuffleboard.put("Autonomous", "Chosen Command", autonomousCommand.getName());
+    }
+    else {
+      SmartShuffleboard.put("Autonomous", "Chosen Command", " ");
+    }
+    if(location == -1) {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", "Left");
+    }
+    else if(location == 0) {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", "Middle");
+    }
+    else if(location == 1) {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", "Right");
+    }
+    else {
+      SmartShuffleboard.put("Autonomous", "Chosen Location", " ");
+    }
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", m_robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
+    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
