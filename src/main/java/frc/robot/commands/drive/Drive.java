@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import java.util.function.DoubleSupplier;
 
@@ -42,7 +42,7 @@ public class Drive extends CommandBase{
         rcw = rcw * rcw * Math.signum(rcw);
 
         // TODO: Call drivetrain
-        drivetrain.drive(-fwd, -str, rcw, true);
+        drivetrain.drive(fwd, str, rcw, true);
     }
 
 

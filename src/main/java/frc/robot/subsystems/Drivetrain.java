@@ -18,7 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,6 +51,8 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backLeft;
   private final SwerveModule m_backRight;
 
+  private double gyroOffset = 0;
+
   private final AHRS navxGyro;
 
   private final Field2d m_field = new Field2d();
@@ -65,7 +66,6 @@ public class Drivetrain extends SubsystemBase{
 
   public Drivetrain() {
     navxGyro = new AHRS();
-    navxGyro.reset();
 
     SmartDashboard.putData("Field", m_field);
     
@@ -205,22 +205,26 @@ public class Drivetrain extends SubsystemBase{
   }
 
   @Override
-  public void periodic(){
-    SmartShuffleboard.put("Diag", "Abs Encoder", "FR", frontRightCanCoder.getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "Abs Encoder", "FL", frontLeftCanCoder.getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "Abs Encoder", "BR", backRightCanCoder.getAbsolutePosition());
-    SmartShuffleboard.put("Diag", "Abs Encoder", "BL", backLeftCanCoder.getAbsolutePosition());
+  public void periodic() {
+    SmartShuffleboard.put("Driver", "Gyro", getGyro());
+    SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
 
-    SmartShuffleboard.put("Drive", "Gyro", getGyro());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Back Right S", m_backRight.getSteerEncPosition());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Back Left S", m_backLeft.getSteerEncPosition());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Front Right S", m_frontRight.getSteerEncPosition());
-    SmartShuffleboard.put("Drive", "Steer Encoders", "Front Left S", m_frontLeft.getSteerEncPosition());
+    if (Constants.DEBUG) {
+      SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
+      SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
+      SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", backRightCanCoder.getAbsolutePosition());
+      SmartShuffleboard.put("Drive", "Abs Encoder", "BL abs", backLeftCanCoder.getAbsolutePosition());
 
-    SmartShuffleboard.put("Drive", "Drive Encoders", "Back Right D", m_backRight.getDriveEncPosition());
-    SmartShuffleboard.put("Drive", "Drive Encoders", "Back Left D", m_backLeft.getDriveEncPosition());
-    SmartShuffleboard.put("Drive", "Drive Encoders", "Front Right D", m_frontRight.getDriveEncPosition());
-    SmartShuffleboard.put("Drive", "Drive Encoders", "Front Left D", m_frontLeft.getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Steer Encoders", "BR S", Math.toDegrees(m_backRight.getSteerEncPosition()));
+      SmartShuffleboard.put("Drive", "Steer Encoders", "BL S", Math.toDegrees(m_backLeft.getSteerEncPosition()));
+      SmartShuffleboard.put("Drive", "Steer Encoders", "FR S", Math.toDegrees(m_frontRight.getSteerEncPosition()));
+      SmartShuffleboard.put("Drive", "Steer Encoders", "FL S", Math.toDegrees(m_frontLeft.getSteerEncPosition()));
+
+      SmartShuffleboard.put("Drive", "Drive Encoders", "BR D", m_backRight.getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Drive Encoders", "BL D", m_backLeft.getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
+    }
 
     m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
     new SwerveModulePosition[] {
@@ -292,5 +296,15 @@ public class Drivetrain extends SubsystemBase{
 
   public SwerveDriveOdometry getOdometry () {
     return m_odometry;
+  }
+
+  public void setGyroOffset(double offset) {
+    gyroOffset = offset;
+    navxGyro.setAngleAdjustment(gyroOffset);
+    navxGyro.getFusedHeading();
+  }
+  
+  public double getGyroOffset() {
+    return gyroOffset;
   }
 }

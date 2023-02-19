@@ -7,8 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -16,9 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
-import frc.robot.commands.Drive;
 import frc.robot.utils.SmartShuffleboard;
 
 public class SwerveModule {
@@ -31,6 +29,7 @@ public class SwerveModule {
   private final RelativeEncoder driveEncoder;
   private final RelativeEncoder steerEncoder;
   private final WPI_CANCoder absEncoder;
+  private double steerOffset = 0;
 
   // TODO: Adjust gains
   private final PIDController m_drivePIDController =
@@ -46,7 +45,7 @@ public class SwerveModule {
         Constants.STEER_PID_I,
         Constants.STEER_PID_D,
           new TrapezoidProfile.Constraints(
-              kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
+              kModuleMaxAngularVelocity * 4, kModuleMaxAngularAcceleration * 10));
 
           // TODO: Adjust gains
 
@@ -165,43 +164,58 @@ public class SwerveModule {
 
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
-
     if (id == 1) {
       SmartShuffleboard.put("Diag", "aTurnPID" + id, turnOutput);
       SmartShuffleboard.put("Diag", "aTurnFF" + id, turnFeedforward);
       SmartShuffleboard.put("Diag", "aDrivePID" + id, driveOutput);
       SmartShuffleboard.put("Diag", "aDriveFF" + id, driveFeedforward);
     }
-
-        if (id == 1) {
-          SmartShuffleboard.put("Drive", "CPos" + id, getSteerEncPosition());
-          SmartShuffleboard.put("Drive", "DPos" + id, state.angle.getRadians());
-        }
-    driveMotor.setVoltage(driveOutput + driveFeedforward); 
-    steerMotor.set(turnOutput + turnFeedforward);
-
     if (id == 1) {
-    SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
-    SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
-    SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
-    SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
+      SmartShuffleboard.put("Drive", "CPos" + id, getSteerEncPosition());
+      SmartShuffleboard.put("Drive", "DPos" + id, state.angle.getRadians());
+    }
+    if (id == 1) {
+      SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);
+      SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
+      SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
+      SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
   }
+  
+  driveMotor.setVoltage(driveOutput + driveFeedforward); 
+  steerMotor.set(turnOutput + turnFeedforward);
   }
   public void ResetRelEnc() {
     steerEncoder.setPosition(0);
     driveEncoder.setPosition(0);
   }
 
-  public double getDriveEncPosition(){
+  public double getDriveEncPosition() {
     return driveEncoder.getPosition();
   }
 
+  public void setSteerOffset(double zeroAbs) {
+    steerEncoder.setPosition(0);
+    steerOffset = Math.toRadians(zeroAbs - absEncoder.getAbsolutePosition());
+    steerOffset %= 2 * Math.PI;
+    if (steerOffset < 0) {
+      steerOffset += 2 * Math.PI;
+    }
+  }
+
   public double getSteerEncPosition(){
-    double value = steerEncoder.getPosition();
+    double value = steerEncoder.getPosition() - steerOffset;
     value %= 2 * Math.PI;
     if (value < 0) {
       value += 2 * Math.PI;
     } 
     return (value);
+  }
+
+  public void resetSteerEncoder() {
+    steerEncoder.setPosition(0);
+  }
+
+  public double getSteerOffset() {
+    return steerOffset;
   }
 }

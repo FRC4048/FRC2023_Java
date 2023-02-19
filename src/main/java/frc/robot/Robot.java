@@ -7,8 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.WheelAlign;
-import frc.robot.commands.Forward;
+import frc.robot.commands.drive.Forward;
+import frc.robot.commands.ResetGyro;
+import frc.robot.commands.drive.WheelAlign;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.commands.ResetGyro;
 
@@ -20,12 +22,8 @@ import frc.robot.commands.ResetGyro;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
 
-  private Command m_wheelAlign;
-
-  private boolean wheelsAligned;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -35,12 +33,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_wheelAlign = m_robotContainer.getWheelAlign();
-    wheelsAligned=false;
-    SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
-    m_robotContainer.getDrivetrain().resetGyro();
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
+    new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
+    new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
   }
 
   /**
@@ -57,16 +53,18 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartShuffleboard.put("BZ", "Gyro angle", m_robotContainer.getDrivetrain().getGyro());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain()));
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -78,11 +76,6 @@ public class Robot extends TimedRobot {
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-    }
-
-    if (wheelsAligned == false){
-      m_wheelAlign.schedule();
-      wheelsAligned = true;
     }
   }
 
@@ -98,10 +91,6 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }
-
-    if (wheelsAligned == false){
-      m_wheelAlign.schedule();
     }
   }
 

@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final boolean DEBUG = true;
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
   public static final int DRIVE_FRONT_RIGHT_S = 48;
   public static final int DRIVE_FRONT_RIGHT_D = 49;
@@ -38,7 +39,7 @@ public final class Constants {
   public static final double DRIVE_PID_FF_S = 1.8;
   public static final double DRIVE_PID_FF_V = 3.26;
 
-  public static final double STEER_PID_P = 0.7;
+  public static final double STEER_PID_P = 0.3;
   public static final double STEER_PID_I = 0;
   public static final double STEER_PID_D = 0;
   public static final double STEER_PID_FF_S = 0;//0.2;
