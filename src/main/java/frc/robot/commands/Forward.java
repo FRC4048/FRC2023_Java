@@ -18,7 +18,7 @@ public class Forward extends CommandBase{
     public void end(boolean interrupted) {
         drivetrain.setPower(Constants.DRIVE_BACK_LEFT_D, 0);
         drivetrain.setPower(Constants.DRIVE_BACK_RIGHT_D, 0);
-        drivetrain.setPower(Constants.DRIVE_FRONT_LEFT_D, 0);
+        //drivetrain.setPower(Constants.DRIVE_FRONT_LEFT_D, 0);
         drivetrain.setPower(Constants.DRIVE_FRONT_RIGHT_D, 0);
     }
 

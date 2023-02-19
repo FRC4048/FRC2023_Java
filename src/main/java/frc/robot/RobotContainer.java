@@ -4,13 +4,16 @@
 
 package frc.robot;
 
+import frc.robot.commands.ArmController;
 import frc.robot.commands.Drive;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -22,14 +25,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain;
+  private Arm arm;
   private PowerDistributionBoard m_PDB;
   private Joystick joyLeft = new Joystick(0);
   private Joystick joyRight = new Joystick(1);
-  private JoystickButton button_1= new JoystickButton(joyLeft, 1);
+  private CommandXboxController cmdController = new CommandXboxController(2);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
     drivetrain = new Drivetrain();
+    arm = new Arm();
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
@@ -37,7 +42,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-  //  button_1.onTrue(new WheelAlign(drivetrain));
+    cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
   }
 
   /**
@@ -52,5 +58,9 @@ public class RobotContainer {
 
   public Drivetrain getDrivetrain() {
     return drivetrain;
+  }
+
+  public Arm getArm() {
+    return arm;
   }
 }
