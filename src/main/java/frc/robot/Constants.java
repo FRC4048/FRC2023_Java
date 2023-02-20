@@ -13,6 +13,11 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  //JOYSTICKS
+  public static final int LEFT_JOYSICK_ID = 0;
+  public static final int RIGHT_JOYSTICK_ID = 1;
+
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
   public static final int DRIVE_FRONT_RIGHT_S = 48;
   public static final int DRIVE_FRONT_RIGHT_D = 49;
@@ -29,6 +34,9 @@ public final class Constants {
   public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
+  //GRIPPER
+  public static final int GRIPPER_MOTOR_ID = 8;
+  public static final int GRIPPER_ENCODER_ID = 0;
   public static final int ARM_ID = 45;
 
   //PID Constants
@@ -71,4 +79,10 @@ public final class Constants {
   public static final double FRONT_LEFT_ABS_ENCODER_ZERO = 9.0;
   public static final double BACK_LEFT_ABS_ENCODER_ZERO = 351.3;
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
+
+
+  public static final double GRIPPER_OPENING_SPEED = 0.5;
+  public static final double GRIPPER_CLOSING_SPEED = -0.5;
+  public static final double GRIPPER_TIMEOUT = 5.0;
+  public static final double WANTED_TIME = 1.0;
 }
