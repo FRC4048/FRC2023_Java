@@ -5,12 +5,15 @@
 package frc.robot;
 
 import frc.robot.commands.Drive;
-import frc.robot.commands.GripperPosition;
+import frc.robot.commands.ManualMoveGripper;
+import frc.robot.commands.CloseGripper;
+import frc.robot.commands.OpenGripper;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -28,7 +31,9 @@ public class RobotContainer {
   private GripperSubsystem gripper;
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
   private Joystick joyRight = new Joystick(Constants.RIGHT_JOYSTICK_ID);
-  private JoystickButton button_2= new JoystickButton(joyLeft, 2);
+  private JoystickButton button_1 = new JoystickButton(joyLeft, 1);
+  private JoystickButton button_3 = new JoystickButton(joyLeft, 3);
+  private XboxController xbox = new XboxController(2);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -38,10 +43,12 @@ public class RobotContainer {
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
+    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> xbox.getLeftY()));
   }
 
   private void configureBindings() {
-    button_2.onTrue(new GripperPosition(gripper));
+    button_1.onTrue(new CloseGripper(gripper));
+    button_3.onTrue(new OpenGripper(gripper));
   }
 
   /**

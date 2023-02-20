@@ -35,7 +35,7 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
   //GRIPPER
-  public static final int GRIPPER_MOTOR_ID = 11;
+  public static final int GRIPPER_MOTOR_ID = 8;
   public static final int GRIPPER_ENCODER_ID = 0;
 
   //PID Constants
@@ -73,9 +73,9 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
-  public static final double GRIPPER_OPENING_SPEED = 0.2;
-  public static final double GRIPPER_CLOSING_SPEED = -0.2;
+  public static final double GRIPPER_OPENING_SPEED = 0.5;
+  public static final double GRIPPER_CLOSING_SPEED = -0.5;
   public static final double GRIPPER_VELOCITY_PERIOD = 0.1;
-  public static final double GRIPPER_TIMEOUT = 5;
+  public static final double GRIPPER_TIMEOUT = 5.0;
   public static final double GRIPPER_SLOW_COUNTER = 3;
 }
