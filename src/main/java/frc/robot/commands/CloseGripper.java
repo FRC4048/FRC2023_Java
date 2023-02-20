@@ -10,13 +10,9 @@ import frc.robot.utils.SmartShuffleboard;
 public class CloseGripper extends CommandBase {
     private final GripperSubsystem gripper;
     private double startTime, prevTime;
-    private double p_encoderPos;
     private double maxVelocity = 0;
     private double encoderPos;
     private double currentVelocity = 0;
-    private double previousVelocity = 0;
-    private double average = 0;
-    private boolean isFinished = false;
     private Double grabStartTime = null;
 
     public CloseGripper(GripperSubsystem gripper) {
@@ -34,7 +30,6 @@ public class CloseGripper extends CommandBase {
         maxVelocity = 0;
         currentVelocity = 0;
         startTime = Timer.getFPGATimestamp();
-        p_encoderPos = gripper.gripperPosition();
         grabStartTime = null;
 
     }
@@ -42,7 +37,6 @@ public class CloseGripper extends CommandBase {
     @Override
     public void execute() {
         gripper.close();
-        previousVelocity = currentVelocity;
 
         currentVelocity = (Math.abs((gripper.gripperPosition() - encoderPos) / (Timer.getFPGATimestamp() - prevTime)));
         if (Math.abs(currentVelocity) > Math.abs(maxVelocity)) {
@@ -50,8 +44,6 @@ public class CloseGripper extends CommandBase {
         }
         prevTime = Timer.getFPGATimestamp();
         encoderPos = gripper.gripperPosition();
-        SmartShuffleboard.put("Gripper", "V", currentVelocity);
-        SmartShuffleboard.put("Gripper", "PV", previousVelocity);
         if (Math.abs(currentVelocity - maxVelocity) > .2) {
             grabStartTime = Timer.getFPGATimestamp();
         }
@@ -61,7 +53,7 @@ public class CloseGripper extends CommandBase {
     @Override
     public boolean isFinished() {
         if (grabStartTime != null) {
-            return Timer.getFPGATimestamp() - grabStartTime > 1; 
+            return Timer.getFPGATimestamp() - grabStartTime > Constants.WANTED_TIME; 
         }
         else {
             return (Timer.getFPGATimestamp() - startTime > Constants.GRIPPER_TIMEOUT);

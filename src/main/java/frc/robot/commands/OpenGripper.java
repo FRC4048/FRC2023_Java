@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class OpenGripper extends CommandBase{
@@ -9,7 +10,7 @@ public class OpenGripper extends CommandBase{
 
     private double startTime;
 
-    private static final double TIMEOUT_SECS = 5.0;
+
 
     public OpenGripper(GripperSubsystem gripper) {
         this.gripper = gripper;
@@ -32,7 +33,7 @@ public class OpenGripper extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return (gripper.getopenLimitSwitch() == true || (Timer.getFPGATimestamp() - startTime) > TIMEOUT_SECS);
+        return (gripper.getopenLimitSwitch() == true || (Timer.getFPGATimestamp() - startTime) > Constants.GRIPPER_TIMEOUT);
     
 }
 }
