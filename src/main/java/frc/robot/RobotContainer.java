@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.ArmController;
 import frc.robot.commands.Drive;
 import frc.robot.commands.WheelAlign;
+import frc.robot.commands.MatrixCommands;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.PowerDistributionBoard;
@@ -44,6 +45,16 @@ public class RobotContainer {
   private void configureBindings() {
     cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
     cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
+ 
+    cmdController.povUp().onTrue(new MatrixCommands(drivetrain, arm, "up"));
+    cmdController.povUpRight().onTrue(new MatrixCommands(drivetrain, arm, "upRight"));
+    cmdController.povRight().onTrue(new MatrixCommands(drivetrain, arm, "right"));
+    cmdController.povDownRight().onTrue(new MatrixCommands(drivetrain, arm, "downRight"));
+    cmdController.povDown().onTrue(new MatrixCommands(drivetrain, arm, "down"));
+    cmdController.povDownLeft().onTrue(new MatrixCommands(drivetrain, arm, "downLeft"));
+    cmdController.povLeft().onTrue(new MatrixCommands(drivetrain, arm, "left"));
+    cmdController.povUpLeft().onTrue(new MatrixCommands(drivetrain, arm, "upLeft"));
+    cmdController.povCenter().onTrue(new MatrixCommands(drivetrain, arm, "still"));
   }
 
   /**
@@ -62,5 +73,9 @@ public class RobotContainer {
 
   public Arm getArm() {
     return arm;
+  }
+
+  public CommandXboxController getController() {
+    return cmdController;
   }
 }

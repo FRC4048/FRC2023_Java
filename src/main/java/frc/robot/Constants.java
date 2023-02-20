@@ -29,7 +29,7 @@ public final class Constants {
   public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
-  public static final int ARM_ID = 45;
+  public static final int ARM_ID = 35;
 
   //PID Constants
   public static final double DRIVE_PID_P = 0.25;
@@ -59,6 +59,10 @@ public final class Constants {
 
   public static final double ARM_CONTROLLER_CHANGE = 1;
   public static final double ARM_MAX_ANGLE = 180;
+
+  public static final double ARM_TOP_ROW = 1000; //placeholder values for arm.angle
+  public static final double ARM_MID_ROW = 500;
+  public static final double ARM_BOTTOM_ROW = 0;
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;

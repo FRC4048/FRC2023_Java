@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.MatrixSetter;
 import frc.robot.commands.SetArmAngle;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
@@ -20,7 +21,7 @@ import frc.robot.utils.SmartShuffleboard;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
   private Arm arm;
 
   /**
@@ -31,10 +32,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    arm = m_robotContainer.getArm();
-    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
-    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
+    robotContainer = new RobotContainer();
+    arm = robotContainer.getArm();
+    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(robotContainer.getDrivetrain()));
+    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(robotContainer.getDrivetrain()));
   }
 
   /**
@@ -71,9 +72,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", m_robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
+    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -99,7 +100,17 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    
+    SmartShuffleboard.put("test", "1", "upLeft", MatrixSetter.isCurrentState(8));
+    SmartShuffleboard.put("test", "1", "left", MatrixSetter.isCurrentState(7));
+    SmartShuffleboard.put("test", "1", "downLeft", MatrixSetter.isCurrentState(6));
+
+    SmartShuffleboard.put("test", "2", "up", MatrixSetter.isCurrentState(1));
+    SmartShuffleboard.put("test", "2", "still", MatrixSetter.isCurrentState(0));
+    SmartShuffleboard.put("test", "2", "down", MatrixSetter.isCurrentState(5));
+
+    SmartShuffleboard.put("test", "3", "upRight", MatrixSetter.isCurrentState(2));
+    SmartShuffleboard.put("test", "3", "right", MatrixSetter.isCurrentState(3));
+    SmartShuffleboard.put("test", "3", "downRight", MatrixSetter.isCurrentState(4));
   }
 
   @Override
