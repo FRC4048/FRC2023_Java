@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import java.util.function.DoubleSupplier;
 
@@ -33,17 +33,16 @@ public class Drive extends CommandBase{
     @Override
     public void execute() {
 //Square the values for finer movement
-        double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.kMaxSpeed,0.1);
-        double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.kMaxSpeed, 0.1);
-        double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.kMaxSpeed, 0.1);
+        double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.1);
+        double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
+        double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         
-        fwd = fwd * fwd * Math.signum(fwd);
-        str = str * str * Math.signum(str);
-        rcw = rcw * rcw * Math.signum(rcw);
+        //fwd = fwd * fwd * Math.signum(fwd);
+        //str = str * str * Math.signum(str);
+        //rcw = rcw * rcw * Math.signum(rcw);
 
         // TODO: Call drivetrain
-        drivetrain.drive(fwd, str, rcw, false); 
-
+        drivetrain.drive(-fwd, -str, -rcw, true);
     }
 
 
