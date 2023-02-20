@@ -109,6 +109,10 @@ public class Drivetrain extends SubsystemBase{
     return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
   }
 
+  public AHRS getGyroObject() {
+    return navxGyro;
+  }
+
   /**
    * Method to drive the robot using joystick info.
    *
@@ -209,6 +213,8 @@ public class Drivetrain extends SubsystemBase{
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
 
+    SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
+
     if (Constants.DEBUG) {
       SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
@@ -224,6 +230,9 @@ public class Drivetrain extends SubsystemBase{
       SmartShuffleboard.put("Drive", "Drive Encoders", "BL D", m_backLeft.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
+
+      SmartShuffleboard.put("Driver", "odometry x", m_odometry.getPoseMeters().getX());
+      SmartShuffleboard.put("Driver", "odometry y", m_odometry.getPoseMeters().getY());
     }
 
     m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
@@ -306,5 +315,9 @@ public class Drivetrain extends SubsystemBase{
   
   public double getGyroOffset() {
     return gyroOffset;
+  }
+
+  public Field2d getField() {
+    return m_field;
   }
 }

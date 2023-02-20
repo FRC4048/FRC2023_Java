@@ -13,6 +13,8 @@ import frc.robot.utils.SmartShuffleboard;
 
 public class WheelAlign extends CommandBase {
     private Drivetrain drivetrain;
+    private int delay = 1000;
+    private double startTime;
 
     public WheelAlign(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
@@ -21,14 +23,6 @@ public class WheelAlign extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-    }
-
-    @Override
-    public void initialize() {
-    }
-
-    @Override
-    public void execute(){
         drivetrain.getM_frontLeft().setSteerOffset(Constants.FRONT_LEFT_ABS_ENCODER_ZERO);
         drivetrain.getM_frontRight().setSteerOffset(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO);
         drivetrain.getM_backLeft().setSteerOffset(Constants.BACK_LEFT_ABS_ENCODER_ZERO);
@@ -36,8 +30,17 @@ public class WheelAlign extends CommandBase {
     }
 
     @Override
+    public void initialize() {
+        startTime = Timer.getFPGATimestamp();
+    }
+
+    @Override
+    public void execute(){
+    }
+
+    @Override
     public boolean isFinished() {
-        return true;
+        return (Timer.getFPGATimestamp() - startTime) >= delay;
     }
 
     @Override

@@ -153,6 +153,7 @@ public class SwerveModule {
 
     if (id == 1) {
     SmartShuffleboard.put("Drive", "CSpeed" + id, driveEncoder.getVelocity());
+    
     SmartShuffleboard.put("Drive", "DSpeed" + id, state.speedMetersPerSecond);
   }
 
@@ -179,6 +180,7 @@ public class SwerveModule {
       SmartShuffleboard.put("Drive", "Drive Output" + id, driveOutput);
       SmartShuffleboard.put("Drive", "Steer Feed forward" + id, turnFeedforward);
       SmartShuffleboard.put("Drive", "Steer Output" + id, turnOutput);
+      SmartShuffleboard.put("Drive", "Voltage" + id, (driveOutput + driveFeedforward));
   }
   
   driveMotor.setVoltage(driveOutput + driveFeedforward); 

@@ -10,6 +10,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PowerDistributionBoard;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -66,14 +67,19 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     TrajectoryConfig config = 
-      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(drivetrain.getKinematics());
+      new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
 
     Trajectory testTrajectory = 
       TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)), 
-        List.of(new Translation2d(1, 0)),
-        new Pose2d(2, 0, new Rotation2d(0)),
+        new Pose2d(0, 13.5, new Rotation2d(0)), 
+        List.of(new Translation2d(1, 13.8)),
+        new Pose2d(2, 13.5, new Rotation2d(0)),
         config);
+
+    drivetrain.getField().getObject("traj").setTrajectory(testTrajectory);
+    //change this number to change rotation amount
+    double degrees = 90;    
+    Supplier<Rotation2d> desiredRot = () -> new Rotation2d(degrees / 180 * Math.PI); 
     
     var thetaController =
       new ProfiledPIDController(
@@ -85,9 +91,10 @@ public class RobotContainer {
             testTrajectory,
             drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
             drivetrain.getKinematics(),
-            new PIDController(Constants.kP_X, 0, 0),
+            new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
             new PIDController(Constants.kP_Y, 0, 0),
             thetaController,
+            desiredRot,
             drivetrain::setModuleStates,
             drivetrain);
 

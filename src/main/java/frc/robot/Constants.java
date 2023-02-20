@@ -32,12 +32,14 @@ public final class Constants {
   public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
+
+  
   //PID Constants
-  public static final double DRIVE_PID_P = 0.0012091816;
+  public static final double DRIVE_PID_P = 1;
   public static final double DRIVE_PID_I = 0;
   public static final double DRIVE_PID_D = 0;
-  public static final double DRIVE_PID_FF_S = 1.8;
-  public static final double DRIVE_PID_FF_V = 3.26;
+  public static final double DRIVE_PID_FF_S = 1;
+  public static final double DRIVE_PID_FF_V = 2.8;
 
   public static final double STEER_PID_P = 0.3;
   public static final double STEER_PID_I = 0;
@@ -52,15 +54,26 @@ public final class Constants {
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
   public static final double MAX_VELOCITY = 3.0; // 3 meters per second
-  public static final double MAX_ACCELERATION = 2.0;
-  public static final double MAX_ANGULAR_SPEED = Math.PI; // 1/2 rotation per second
-  public static final double MAX_ANGULAR_ACCELERATION = Math.PI;
-  public static final double kP_THETA = 1;
-  public static final double kP_X = 1;
-  public static final double kP_Y = 1;
+  public static final double MAX_ACCELERATION = 6.0;
+  public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
+  public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
+
+  //autonomous values
+  public static final double MAX_VELOCITY_AUTO = 1.5;
+  public static final double MAX_ACCELERATION_AUTO = 3.0;
+  public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.5;
+  public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.5;
+  public static final double kP_THETA = 2;
+  public static final double kP_X = 2.6; 
+  public static final double kI_X = 0;
+  public static final double kD_X = 0;
+  public static final double kP_Y = 2.6;
   public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS =
         new TrapezoidProfile.Constraints(
             MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCELERATION);
+
+
+  
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;

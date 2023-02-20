@@ -37,12 +37,12 @@ public class Drive extends CommandBase{
         double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         
-        fwd = fwd * fwd * Math.signum(fwd);
-        str = str * str * Math.signum(str);
-        rcw = rcw * rcw * Math.signum(rcw);
+        //fwd = fwd * fwd * Math.signum(fwd);
+        //str = str * str * Math.signum(str);
+        //rcw = rcw * rcw * Math.signum(rcw);
 
         // TODO: Call drivetrain
-        drivetrain.drive(fwd, str, rcw, true);
+        drivetrain.drive(-fwd, -str, -rcw, true);
     }
 
 

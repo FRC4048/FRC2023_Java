@@ -4,15 +4,21 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.Forward;
-import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
-import frc.robot.commands.ResetGyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,6 +60,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     SmartShuffleboard.put("BZ", "Gyro angle", m_robotContainer.getDrivetrain().getGyro());
+    SmartShuffleboard.put("BZ", "Z Vel", m_robotContainer.getDrivetrain().getGyroObject().getVelocityZ());
+    SmartShuffleboard.put("BZ", "Z Accel", m_robotContainer.getDrivetrain().getGyroObject().getWorldLinearAccelZ());
 
   }
 
@@ -81,7 +89,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit() {
@@ -107,7 +116,20 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    TrajectoryConfig config = 
+      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
+
+    Trajectory testTrajectory = 
+      TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)), 
+        List.of(new Translation2d(1, 0)),
+        new Pose2d(2, 0, new Rotation2d(0)),
+        config);
+        double time = testTrajectory.getTotalTimeSeconds();
+        SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
+        SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
