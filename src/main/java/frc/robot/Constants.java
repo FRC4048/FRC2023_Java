@@ -37,6 +37,7 @@ public final class Constants {
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;
   public static final int GRIPPER_ENCODER_ID = 0;
+  public static final int ARM_ID = 45;
 
   //PID Constants
   public static final double DRIVE_PID_P = 0.25;
@@ -50,7 +51,11 @@ public final class Constants {
   public static final double STEER_PID_D = 0;
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
-  //End of PID Contants- might need tuning?
+
+  public static final double ARM_PID_P = 0.1;
+  public static final double ARM_PID_I = 0;
+  public static final double ARM_PID_D = 0;
+  public static final double ARM_PID_FF = 0;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -59,6 +64,9 @@ public final class Constants {
 
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+
+  public static final double ARM_CONTROLLER_CHANGE = 1;
+  public static final double ARM_MAX_ANGLE = 180;
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
