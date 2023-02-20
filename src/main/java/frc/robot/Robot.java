@@ -79,7 +79,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", m_robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    //add this back in later
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

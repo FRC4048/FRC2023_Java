@@ -64,8 +64,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  
+  /*
+   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    /* 
     TrajectoryConfig config = 
       new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
 
@@ -103,7 +106,8 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
-  }
+    
+  }*/
 
   public Drivetrain getDrivetrain() {
     return drivetrain;
