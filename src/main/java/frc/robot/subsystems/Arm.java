@@ -52,10 +52,10 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     encoderValue = encoder.getPosition();
     
-    double p = SmartShuffleboard.getDouble("PID", "P Gain", 1);
-    double i = SmartShuffleboard.getDouble("PID", "I Gain", 0);
-    double d = SmartShuffleboard.getDouble("PID", "D Gain", 0);
-    double ff = SmartShuffleboard.getDouble("PID", "FF Gain", 0);
+    double p = SmartShuffleboard.getDouble("PID", "P Gain", Constants.ARM_PID_P);
+    double i = SmartShuffleboard.getDouble("PID", "I Gain", Constants.ARM_PID_I);
+    double d = SmartShuffleboard.getDouble("PID", "D Gain", Constants.ARM_PID_D);
+    double ff = SmartShuffleboard.getDouble("PID", "FF Gain", Constants.ARM_PID_FF);
 
     if((p != kP)) { 
       pidController.setP(p); 
