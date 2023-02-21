@@ -8,6 +8,7 @@ public class ArmController extends CommandBase{
     private double desiredAngle;
     private Arm arm;
     private double change;
+    
 
     public ArmController(Arm arm, double change) {
         this.change = change;
@@ -21,9 +22,6 @@ public class ArmController extends CommandBase{
         
         if(desiredAngle > Constants.ARM_MAX_ANGLE) {
             desiredAngle = Constants.ARM_MAX_ANGLE;
-        }
-        if(desiredAngle < 0) {
-            desiredAngle = 0;
         }
         
         arm.setAngle(desiredAngle);

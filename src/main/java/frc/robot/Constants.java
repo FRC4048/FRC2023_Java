@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,6 +15,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final boolean DEBUG = true;
 
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
@@ -34,39 +37,69 @@ public final class Constants {
   public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
+  public static final int ARM_ID = 35;
+  
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;
   public static final int GRIPPER_ENCODER_ID = 0;
-  public static final int ARM_ID = 45;
+
+  //EXTENDER
+  public static final int EXTENDER_MOTOR_ID = 6;
+  public static final double EXTENDER_MANUAL_SPEED = 0.5;
+  public static final double EXTENDER_LARGE_ERROR = 500;
+  public static final double EXTENDER_LARGE_ERROR_SPEED = 0.4;
+  public static final double EXTENDER_MINIMUM_SPEED = 0.2;
+  public static final double EXTENDER_GAIN =  EXTENDER_LARGE_ERROR_SPEED / EXTENDER_LARGE_ERROR;
+  public static final double EXTENDER_ERROR_THRESHOLD = 50;
 
   //PID Constants
-  public static final double DRIVE_PID_P = 0.25;
+  public static final double DRIVE_PID_P = 1;
   public static final double DRIVE_PID_I = 0;
   public static final double DRIVE_PID_D = 0;
-  public static final double DRIVE_PID_FF_S = 0.015;
-  public static final double DRIVE_PID_FF_V = 0.285;
+  public static final double DRIVE_PID_FF_S = 1;
+  public static final double DRIVE_PID_FF_V = 2.8;
 
-  public static final double STEER_PID_P = 0.7;
+  public static final double STEER_PID_P = 0.3;
   public static final double STEER_PID_I = 0;
   public static final double STEER_PID_D = 0;
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P = 0.1;
-  public static final double ARM_PID_I = 0;
+  public static final double ARM_PID_P_UP = 0.03;
+  public static final double ARM_PID_P_DOWN = 0.01; 
+  public static final double ARM_PID_I = 0.01;
   public static final double ARM_PID_D = 0;
-  public static final double ARM_PID_FF = 0;
+  public static final double ARM_PID_FF = 0.02;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
   public static final double CHASSIS_DRIVE_GEAR_RATIO = 8.142857; // this value should be x:1
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
-  public static final double kMaxSpeed = 3.0; // 3 meters per second
-  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  public static final double MAX_VELOCITY = 3.0; // 3 meters per second
+  public static final double MAX_ACCELERATION = 6.0;
+  public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
+  public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
+
+  //autonomous values
+  public static final double MAX_VELOCITY_AUTO = 1.5;
+  public static final double MAX_ACCELERATION_AUTO = 3.0;
+  public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.5;
+  public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.5;
+  public static final double kP_THETA = 2;
+  public static final double kP_X = 2.6; 
+  public static final double kI_X = 0;
+  public static final double kD_X = 0;
+  public static final double kP_Y = 2.6;
+  public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS =
+        new TrapezoidProfile.Constraints(
+            MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCELERATION);
+
+
+  
 
   public static final double ARM_CONTROLLER_CHANGE = 1;
-  public static final double ARM_MAX_ANGLE = 180;
+  public static final double ARM_MAX_ANGLE = 820; //encoder top: 130700, encoder mid: 102000
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
