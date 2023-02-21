@@ -30,6 +30,6 @@ public class MoveGripper extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (gripper.getopenLimitSwitch() == true || (Timer.getFPGATimestamp() - startTime) > Constants.GRIPPER_TIMEOUT);
+        return (gripper.getopenLimitSwitch() == true || (Timer.getFPGATimestamp() - startTime) > 2);
     }
 }

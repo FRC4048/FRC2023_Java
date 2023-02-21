@@ -10,6 +10,7 @@ public class Stow extends SequentialCommandGroup {
         addCommands(
                 new MoveArm(0, arm),
                 new MoveGripper(gripper)
+
         );
     }
 
