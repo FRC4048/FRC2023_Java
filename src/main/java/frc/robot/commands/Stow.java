@@ -10,10 +10,8 @@ public class Stow extends SequentialCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
         addCommands(
-                new OpenGripper(gripper),
-                new Wait(10),
+                new CloseGripper(gripper),
                 new ExtendToPosition(extender, 0),
-                new Wait (10),
                 new SetArmAngle(arm, 0)
         );
     }
