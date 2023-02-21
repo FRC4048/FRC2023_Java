@@ -10,14 +10,25 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.DiagDutyCycleEncoder;
+import frc.robot.utils.diag.DiagTalonSrxSwitch;
 
 public class GripperSubsystem extends SubsystemBase {
-  public WPI_TalonSRX gripperMotor = new WPI_TalonSRX(Constants.GRIPPER_MOTOR_ID);
-  private DutyCycleEncoder gripperEncoder = new DutyCycleEncoder(Constants.GRIPPER_ENCODER_ID);
+  public WPI_TalonSRX gripperMotor;
+  private DutyCycleEncoder gripperEncoder;
+
   public GripperSubsystem() {
-   gripperMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-   gripperMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    gripperMotor = new WPI_TalonSRX(Constants.GRIPPER_MOTOR_ID);
+    gripperEncoder = new DutyCycleEncoder(Constants.GRIPPER_ENCODER_ID);
+    gripperMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+    gripperMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+
+    Robot.getDiagnostics().addDiagnosable(new DiagDutyCycleEncoder("Gripper Encoder", 10, gripperEncoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Gripper Open Switch", gripperMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
+    Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Gripper Close Switch", gripperMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
+
   }
  
  

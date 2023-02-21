@@ -10,7 +10,9 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 
 public class Arm extends SubsystemBase {
   private double angle;
@@ -24,7 +26,10 @@ public class Arm extends SubsystemBase {
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
-    encoder = neoMotor.getEncoder();
+    encoder = neoMotor.getEncoder();  
+
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm Encoder", 10, neoMotor));
+    //Add diags for limit switches
 
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);

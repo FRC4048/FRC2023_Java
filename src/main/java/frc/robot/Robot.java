@@ -21,6 +21,7 @@ import frc.robot.commands.drive.WheelAlign;
 import frc.robot.commands.SetArmAngle;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,6 +32,7 @@ import frc.robot.utils.SmartShuffleboard;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+  private static Diagnostics diagnostics;
   private Arm arm;
 
   /**
@@ -41,6 +43,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    diagnostics = new Diagnostics();
     m_robotContainer = new RobotContainer();
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
@@ -143,6 +146,10 @@ public class Robot extends TimedRobot {
         double time = testTrajectory.getTotalTimeSeconds();
         SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
         SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
+  }
+
+  public static Diagnostics getDiagnostics() {
+    return diagnostics;
   }
 
   /** This function is called once when the robot is first started up. */
