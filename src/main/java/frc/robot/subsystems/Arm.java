@@ -19,6 +19,7 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder encoder;
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
+  private boolean goingUp;
   
   public Arm() {
     angle = 0;
@@ -32,7 +33,8 @@ public class Arm extends SubsystemBase {
 
     pidController = neoMotor.getPIDController();
     
-    kP = Constants.ARM_PID_P; 
+
+    kP = Constants.ARM_PID_P_UP;
     kI = Constants.ARM_PID_I;
     kD = Constants.ARM_PID_D;
     kFF = Constants.ARM_PID_FF;
@@ -52,26 +54,18 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     encoderValue = encoder.getPosition();
     
+    /* 
     double p = SmartShuffleboard.getDouble("PID", "P Gain", Constants.ARM_PID_P);
     double i = SmartShuffleboard.getDouble("PID", "I Gain", Constants.ARM_PID_I);
     double d = SmartShuffleboard.getDouble("PID", "D Gain", Constants.ARM_PID_D);
     double ff = SmartShuffleboard.getDouble("PID", "FF Gain", Constants.ARM_PID_FF);
-
-    if((p != kP)) { 
-      pidController.setP(p); 
-      kP = p; 
+    */
+    SmartShuffleboard.put("PID", "going up", goingUp);
+    if (goingUp) {
+      pidController.setP(Constants.ARM_PID_P_UP); 
     }
-    if((i != kI)) { 
-      pidController.setI(i); 
-      kI = i; 
-    }
-    if((d != kD)) { 
-      pidController.setD(d); 
-      kD = d; 
-    }
-    if((ff != kFF)) { 
-      pidController.setFF(ff); 
-      kFF = ff; 
+    else {
+      pidController.setP(Constants.ARM_PID_P_DOWN);
     }
 
     pidController.setReference(Math.toRadians(angle), ControlType.kPosition);
@@ -87,5 +81,13 @@ public class Arm extends SubsystemBase {
 
   public void setAngle(double angle) {
     this.angle = angle;
+  }
+
+  public boolean getGoingUp() {
+    return goingUp;
+  }
+
+  public void setGoingUp(boolean bool) {
+    goingUp = bool;
   }
 }
