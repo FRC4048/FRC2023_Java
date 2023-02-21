@@ -8,11 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ArmController;
-import frc.robot.commands.CloseGripper;
-import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ManualMoveGripper;
-import frc.robot.commands.OpenGripper;
+import frc.robot.commands.*;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualExtender;
@@ -57,7 +53,7 @@ public class RobotContainer {
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
-    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> xbox.getLeftY()));
+    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> xbox.getLeftX()));
     extender.setDefaultCommand(new ManualMoveExtender(extender, () -> xbox.getRightY()));
   }
 
@@ -72,7 +68,7 @@ public class RobotContainer {
     cmdController.button(8).whileTrue(new ManualExtender(extender,false));
     cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
-
+    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
   }
 
   /**
