@@ -129,7 +129,7 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false)); */
-    return new DepositPickUpEdge(drivetrain, arm).andThen(() -> drivetrain.drive(0,0,0, false));
+    return new DepositPickUpEdge(drivetrain, arm, gripper).andThen(() -> drivetrain.drive(0,0,0, false));
   }
 
   public Drivetrain getDrivetrain() {

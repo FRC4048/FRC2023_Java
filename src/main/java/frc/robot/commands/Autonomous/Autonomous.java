@@ -19,17 +19,18 @@ public class Autonomous extends SequentialCommandGroup {
   /** Creates a new Autonomous. */
   protected Drivetrain drivetrain;
   protected Arm arm;
-  protected GripperSubsystem gripper = new GripperSubsystem();
+  protected GripperSubsystem gripper;
+  protected TrajectoryConfig config;
 
-  TrajectoryConfig config = 
-    new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
   ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
   
-  public Autonomous(Drivetrain drivetrain, Arm arm) {
+  public Autonomous(Drivetrain drivetrain, Arm arm, GripperSubsystem gripper) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     this.drivetrain = drivetrain;
     this.arm = arm;
+    this.gripper = gripper;
+    config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
   }
 }
