@@ -8,7 +8,9 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.GripperSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -16,8 +18,11 @@ import frc.robot.subsystems.Drivetrain;
 public class Autonomous extends SequentialCommandGroup {
   /** Creates a new Autonomous. */
   protected Drivetrain drivetrain = new Drivetrain();
+  protected Arm arm = new Arm();
+  protected GripperSubsystem gripper = new GripperSubsystem();
+  
   TrajectoryConfig config = 
-  new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
+    new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
   ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
   
   public Autonomous() {

@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -67,6 +68,6 @@ public class DepositPickUpSubstation extends Autonomous {
     super.drivetrain.getField().getObject("traj").setTrajectory(trajectory1);
     drivetrain.resetOdometry(trajectory1.getInitialPose());
 
-    addCommands(initialCommand, secondCommand);
+    addCommands(new WaitCommand(2.5), initialCommand, new WaitCommand(3), secondCommand);
   }
 }

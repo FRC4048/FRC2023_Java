@@ -7,6 +7,8 @@ package frc.robot.commands.Autonomous;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.opencv.osgi.OpenCVInterface;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,7 +16,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.commands.OpenGripper;
+import frc.robot.commands.SetArmAngle;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -26,7 +31,7 @@ public class DepositPickUpEdge extends Autonomous {
     // addCommands(new FooCommand(), new BarCommand());
     super();
     Supplier<Rotation2d> desiredRot = () -> new Rotation2d(Math.PI);
-    
+
     Trajectory trajectory1 = 
       TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)), 
@@ -41,7 +46,7 @@ public class DepositPickUpEdge extends Autonomous {
         new Pose2d(0, 0, new Rotation2d(0)),
         config);
     
-    SwerveControllerCommand initialCommand =
+    SwerveControllerCommand toGamePiece =
       new SwerveControllerCommand(
           trajectory1,
           drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
@@ -53,7 +58,7 @@ public class DepositPickUpEdge extends Autonomous {
           drivetrain::setModuleStates,
           drivetrain);
   
-    SwerveControllerCommand secondCommand =
+    SwerveControllerCommand fromGamePiece =
         new SwerveControllerCommand(
             trajectory2,
             drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
@@ -65,9 +70,9 @@ public class DepositPickUpEdge extends Autonomous {
             drivetrain::setModuleStates,
             drivetrain);
 
-    super.drivetrain.getField().getObject("traj").setTrajectory(trajectory1);
+    drivetrain.getField().getObject("traj").setTrajectory(trajectory1);
     drivetrain.resetOdometry(trajectory1.getInitialPose());
 
-    addCommands(initialCommand, secondCommand);
+    addCommands(new WaitCommand(2.5), toGamePiece, new WaitCommand(3), fromGamePiece);
   }
 }
