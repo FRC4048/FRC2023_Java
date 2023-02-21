@@ -10,10 +10,8 @@ import frc.robot.commands.ArmController;
 import frc.robot.commands.ManualMoveGripper;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.OpenGripper;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.commands.extender.ManualExtender;
+import frc.robot.subsystems.*;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -49,6 +47,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain;
   private Arm arm;
+  private Extender extender;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
@@ -65,6 +64,7 @@ public class RobotContainer {
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
     arm = new Arm();
+    extender = new Extender();
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
@@ -79,6 +79,8 @@ public class RobotContainer {
     button_3.onTrue(new OpenGripper(gripper));
     cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
     cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.button(7).whileTrue(new ManualExtender(extender,true));
+    cmdController.button(8).whileTrue(new ManualExtender(extender,false));
   }
 
   /**
@@ -138,4 +140,9 @@ public class RobotContainer {
   public Arm getArm() {
     return arm;
   }
+
+  public Extender getExtender() {
+    return extender;
+  }
+
 }
