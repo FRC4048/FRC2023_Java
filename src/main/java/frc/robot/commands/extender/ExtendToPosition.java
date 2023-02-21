@@ -1,9 +1,9 @@
 package frc.robot.commands.extender;
 
 
-        import edu.wpi.first.wpilibj2.command.CommandBase;
-        import frc.robot.Constants;
-        import frc.robot.subsystems.Extender;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.Extender;
 
 public class ExtendToPosition extends CommandBase {
     private Extender extender;
@@ -27,13 +27,13 @@ public class ExtendToPosition extends CommandBase {
     @Override
     public void execute(){
         double speed = 0;
-        double error = extender.getEncoder() - position;
+        double error = position - extender.getEncoder();
         if (Math.abs(error) > Constants.EXTENDER_LARGE_ERROR) {
             speed = Constants.EXTENDER_LARGE_ERROR_SPEED * Math.signum(error);
             extender.move(speed);
         }
         else {
-            speed = Math.max(Constants.EXTENDER_MINIMUM_SPEED, error * Constants.EXTENDER_GAIN) * Math.signum(error);
+            speed = Constants.EXTENDER_MINIMUM_SPEED * Math.signum(error);
             extender.move(speed);
         }
     }

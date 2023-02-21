@@ -70,9 +70,6 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(arm, 0));
     SmartShuffleboard.putCommand("PID", "setAngle=90", new SetArmAngle(arm, 90));
     SmartShuffleboard.putCommand("PID", "setAngle=180", new SetArmAngle(arm, 180));
-    SmartShuffleboard.putCommand("Extender", "Set position=10000", new ExtendToPosition(m_robotContainer.getExtender(),10000));
-    SmartShuffleboard.putCommand("Extender", "Set position=-10000", new ExtendToPosition(m_robotContainer.getExtender(),-10000));
-    SmartShuffleboard.putCommand("Extender", "Set position=-20000", new ExtendToPosition(m_robotContainer.getExtender(),-20000));
     SmartShuffleboard.put("PID", "encoder", Math.toDegrees(Math.toDegrees(arm.getEncoderValue())));
 
     SmartShuffleboard.put("PID", "angle", arm.getAngle());

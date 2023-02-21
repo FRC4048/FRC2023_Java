@@ -30,6 +30,10 @@ public class Extender extends SubsystemBase {
         extenderMotor.setSelectedSensorPosition(0);
     }
 
+    public void resetEncoder() {
+        extenderMotor.setSelectedSensorPosition(0);
+    }
+
     public void move(double speed) {
         extenderMotor.set(speed);
     }
@@ -42,8 +46,19 @@ public class Extender extends SubsystemBase {
         return extenderMotor.getSelectedSensorPosition();
     }
 
+    public boolean fwdLimitReached() {
+        return extenderMotor.isFwdLimitSwitchClosed() == 1;
+    }
+
+    public boolean revLimitReached() {
+        return extenderMotor.isRevLimitSwitchClosed() == 1;
+    }
+
     @Override
     public void periodic() {
         SmartShuffleboard.put("Extender", "encoder",getEncoder());
+
+        SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
+        SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
     }
 }
