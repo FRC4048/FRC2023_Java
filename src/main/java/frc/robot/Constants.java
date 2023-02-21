@@ -36,11 +36,12 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_RIGHT = 57;
   public static final int DRIVE_CANCODER_FRONT_LEFT = 56;
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
+
+  public static final int ARM_ID = 35;
   
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;
   public static final int GRIPPER_ENCODER_ID = 0;
-  public static final int ARM_ID = 45;
 
   //PID Constants
   public static final double DRIVE_PID_P = 1;
@@ -55,10 +56,11 @@ public final class Constants {
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P = 0.1;
-  public static final double ARM_PID_I = 0;
+  public static final double ARM_PID_P_UP = 0.03;
+  public static final double ARM_PID_P_DOWN = 0.01; 
+  public static final double ARM_PID_I = 0.01;
   public static final double ARM_PID_D = 0;
-  public static final double ARM_PID_FF = 0;
+  public static final double ARM_PID_FF = 0.02;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -88,7 +90,7 @@ public final class Constants {
   
 
   public static final double ARM_CONTROLLER_CHANGE = 1;
-  public static final double ARM_MAX_ANGLE = 180;
+  public static final double ARM_MAX_ANGLE = 820; //encoder top: 130700, encoder mid: 102000
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
