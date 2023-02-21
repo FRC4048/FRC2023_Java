@@ -40,7 +40,7 @@ public final class Constants {
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;
   public static final int GRIPPER_ENCODER_ID = 0;
-  public static final int ARM_ID = 45;
+  public static final int ARM_ID = 35;
 
   //PID Constants
   public static final double DRIVE_PID_P = 1;

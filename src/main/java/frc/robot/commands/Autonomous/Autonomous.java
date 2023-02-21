@@ -17,17 +17,19 @@ import frc.robot.subsystems.GripperSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Autonomous extends SequentialCommandGroup {
   /** Creates a new Autonomous. */
-  protected Drivetrain drivetrain = new Drivetrain();
-  protected Arm arm = new Arm();
+  protected Drivetrain drivetrain;
+  protected Arm arm;
   protected GripperSubsystem gripper = new GripperSubsystem();
-  
+
   TrajectoryConfig config = 
     new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
   ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
   
-  public Autonomous() {
+  public Autonomous(Drivetrain drivetrain, Arm arm) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    this.drivetrain = drivetrain;
+    this.arm = arm;
   }
 }

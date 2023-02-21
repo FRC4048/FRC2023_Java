@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
 
 
     //add this back in later
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -113,7 +113,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    //new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
   }
 
   /** This function is called periodically during operator control. */

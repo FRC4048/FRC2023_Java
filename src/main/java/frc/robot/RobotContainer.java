@@ -10,6 +10,7 @@ import frc.robot.commands.ArmController;
 import frc.robot.commands.ManualMoveGripper;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.OpenGripper;
+import frc.robot.commands.Autonomous.DepositPickUpEdge;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.Arm;
@@ -87,7 +88,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   
-  /*
+  
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     /* 
@@ -127,9 +128,9 @@ public class RobotContainer {
     drivetrain.resetOdometry(testTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
-    
-  }*/
+    return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false)); */
+    return new DepositPickUpEdge(drivetrain, arm).andThen(() -> drivetrain.drive(0,0,0, false));
+  }
 
   public Drivetrain getDrivetrain() {
     return drivetrain;

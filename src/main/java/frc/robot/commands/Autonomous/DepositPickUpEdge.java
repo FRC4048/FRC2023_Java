@@ -20,16 +20,18 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.SetArmAngle;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DepositPickUpEdge extends Autonomous {
   /** Creates a new DepositPickUpLeft. */
-  public DepositPickUpEdge() {
+  public DepositPickUpEdge(Drivetrain drivetrain, Arm arm) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    super();
+    super(drivetrain, arm);
     Supplier<Rotation2d> desiredRot = () -> new Rotation2d(Math.PI);
 
     Trajectory trajectory1 = 
