@@ -35,12 +35,12 @@ public class Arm extends SubsystemBase {
     
 
     kP = Constants.ARM_PID_P_UP;
-    kI = Constants.ARM_PID_I;
+    //kI = Constants.ARM_PID_I;
     kD = Constants.ARM_PID_D;
     kFF = Constants.ARM_PID_FF;
   
     pidController.setP(kP);
-    pidController.setI(kI);
+    //pidController.setI(kI);
     pidController.setD(kD);
     pidController.setFF(kFF);
     
@@ -63,9 +63,11 @@ public class Arm extends SubsystemBase {
     SmartShuffleboard.put("PID", "going up", goingUp);
     if (goingUp) {
       pidController.setP(Constants.ARM_PID_P_UP); 
+      pidController.setI(Constants.ARM_PID_I);
     }
     else {
       pidController.setP(Constants.ARM_PID_P_DOWN);
+      pidController.setI(0);
     }
 
     pidController.setReference(Math.toRadians(angle), ControlType.kPosition);

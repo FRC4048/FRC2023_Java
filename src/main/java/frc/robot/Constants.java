@@ -56,11 +56,11 @@ public final class Constants {
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P_UP = 0.0125;
-  public static final double ARM_PID_P_DOWN = 0.01;
-  public static final double ARM_PID_I = 0;
+  public static final double ARM_PID_P_UP = 0.03;
+  public static final double ARM_PID_P_DOWN = 0.01; 
+  public static final double ARM_PID_I = 0.01;
   public static final double ARM_PID_D = 0;
-  public static final double ARM_PID_FF = 0.0138;
+  public static final double ARM_PID_FF = 0.02;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
