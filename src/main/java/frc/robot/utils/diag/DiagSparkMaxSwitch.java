@@ -1,6 +1,5 @@
 package frc.robot.utils.diag;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 
