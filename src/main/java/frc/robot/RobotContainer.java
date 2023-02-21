@@ -4,18 +4,24 @@
 
 package frc.robot;
 
+import frc.robot.commands.ArmController;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ManualMoveGripper;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.WheelAlign;
 import frc.robot.subsystems.Drivetrain;
+<<<<<<< HEAD
 import frc.robot.subsystems.GripperSubsystem;
+=======
+import frc.robot.subsystems.Arm;
+>>>>>>> main
 import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -27,18 +33,29 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain;
+  private Arm arm;
   private PowerDistributionBoard m_PDB;
+<<<<<<< HEAD
   private GripperSubsystem gripper;
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
   private Joystick joyRight = new Joystick(Constants.RIGHT_JOYSTICK_ID);
   private JoystickButton button_1 = new JoystickButton(joyLeft, 1);
   private JoystickButton button_3 = new JoystickButton(joyLeft, 3);
   private XboxController xbox = new XboxController(2);
+=======
+  private Joystick joyLeft = new Joystick(0);
+  private Joystick joyRight = new Joystick(1);
+  private CommandXboxController cmdController = new CommandXboxController(2);
+>>>>>>> main
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
     drivetrain = new Drivetrain();
+<<<<<<< HEAD
     gripper = new GripperSubsystem();
+=======
+    arm = new Arm();
+>>>>>>> main
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
@@ -47,8 +64,13 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+<<<<<<< HEAD
     button_1.onTrue(new CloseGripper(gripper));
     button_3.onTrue(new OpenGripper(gripper));
+=======
+    cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
+>>>>>>> main
   }
 
   /**
@@ -63,5 +85,9 @@ public class RobotContainer {
 
   public Drivetrain getDrivetrain() {
     return drivetrain;
+  }
+
+  public Arm getArm() {
+    return arm;
   }
 }
