@@ -65,8 +65,8 @@ public final class Constants {
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P_IN = 0.0; 
-  public static final double ARM_PID_I_IN = 0.0;
+  public static final double ARM_PID_P_IN = 0.065; 
+  public static final double ARM_PID_I_IN = 0.001;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
 

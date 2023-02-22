@@ -13,7 +13,6 @@ public class HoldArmPID extends CommandBase {
     private Arm arm;
     private Double angle;
     private SparkMaxPIDController pidController;
-    private boolean pidding;
 
     public HoldArmPID(Arm arm, Double angle) {
         this.angle = angle;
@@ -35,15 +34,17 @@ public class HoldArmPID extends CommandBase {
         SmartShuffleboard.put("PID", "D Gain", pidController.getD());
         SmartShuffleboard.put("PID", "FF Gain", pidController.getFF());
 
-        pidController.setReference(angle, ControlType.kPosition, 0);
     }
 
     @Override
     public void execute() {
+        arm.setPidding(true);
+        pidController.setReference(angle, ControlType.kPosition, 0);
     }
 
     @Override
     public void end(boolean Interrupted) {
+        arm.setPidding(false);
     }
 
     @Override

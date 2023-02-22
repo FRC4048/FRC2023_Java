@@ -22,6 +22,7 @@ public class Arm extends SubsystemBase {
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean goingUp;
+  private boolean pidding;
 
   
   public Arm() {
@@ -54,6 +55,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     encoderValue = encoder.getPosition();
+    SmartShuffleboard.put("PID", "pidding", pidding);
 
     /*
     if (angle - encoder.getPosition() < -4) {
@@ -104,6 +106,10 @@ public class Arm extends SubsystemBase {
 
   public void setGoingUp(boolean bool) {
     goingUp = bool;
+  }
+
+  public void setPidding(boolean bool) {
+    pidding = bool;
   }
 
   public void setVoltage(Double val) {

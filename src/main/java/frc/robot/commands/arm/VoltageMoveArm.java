@@ -18,16 +18,17 @@ public class VoltageMoveArm extends CommandBase {
         this.angle = angle;
         addRequirements(this.arm);
 
-        if (angle > arm.getEncoderValue()) {
-        arm.setVoltage(power);
-        } else {
-        arm.setVoltage(-power);
-        }
+        
     }
 
     @Override
     public void execute() {
         //negative value moves arm up
+        if (angle > arm.getEncoderValue()) {
+            arm.setVoltage(power);
+            } else {
+            arm.setVoltage(-power);
+            }
     }
 
     @Override
@@ -37,7 +38,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return angle - arm.getEncoderValue() < 4;
+        return Math.abs(angle - arm.getEncoderValue()) < 1;
     }
 
     

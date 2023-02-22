@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmController;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.GyroOffseter;
@@ -59,9 +60,10 @@ public class RobotContainer {
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
-    arm.setDefaultCommand(new ManualMoveArm(arm, () -> xbox.getLeftY()));
+    //arm.setDefaultCommand(new ManualMoveArm(arm, () -> xbox.getLeftY()));
     extender.setDefaultCommand(new ManualMoveExtender(extender, () -> xbox.getRightY()));
-    SmartShuffleboard.putCommand("PID", "ArmMoveSequence", new ArmMoveSequence(arm, 30.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 32", new ArmMoveSequence(arm, 32.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 0", new ArmMoveSequence(arm, 0.0));
   }
 
   private void configureBindings() {
@@ -74,8 +76,12 @@ public class RobotContainer {
     cmdController.button(7).whileTrue(new ManualExtender(extender,true));
     cmdController.button(8).whileTrue(new ManualExtender(extender,false));
     cmdController.button(3).onTrue(new ResetExtenderEncoder(extender));
+
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+
+    SmartShuffleboard.putCommand("PID", "Manual UP", new ManualMoveArm(arm, 3.0));
+    SmartShuffleboard.putCommand("PID", "Manual DOWN", new ManualMoveArm(arm, -1.5));
   }
 
   /**

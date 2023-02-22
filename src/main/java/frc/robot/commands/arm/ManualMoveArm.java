@@ -9,19 +9,18 @@ import frc.robot.subsystems.Extender;
 public class ManualMoveArm extends CommandBase {
     
     private Arm arm;
-    private DoubleSupplier doubleSupplier;
+    private Double power;
 
-    public ManualMoveArm(Arm arm, DoubleSupplier doubleSupplier) {
+    public ManualMoveArm(Arm arm, Double power) {
         this.arm = arm;
-        this.doubleSupplier = doubleSupplier;
+        this.power = power;
         addRequirements(this.arm);
     }
 
     @Override
     public void execute() {
-        double value = doubleSupplier.getAsDouble();
         // Flipping sign, "down" is positive
-        this.arm.setVoltage(value * 0.3);
+        this.arm.setVoltage(power);
     }
 
     @Override
