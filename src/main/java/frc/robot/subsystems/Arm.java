@@ -20,8 +20,11 @@ public class Arm extends SubsystemBase {
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean goingUp;
+  private Extender extender;
   
-  public Arm() {
+  public Arm(Extender extender) {
+    this.extender = extender;
+
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -32,7 +35,6 @@ public class Arm extends SubsystemBase {
     encoder.setPosition(0);
 
     pidController = neoMotor.getPIDController();
-    
 
     kP = Constants.ARM_PID_P_UP;
     //kI = Constants.ARM_PID_I;
@@ -91,5 +93,9 @@ public class Arm extends SubsystemBase {
 
   public void setGoingUp(boolean bool) {
     goingUp = bool;
+  }
+
+  public Extender getExtender() {
+    return extender;
   }
 }

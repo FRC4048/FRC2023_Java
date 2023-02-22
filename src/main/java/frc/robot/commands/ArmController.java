@@ -23,7 +23,9 @@ public class ArmController extends CommandBase{
         if(desiredAngle > Constants.ARM_MAX_ANGLE) {
             desiredAngle = Constants.ARM_MAX_ANGLE;
         }
-        
+        if ((arm.getExtender().getEncoder() > .1) && (desiredAngle < 100)) {
+            desiredAngle = arm.getAngle();
+        }
         arm.setAngle(desiredAngle);
     }
 

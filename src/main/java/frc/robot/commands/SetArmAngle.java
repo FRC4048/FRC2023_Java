@@ -17,6 +17,9 @@ public class SetArmAngle extends CommandBase {
 
     @Override
     public void initialize() {
+        if ((arm.getExtender().getEncoder() > .1) && (degrees < 100)) {
+            degrees = arm.getAngle();
+        }
         arm.setAngle(degrees);
     }
     

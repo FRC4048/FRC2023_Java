@@ -30,12 +30,13 @@ public class ExtendToPosition extends CommandBase {
         double error = position - extender.getEncoder();
         if (Math.abs(error) > Constants.EXTENDER_LARGE_ERROR) {
             speed = Constants.EXTENDER_LARGE_ERROR_SPEED * Math.signum(error);
-            extender.move(speed);
-        }
-        else {
+        } else {
             speed = Constants.EXTENDER_MINIMUM_SPEED * Math.signum(error);
-            extender.move(speed);
         }
+        if (extender.getArm().getEncoderValue() <= 5) {
+            speed = 0;
+        }
+        extender.move(speed);
     }
 
     @Override

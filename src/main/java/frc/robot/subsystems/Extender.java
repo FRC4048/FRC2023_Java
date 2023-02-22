@@ -14,8 +14,9 @@ import frc.robot.utils.SmartShuffleboard;
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
+    private Arm arm;
 
-    public Extender() {
+    public Extender(Arm arm) {
         int TIMEOUT = 100;
 
         extenderMotor = new WPI_TalonSRX(Constants.EXTENDER_MOTOR_ID);
@@ -28,6 +29,8 @@ public class Extender extends SubsystemBase {
         extenderMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         extenderMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         extenderMotor.setSelectedSensorPosition(0);
+
+        this.arm = arm;
     }
 
     public void resetEncoder() {
@@ -52,6 +55,10 @@ public class Extender extends SubsystemBase {
 
     public boolean revLimitReached() {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
+    }
+
+    public Arm getArm() {
+        return arm;
     }
 
     @Override
