@@ -65,11 +65,11 @@ public final class Constants {
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P_UP = 0.03;
-  public static final double ARM_PID_P_DOWN = 0.01; 
-  public static final double ARM_PID_I = 0.01;
+  public static final double ARM_PID_P_UP = 0.04;
+  public static final double ARM_PID_P_DOWN = 0.0; 
+  public static final double ARM_PID_I = 0.0;
   public static final double ARM_PID_D = 0;
-  public static final double ARM_PID_FF = 0.02;
+  public static final double ARM_PID_FF = 0.1;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -114,8 +114,8 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
-  public static final double GRIPPER_OPENING_SPEED = 0.5;
-  public static final double GRIPPER_CLOSING_SPEED = -0.5;
+  public static final double GRIPPER_OPENING_SPEED = 1;
+  public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 5.0;
-  public static final double WANTED_TIME = 1.0;
+  public static final double WANTED_TIME = 2;
 }

@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -20,6 +22,7 @@ public class Arm extends SubsystemBase {
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean goingUp;
+
   
   public Arm() {
     angle = 0;
@@ -44,10 +47,7 @@ public class Arm extends SubsystemBase {
     pidController.setD(kD);
     pidController.setFF(kFF);
     
-    SmartShuffleboard.put("PID", "P Gain", kP);
-    SmartShuffleboard.put("PID", "I Gain", kI);
-    SmartShuffleboard.put("PID", "D Gain", kD);
-    SmartShuffleboard.put("PID", "FF Gain", kFF);
+   
   }
 
   @Override
@@ -61,16 +61,22 @@ public class Arm extends SubsystemBase {
     double ff = SmartShuffleboard.getDouble("PID", "FF Gain", Constants.ARM_PID_FF);
     */
     SmartShuffleboard.put("PID", "going up", goingUp);
-    if (goingUp) {
+    //if (goingUp) {
       pidController.setP(Constants.ARM_PID_P_UP); 
       pidController.setI(Constants.ARM_PID_I);
-    }
-    else {
+    //}
+    /*else {
       pidController.setP(Constants.ARM_PID_P_DOWN);
       pidController.setI(0);
-    }
+    }*/
 
-    pidController.setReference(Math.toRadians(angle), ControlType.kPosition);
+    pidController.setOutputRange(-0.3, 0.3);
+    //pidController.setReference(Math.toRadians(angle), ControlType.kPosition);
+    
+    SmartShuffleboard.put("PID", "P Gain", pidController.getP());
+    SmartShuffleboard.put("PID", "I Gain", pidController.getI());
+    SmartShuffleboard.put("PID", "D Gain", pidController.getD());
+    SmartShuffleboard.put("PID", "FF Gain", pidController.getFF());
   }
 
   public double getEncoderValue() {
@@ -91,5 +97,9 @@ public class Arm extends SubsystemBase {
 
   public void setGoingUp(boolean bool) {
     goingUp = bool;
+  }
+
+  public void manualMove(Double val) {
+    neoMotor.set(val);
   }
 }
