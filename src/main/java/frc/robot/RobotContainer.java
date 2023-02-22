@@ -13,6 +13,7 @@ import frc.robot.commands.CloseGripper;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.Stow;
+import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -60,6 +61,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
     arm.setDefaultCommand(new ManualMoveArm(arm, () -> xbox.getLeftY()));
     extender.setDefaultCommand(new ManualMoveExtender(extender, () -> xbox.getRightY()));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence", new ArmMoveSequence(arm, 30.0));
   }
 
   private void configureBindings() {

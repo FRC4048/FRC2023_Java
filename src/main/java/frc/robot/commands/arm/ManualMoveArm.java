@@ -21,7 +21,7 @@ public class ManualMoveArm extends CommandBase {
     public void execute() {
         double value = doubleSupplier.getAsDouble();
         // Flipping sign, "down" is positive
-        this.arm.manualMove(value * 0.1);
+        this.arm.setVoltage(value * 0.3);
     }
 
     @Override

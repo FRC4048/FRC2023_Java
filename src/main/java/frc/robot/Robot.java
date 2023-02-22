@@ -68,10 +68,9 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(arm, 0));
-    SmartShuffleboard.putCommand("PID", "setAngle=600", new SetArmAngle(arm, 215));
-    SmartShuffleboard.putCommand("PID", "setAngle=1000", new SetArmAngle(arm, 2000));
-
-    SmartShuffleboard.put("PID", "encoder", Math.toDegrees((arm.getEncoderValue())));
+    SmartShuffleboard.putCommand("PID", "setAngle=600", new SetArmAngle(arm, 20));
+    SmartShuffleboard.putCommand("PID", "setAngle=1000", new SetArmAngle(arm, 35));
+    SmartShuffleboard.put("PID", "encoder", (arm.getEncoderValue()));
 
     SmartShuffleboard.put("PID", "angle", arm.getAngle());
   }
