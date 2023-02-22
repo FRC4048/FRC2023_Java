@@ -8,8 +8,8 @@ import com.revrobotics.SparkMaxLimitSwitch.Type;
  * it is a DiagBoolean subclass.
  */
 public class DiagSparkMaxSwitch extends DiagBoolean {
-    public DiagSparkMaxSwitch(String name) {
-        super(name);
+    public DiagSparkMaxSwitch(String title, String name) {
+        super(title, name);
     }
 
     public enum Direction {FORWARD, REVERSE};
@@ -23,8 +23,8 @@ public class DiagSparkMaxSwitch extends DiagBoolean {
      * @param talonSRX  -the talon SRX to read the switch value from
      */
 
-    public DiagSparkMaxSwitch(String name, CANSparkMax canSparkMax, Direction direction) {
-        super(name);
+    public DiagSparkMaxSwitch(String title, String name, CANSparkMax canSparkMax, Direction direction) {
+        super(title, name);
         this.canSparkMax = canSparkMax;
         this.direction = direction;
     }

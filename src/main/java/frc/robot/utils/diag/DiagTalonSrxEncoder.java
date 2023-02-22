@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
  * distance from its initial position (measured at initialization or after a reset)
  */
 public class DiagTalonSrxEncoder extends DiagDistanceTraveled {
-    public DiagTalonSrxEncoder(String name, double requiredTravel) {
-        super(name, requiredTravel);
+    public DiagTalonSrxEncoder(String title, String name, double requiredTravel) {
+        super(title, name, requiredTravel);
     }
 
     private WPI_TalonSRX talonSRX;
@@ -21,8 +21,8 @@ public class DiagTalonSrxEncoder extends DiagDistanceTraveled {
     @param requiredTravel  - the required difference between the initial position to qualify for success
     @param talonSRX         - the encoder instance to test
     */
-    public DiagTalonSrxEncoder(String name, double requiredTravel, WPI_TalonSRX talonSRX) {
-        super(name, requiredTravel);
+    public DiagTalonSrxEncoder(String title, String name, double requiredTravel, WPI_TalonSRX talonSRX) {
+        super(title, name, requiredTravel);
         this.talonSRX = talonSRX;
         reset();
     }

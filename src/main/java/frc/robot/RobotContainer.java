@@ -4,40 +4,22 @@
 
 package frc.robot;
 
-import frc.robot.commands.drive.Drive;
-import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ArmController;
-import frc.robot.commands.ManualMoveGripper;
-import frc.robot.commands.CloseGripper;
-import frc.robot.commands.OpenGripper;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.PowerDistributionBoard;
-
-import java.util.List;
-import java.util.function.Supplier;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.*;
+import frc.robot.commands.drive.Drive;
+import frc.robot.commands.extender.ExtendToPosition;
+import frc.robot.commands.extender.ManualExtender;
+import frc.robot.commands.extender.ManualMoveExtender;
+import frc.robot.commands.extender.ResetExtenderEncoder;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.utils.SmartShuffleboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -49,6 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain;
   private Arm arm;
+  private Extender extender;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
@@ -65,11 +48,13 @@ public class RobotContainer {
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
     arm = new Arm();
+    extender = new Extender();
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
-    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> xbox.getLeftY()));
+    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> xbox.getLeftX()));
+    extender.setDefaultCommand(new ManualMoveExtender(extender, () -> xbox.getRightY()));
   }
 
   private void configureBindings() {
@@ -79,6 +64,11 @@ public class RobotContainer {
     button_3.onTrue(new OpenGripper(gripper));
     cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
     cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
+    cmdController.button(7).whileTrue(new ManualExtender(extender,true));
+    cmdController.button(8).whileTrue(new ManualExtender(extender,false));
+    cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
+    SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
+    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
   }
 
   /**
@@ -138,4 +128,9 @@ public class RobotContainer {
   public Arm getArm() {
     return arm;
   }
+
+  public Extender getExtender() {
+    return extender;
+  }
+
 }

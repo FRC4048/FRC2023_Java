@@ -1,7 +1,7 @@
 package frc.robot.utils.diag;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
@@ -11,21 +11,25 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public abstract class DiagDistanceTraveled implements Diagnosable {
 
     protected String name;
+    protected String title;
     protected double requiredTravel;
     protected GenericEntry networkTableEntry;
     private double initialValue;
     private boolean traveledDistance;
 
 
-    public DiagDistanceTraveled(String name, double requiredTravel) {
+    public DiagDistanceTraveled(String title, String name, double requiredTravel) {
+        this.title = title;
         this.name = name;
         this.requiredTravel = requiredTravel;
     }
 
     @Override
-    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab) {
-        networkTableEntry = shuffleBoardTab.add(name, false).getEntry();
+    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab, int width, int height) {
+        networkTableEntry = shuffleBoardTab.getLayout(title, BuiltInLayouts.kList).withSize(width, height).add(name, false).getEntry(); //getLayout(title, BuiltInLayouts.kList)
     }
+
+    
 
     @Override
     public void refresh() {

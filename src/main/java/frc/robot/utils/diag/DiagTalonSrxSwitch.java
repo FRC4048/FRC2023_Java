@@ -7,8 +7,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
  * it is a DiagBoolean subclass.
  */
 public class DiagTalonSrxSwitch extends DiagBoolean {
-    public DiagTalonSrxSwitch(String name) {
-        super(name);
+    public DiagTalonSrxSwitch(String title, String name) {
+        super(title, name);
     }
 
     public enum Direction {FORWARD, REVERSE};
@@ -22,8 +22,8 @@ public class DiagTalonSrxSwitch extends DiagBoolean {
      * @param talonSRX  -the talon SRX to read the switch value from
      */
 
-    public DiagTalonSrxSwitch(String name, WPI_TalonSRX talonSRX, Direction direction) {
-        super(name);
+    public DiagTalonSrxSwitch(String title, String name, WPI_TalonSRX talonSRX, Direction direction) {
+        super(title, name);
         this.talonSRX = talonSRX;
         this.direction = direction;
     }

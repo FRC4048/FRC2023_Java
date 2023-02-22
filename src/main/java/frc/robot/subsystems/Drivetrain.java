@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 
 /** Represents a swerve drive style drivetrain. */
@@ -81,19 +82,26 @@ public class Drivetrain extends SubsystemBase{
     m_backLeftTurn = new CANSparkMax(Constants.DRIVE_BACK_LEFT_S, MotorType.kBrushless);
     m_backRightTurn = new CANSparkMax(Constants.DRIVE_BACK_RIGHT_S, MotorType.kBrushless);
 
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Left Drive", Constants.DIAG_SPARK_ROT, m_frontLeftDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Right Drive", Constants.DIAG_SPARK_ROT, m_frontRightDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Left Drive", Constants.DIAG_SPARK_ROT, m_backLeftDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Right Drive", Constants.DIAG_SPARK_ROT, m_backRightDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Left Turn", Constants.DIAG_SPARK_ROT, m_frontLeftTurn));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Right Turn", Constants.DIAG_SPARK_ROT, m_frontRightTurn));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Left Turn", Constants.DIAG_SPARK_ROT, m_backLeftTurn));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Right Turn", Constants.DIAG_SPARK_ROT, m_backRightTurn));
-    
     frontLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_LEFT);
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
+
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Back Left", Constants.DIAG_REL_SPARK_ENCODER, m_backLeftDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Back Right", Constants.DIAG_REL_SPARK_ENCODER, m_backRightDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Back Left", Constants.DIAG_REL_SPARK_ENCODER, m_backLeftTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Back Right", Constants.DIAG_REL_SPARK_ENCODER, m_backRightTurn));
+    
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Front Left", Constants.DIAG_ABS_SPARK_ENCODER, frontLeftCanCoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Front Right", Constants.DIAG_ABS_SPARK_ENCODER, frontRightCanCoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Left", Constants.DIAG_ABS_SPARK_ENCODER, backLeftCanCoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Right", Constants.DIAG_ABS_SPARK_ENCODER, backRightCanCoder));
+
+
 
     m_frontLeft = new SwerveModule(m_frontLeftDrive, m_frontLeftTurn, frontLeftCanCoder, 1);
     m_frontRight = new SwerveModule(m_frontRightDrive, m_frontRightTurn, frontRightCanCoder, 2);
