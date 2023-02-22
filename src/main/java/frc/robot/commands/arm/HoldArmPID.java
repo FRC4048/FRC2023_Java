@@ -35,10 +35,6 @@ public class HoldArmPID extends CommandBase {
         pidController.setD(Constants.ARM_PID_D_IN, 0);
         pidController.setFF(Constants.ARM_PID_FF_IN, 0);
 
-        pidController.setP(Constants.ARM_PID_P_IN, 1);
-        pidController.setI(Constants.ARM_PID_I_OUT, 1);
-        pidController.setD(Constants.ARM_PID_D_OUT, 1);
-        pidController.setFF(Constants.ARM_PID_FF_OUT, 1);
     }
 
     @Override

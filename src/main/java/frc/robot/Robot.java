@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.Forward;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.commands.SetArmAngle;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
@@ -67,12 +66,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(arm, 0));
-    SmartShuffleboard.putCommand("PID", "setAngle=600", new SetArmAngle(arm, 20));
-    SmartShuffleboard.putCommand("PID", "setAngle=1000", new SetArmAngle(arm, 35));
     SmartShuffleboard.put("PID", "encoder", (arm.getEncoderValue()));
-
-    SmartShuffleboard.put("PID", "angle", arm.getAngle());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
