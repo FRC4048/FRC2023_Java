@@ -70,10 +70,6 @@ public final class Constants {
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
 
-  public static final double ARM_PID_P_OUT = 0.0; 
-  public static final double ARM_PID_I_OUT = 0.0;
-  public static final double ARM_PID_D_OUT = 0.0;
-  public static final double ARM_PID_FF_OUT = 0.0;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -121,5 +117,5 @@ public final class Constants {
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 5.0;
-  public static final double WANTED_TIME = 1;
+  public static final double WANTED_TIME = 1.0;
 }

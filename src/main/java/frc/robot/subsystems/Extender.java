@@ -14,7 +14,6 @@ import frc.robot.utils.SmartShuffleboard;
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
-    //private boolean extended = false;
 
     public Extender() {
         int TIMEOUT = 100;
