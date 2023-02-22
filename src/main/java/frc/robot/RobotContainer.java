@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.commands.drive.Drive;
+import frc.robot.commands.drive.TurnToDegrees;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualExtender;
 import frc.robot.commands.extender.ManualMoveExtender;
@@ -42,6 +43,7 @@ public class RobotContainer {
   private JoystickButton button_3 = new JoystickButton(joyLeft, 3);
   private XboxController xbox = new XboxController(2);
   private CommandXboxController cmdController = new CommandXboxController(2);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -69,6 +71,7 @@ public class RobotContainer {
     cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Driver", "Turn to Degee", new TurnToDegrees(drivetrain, 45));
   }
 
   /**

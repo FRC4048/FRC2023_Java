@@ -22,8 +22,8 @@ public final class Constants {
   public static final int RIGHT_JOYSTICK_ID = 1;
 
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
-  public static final int DRIVE_FRONT_RIGHT_S = 48;
-  public static final int DRIVE_FRONT_RIGHT_D = 49;
+  public static final int DRIVE_FRONT_RIGHT_S = 45; //49
+  public static final int DRIVE_FRONT_RIGHT_D = 44; //49
   public static final int DRIVE_BACK_RIGHT_S = 46;
   public static final int DRIVE_BACK_RIGHT_D = 43;
 
@@ -118,4 +118,5 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -0.5;
   public static final double GRIPPER_TIMEOUT = 5.0;
   public static final double WANTED_TIME = 1.0;
+  public static final double AUTO_TURN_SPEED = 0.2;
 }

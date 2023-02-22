@@ -52,6 +52,8 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
+  private boolean turnToDegreeState = false;
+  private double degreesToTurn = 0.0;
 
   private final AHRS navxGyro;
 
@@ -111,6 +113,22 @@ public class Drivetrain extends SubsystemBase{
 
   public AHRS getGyroObject() {
     return navxGyro;
+  }
+
+  public void turnToDegrees(double degree) {
+    degreesToTurn = degree;
+  }
+
+  public double getDegreesToTurn() {
+    return degreesToTurn;
+  }
+
+  public boolean isTurnToDegreeOn() {
+    return turnToDegreeState;
+  }
+
+  public void setTurnToDegreeState(boolean state) {
+    turnToDegreeState = state;
   }
 
   /**
@@ -212,6 +230,8 @@ public class Drivetrain extends SubsystemBase{
   public void periodic() {
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
+    SmartShuffleboard.put("Driver", "TurnToDegree", getDegreesToTurn());
+    SmartShuffleboard.put("Driver", "Turn State", isTurnToDegreeOn());
 
     SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
 
