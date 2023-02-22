@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.GyroOffseter;
+import frc.robot.commands.ManualMoveGripper;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.Stow;
 import frc.robot.commands.arm.ArmMoveSequence;
@@ -61,8 +62,26 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
     //arm.setDefaultCommand(new ManualMoveArm(arm, () -> xbox.getLeftY()));
     extender.setDefaultCommand(new ManualMoveExtender(extender, () -> xbox.getRightY()));
+    gripper.setDefaultCommand(new ManualMoveGripper(gripper, ()-> xbox.getLeftX()));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 10", new ArmMoveSequence(arm, 10.0));   
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 15", new ArmMoveSequence(arm, 15.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 5", new ArmMoveSequence(arm, 5.0));
+
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 40", new ArmMoveSequence(arm, 40.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 39", new ArmMoveSequence(arm, 39.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 38", new ArmMoveSequence(arm, 38.0));
+
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 37", new ArmMoveSequence(arm, 37.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 36", new ArmMoveSequence(arm, 36.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 35", new ArmMoveSequence(arm, 35.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 34", new ArmMoveSequence(arm, 34.0));
     SmartShuffleboard.putCommand("PID", "ArmMoveSequence 32", new ArmMoveSequence(arm, 32.0));
-    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 0", new ArmMoveSequence(arm, 0.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 30", new ArmMoveSequence(arm, 30.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 28", new ArmMoveSequence(arm, 28.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 26", new ArmMoveSequence(arm, 26.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 24", new ArmMoveSequence(arm, 24.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 22", new ArmMoveSequence(arm, 22.0));
+    SmartShuffleboard.putCommand("PID", "ArmMoveSequence 20", new ArmMoveSequence(arm, 20.0));
   }
 
   private void configureBindings() {
@@ -73,6 +92,7 @@ public class RobotContainer {
     cmdController.button(7).whileTrue(new ManualExtender(extender,true));
     cmdController.button(8).whileTrue(new ManualExtender(extender,false));
     cmdController.button(3).onTrue(new ResetExtenderEncoder(extender));
+    cmdController.button(4).whileTrue(new ManualMoveArm(arm, 1.5));
 
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));

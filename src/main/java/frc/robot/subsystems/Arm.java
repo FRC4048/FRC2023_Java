@@ -113,10 +113,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void setVoltage(Double val) {
-    if (val > 4) {
-    neoMotor.setVoltage(4);
-  } else if (val < -4) {
-    neoMotor.setVoltage(-4);}
+    if (val > 4.5) {
+    neoMotor.setVoltage(4.5);
+  } else if (val < -4.5) {
+    neoMotor.setVoltage(-4.5);}
     else {
       neoMotor.setVoltage(val);
     }

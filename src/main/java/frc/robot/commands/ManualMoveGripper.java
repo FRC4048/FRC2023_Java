@@ -8,7 +8,8 @@ import frc.robot.subsystems.GripperSubsystem;
 public class ManualMoveGripper extends CommandBase{
     private final GripperSubsystem gripper;
     private final DoubleSupplier dSupplier;
-    public ManualMoveGripper(GripperSubsystem gripper, DoubleSupplier dSupplier) {
+    public 
+    ManualMoveGripper(GripperSubsystem gripper, DoubleSupplier dSupplier) {
         this.gripper = gripper;
         addRequirements(gripper);
         this.dSupplier = dSupplier;

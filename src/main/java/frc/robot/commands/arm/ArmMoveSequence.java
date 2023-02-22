@@ -9,8 +9,13 @@ public class ArmMoveSequence extends SequentialCommandGroup {
     private Double angle;
 
     public ArmMoveSequence(Arm arm, Double angle) {
+        //Angles:
+        //
+        //
+        //
+        //
         addCommands(
-        new VoltageMoveArm(arm, 4.0, angle),
+        new VoltageMoveArm(arm, 4.5, angle),
         new HoldArmPID(arm, angle)
         );
     }

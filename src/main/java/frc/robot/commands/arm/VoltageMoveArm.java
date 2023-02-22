@@ -41,7 +41,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - arm.getEncoderValue()) < 1;
+        return Math.abs(angle - arm.getEncoderValue()) < 2.5;
     }
 
     

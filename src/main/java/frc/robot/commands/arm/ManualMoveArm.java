@@ -27,6 +27,11 @@ public class ManualMoveArm extends CommandBase {
     }
 
     @Override
+    public void end(boolean Interrupted) {
+        arm.setVoltage(0.0);
+    }
+
+    @Override
     public boolean isFinished() {
         return false;
     }
