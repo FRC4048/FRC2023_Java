@@ -107,5 +107,5 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -0.5;
   public static final double GRIPPER_TIMEOUT = 5.0;
   public static final double WANTED_TIME = 1.0;
-  public static final int DIAG_SPARK_ROT = 1;
+  public static final double DIAG_SPARK_ROT = 0.1;
 }

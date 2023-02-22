@@ -11,13 +11,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public abstract class DiagDistanceTraveled implements Diagnosable {
 
     protected String name;
-    protected int requiredTravel;
+    protected double requiredTravel;
     protected GenericEntry networkTableEntry;
-    private int initialValue;
+    private double initialValue;
     private boolean traveledDistance;
 
 
-    public DiagDistanceTraveled(String name, int requiredTravel) {
+    public DiagDistanceTraveled(String name, double requiredTravel) {
         this.name = name;
         this.requiredTravel = requiredTravel;
     }
@@ -41,7 +41,7 @@ public abstract class DiagDistanceTraveled implements Diagnosable {
     }
 
     boolean getDiagResult() {
-        int currentValue = getCurrentValue();
+        double currentValue = getCurrentValue();
 
         if (Math.abs(currentValue - initialValue) >= requiredTravel) {
             traveledDistance = true;
@@ -50,5 +50,5 @@ public abstract class DiagDistanceTraveled implements Diagnosable {
         return this.traveledDistance;
     }
 
-    protected abstract int getCurrentValue();
+    protected abstract double getCurrentValue();
 }

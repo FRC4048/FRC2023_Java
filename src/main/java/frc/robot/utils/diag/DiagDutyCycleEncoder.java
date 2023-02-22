@@ -18,14 +18,14 @@ public class DiagDutyCycleEncoder extends DiagDistanceTraveled {
      * @param requiredTravel  - the required difference between the initial position to qualify for success
      * @param encoder         - the encoder instance to test
      */
-    public DiagDutyCycleEncoder(String name, int requiredTravel, DutyCycleEncoder encoder) {
+    public DiagDutyCycleEncoder(String name, double requiredTravel, DutyCycleEncoder encoder) {
         super(name, requiredTravel);
         this.encoder = encoder;
         reset();
     }
 
     @Override
-    protected int getCurrentValue() {
-        return (int) encoder.get();
+    protected double getCurrentValue() {
+        return encoder.get();
     }
 }
