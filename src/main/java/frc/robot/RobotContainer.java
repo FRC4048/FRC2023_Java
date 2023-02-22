@@ -58,8 +58,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
-    RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
+    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+    RightGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     button_1.onTrue(new CloseGripper(gripper));
     button_3.onTrue(new OpenGripper(gripper));
     cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
