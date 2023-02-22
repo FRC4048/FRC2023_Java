@@ -32,9 +32,9 @@ public class DiagSparkMaxSwitch extends DiagBoolean {
     protected boolean getValue() {
         switch (direction) {
             case FORWARD:
-                return canSparkMax.getForwardLimitSwitch(Type.kNormallyOpen).isLimitSwitchEnabled();
+                return canSparkMax.getForwardLimitSwitch(Type.kNormallyOpen).isPressed();
             case REVERSE:
-                return canSparkMax.getReverseLimitSwitch(Type.kNormallyOpen).isLimitSwitchEnabled();
+                return canSparkMax.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
             default:
                 return false;
         }

@@ -81,14 +81,14 @@ public class Drivetrain extends SubsystemBase{
     m_backLeftTurn = new CANSparkMax(Constants.DRIVE_BACK_LEFT_S, MotorType.kBrushless);
     m_backRightTurn = new CANSparkMax(Constants.DRIVE_BACK_RIGHT_S, MotorType.kBrushless);
 
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Left Drive", 10, m_frontLeftDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Right Drive", 10, m_frontRightDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Left Drive", 10, m_backLeftDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Right Drive", 10, m_backRightDrive));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Left Turn", 10, m_frontLeftTurn));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Right Turn", 10, m_frontRightTurn));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Left Turn", 10, m_backLeftTurn));
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Right Drive", 10, m_backRightTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Left Drive", Constants.DIAG_SPARK_ROT, m_frontLeftDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Right Drive", Constants.DIAG_SPARK_ROT, m_frontRightDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Left Drive", Constants.DIAG_SPARK_ROT, m_backLeftDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Right Drive", Constants.DIAG_SPARK_ROT, m_backRightDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Left Turn", Constants.DIAG_SPARK_ROT, m_frontLeftTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Front Right Turn", Constants.DIAG_SPARK_ROT, m_frontRightTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Left Turn", Constants.DIAG_SPARK_ROT, m_backLeftTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Back Right Turn", Constants.DIAG_SPARK_ROT, m_backRightTurn));
     
     frontLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_LEFT);
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
