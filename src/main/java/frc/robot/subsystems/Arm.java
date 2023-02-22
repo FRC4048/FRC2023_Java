@@ -22,8 +22,10 @@ public class Arm extends SubsystemBase {
   private boolean pidding;
 
 
+private Extender extender;
 
-  public Arm() {
+  public Arm(Extender extender) {
+    this.extender = extender;
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -31,7 +33,7 @@ public class Arm extends SubsystemBase {
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
-    
+
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
@@ -101,5 +103,7 @@ public class Arm extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-
+  public Extender getExtender() {
+    return extender;
+  }
 }
