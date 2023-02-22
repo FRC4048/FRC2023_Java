@@ -25,15 +25,20 @@ public class HoldArmPID extends CommandBase {
         pidController.setFF(Constants.ARM_PID_FF_IN, 0);
 
         pidController.setP(Constants.ARM_PID_P_IN, 1);
-        pidController.setI(Constants.ARM_PID_P_IN, 1);
-        pidController.setD(Constants.ARM_PID_P_IN, 1);
-        pidController.setFF(Constants.ARM_PID_P_IN, 1);
+        pidController.setI(Constants.ARM_PID_I_OUT, 1);
+        pidController.setD(Constants.ARM_PID_D_OUT, 1);
+        pidController.setFF(Constants.ARM_PID_FF_OUT, 1);
 
         SmartShuffleboard.put("PID", "P Gain", pidController.getP());
         SmartShuffleboard.put("PID", "I Gain", pidController.getI());
         SmartShuffleboard.put("PID", "D Gain", pidController.getD());
         SmartShuffleboard.put("PID", "FF Gain", pidController.getFF());
 
+    }
+
+    @Override
+    public void initialize() {
+        //SmartShuffleboard.put("PID", "recent command", "HoldArmPID");
     }
 
     @Override

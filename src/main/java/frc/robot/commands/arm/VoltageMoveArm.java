@@ -1,10 +1,8 @@
 package frc.robot.commands.arm;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Extender;
+import frc.robot.utils.SmartShuffleboard;
 
 public class VoltageMoveArm extends CommandBase {
     
@@ -19,6 +17,11 @@ public class VoltageMoveArm extends CommandBase {
         addRequirements(this.arm);
 
         
+    }
+    
+    @Override
+    public void initialize() {
+        //SmartShuffleboard.put("PID", "recent command", "VoltageMoveArm");
     }
 
     @Override

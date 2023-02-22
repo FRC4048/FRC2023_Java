@@ -114,6 +114,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     //new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
+
+    m_robotContainer.getArm().getNeoMotor().getPIDController().setP(0);
+    m_robotContainer.getArm().getNeoMotor().getPIDController().setI(0);
+    m_robotContainer.getArm().getNeoMotor().getPIDController().setD(0);
+    m_robotContainer.getArm().getNeoMotor().getPIDController().setFF(0);
+
   }
 
   /** This function is called periodically during operator control. */

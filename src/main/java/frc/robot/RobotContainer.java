@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArmController;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.OpenGripper;
@@ -71,8 +70,6 @@ public class RobotContainer {
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
     grip.onTrue(new CloseGripper(gripper));
     unGrip.onTrue(new OpenGripper(gripper));
-    cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
-    cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
     cmdController.button(7).whileTrue(new ManualExtender(extender,true));
     cmdController.button(8).whileTrue(new ManualExtender(extender,false));
     cmdController.button(3).onTrue(new ResetExtenderEncoder(extender));

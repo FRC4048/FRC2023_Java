@@ -113,7 +113,13 @@ public class Arm extends SubsystemBase {
   }
 
   public void setVoltage(Double val) {
-    neoMotor.setVoltage(val);
+    if (val > 4) {
+    neoMotor.setVoltage(4);
+  } else if (val < -4) {
+    neoMotor.setVoltage(-4);}
+    else {
+      neoMotor.setVoltage(val);
+    }
   }
 
   public CANSparkMax getNeoMotor() {
