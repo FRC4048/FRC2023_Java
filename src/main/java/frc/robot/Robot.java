@@ -18,7 +18,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.drive.Forward;
+import frc.robot.commands.arm.SetArmAngle;
+import frc.robot.commands.drive.Move;
 import frc.robot.commands.drive.WheelAlign;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
@@ -47,6 +48,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     diagnostics = new Diagnostics();
     m_robotContainer = new RobotContainer();
+    SmartShuffleboard.putCommand("Drive", "Move", new Move(m_robotContainer.getDrivetrain(), 1));
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     arm = m_robotContainer.getArm();
