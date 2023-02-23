@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
@@ -10,9 +11,11 @@ public class Stow extends SequentialCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
         addCommands(
-                new CloseGripper(gripper),
-                new ExtendToPosition(extender, 0),
-                new SetArmAngle(arm, 0)
+                new ParallelCommandGroup( 
+                    new CloseGripper(gripper).withTimeout(2),
+                    new ExtendToPosition(extender, 0).withTimeout(2)
+            ),
+                new SetArmAngle(arm, 0).withTimeout(5)
         );
     }
 
