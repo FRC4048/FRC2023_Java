@@ -1,6 +1,7 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -25,9 +26,13 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public void execute() {
-        //negative value moves arm up
+        //positive angle -> positive power
         if (angle > arm.getEncoderValue()) {
             arm.setVoltage(power);
+        //unsafe negative angle -> no power
+            } else if (angle < Constants.NO_EXTENSION_ZONE && !(arm.getExtender().safeToLowerArm())) {   
+            arm.setVoltage(0.0);
+        //safe negative angle -> negative power
             } else {
             arm.setVoltage(-power);
             }

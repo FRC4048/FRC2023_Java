@@ -19,11 +19,11 @@ public class ManualMoveExtender extends CommandBase {
     @Override
     public void execute() {
         double speed = doubleSupplier.getAsDouble();
-        // Flipping sign, "down" is positive
-        if (extender.getArm().getEncoderValue() <= 5) {
-            speed = 0;
-        }
+        if (extender.getArm().safeToExtend()) {
         extender.move(speed);
+        } else {
+        extender.move(0);
+        }
     }
 
     @Override

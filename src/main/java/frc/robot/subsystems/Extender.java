@@ -67,6 +67,10 @@ public class Extender extends SubsystemBase {
         return arm;
     }
 
+    public boolean safeToLowerArm() {
+        return (extenderMotor.getSelectedSensorPosition() < Constants.NO_ARM_LOWER_ZONE);
+    }
+
     @Override
     public void periodic() {
         SmartShuffleboard.put("Extender", "encoder",getEncoder());
