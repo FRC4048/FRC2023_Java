@@ -56,6 +56,7 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
+  private double filterX, filterY, filterZ = 0;
 
   private final AHRS navxGyro;
 
@@ -134,6 +135,38 @@ public class Drivetrain extends SubsystemBase{
 
   public AHRS getGyroObject() {
     return navxGyro;
+  }
+
+  public double getPoseX() {
+    return m_odometry.getPoseMeters().getX();
+  }
+
+  public double getPoseY() {
+    return m_odometry.getPoseMeters().getY();
+  }
+
+  public double getAccelX() {
+    return navxGyro.getRawAccelX();
+  }
+
+  public double getAccelY() {
+    return navxGyro.getRawAccelY();
+  }
+
+  public double getAccelZ() {
+    return navxGyro.getRawAccelZ();
+  }
+
+  public double getFilterAccelX() {
+    return filterX;
+  }
+
+  public double getFilterAccelY() {
+    return filterY;
+  }
+
+  public double getFilterAccelZ() {
+    return filterZ;
   }
 
   /**
@@ -246,6 +279,11 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
+
+    filterX = filterX + (filterX+getAccelX())/Constants.GYRO_ACCEL_FILTER;
+    filterY = filterY + (filterY+getAccelY())/Constants.GYRO_ACCEL_FILTER;
+    filterZ = filterZ + (filterZ+getAccelZ())/Constants.GYRO_ACCEL_FILTER;
+
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
 

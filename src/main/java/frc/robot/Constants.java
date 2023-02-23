@@ -53,7 +53,7 @@ public final class Constants {
   //EXTENDER
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-  
+
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
   public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
@@ -120,10 +120,10 @@ public final class Constants {
   public static final double kP_THETA_AUTO = 1.2;
   public static final double kI_THETA_AUTO = 0;
   public static final double kD_THETA_AUTO = 0;
-  public static final double kP_X_AUTO = 5; 
+  public static final double kP_X_AUTO = 5;
   public static final double kI_X_AUTO = 0.5;
   public static final double kD_X_AUTO = 0;
-  public static final double kP_Y_AUTO = 5; 
+  public static final double kP_Y_AUTO = 5;
   public static final double kI_Y_AUTO = 0.5;
   public static final double kD_Y_AUTO = 0;
 
@@ -162,6 +162,12 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
+  public static final double GRIPPER_OPENING_SPEED = 0.5;
+  public static final double GRIPPER_CLOSING_SPEED = -0.5;
+  public static final double GRIPPER_TIMEOUT = 5.0;
+  public static final double WANTED_TIME = 1.0;
+  public static final double AUTO_CHARGESTATION_SPEED = 0.3;
+  public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
