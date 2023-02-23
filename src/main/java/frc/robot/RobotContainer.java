@@ -14,6 +14,7 @@ import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualExtender;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.extender.ResetExtenderEncoder;
+import frc.robot.subsystems.AprilTagPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -42,6 +43,7 @@ public class RobotContainer {
   private JoystickButton button_3 = new JoystickButton(joyLeft, 3);
   private XboxController xbox = new XboxController(2);
   private CommandXboxController cmdController = new CommandXboxController(2);
+  private AprilTagPosition apriltag;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -49,6 +51,7 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
+    apriltag = new AprilTagPosition();
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
@@ -69,6 +72,7 @@ public class RobotContainer {
     cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Drive", "April Tag Rel Move", new SetAprilTagRelPosition(drivetrain, apriltag, -10, 0, 0));
   }
 
   /**
