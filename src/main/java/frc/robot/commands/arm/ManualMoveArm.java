@@ -17,7 +17,6 @@ public class ManualMoveArm extends CommandBase {
 
     @Override
     public void initialize() {
-        //SmartShuffleboard.put("PID", "recent command", "ManualMoveArm");
     }
 
     @Override

@@ -1,17 +1,14 @@
 package frc.robot.subsystems;
 
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.utils.SmartShuffleboard;
 
 public class Arm extends SubsystemBase {
@@ -32,13 +29,16 @@ public class Arm extends SubsystemBase {
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
+
   }
 
   @Override
   public void periodic() {
     encoderValue = encoder.getPosition();
-    SmartShuffleboard.put("PID", "pidding", pidding);
-    
+    if (Constants.DEBUG) {
+      SmartShuffleboard.put("Gripper", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm", "arm pidding", pidding);
+    }
   }
 
   public double getEncoderValue() {
@@ -65,6 +65,13 @@ public class Arm extends SubsystemBase {
     else {
       neoMotor.setVoltage(val);
     }
+  }
+
+  public void zeroPID() {
+    neoMotor.getPIDController().setP(0);
+    neoMotor.getPIDController().setI(0);
+    neoMotor.getPIDController().setD(0);
+    neoMotor.getPIDController().setFF(0);
   }
 
   public CANSparkMax getNeoMotor() {

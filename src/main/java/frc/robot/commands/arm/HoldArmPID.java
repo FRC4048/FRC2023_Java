@@ -20,16 +20,15 @@ public class HoldArmPID extends CommandBase {
         addRequirements(this.arm);
         pidController = arm.getNeoMotor().getPIDController();
 
-        SmartShuffleboard.put("PID", "P Gain", pidController.getP());
-        SmartShuffleboard.put("PID", "I Gain", pidController.getI());
-        SmartShuffleboard.put("PID", "D Gain", pidController.getD());
-        SmartShuffleboard.put("PID", "FF Gain", pidController.getFF());
+        SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
+        SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
+        SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
+        SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
 
     }
 
     @Override
     public void initialize() {
-        //SmartShuffleboard.put("PID", "recent command", "HoldArmPID");
         pidController.setP(Constants.ARM_PID_P_IN, 0);
         pidController.setI(Constants.ARM_PID_I_IN, 0);
         pidController.setD(Constants.ARM_PID_D_IN, 0);

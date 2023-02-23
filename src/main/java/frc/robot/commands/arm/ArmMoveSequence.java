@@ -9,6 +9,7 @@ public class ArmMoveSequence extends SequentialCommandGroup {
     private Double angle;
 
     public ArmMoveSequence(Arm arm, Double angle) {
+        arm.setAngle(angle);
         addCommands(
         new VoltageMoveArm(arm, 4.5, angle),
         new HoldArmPID(arm, angle)

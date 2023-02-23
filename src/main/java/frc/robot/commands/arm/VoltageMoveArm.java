@@ -21,7 +21,6 @@ public class VoltageMoveArm extends CommandBase {
     
     @Override
     public void initialize() {
-        //SmartShuffleboard.put("PID", "recent command", "VoltageMoveArm");
     }
 
     @Override

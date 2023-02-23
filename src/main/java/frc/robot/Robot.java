@@ -42,14 +42,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     arm = m_robotContainer.getArm();
-    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
-    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-  }
+      }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -66,7 +62,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartShuffleboard.put("PID", "encoder", (arm.getEncoderValue()));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -109,11 +104,7 @@ public class Robot extends TimedRobot {
     }
     //new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
 
-    m_robotContainer.getArm().getNeoMotor().getPIDController().setP(0);
-    m_robotContainer.getArm().getNeoMotor().getPIDController().setI(0);
-    m_robotContainer.getArm().getNeoMotor().getPIDController().setD(0);
-    m_robotContainer.getArm().getNeoMotor().getPIDController().setFF(0);
-
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during operator control. */
