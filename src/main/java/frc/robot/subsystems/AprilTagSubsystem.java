@@ -37,7 +37,7 @@ public class AprilTagSubsystem extends SubsystemBase {
     this.realDistanceRightCam = tableRight.getEntry("realDistance");
 
   }
-
+  
   public Long getTagId() {
     Long leftTagID = tagIdLeftCam.getInteger(0L);
     Long rightTagID = tagIdRightCam.getInteger(0L);
@@ -45,7 +45,7 @@ public class AprilTagSubsystem extends SubsystemBase {
       return leftTagID;
     }
     else if (rightTagID != 0) {
-      return tagIdRightCam.getInteger(0L);
+      return rightTagID;
     }
     else {
       return null;
