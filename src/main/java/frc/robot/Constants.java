@@ -86,6 +86,10 @@ public final class Constants {
   public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
 
+  public static final double MANUAL_EXTEND_SPEED = 0.3;
+  public static final double MANUAL_ARM_SPEED = 1.5; //volts
+  public static final double MANUAL_GRIP_SPEED = 0.8;
+
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 1.5;
   public static final double MAX_ACCELERATION_AUTO = 3.0;
@@ -119,25 +123,5 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
   public static final double WANTED_TIME = 1.0;
-
-
-  //xbox buttons
-  public static final int A_BUTTON = 1;
-  public static final int B_BUTTON = 2;
-  public static final int X_BUTTON = 3;
-  public static final int Y_BUTTON = 4;
-  public static final int L_BUMPER = 5;
-  public static final int R_BUMPER = 6;
-  public static final int BACK_BUTTON = 7;
-  public static final int START_BUTTON = 8;
-  public static final int L_STICK_PRESS = 9;
-  public static final int R_STICK_PRESS = 10;
-
-  public static final int L_STICK_X_AXIS = 0;
-  public static final int L_STICK_Y_AXIS = 1;
-  public static final int L_TRIGGER = 2;
-  public static final int R_TRIGGER = 3;
-  public static final int R_STICK_X_AXIS = 4;
-  public static final int R_STICK_Y_AXIS = 5;
 
 }

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
@@ -71,13 +72,13 @@ public class RobotContainer {
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
 
-    xboxManual.button(Constants.A_BUTTON).onTrue(new CloseGripper(gripper));
-    xboxManual.button(Constants.B_BUTTON).onTrue(new OpenGripper(gripper));
-    xboxManual.button(4).whileTrue(new ManualMoveArm(arm, 1.5));
-    xboxManual.axisGreaterThan(Constants.R_STICK_X_AXIS, 0.25).onTrue(new ManualMoveGripper (gripper, () -> 0.8 ));
-    xboxManual.axisLessThan(Constants.R_STICK_X_AXIS, -0.25).onTrue(new ManualMoveGripper (gripper, () -> -0.8 ));
-    xboxManual.axisGreaterThan(Constants.L_STICK_Y_AXIS, 0.25).onTrue(new ManualMoveExtender (extender, () -> 0.3 ));
-    xboxManual.axisLessThan(Constants.L_STICK_Y_AXIS, -0.25).onTrue(new ManualMoveExtender (extender, () -> -0.3 ));
+    xboxManual.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
+    xboxManual.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
+    xboxManual.button(4).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+    xboxManual.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
+    xboxManual.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));
+    xboxManual.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new ManualMoveExtender (extender, () -> Constants.MANUAL_EXTEND_SPEED ));
+    xboxManual.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new ManualMoveExtender (extender, () -> -Constants.MANUAL_EXTEND_SPEED ));
 
   }
 

@@ -15,7 +15,6 @@ public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
-  private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
 
@@ -34,7 +33,6 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    encoderValue = encoder.getPosition();
     if (Constants.DEBUG) {
       SmartShuffleboard.put("Gripper", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
@@ -42,7 +40,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getEncoderValue() {
-    return encoderValue;
+    return encoder.getPosition();
   }
 
   public double getAngle() {

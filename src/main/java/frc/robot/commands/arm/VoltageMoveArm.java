@@ -28,9 +28,9 @@ public class VoltageMoveArm extends CommandBase {
         //negative value moves arm up
         if (angle > arm.getEncoderValue()) {
             arm.setVoltage(power);
-            } else {
+        } else {
             arm.setVoltage(-power);
-            }
+        }
     }
 
     @Override
