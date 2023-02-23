@@ -150,4 +150,20 @@ public final class Constants {
   //setpoints
   public static final double SUBSTATION_PICKUP_ARM_ANGLE = 30.0;
 
+  // arm set points
+  public static final double BOTTOM_ANGLE = 22;
+  public static final double BOTTOM_EXTENSION = 1590;
+
+  public static final double CONE_MIDDLE_ANGLE = 34;
+  public static final double CONE_MIDDLE_EXTENSION = 3170;
+  public static final double CONE_TOP_ANGLE = 39;
+  public static final double CONE_TOP_EXTENSION = 6860;
+
+  public static final double PICKUP_ANGLE = 32;
+  public static final double PICKUP_EXTENSION = 0;
+
+  public static final double CUBE_MIDDLE_ANGLE = 29;
+  public static final double CUBE_MIDDLE_EXTENSION = 1565;
+  public static final double CUBE_TOP_ANGLE = 35;
+  public static final double CUBE_TOP_EXTENSION = 5655;
 }
