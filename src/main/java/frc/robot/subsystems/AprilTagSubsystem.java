@@ -40,45 +40,57 @@ public class AprilTagSubsystem extends SubsystemBase {
 
   public Long getTagId() {
     Long leftTagID = tagIdLeftCam.getInteger(0L);
-    if (leftTagID == 0) {
+    Long rightTagID = tagIdRightCam.getInteger(0L);
+    if (leftTagID != 0) {
       return leftTagID;
     }
-    else 
-    {
+    else if (rightTagID != 0) {
       return tagIdRightCam.getInteger(0L);
+    }
+    else {
+      return null;
     }
   }
 
   public Double getRotation() {
     Long leftTagID = tagIdLeftCam.getInteger(0L);
-    if (leftTagID == 0) {
+    Long rightTagID = tagIdRightCam.getInteger(0L);
+    if (leftTagID != 0) {
       return yRotationLeftCam.getDouble(0);
     }
-    else 
-    {
-      return yRotationRightCam.getDouble(0);
+    else if (rightTagID != 0) {
+      return yRotationRightCam.getDouble(0L);
+    }
+    else {
+      return null;
     }
   }
 
   public Double getHorizontalOffset() {
-      Long leftTagID = tagIdLeftCam.getInteger(0L);
-    if (leftTagID == 0) {
+    Long leftTagID = tagIdLeftCam.getInteger(0L);
+    Long rightTagID = tagIdRightCam.getInteger(0L);
+    if (leftTagID != 0) {
       return horizontalOffsetLeftCam.getDouble(0);
     }
-    else 
-    {
-      return horizontalOffsetRightCam.getDouble(0);
+    else if (rightTagID != 0) {
+      return horizontalOffsetRightCam.getDouble(0L);
+    }
+    else {
+      return null;
     }
   }
 
   public Double getDistance() {
     Long leftTagID = tagIdLeftCam.getInteger(0L);
-    if (leftTagID == 0) {
+    Long rightTagID = tagIdRightCam.getInteger(0L);
+    if (leftTagID != 0) {
       return realDistanceLeftCam.getDouble(0);
     }
-    else 
-    {
-      return realDistanceRightCam.getDouble(0);
+    else if (rightTagID != 0) {
+      return realDistanceRightCam.getDouble(0L);
+    }
+    else {
+      return null;
     }
   }
 
