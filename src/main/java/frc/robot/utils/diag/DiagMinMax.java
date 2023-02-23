@@ -1,7 +1,7 @@
 package frc.robot.utils.diag;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public abstract class DiagMinMax implements Diagnosable {
 
     private String name;
+    private String title;
     private double minValue;
     private double maxValue;
     private GenericEntry networkTableEntry;
@@ -25,8 +26,9 @@ public abstract class DiagMinMax implements Diagnosable {
      * @param minValue        - the minimum value the object needs to hit to qualify for success
      * @param maxValue        - the maximum value the object needs to hit to qualify for success
      */
-    public DiagMinMax(String name, double minValue, double maxValue) {
+    public DiagMinMax(String title, String name, double minValue, double maxValue) {
         this.name = name;
+        this.title = title;
         this.minValue = minValue;
         this.maxValue = maxValue;
 
@@ -34,8 +36,8 @@ public abstract class DiagMinMax implements Diagnosable {
     }
 
     @Override
-    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab) {
-        networkTableEntry = shuffleBoardTab.add(name, false).getEntry();
+    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab, int width, int height) {
+        networkTableEntry = shuffleBoardTab.getLayout(title, BuiltInLayouts.kList).withSize(width, height).add(name, false).getEntry();
     }
 
     @Override

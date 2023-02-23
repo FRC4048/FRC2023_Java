@@ -15,8 +15,8 @@ public class DiagSwitch extends DiagBoolean {
      * @param name            the name of the unit. Will be used on the Shuffleboard
      * @param digitalInput    - the DigitalInput the switch is connected to
      */
-    public DiagSwitch(String name, DigitalInput digitalInput) {
-        super(name);
+    public DiagSwitch(String title, String name, DigitalInput digitalInput) {
+        super(title, name);
         this.digitalInput = digitalInput;
     }
 
