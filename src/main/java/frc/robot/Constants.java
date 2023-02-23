@@ -144,4 +144,7 @@ public final class Constants {
   public static final int R_STICK_X_AXIS = 4;
   public static final int R_STICK_Y_AXIS = 5;
 
+  //setpoints
+  public static final double SUBSTATION_PICKUP_ARM_ANGLE = 30.0;
+
 }

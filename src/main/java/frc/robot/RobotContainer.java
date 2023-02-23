@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.Stow;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
@@ -19,6 +18,7 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -75,8 +75,8 @@ public class RobotContainer {
     xboxManual.button(4).whileTrue(new ManualMoveArm(arm, 1.5));
     xboxManual.axisGreaterThan(Constants.R_STICK_X_AXIS, 0.25).onTrue(new ManualMoveGripper (gripper, () -> 0.8 ));
     xboxManual.axisLessThan(Constants.R_STICK_X_AXIS, -0.25).onTrue(new ManualMoveGripper (gripper, () -> -0.8 ));
-    xboxManual.axisGreaterThan(Constants.L_STICK_Y_AXIS, 0.25).onTrue(new ManualMoveExtender (extender, () -> 0.3 ));
-    xboxManual.axisLessThan(Constants.L_STICK_Y_AXIS, -0.25).onTrue(new ManualMoveExtender (extender, () -> -0.3 ));
+    xboxManual.axisGreaterThan(Constants.L_STICK_Y_AXIS, 0.25).onTrue(new ManualMoveExtender (extender, () -> Constants.EXTENDER_MANUAL_SPEED ));
+    xboxManual.axisLessThan(Constants.L_STICK_Y_AXIS, -0.25).onTrue(new ManualMoveExtender (extender, () -> -Constants.EXTENDER_MANUAL_SPEED ));
 
   }
 
