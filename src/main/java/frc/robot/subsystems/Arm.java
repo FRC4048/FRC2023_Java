@@ -5,12 +5,16 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
+import frc.robot.utils.diag.DiagSparkMaxSwitch;
 
 public class Arm extends SubsystemBase {
   private double angle;
@@ -25,7 +29,14 @@ public class Arm extends SubsystemBase {
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
-    encoder = neoMotor.getEncoder();
+    encoder = neoMotor.getEncoder();  
+    neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
+    neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
+
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Retracted Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.REVERSE));
+
 
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);

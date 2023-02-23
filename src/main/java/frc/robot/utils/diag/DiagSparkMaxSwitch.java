@@ -1,18 +1,19 @@
 package frc.robot.utils.diag;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 /**
  * Diagnostics class for digital switch connected directly to the talon SRX
  * it is a DiagBoolean subclass.
  */
-public class DiagTalonSrxSwitch extends DiagBoolean {
-    public DiagTalonSrxSwitch(String title, String name) {
+public class DiagSparkMaxSwitch extends DiagBoolean {
+    public DiagSparkMaxSwitch(String title, String name) {
         super(title, name);
     }
 
     public enum Direction {FORWARD, REVERSE};
-    private WPI_TalonSRX talonSRX;
+    private CANSparkMax canSparkMax;
     private Direction direction;
 
     /*
@@ -22,18 +23,18 @@ public class DiagTalonSrxSwitch extends DiagBoolean {
      * @param talonSRX  -the talon SRX to read the switch value from
      */
 
-    public DiagTalonSrxSwitch(String title, String name, WPI_TalonSRX talonSRX, Direction direction) {
+    public DiagSparkMaxSwitch(String title, String name, CANSparkMax canSparkMax, Direction direction) {
         super(title, name);
-        this.talonSRX = talonSRX;
+        this.canSparkMax = canSparkMax;
         this.direction = direction;
     }
     @Override
     protected boolean getValue() {
         switch (direction) {
             case FORWARD:
-                return talonSRX.getSensorCollection().isFwdLimitSwitchClosed();
+                return canSparkMax.getForwardLimitSwitch(Type.kNormallyOpen).isPressed();
             case REVERSE:
-                return talonSRX.getSensorCollection().isRevLimitSwitchClosed();
+                return canSparkMax.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
             default:
                 return false;
         }
