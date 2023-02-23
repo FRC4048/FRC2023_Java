@@ -69,8 +69,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
-    RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
+    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+    RightGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
 
     xboxManual.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     xboxManual.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));

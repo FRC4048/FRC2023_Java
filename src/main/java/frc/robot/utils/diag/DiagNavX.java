@@ -15,15 +15,15 @@ import com.kauailabs.navx.frc.AHRS;
 public class DiagNavX extends DiagDistanceTraveled {
     private AHRS navX;
 
-    public DiagNavX(String name, int requiredTravel, AHRS navX) {
-        super(name, requiredTravel);
+    public DiagNavX(String title, String name, double requiredTravel, AHRS navX) {
+        super(title, name, requiredTravel);
         this.navX = navX;
 
         reset();
     }
 
     @Override
-    protected int getCurrentValue() {
-        return (int)navX.getAngle();
+    protected double getCurrentValue() {
+        return navX.getAngle();
     }
 }
