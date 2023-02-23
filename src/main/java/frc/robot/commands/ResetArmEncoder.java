@@ -5,8 +5,12 @@ import frc.robot.subsystems.Arm;
 
 public class ResetArmEncoder extends CommandBase {
     private Arm arm;
-    ResetArmEncoder(Arm arm) {
+    private boolean ResetEncoders;
+    
+    ResetArmEncoder(Arm arm, boolean ResetEncoders) {
         this.arm = arm;
+        this.ResetEncoders = ResetEncoders;
+        
     }
     public void end(boolean interrupted) {
    
@@ -14,7 +18,9 @@ public class ResetArmEncoder extends CommandBase {
 
     @Override
     public void initialize() {
-        arm.resetEncoder();
+        if (ResetEncoders == true) {
+            arm.resetEncoder();
+        }     
     }
 
     @Override

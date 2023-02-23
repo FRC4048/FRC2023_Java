@@ -42,6 +42,9 @@ public class RobotContainer {
   private JoystickButton button_3 = new JoystickButton(joyLeft, 3);
   private XboxController xbox = new XboxController(2);
   private CommandXboxController cmdController = new CommandXboxController(2);
+  private boolean ResetStowEncoder = true;
+ 
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -66,9 +69,9 @@ public class RobotContainer {
     cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
     cmdController.button(7).whileTrue(new ManualExtender(extender,true));
     cmdController.button(8).whileTrue(new ManualExtender(extender,false));
-    cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
+    cmdController.button(1).onTrue(new ResetExtenderEncoder(extender, true));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
-    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender, extender.getResetEncoders()));
   }
 
   /**
@@ -132,5 +135,10 @@ public class RobotContainer {
   public Extender getExtender() {
     return extender;
   }
+
+  public void setResetStowEncoder(boolean resetStowEncoder) {
+    ResetStowEncoder = resetStowEncoder;
+  }
+  
 
 }

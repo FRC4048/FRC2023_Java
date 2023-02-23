@@ -24,7 +24,7 @@ public class Arm extends SubsystemBase {
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean goingUp;
-  
+
   public Arm() {
     angle = 0;
 
@@ -32,6 +32,8 @@ public class Arm extends SubsystemBase {
     encoder = neoMotor.getEncoder();  
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
+
+    
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
@@ -103,4 +105,10 @@ public class Arm extends SubsystemBase {
   public void setGoingUp(boolean bool) {
     goingUp = bool;
   }
+
+  public void resetEncoder() {
+    encoder.setPosition(0);
+  }
+
+
 }

@@ -8,9 +8,12 @@ public class ResetExtenderEncoder extends CommandBase {
     private Extender extender;
 
     private boolean limitReached = false;
+
+    private boolean ResetEncoders;
     
-    public ResetExtenderEncoder(Extender extender) {
+    public ResetExtenderEncoder(Extender extender, boolean ResetEncoders) {
         this.extender = extender;
+        this.ResetEncoders = ResetEncoders;
         addRequirements(extender);
     }
 
@@ -21,13 +24,16 @@ public class ResetExtenderEncoder extends CommandBase {
 
     @Override
     public void execute() {
-        boolean revLimit = extender.revLimitReached();
-        if (revLimit) {
-            extender.resetEncoder();
-            limitReached = true;
-        } else {
-            extender.move(-.2);
+        if (ResetEncoders == true) {
+            boolean revLimit = extender.revLimitReached();
+            if (revLimit) {
+                extender.resetEncoder();
+                limitReached = true;
+            } else {
+                extender.move(-.2);
+            }
         }
+        
     }
 
     @Override
@@ -37,7 +43,7 @@ public class ResetExtenderEncoder extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return limitReached;
+        return limitReached == true || ResetEncoders == false;
     }
 
     

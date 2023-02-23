@@ -13,10 +13,15 @@ import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagTalonSrxEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
+import pabeles.concurrency.ConcurrencyOps.Reset;
 
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
+
+    private boolean ResetEncoders = true;
+    
+   
 
     public Extender() {
         int TIMEOUT = 100;
@@ -62,6 +67,14 @@ public class Extender extends SubsystemBase {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
 
+    public void setResetEncoders(boolean resetEncoders) {
+        ResetEncoders = resetEncoders;
+    }
+    
+    public boolean getResetEncoders() {
+        return ResetEncoders;
+    }
+
     @Override
     public void periodic() {
         SmartShuffleboard.put("Extender", "encoder",getEncoder());
@@ -69,4 +82,5 @@ public class Extender extends SubsystemBase {
         SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
         SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
     }
+    
 }
