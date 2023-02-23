@@ -96,6 +96,9 @@ public final class Constants {
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;
 
+  public static final double NO_EXTENSION_ZONE = 23; //max arm angle for no extension
+  public static final double NO_ARM_LOWER_ZONE = 5; //max extension for no arm lower
+
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 1.5;
   public static final double MAX_ACCELERATION_AUTO = 3.0;

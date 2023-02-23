@@ -66,6 +66,10 @@ private Extender extender;
     return encoder.getPosition();
   }
 
+  public boolean safeToExtend() {
+    return (encoderValue > Constants.NO_EXTENSION_ZONE);
+  }
+
   public double getAngle() {
     return angle;
   }

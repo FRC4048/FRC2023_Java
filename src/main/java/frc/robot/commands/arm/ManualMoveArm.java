@@ -1,6 +1,7 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -21,8 +22,13 @@ public class ManualMoveArm extends CommandBase {
 
     @Override
     public void execute() {
-        // Flipping sign, "down" is positive
-        this.arm.setVoltage(power);
+        //if the arm is low and the extender is out
+        if ((arm.getEncoderValue() <= Constants.NO_EXTENSION_ZONE) && !(arm.getExtender().safeToLowerArm())) {
+            arm.setVoltage(0.0);
+        } else {
+            arm.setVoltage(power);
+        }
+
     }
 
     @Override
