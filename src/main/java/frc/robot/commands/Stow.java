@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
@@ -14,7 +15,7 @@ public class Stow extends SequentialCommandGroup {
         addCommands(
                 new CloseGripper(gripper),
                 new ExtendToPosition(extender, 0),
-                new VoltageMoveArm(arm, 3.0, 0.0)
+                new VoltageMoveArm(arm, Constants.ARM_STOW_SPEED, 0.0)
         );
     }
 
