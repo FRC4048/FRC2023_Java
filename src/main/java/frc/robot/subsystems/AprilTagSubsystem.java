@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -33,31 +32,54 @@ public class AprilTagSubsystem extends SubsystemBase {
 
     tableRight = NetworkTableInstance.getDefault().getTable("apriltag").getSubTable("right");
     this.tagIdRightCam = tableRight.getEntry("tagId");
+    this.yRotationRightCam = tableRight.getEntry("angleY");
     this.horizontalOffsetRightCam = tableRight.getEntry("horizontalOffset");
     this.realDistanceRightCam = tableRight.getEntry("realDistance");
 
   }
 
   public Long getTagId() {
-    return tagIdLeftCam.getInteger(0L);
+    Long leftTagID = tagIdLeftCam.getInteger(0L);
+    if (leftTagID == 0) {
+      return leftTagID;
+    }
+    else 
+    {
+      return tagIdRightCam.getInteger(0L);
+    }
   }
 
   public Double getRotation() {
-    double rotation = yRotationLeftCam.getDouble(0.0) + yRotationRightCam.getDouble(0.0);
-    rotation = rotation / 2;
-    return rotation;
+    Long leftTagID = tagIdLeftCam.getInteger(0L);
+    if (leftTagID == 0) {
+      return yRotationLeftCam.getDouble(0);
+    }
+    else 
+    {
+      return yRotationRightCam.getDouble(0);
+    }
   }
 
   public Double getHorizontalOffset() {
-    double horizontalOffset = horizontalOffsetLeftCam.getDouble(0.0)+ horizontalOffsetRightCam.getDouble(0.0);
-    horizontalOffset = horizontalOffset / 2;
-    return horizontalOffset;
+      Long leftTagID = tagIdLeftCam.getInteger(0L);
+    if (leftTagID == 0) {
+      return horizontalOffsetLeftCam.getDouble(0);
+    }
+    else 
+    {
+      return horizontalOffsetRightCam.getDouble(0);
+    }
   }
 
   public Double getDistance() {
-    double distance = realDistanceLeftCam.getDouble(0.0) + realDistanceRightCam.getDouble(0.0);
-    distance = distance / 2;
-    return distance;
+    Long leftTagID = tagIdLeftCam.getInteger(0L);
+    if (leftTagID == 0) {
+      return realDistanceLeftCam.getDouble(0);
+    }
+    else 
+    {
+      return realDistanceRightCam.getDouble(0);
+    }
   }
 
   @Override
