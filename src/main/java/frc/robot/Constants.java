@@ -65,11 +65,16 @@ public final class Constants {
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P_UP = 0.03;
-  public static final double ARM_PID_P_DOWN = 0.01; 
-  public static final double ARM_PID_I = 0.01;
-  public static final double ARM_PID_D = 0;
-  public static final double ARM_PID_FF = 0.02;
+
+  //Arm Constants
+  public static final double ARM_PID_P_IN = 0.03; 
+  public static final double ARM_PID_I_IN = 0.0001;
+  public static final double ARM_PID_D_IN = 0.0;
+  public static final double ARM_PID_FF_IN = 0.0;
+
+  public static final double ARM_STOW_SPEED = 3.0; //volts
+  public static final double ARM_RAISE_SPEED = 4.5; //volts
+
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -96,10 +101,6 @@ public final class Constants {
             MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCELERATION);
 
 
-  
-
-  public static final double ARM_CONTROLLER_CHANGE = 1;
-  public static final double ARM_MAX_ANGLE = 820; //encoder top: 130700, encoder mid: 102000
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
@@ -114,12 +115,33 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
-  public static final double GRIPPER_OPENING_SPEED = 0.5;
-  public static final double GRIPPER_CLOSING_SPEED = -0.5;
-  public static final double GRIPPER_TIMEOUT = 5.0;
+  public static final double GRIPPER_OPENING_SPEED = 1;
+  public static final double GRIPPER_CLOSING_SPEED = -1;
+  public static final double GRIPPER_TIMEOUT = 2.0;
   public static final double WANTED_TIME = 1.0;
   public static final double DIAG_TALONSRX_ROT = 5;
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
+
+
+  //xbox buttons
+  public static final int A_BUTTON = 1;
+  public static final int B_BUTTON = 2;
+  public static final int X_BUTTON = 3;
+  public static final int Y_BUTTON = 4;
+  public static final int L_BUMPER = 5;
+  public static final int R_BUMPER = 6;
+  public static final int BACK_BUTTON = 7;
+  public static final int START_BUTTON = 8;
+  public static final int L_STICK_PRESS = 9;
+  public static final int R_STICK_PRESS = 10;
+
+  public static final int L_STICK_X_AXIS = 0;
+  public static final int L_STICK_Y_AXIS = 1;
+  public static final int L_TRIGGER = 2;
+  public static final int R_TRIGGER = 3;
+  public static final int R_STICK_X_AXIS = 4;
+  public static final int R_STICK_Y_AXIS = 5;
+
 }

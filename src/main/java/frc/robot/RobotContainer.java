@@ -8,12 +8,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.*;
+import frc.robot.commands.GyroOffseter;
+import frc.robot.commands.ResetGyro;
+import frc.robot.commands.Stow;
+import frc.robot.commands.arm.ArmMoveSequence;
+import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
+import frc.robot.commands.drive.Forward;
 import frc.robot.commands.extender.ExtendToPosition;
-import frc.robot.commands.extender.ManualExtender;
 import frc.robot.commands.extender.ManualMoveExtender;
-import frc.robot.commands.extender.ResetExtenderEncoder;
+import frc.robot.commands.gripper.CloseGripper;
+import frc.robot.commands.gripper.ManualMoveGripper;
+import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -34,14 +40,19 @@ public class RobotContainer {
   private Extender extender;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
+
+  //Joysticks & Joystick Buttons
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
   private Joystick joyRight = new Joystick(Constants.RIGHT_JOYSTICK_ID);
   private JoystickButton LeftGyroButton= new JoystickButton(joyLeft, 1);
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
-  private JoystickButton button_1 = new JoystickButton(joyLeft, 2);
-  private JoystickButton button_3 = new JoystickButton(joyLeft, 3);
-  private XboxController xbox = new XboxController(2);
-  private CommandXboxController cmdController = new CommandXboxController(2);
+
+  //Xbox controllers
+  private CommandXboxController xboxManual = new CommandXboxController(4);
+  private XboxController xboxAuto = new XboxController(3);
+
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -52,23 +63,38 @@ public class RobotContainer {
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
+    putShuffleboardCommands();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
-    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> xbox.getLeftX()));
-    extender.setDefaultCommand(new ManualMoveExtender(extender, () -> xbox.getRightY()));
   }
 
   private void configureBindings() {
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
-    button_1.onTrue(new CloseGripper(gripper));
-    button_3.onTrue(new OpenGripper(gripper));
-    cmdController.rightBumper().whileTrue(new ArmController(arm, Constants.ARM_CONTROLLER_CHANGE));
-    cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
-    cmdController.button(7).whileTrue(new ManualExtender(extender,true));
-    cmdController.button(8).whileTrue(new ManualExtender(extender,false));
-    cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
+
+    xboxManual.button(Constants.A_BUTTON).onTrue(new CloseGripper(gripper));
+    xboxManual.button(Constants.B_BUTTON).onTrue(new OpenGripper(gripper));
+    xboxManual.button(4).whileTrue(new ManualMoveArm(arm, 1.5));
+    xboxManual.axisGreaterThan(Constants.R_STICK_X_AXIS, 0.25).onTrue(new ManualMoveGripper (gripper, () -> 0.8 ));
+    xboxManual.axisLessThan(Constants.R_STICK_X_AXIS, -0.25).onTrue(new ManualMoveGripper (gripper, () -> -0.8 ));
+    xboxManual.axisGreaterThan(Constants.L_STICK_Y_AXIS, 0.25).onTrue(new ManualMoveExtender (extender, () -> 0.3 ));
+    xboxManual.axisLessThan(Constants.L_STICK_Y_AXIS, -0.25).onTrue(new ManualMoveExtender (extender, () -> -0.3 ));
+
+  }
+
+  public void putShuffleboardCommands() {
+
+    if (Constants.DEBUG) {
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
+    SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
+    SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 39", new ArmMoveSequence(arm, 39.0));
+    SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 28", new ArmMoveSequence(arm, 28.0));
+    SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 20", new ArmMoveSequence(arm, 20.0));
+
+    SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
+    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
+  }
   }
 
   /**
@@ -128,7 +154,7 @@ public class RobotContainer {
   public Arm getArm() {
     return arm;
   }
-
+  
   public Extender getExtender() {
     return extender;
   }
