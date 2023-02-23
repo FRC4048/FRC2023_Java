@@ -14,7 +14,6 @@ import frc.robot.commands.Stow;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.Forward;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -58,8 +57,8 @@ public class RobotContainer {
   public RobotContainer() {
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
-    arm = new Arm();
-    extender = new Extender();
+    arm = new Arm(extender);
+    extender = new Extender(arm);
     m_PDB = new PowerDistributionBoard();
 
     configureBindings();
@@ -91,8 +90,6 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 39", new ArmMoveSequence(arm, 39.0));
     SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 28", new ArmMoveSequence(arm, 28.0));
     SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 20", new ArmMoveSequence(arm, 20.0));
-
-    SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
   }
   }

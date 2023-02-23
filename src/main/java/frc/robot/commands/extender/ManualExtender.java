@@ -8,6 +8,7 @@ import frc.robot.subsystems.Extender;
 public class ManualExtender extends CommandBase {
     private Extender extender;
     private boolean forward;
+    private double speed;
 
     public ManualExtender(Extender extender, boolean forward) {
         this.extender = extender;
@@ -27,11 +28,17 @@ public class ManualExtender extends CommandBase {
     @Override
     public void execute(){
         if (forward) {
-            extender.move(Constants.EXTENDER_MANUAL_SPEED);
+            speed = Constants.EXTENDER_MANUAL_SPEED;
         }
         else {
-            extender.move(-Constants.EXTENDER_MANUAL_SPEED);
+            speed = -Constants.EXTENDER_MANUAL_SPEED;
         }
+
+        if (extender.getArm().getEncoderValue() <= 5) {
+            speed = 0;
+        }
+
+        extender.move(speed);
     }
 
     @Override

@@ -17,8 +17,9 @@ import frc.robot.utils.diag.DiagTalonSrxSwitch;
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
+    private Arm arm;
 
-    public Extender() {
+    public Extender(Arm arm) {
         int TIMEOUT = 100;
 
         extenderMotor = new WPI_TalonSRX(Constants.EXTENDER_MOTOR_ID);
@@ -35,7 +36,7 @@ public class Extender extends SubsystemBase {
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxEncoder("Extender", "Encoder", Constants.DIAG_TALONSRX_ROT, extenderMotor));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Extended Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Retracted Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
-
+        this.arm = arm;
     }
 
     public void resetEncoder() {
@@ -60,6 +61,10 @@ public class Extender extends SubsystemBase {
 
     public boolean revLimitReached() {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
+    }
+
+    public Arm getArm() {
+        return arm;
     }
 
     @Override

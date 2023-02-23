@@ -4,13 +4,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
@@ -22,9 +21,11 @@ public class Arm extends SubsystemBase {
   private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
-
+  private Extender extender;
   
-  public Arm() {
+  public Arm(Extender extender) {
+    this.extender = extender;
+
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -87,5 +88,9 @@ public class Arm extends SubsystemBase {
 
   public CANSparkMax getNeoMotor() {
     return neoMotor;
+  }
+
+  public Extender getExtender() {
+    return extender;
   }
 }
