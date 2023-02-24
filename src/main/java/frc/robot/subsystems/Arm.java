@@ -57,6 +57,13 @@ private SparkMaxPIDController pidController;
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
+
+    if (Constants.DEBUG) {
+      SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
+      SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
+      SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
+      SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
+      }
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -116,6 +123,13 @@ private SparkMaxPIDController pidController;
 
   public void resetEncoder() {
     encoder.setPosition(0);
+  }
+
+  public void setPID(double p, double i, double d, double f) {
+    pidController.setP(p);
+    pidController.setI(i);
+    pidController.setD(d);
+    pidController.setFF(f);
   }
 
   public Extender getExtender() {

@@ -17,21 +17,11 @@ public class HoldArmPID extends CommandBase {
         this.angle = angle;
         this.arm = arm;
         addRequirements(this.arm);
-
-        if (Constants.DEBUG) {
-        SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
-        SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
-        SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
-        SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
-        }
     }
 
     @Override
     public void initialize() {
-        pidController.setP(Constants.ARM_PID_P_IN, 0);
-        pidController.setI(Constants.ARM_PID_I_IN, 0);
-        pidController.setD(Constants.ARM_PID_D_IN, 0);
-        pidController.setFF(Constants.ARM_PID_FF_IN, 0);
+        arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
     }
 
     @Override
