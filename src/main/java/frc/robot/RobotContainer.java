@@ -4,17 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.commands.MatrixCommands;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.PowerDistributionBoard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
+import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
+import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.Stow;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
@@ -73,16 +70,16 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.povUp().onTrue(arm.setGridSlot(Constants.Grid.UP_MIDDLE));
-    controller.povUpRight().onTrue(new MatrixCommands(drivetrain, arm, "upRight"));
-    controller.povRight().onTrue(new MatrixCommands(drivetrain, arm, "right"));
-    controller.povDownRight().onTrue(new MatrixCommands(drivetrain, arm, "downRight"));
-    controller.povDown().onTrue(new MatrixCommands(drivetrain, arm, "down"));
-    controller.povDownLeft().onTrue(new MatrixCommands(drivetrain, arm, "downLeft"));
-    controller.povLeft().onTrue(new MatrixCommands(drivetrain, arm, "left"));
-    controller.povUpLeft().onTrue(new MatrixCommands(drivetrain, arm, "upLeft"));
-    controller.povCenter().onTrue(new MatrixCommands(drivetrain, arm, "still"));
-
+    controller.povUpLeft().onTrue(new SetGridSlot(arm, Constants.Grid.UP_LEFT));
+    controller.povLeft().onTrue(new SetGridSlot(arm, Constants.Grid.MIDDLE_LEFT));
+    controller.povDownLeft().onTrue(new SetGridSlot(arm, Constants.Grid.DOWN_LEFT));
+    controller.povUp().onTrue(new SetGridSlot(arm, Constants.Grid.UP_MIDDLE));
+    controller.povCenter().onTrue(new SetGridSlot(arm, Constants.Grid.MIDDLE_MIDDLE));
+    controller.povDown().onTrue(new SetGridSlot(arm, Constants.Grid.DOWN_MIDDLE));
+    controller.povUpRight().onTrue(new SetGridSlot(arm, Constants.Grid.UP_RIGHT));
+    controller.povRight().onTrue(new SetGridSlot(arm, Constants.Grid.MIDDLE_RIGHT));
+    controller.povDownRight().onTrue(new SetGridSlot(arm, Constants.Grid.DOWN_RIGHT));
+    
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
 

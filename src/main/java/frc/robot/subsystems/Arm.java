@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
-  private Constants.Grid gridSlot;
+  private Constants.Grid SelectedGridSlot;
 
   
   public Arm() {
@@ -45,18 +45,37 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    displayGrid();
     if (Constants.DEBUG) {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
   }
 
-  public Constants.Grid getGridSlot() {
-    return gridSlot;
+  public void displayGrid() {
+    SmartShuffleboard.put("test", "1", "upLeft", isSlotSelected(Constants.Grid.UP_LEFT));
+    SmartShuffleboard.put("test", "1", "middleLeft", isSlotSelected(Constants.Grid.MIDDLE_LEFT));
+    SmartShuffleboard.put("test", "1", "downLeft", isSlotSelected(Constants.Grid.DOWN_LEFT));
+
+    SmartShuffleboard.put("test", "2", "upMiddle", isSlotSelected(Constants.Grid.UP_MIDDLE));
+    SmartShuffleboard.put("test", "2", "middleMiddle", isSlotSelected(Constants.Grid.MIDDLE_MIDDLE));
+    SmartShuffleboard.put("test", "2", "downMiddle", isSlotSelected(Constants.Grid.DOWN_MIDDLE));
+
+    SmartShuffleboard.put("test", "3", "upRight", isSlotSelected(Constants.Grid.UP_RIGHT));
+    SmartShuffleboard.put("test", "3", "middleRight", isSlotSelected(Constants.Grid.MIDDLE_RIGHT));
+    SmartShuffleboard.put("test", "3", "downRight", isSlotSelected(Constants.Grid.DOWN_LEFT));
   }
 
-  public void setGridSlot(Constants.Grid slot) {
-    gridSlot = slot;
+  public boolean isSlotSelected(Constants.Grid slot) {
+    return slot == SelectedGridSlot;
+  }
+
+  public Constants.Grid getSelectedGridSlot() {
+    return SelectedGridSlot;
+  }
+
+  public void setSelectedGridSlot(Constants.Grid slot) {
+    SelectedGridSlot = slot;
   }
 
   public double getEncoderValue() {

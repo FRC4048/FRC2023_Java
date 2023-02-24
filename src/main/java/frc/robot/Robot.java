@@ -15,7 +15,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.MatrixSetter;
+import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.Forward;
 import frc.robot.commands.drive.WheelAlign;
@@ -115,17 +115,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    SmartShuffleboard.put("test", "1", "upLeft", MatrixSetter.isCurrentState(8));
-    SmartShuffleboard.put("test", "1", "left", MatrixSetter.isCurrentState(7));
-    SmartShuffleboard.put("test", "1", "downLeft", MatrixSetter.isCurrentState(6));
 
-    SmartShuffleboard.put("test", "2", "up", MatrixSetter.isCurrentState(1));
-    SmartShuffleboard.put("test", "2", "still", MatrixSetter.isCurrentState(0));
-    SmartShuffleboard.put("test", "2", "down", MatrixSetter.isCurrentState(5));
-
-    SmartShuffleboard.put("test", "3", "upRight", MatrixSetter.isCurrentState(2));
-    SmartShuffleboard.put("test", "3", "right", MatrixSetter.isCurrentState(3));
-    SmartShuffleboard.put("test", "3", "downRight", MatrixSetter.isCurrentState(4));
   }
 
   @Override
