@@ -2,12 +2,10 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,12 +17,11 @@ import frc.robot.utils.diag.DiagSparkMaxSwitch;
 public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
-  private SparkMaxPIDController pidController;
   private RelativeEncoder encoder;
-  private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
-  private boolean goingUp;
+  private boolean pidding;
 
+  
   public Arm() {
     angle = 0;
 
@@ -44,46 +41,14 @@ public class Arm extends SubsystemBase {
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
 
-    pidController = neoMotor.getPIDController();
-    
-
-    kP = Constants.ARM_PID_P_UP;
-    //kI = Constants.ARM_PID_I;
-    kD = Constants.ARM_PID_D;
-    kFF = Constants.ARM_PID_FF;
-  
-    pidController.setP(kP);
-    //pidController.setI(kI);
-    pidController.setD(kD);
-    pidController.setFF(kFF);
-    
-    SmartShuffleboard.put("PID", "P Gain", kP);
-    SmartShuffleboard.put("PID", "I Gain", kI);
-    SmartShuffleboard.put("PID", "D Gain", kD);
-    SmartShuffleboard.put("PID", "FF Gain", kFF);
   }
 
   @Override
   public void periodic() {
-    encoderValue = encoder.getPosition();
-    
-    /* 
-    double p = SmartShuffleboard.getDouble("PID", "P Gain", Constants.ARM_PID_P);
-    double i = SmartShuffleboard.getDouble("PID", "I Gain", Constants.ARM_PID_I);
-    double d = SmartShuffleboard.getDouble("PID", "D Gain", Constants.ARM_PID_D);
-    double ff = SmartShuffleboard.getDouble("PID", "FF Gain", Constants.ARM_PID_FF);
-    */
-    SmartShuffleboard.put("PID", "going up", goingUp);
-    if (goingUp) {
-      pidController.setP(Constants.ARM_PID_P_UP); 
-      pidController.setI(Constants.ARM_PID_I);
+    if (Constants.DEBUG) {
+      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
-    else {
-      pidController.setP(Constants.ARM_PID_P_DOWN);
-      pidController.setI(0);
-    }
-
-    pidController.setReference(Math.toRadians(angle), ControlType.kPosition);
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -95,7 +60,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getEncoderValue() {
-    return encoderValue;
+    return encoder.getPosition();
   }
 
   public double getAngle() {
@@ -106,12 +71,29 @@ public class Arm extends SubsystemBase {
     this.angle = angle;
   }
 
-  public boolean getGoingUp() {
-    return goingUp;
+  public void setPidding(boolean bool) {
+    pidding = bool;
   }
 
-  public void setGoingUp(boolean bool) {
-    goingUp = bool;
+  public void setVoltage(Double val) {
+    if (val > Constants.ARM_MAX_VOLTS) {
+    neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
+  } else if (val < -Constants.ARM_MAX_VOLTS) {
+    neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
+    else {
+      neoMotor.setVoltage(val);
+    }
+  }
+
+  public void zeroPID() {
+    neoMotor.getPIDController().setP(0);
+    neoMotor.getPIDController().setI(0);
+    neoMotor.getPIDController().setD(0);
+    neoMotor.getPIDController().setFF(0);
+  }
+
+  public CANSparkMax getNeoMotor() {
+    return neoMotor;
   }
 
   public void resetEncoder() {
