@@ -5,9 +5,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class AprilTagSubsystem extends SubsystemBase {
+public class AprilTagPosition {
 
   NetworkTableEntry tagIdLeftCam;
   NetworkTableEntry yRotationLeftCam;
@@ -22,7 +21,7 @@ public class AprilTagSubsystem extends SubsystemBase {
   NetworkTable tableLeft;
   NetworkTable tableRight;
 
-  public AprilTagSubsystem() {
+  public AprilTagPosition() {
 
     tableLeft = NetworkTableInstance.getDefault().getTable("apriltag").getSubTable("left");
     this.tagIdLeftCam = tableLeft.getEntry("tagId");
@@ -35,12 +34,19 @@ public class AprilTagSubsystem extends SubsystemBase {
     this.yRotationRightCam = tableRight.getEntry("angleY");
     this.horizontalOffsetRightCam = tableRight.getEntry("horizontalOffset");
     this.realDistanceRightCam = tableRight.getEntry("realDistance");
+  }
 
+  public boolean isLeftCameraDetectingTag() {
+    return tagIdLeftCam.getInteger(0L) != 0;
+  }
+
+  public boolean isRightCameraDetectingTag() {
+    return tagIdRightCam.getInteger(0L) != 0;
   }
   
   public Long getTagId() {
-    Long leftTagID = tagIdLeftCam.getInteger(0L);
-    Long rightTagID = tagIdRightCam.getInteger(0L);
+    long leftTagID = tagIdLeftCam.getInteger(0);
+    long rightTagID = tagIdRightCam.getInteger(0);
     if (leftTagID != 0) {
       return leftTagID;
     }
@@ -53,26 +59,19 @@ public class AprilTagSubsystem extends SubsystemBase {
   }
 
   public Double getRotation() {
-    Long leftTagID = tagIdLeftCam.getInteger(0L);
-    Long rightTagID = tagIdRightCam.getInteger(0L);
-    if (leftTagID != 0) {
+    if (isLeftCameraDetectingTag()) {
       return yRotationLeftCam.getDouble(0);
+    } else if (isRightCameraDetectingTag()) {
+      return yRotationRightCam.getDouble(0);
     }
-    else if (rightTagID != 0) {
-      return yRotationRightCam.getDouble(0L);
-    }
-    else {
-      return null;
-    }
+    return null;
   }
 
   public Double getHorizontalOffset() {
-    Long leftTagID = tagIdLeftCam.getInteger(0L);
-    Long rightTagID = tagIdRightCam.getInteger(0L);
-    if (leftTagID != 0) {
+    if (isLeftCameraDetectingTag()) {
       return horizontalOffsetLeftCam.getDouble(0);
     }
-    else if (rightTagID != 0) {
+    else if (isRightCameraDetectingTag()) {
       return horizontalOffsetRightCam.getDouble(0L);
     }
     else {
@@ -81,12 +80,10 @@ public class AprilTagSubsystem extends SubsystemBase {
   }
 
   public Double getDistance() {
-    Long leftTagID = tagIdLeftCam.getInteger(0L);
-    Long rightTagID = tagIdRightCam.getInteger(0L);
-    if (leftTagID != 0) {
+    if (isLeftCameraDetectingTag()) {
       return realDistanceLeftCam.getDouble(0);
     }
-    else if (rightTagID != 0) {
+    else if (isRightCameraDetectingTag()) {
       return realDistanceRightCam.getDouble(0L);
     }
     else {
@@ -94,12 +91,8 @@ public class AprilTagSubsystem extends SubsystemBase {
     }
   }
 
-  @Override
-  public void periodic() {
-  }
-
   public Pose2d getPose2d() {
-    Pose2d pose2d = new Pose2d(getDistance(), getHorizontalOffset(), new Rotation2d(Math.toRadians(getRotation())));
+    Pose2d pose2d = new Pose2d(getDistance(), getHorizontalOffset(), new Rotation2d(getRotation()));
     return pose2d;
   }
 
