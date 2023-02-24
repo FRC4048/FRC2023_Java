@@ -78,7 +78,7 @@ public class RobotContainer {
 
     manualController.button(XboxController.Button.kY.value).onTrue(new AprilTagSetRotation(drivetrain, 0, aprilTag));
     manualController.button(XboxController.Button.kA.value).onTrue(new AprilTagSetHorizontal(drivetrain, 0, aprilTag));
-    manualController.button(XboxController.Button.kX.value).onTrue(new AprilTagSetVertical(drivetrain, 0, aprilTag));
+    manualController.button(XboxController.Button.kX.value).onTrue(new AprilTagSetVertical(drivetrain, 1.1176, aprilTag));
   //  manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
 
