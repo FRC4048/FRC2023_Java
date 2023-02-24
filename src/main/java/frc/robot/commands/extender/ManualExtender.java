@@ -39,6 +39,6 @@ public class ManualExtender extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime > 3;
+        return Timer.getFPGATimestamp() - startTime > Constants.MANUAL_TIMEOUT;
     }
 }

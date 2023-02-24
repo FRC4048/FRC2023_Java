@@ -40,6 +40,9 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
   public static final int ARM_ID = 35;
+
+  public static final double TIMEOUT = 3;
+  public static final double MANUAL_TIMEOUT = 7;
   
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;

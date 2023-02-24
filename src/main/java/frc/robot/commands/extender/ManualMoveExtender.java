@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Extender;
 
 public class ManualMoveExtender extends CommandBase {
@@ -35,7 +36,7 @@ public class ManualMoveExtender extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime > 3;
+        return Timer.getFPGATimestamp() - startTime > Constants.MANUAL_TIMEOUT;
     }
 
     

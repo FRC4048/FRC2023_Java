@@ -1,5 +1,6 @@
 package frc.robot.commands.drive;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -8,6 +9,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Forward extends CommandBase{
     private Drivetrain drivetrain;
     public double InitEncValue;
+    private double startTime;
     public Forward(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
@@ -24,6 +26,7 @@ public class Forward extends CommandBase{
 
     @Override
     public void initialize() {
+        startTime = Timer.getFPGATimestamp();
         InitEncValue=drivetrain.getRelEnc(Constants.DRIVE_BACK_LEFT_D);
 
     }
@@ -38,6 +41,6 @@ public class Forward extends CommandBase{
 
     @Override
     public boolean isFinished() {   
-        return drivetrain.getRelEnc(Constants.DRIVE_BACK_LEFT_D)-InitEncValue>Constants.WHEEL_RADIUS*2*Math.PI;
+        return drivetrain.getRelEnc(Constants.DRIVE_BACK_LEFT_D)-InitEncValue>Constants.WHEEL_RADIUS*2*Math.PI || Timer.getFPGATimestamp() - startTime > Constants.TIMEOUT;
     }   
 }

@@ -1,15 +1,16 @@
 package frc.robot.commands.arm;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
-import frc.robot.utils.SmartShuffleboard;
 
 public class VoltageMoveArm extends CommandBase {
     
     private Arm arm;
     private Double power;
     private Double angle;
+    private double startTime;
 
     public VoltageMoveArm(Arm arm, Double power, Double angle) {
         this.arm = arm;
@@ -22,6 +23,7 @@ public class VoltageMoveArm extends CommandBase {
     
     @Override
     public void initialize() {
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -41,7 +43,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD;
+        return Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD || Timer.getFPGATimestamp() - startTime > Constants.TIMEOUT;
     }
 
     
