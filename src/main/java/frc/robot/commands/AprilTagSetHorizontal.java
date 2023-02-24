@@ -29,24 +29,34 @@ public class AprilTagSetHorizontal extends CommandBase {
 
     @Override
     public void execute() {
-        double currentHorizontalOffset = apriltag.getHorizontalOffset();
-        if (desiredHorizontal > currentHorizontalOffset) {
-            // desired more than current, must move right
-            drivetrain.drive(0, -0.2, 0, false);
-        } else {
-            // desired less than current, move left
-            drivetrain.drive(0, 0.2, 0, false);
+        Double currentHorizontalOffset = apriltag.getHorizontalOffset();
+        if (currentHorizontalOffset != null) {
+            if (desiredHorizontal > currentHorizontalOffset) {
+                // desired more than current, must move right
+                drivetrain.drive(0, -0.2, 0, false);
+            } else {
+                // desired less than current, move left
+                drivetrain.drive(0, 0.2, 0, false);
+            }
+        }
+        else {
+            drivetrain.drive(0, 0, 0, false);
         }
 
     }
 
     @Override
     public boolean isFinished() {
-        double currentHorizontalOffset = apriltag.getHorizontalOffset();
-        if (Math.abs(desiredHorizontal - currentHorizontalOffset) < Constants.HORIZONTAL_ERROR_THRESHOLD) {
+        Double currentHorizontalOffset = apriltag.getHorizontalOffset();
+        if (currentHorizontalOffset != null) {
+            if (Math.abs(desiredHorizontal - currentHorizontalOffset) < Constants.HORIZONTAL_ERROR_THRESHOLD) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else {
             return true;
-        } else {
-            return false;
         }
     }
 }
