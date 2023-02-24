@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.AprilTagPosition;
 import frc.robot.subsystems.Drivetrain;
 
@@ -9,7 +10,6 @@ public class AprilTagSetVertical extends CommandBase{
     private double desiredVertical;
     private AprilTagPosition apriltag;
     private double currentVertical;
-    private double VERTICAL_ERROR_THRESHOLD = 2.5; //meters
    
     public AprilTagSetVertical(Drivetrain drivetrain, double desiredVertical, AprilTagPosition apriltag) {
         this.drivetrain = drivetrain;
@@ -41,7 +41,7 @@ public class AprilTagSetVertical extends CommandBase{
     @Override
     public boolean isFinished() {
        currentVertical = apriltag.getDistance();
-       return (Math.abs(currentVertical - desiredVertical) <= VERTICAL_ERROR_THRESHOLD);
+       return (Math.abs(currentVertical - desiredVertical) <= Constants.VERTICAL_ERROR_THRESHOLD);
     }
     
 }
