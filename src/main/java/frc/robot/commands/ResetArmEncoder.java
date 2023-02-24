@@ -5,7 +5,6 @@ import frc.robot.subsystems.Arm;
 
 public class ResetArmEncoder extends CommandBase {
     private Arm arm;
-    private boolean ResetEncoders;
     
     ResetArmEncoder(Arm arm) {
         this.arm = arm;

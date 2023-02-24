@@ -8,8 +8,6 @@ public class ResetExtenderEncoder extends CommandBase {
     private Extender extender;
 
     private boolean limitReached = false;
-
-    private boolean ResetEncoders;
     
     public ResetExtenderEncoder(Extender extender) {
         this.extender = extender;
