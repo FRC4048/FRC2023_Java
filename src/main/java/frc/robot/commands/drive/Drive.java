@@ -16,11 +16,7 @@ public class Drive extends CommandBase{
     private DoubleSupplier fwdSupplier, strSupplier, rtSupplier;
 
     
-    public Drive(
-        Drivetrain drivetrain, 
-        DoubleSupplier fwdSupplier, 
-        DoubleSupplier strSupplier, 
-        DoubleSupplier rtSupplier) {
+    public Drive(Drivetrain drivetrain, DoubleSupplier fwdSupplier, DoubleSupplier strSupplier, DoubleSupplier rtSupplier) {
         addRequirements(drivetrain);
 
         this.drivetrain = drivetrain;
@@ -42,7 +38,11 @@ public class Drive extends CommandBase{
         //rcw = rcw * rcw * Math.signum(rcw);
 
         // TODO: Call drivetrain
-        drivetrain.drive(-fwd, -str, -rcw, true);
+        drivetrain.drive(
+            Math.signum(fwd) * ((Math.abs(fwd) - 0.1) * Constants.MAX_VELOCITY / (Constants.MAX_VELOCITY - 0.1)), 
+            Math.signum(str) * ((Math.abs(str) - 0.1) * Constants.MAX_VELOCITY / (Constants.MAX_VELOCITY - 0.1)), 
+            Math.signum(rcw) * ((Math.abs(rcw) - 0.1) * Constants.MAX_VELOCITY / (Constants.MAX_VELOCITY - 0.1)), 
+            true);
     }
 
 
