@@ -4,9 +4,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -23,9 +26,11 @@ public class Arm extends SubsystemBase {
 
 
 private Extender extender;
-
+private SparkMaxPIDController pidController;
+  
   public Arm(Extender extender) {
     this.extender = extender;
+
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -97,6 +102,10 @@ private Extender extender;
     neoMotor.getPIDController().setI(0);
     neoMotor.getPIDController().setD(0);
     neoMotor.getPIDController().setFF(0);
+  }
+
+  public SparkMaxPIDController getPIDController() {
+    return pidController;
   }
 
   public CANSparkMax getNeoMotor() {
