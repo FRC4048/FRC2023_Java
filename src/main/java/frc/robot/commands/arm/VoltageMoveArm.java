@@ -29,13 +29,17 @@ public class VoltageMoveArm extends CommandBase {
         //positive angle -> positive power
         if (angle > arm.getEncoderValue()) {
             arm.setVoltage(power);
+<<<<<<< HEAD
         //unsafe negative angle -> no power
             } else if (angle < Constants.NO_EXTENSION_ZONE && !(arm.getExtender().safeToLowerArm())) {   
             arm.setVoltage(0.0);
         //safe negative angle -> negative power
             } else {
+=======
+        } else {
+>>>>>>> origin/main
             arm.setVoltage(-power);
-            }
+        }
     }
 
     @Override
@@ -45,7 +49,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - arm.getEncoderValue()) < 2.5;
+        return Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD;
     }
 
     

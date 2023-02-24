@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.XboxControllerSim;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
@@ -47,8 +48,8 @@ public class RobotContainer {
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
 
   //Xbox controllers
-  private CommandXboxController xboxManual = new CommandXboxController(4);
-  private XboxController xboxAuto = new XboxController(3);
+  private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
+  private XboxController controller = new XboxController(Constants.CONTROLLER_ID);
 
 
 
@@ -67,6 +68,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+<<<<<<< HEAD
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
 
@@ -77,6 +79,19 @@ public class RobotContainer {
     xboxManual.axisLessThan(Constants.R_STICK_X_AXIS, -0.25).onTrue(new ManualMoveGripper (gripper, () -> -0.8 ));
     xboxManual.axisGreaterThan(Constants.L_STICK_Y_AXIS, 0.25).onTrue(new ManualMoveExtender (extender, () -> Constants.EXTENDER_MANUAL_SPEED ));
     xboxManual.axisLessThan(Constants.L_STICK_Y_AXIS, -0.25).onTrue(new ManualMoveExtender (extender, () -> -Constants.EXTENDER_MANUAL_SPEED ));
+=======
+    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
+    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+
+    manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
+    manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
+    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
+    manualController.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));
+    manualController.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new ManualMoveExtender (extender, () -> Constants.MANUAL_EXTEND_SPEED ));
+    manualController.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new ManualMoveExtender (extender, () -> -Constants.MANUAL_EXTEND_SPEED ));
+>>>>>>> origin/main
 
   }
 

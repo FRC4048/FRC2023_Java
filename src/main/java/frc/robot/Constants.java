@@ -20,6 +20,8 @@ public final class Constants {
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
   public static final int RIGHT_JOYSTICK_ID = 1;
+  public static final int CONTROLLER_ID = 2;
+  public static final int MANUAL_CONTROLLER_ID = 3;
 
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
   public static final int DRIVE_FRONT_RIGHT_S = 48;
@@ -75,6 +77,10 @@ public final class Constants {
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
 
+  public static final double ARM_MAX_VOLTS = 4.5;
+
+  public static final double ARM_MOVE_PID_THRESHOLD = 2;
+
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -88,6 +94,9 @@ public final class Constants {
 
   public static final double NO_EXTENSION_ZONE = 23; //max arm angle for no extension
   public static final double NO_ARM_LOWER_ZONE = 5; //max extension for no arm lower
+  public static final double MANUAL_EXTEND_SPEED = 0.3;
+  public static final double MANUAL_ARM_SPEED = 1.5; //volts
+  public static final double MANUAL_GRIP_SPEED = 0.8;
 
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 1.5;
@@ -122,48 +131,9 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
   public static final double WANTED_TIME = 1.0;
+
   public static final double DIAG_TALONSRX_ROT = 5;
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
-
-
-  //xbox buttons
-  public static final int A_BUTTON = 1;
-  public static final int B_BUTTON = 2;
-  public static final int X_BUTTON = 3;
-  public static final int Y_BUTTON = 4;
-  public static final int L_BUMPER = 5;
-  public static final int R_BUMPER = 6;
-  public static final int BACK_BUTTON = 7;
-  public static final int START_BUTTON = 8;
-  public static final int L_STICK_PRESS = 9;
-  public static final int R_STICK_PRESS = 10;
-
-  public static final int L_STICK_X_AXIS = 0;
-  public static final int L_STICK_Y_AXIS = 1;
-  public static final int L_TRIGGER = 2;
-  public static final int R_TRIGGER = 3;
-  public static final int R_STICK_X_AXIS = 4;
-  public static final int R_STICK_Y_AXIS = 5;
-
-  //setpoints
-  public static final double SUBSTATION_PICKUP_ARM_ANGLE = 30.0;
-
-  // arm set points
-  public static final double BOTTOM_ANGLE = 22;
-  public static final double BOTTOM_EXTENSION = 1590;
-
-  public static final double CONE_MIDDLE_ANGLE = 34;
-  public static final double CONE_MIDDLE_EXTENSION = 3170;
-  public static final double CONE_TOP_ANGLE = 39;
-  public static final double CONE_TOP_EXTENSION = 6860;
-
-  public static final double PICKUP_ANGLE = 32;
-  public static final double PICKUP_EXTENSION = 0;
-
-  public static final double CUBE_MIDDLE_ANGLE = 29;
-  public static final double CUBE_MIDDLE_EXTENSION = 1565;
-  public static final double CUBE_TOP_ANGLE = 35;
-  public static final double CUBE_TOP_EXTENSION = 5655;
 }

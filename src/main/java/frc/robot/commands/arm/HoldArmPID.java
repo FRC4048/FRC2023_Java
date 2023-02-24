@@ -20,11 +20,12 @@ public class HoldArmPID extends CommandBase {
         addRequirements(this.arm);
         pidController = arm.getNeoMotor().getPIDController();
 
+        if (Constants.DEBUG) {
         SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
         SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
         SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
         SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
-
+        }
     }
 
     @Override

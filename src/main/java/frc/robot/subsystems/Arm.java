@@ -9,6 +9,7 @@ import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
@@ -18,7 +19,6 @@ public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
-  private double encoderValue;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private Extender extender;
@@ -46,19 +46,18 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    encoderValue = encoder.getPosition();
     if (Constants.DEBUG) {
-      SmartShuffleboard.put("Gripper", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
   }
 
   public double getEncoderValue() {
-    return encoderValue;
+    return encoder.getPosition();
   }
 
   public boolean safeToExtend() {
-    return (encoderValue > Constants.NO_EXTENSION_ZONE);
+    return (encoder.getPosition() > Constants.NO_EXTENSION_ZONE);
   }
 
   public double getAngle() {
@@ -74,10 +73,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void setVoltage(Double val) {
-    if (val > 4.5) {
-    neoMotor.setVoltage(4.5);
-  } else if (val < -4.5) {
-    neoMotor.setVoltage(-4.5);}
+    if (val > Constants.ARM_MAX_VOLTS) {
+    neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
+  } else if (val < -Constants.ARM_MAX_VOLTS) {
+    neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
     else {
       neoMotor.setVoltage(val);
     }
