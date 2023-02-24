@@ -95,12 +95,16 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    if (val > Constants.ARM_MAX_VOLTS) {
-    neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
-  } else if (val < -Constants.ARM_MAX_VOLTS) {
-    neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
-    else {
-      neoMotor.setVoltage(val);
+    if (val < 1 && !safeToExtend() && !extender.safeToLowerArm()) {
+      setVoltage(0.0);
+    } else {
+      if (val > Constants.ARM_MAX_VOLTS) {
+        neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
+      } else if (val < -Constants.ARM_MAX_VOLTS) {
+      neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
+      else {
+        neoMotor.setVoltage(val);
+      }
     }
   }
 
@@ -112,7 +116,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setPIDReference(double reference) {
-    if ((reference > Constants.NO_EXTENSION_ZONE) || (getExtender().safeToLowerArm())) {
+    if ((reference > Constants.NO_EXTENSION_ZONE) || (extender.safeToLowerArm())) {
       pidController.setReference(reference, ControlType.kPosition, 0);
   }
   }
@@ -135,4 +139,5 @@ private SparkMaxPIDController pidController;
   public Extender getExtender() {
     return extender;
   }
+  
 }

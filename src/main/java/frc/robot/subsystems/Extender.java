@@ -45,7 +45,11 @@ public class Extender extends SubsystemBase {
     }
 
     public void move(double speed) {
+        if (arm.safeToExtend()) {
         extenderMotor.set(speed);
+        } else {
+            extenderMotor.set(0.0);
+        }
     }
 
     public void stop() {

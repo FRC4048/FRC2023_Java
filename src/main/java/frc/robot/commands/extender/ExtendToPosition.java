@@ -35,12 +35,8 @@ public class ExtendToPosition extends CommandBase {
         } else {
             speed = Constants.EXTENDER_MINIMUM_SPEED * Math.signum(error);
         }
-
-        if (extender.getArm().safeToExtend()) {
-            extender.move(speed);
-        } else {
-            extender.move(0);
-        }
+        
+        extender.move(speed);
     }
 
     @Override
