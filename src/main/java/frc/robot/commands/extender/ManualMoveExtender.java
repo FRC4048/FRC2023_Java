@@ -2,11 +2,13 @@ package frc.robot.commands.extender;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Extender;
 
 public class ManualMoveExtender extends CommandBase {
     
+    private double startTime;
     private Extender extender;
     private DoubleSupplier doubleSupplier;
 
@@ -14,7 +16,15 @@ public class ManualMoveExtender extends CommandBase {
         this.extender = extender;
         this.doubleSupplier = doubleSupplier;
         addRequirements(this.extender);
+
     }
+    
+
+    @Override
+    public void initialize() {
+        startTime = Timer.getFPGATimestamp();
+    }
+
 
     @Override
     public void execute() {
@@ -25,7 +35,7 @@ public class ManualMoveExtender extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return Timer.getFPGATimestamp() - startTime > 3;
     }
 
     

@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
@@ -8,13 +9,20 @@ public class ArmController extends CommandBase{
     private double desiredAngle;
     private Arm arm;
     private double change;
-    
+    private double startTime;
 
     public ArmController(Arm arm, double change) {
         this.change = change;
         this.arm = arm;
         addRequirements(arm);
     }
+
+    
+    @Override
+    public void initialize() {
+        startTime = Timer.getFPGATimestamp();
+    }
+
 
     @Override
     public void execute() {
@@ -29,6 +37,6 @@ public class ArmController extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return false;
+        return Timer.getFPGATimestamp() - startTime > 3;
     }
 }

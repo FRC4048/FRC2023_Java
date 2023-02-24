@@ -1,6 +1,7 @@
 package frc.robot.commands.extender;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Extender;
@@ -8,6 +9,7 @@ import frc.robot.subsystems.Extender;
 public class ExtendToPosition extends CommandBase {
     private Extender extender;
     private double position;
+    private double startTime;
 
     public ExtendToPosition(Extender extender, double position) {
         this.extender = extender;
@@ -22,6 +24,7 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public void initialize() {
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -40,6 +43,6 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_ERROR_THRESHOLD);
+        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_ERROR_THRESHOLD) || Timer.getFPGATimestamp() - startTime > 3;
     }
 }

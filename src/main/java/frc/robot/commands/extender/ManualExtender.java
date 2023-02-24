@@ -1,6 +1,7 @@
 package frc.robot.commands.extender;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Extender;
@@ -8,6 +9,7 @@ import frc.robot.subsystems.Extender;
 public class ManualExtender extends CommandBase {
     private Extender extender;
     private boolean forward;
+    private double startTime;
 
     public ManualExtender(Extender extender, boolean forward) {
         this.extender = extender;
@@ -22,6 +24,7 @@ public class ManualExtender extends CommandBase {
 
     @Override
     public void initialize() {
+        startTime= Timer.getFPGATimestamp();
     }
 
     @Override
@@ -36,6 +39,6 @@ public class ManualExtender extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return Timer.getFPGATimestamp() - startTime > 3;
     }
 }

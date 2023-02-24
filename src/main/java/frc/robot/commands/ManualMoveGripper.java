@@ -2,12 +2,14 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class ManualMoveGripper extends CommandBase{
     private final GripperSubsystem gripper;
     private final DoubleSupplier dSupplier;
+    private double startTime;
     public ManualMoveGripper(GripperSubsystem gripper, DoubleSupplier dSupplier) {
         this.gripper = gripper;
         addRequirements(gripper);
@@ -28,12 +30,12 @@ public class ManualMoveGripper extends CommandBase{
 
     @Override
     public void initialize() {
-
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return Timer.getFPGATimestamp() - startTime > 3;
     }
     
 }
