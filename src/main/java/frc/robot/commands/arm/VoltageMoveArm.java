@@ -30,11 +30,7 @@ public class VoltageMoveArm extends CommandBase {
         //positive angle -> positive power
         if (angle > arm.getEncoderValue()) {
             arm.setVoltage(power);
-        //unsafe negative angle -> no power
-            } else if (angle < Constants.NO_EXTENSION_ZONE && !(arm.getExtender().safeToLowerArm())) {
-            arm.setVoltage(0.0);
-        //safe negative angle -> negative power
-            } else {
+        } else {
             arm.setVoltage(-power);
         }
     }

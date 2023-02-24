@@ -28,8 +28,7 @@ public class Arm extends SubsystemBase {
 private Extender extender;
 private SparkMaxPIDController pidController;
   
-  public Arm(Extender extender) {
-    this.extender = extender;
+  public Arm() {
 
     angle = 0;
 
@@ -38,7 +37,7 @@ private SparkMaxPIDController pidController;
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
-
+    pidController = neoMotor.getPIDController();
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
@@ -72,6 +71,10 @@ private SparkMaxPIDController pidController;
 
   public boolean isRevLimitSwitchReached() {
     return neoMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
+  }
+
+  public void setExtender(Extender extender) {
+    this.extender = extender;
   }
 
   public double getEncoderValue() {

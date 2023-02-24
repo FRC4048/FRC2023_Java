@@ -19,7 +19,7 @@ public class Extender extends SubsystemBase {
     private WPI_TalonSRX extenderMotor;
     private Arm arm;
 
-    public Extender(Arm arm) {
+    public Extender() {
         int TIMEOUT = 100;
 
         extenderMotor = new WPI_TalonSRX(Constants.EXTENDER_MOTOR_ID);
@@ -36,12 +36,14 @@ public class Extender extends SubsystemBase {
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxEncoder("Extender", "Encoder", Constants.DIAG_TALONSRX_ROT, extenderMotor));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Extended Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Retracted Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
-
-        this.arm = arm;
     }
 
     public void resetEncoder() {
         extenderMotor.setSelectedSensorPosition(0);
+    }
+
+    public void setArm(Arm arm) {
+        this.arm = arm;
     }
 
     public void move(double speed) {

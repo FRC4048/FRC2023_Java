@@ -22,12 +22,7 @@ public class ManualMoveArm extends CommandBase {
 
     @Override
     public void execute() {
-        //if the arm is low and the extender is out
-        if ((arm.getEncoderValue() <= Constants.NO_EXTENSION_ZONE) && !(arm.getExtender().safeToLowerArm())) {
-            arm.setVoltage(0.0);
-        } else {
-            arm.setVoltage(power);
-        }
+        arm.setVoltage(power);
 
     }
 

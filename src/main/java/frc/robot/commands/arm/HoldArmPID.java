@@ -27,11 +27,7 @@ public class HoldArmPID extends CommandBase {
     @Override
     public void execute() {
         arm.setPidding(true);
-        if ((arm.getEncoderValue() <= Constants.NO_EXTENSION_ZONE) && !(arm.getExtender().safeToLowerArm())) {
-            arm.zeroPID();
-        } else {
         arm.setPIDReference(angle);
-        }
     }
 
     @Override

@@ -72,8 +72,10 @@ public class RobotContainer {
   public RobotContainer() {
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
-    arm = new Arm(extender);
-    extender = new Extender(arm);
+    arm = new Arm();
+    extender = new Extender();
+    arm.setExtender(extender);
+    extender.setArm(arm);
     m_PDB = new PowerDistributionBoard();
     aprilTagPosition = new AprilTagPosition();
     pieceGrid = new PieceGrid();
