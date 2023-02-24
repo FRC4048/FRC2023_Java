@@ -23,7 +23,10 @@ public class AprilTagSetVertical extends CommandBase{
     }
 
     @Override
-    public void initialize() {
+    public void initialize() {}
+
+    @Override
+    public void execute(){
         currentVertical = apriltag.getDistance();
         if (currentVertical == null) {}
         else if (currentVertical > desiredVertical) {
@@ -32,11 +35,6 @@ public class AprilTagSetVertical extends CommandBase{
         else {
             drivetrain.drive(-2.5, 0, 0, false);
         }
-    }
-
-    @Override
-    public void execute(){
-        
     }
 
     @Override
