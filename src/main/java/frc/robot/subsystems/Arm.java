@@ -86,6 +86,14 @@ public class Arm extends SubsystemBase {
     pidController.setReference(Math.toRadians(angle), ControlType.kPosition);
   }
 
+  public boolean isFwdLimitSwitchReached() {
+    return neoMotor.getForwardLimitSwitch(Type.kNormallyOpen).isPressed();
+  }
+
+  public boolean isRevLimitSwitchReached() {
+    return neoMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
+  }
+
   public double getEncoderValue() {
     return encoderValue;
   }

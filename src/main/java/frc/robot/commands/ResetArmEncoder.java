@@ -7,9 +7,8 @@ public class ResetArmEncoder extends CommandBase {
     private Arm arm;
     private boolean ResetEncoders;
     
-    ResetArmEncoder(Arm arm, boolean ResetEncoders) {
+    ResetArmEncoder(Arm arm) {
         this.arm = arm;
-        this.ResetEncoders = ResetEncoders;
         
     }
     public void end(boolean interrupted) {
@@ -18,9 +17,7 @@ public class ResetArmEncoder extends CommandBase {
 
     @Override
     public void initialize() {
-        if (ResetEncoders == true) {
-            arm.resetEncoder();
-        }     
+        arm.resetEncoder();  
     }
 
     @Override

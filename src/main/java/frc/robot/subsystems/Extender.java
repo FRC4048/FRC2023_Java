@@ -19,10 +19,6 @@ public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
 
-    private boolean ResetEncoders = true;
-    
-   
-
     public Extender() {
         int TIMEOUT = 100;
 
@@ -66,15 +62,7 @@ public class Extender extends SubsystemBase {
     public boolean revLimitReached() {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
-
-    public void setResetEncoders(boolean resetEncoders) {
-        ResetEncoders = resetEncoders;
-    }
     
-    public boolean getResetEncoders() {
-        return ResetEncoders;
-    }
-
     @Override
     public void periodic() {
         SmartShuffleboard.put("Extender", "encoder",getEncoder());

@@ -69,9 +69,9 @@ public class RobotContainer {
     cmdController.leftBumper().whileTrue(new ArmController(arm, -1 * Constants.ARM_CONTROLLER_CHANGE));
     cmdController.button(7).whileTrue(new ManualExtender(extender,true));
     cmdController.button(8).whileTrue(new ManualExtender(extender,false));
-    cmdController.button(1).onTrue(new ResetExtenderEncoder(extender, true));
+    cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
-    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender, extender.getResetEncoders()));
+    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
   }
 
   /**
