@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.AprilTagPosition;
@@ -10,6 +11,7 @@ public class AprilTagSetVertical extends CommandBase{
     private double desiredVertical;
     private AprilTagPosition apriltag;
     private Double currentVertical;
+    private double startTime;
    
     public AprilTagSetVertical(Drivetrain drivetrain, double desiredVertical, AprilTagPosition apriltag) {
         this.drivetrain = drivetrain;
@@ -23,7 +25,9 @@ public class AprilTagSetVertical extends CommandBase{
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        this.startTime = Timer.getFPGATimestamp();
+    }
 
     @Override
     public void execute(){
@@ -39,6 +43,9 @@ public class AprilTagSetVertical extends CommandBase{
 
     @Override
     public boolean isFinished() {
+        if ((startTime - Timer.getFPGATimestamp()) > 5.00) {
+            return true;
+        }
        currentVertical = apriltag.getDistance();
        if (currentVertical == null) {
         return true;
