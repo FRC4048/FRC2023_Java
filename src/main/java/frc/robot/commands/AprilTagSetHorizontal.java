@@ -22,7 +22,7 @@ public class AprilTagSetHorizontal extends CommandBase {
 
     @Override
     public void initialize() {
-        drivetrain.drive(0, desiredHorizontal-apriltag.getAprilTagHorizontal(), 0, false);
+        drivetrain.drive(0, desiredHorizontal-apriltag.getHorizontalOffset(), 0, false);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class AprilTagSetHorizontal extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return apriltag.getAprilTagHorizontal() >= desiredHorizontal-3 && apriltag.getAprilTagHorizontal() <= desiredHorizontal+3;
+        return apriltag.getHorizontalOffset() >= desiredHorizontal-3 && apriltag.getHorizontalOffset() <= desiredHorizontal+3;
     }
 }

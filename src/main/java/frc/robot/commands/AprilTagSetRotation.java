@@ -17,20 +17,32 @@ public class AprilTagSetRotation extends CommandBase {
     }
 
     public void end(boolean interrupted) {
+
+        drivetrain.drive(0, 0, 0, false);
     }
 
     @Override
     public void initialize() {
-        drivetrain.drive(0, 0, desiredRotation-apriltag.getAprilTagRotation(), false);
     }
 
     @Override
     public void execute(){
-        
+        double currentRotation = apriltag.getRotation();
+        if (desiredRotation > currentRotation) {
+            // Desired is greater than current, turn left
+            drivetrain.drive(0, 0, .2, false);
+        } else {
+            // Desired is less than current, turn right
+            drivetrain.drive(0, 0, -.2, false);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return apriltag.getAprilTagRotation() >= desiredRotation-3 && apriltag.getAprilTagRotation() <= desiredRotation+3;
+        double currentRotation = apriltag.getRotation();
+        if (Math.abs(desiredRotation - currentRotation) < .017) { 
+            return true;
+        }
+        return false;
     }
 }

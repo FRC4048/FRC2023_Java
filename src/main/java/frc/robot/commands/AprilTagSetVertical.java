@@ -21,7 +21,8 @@ public class AprilTagSetVertical extends CommandBase{
 
     @Override
     public void initialize() {
-        drivetrain.drive(desiredVertical-apriltag.getAprilTagVertical(), 0, 0, false);
+
+        drivetrain.drive(desiredVertical-apriltag.getDistance(), 0, 0, false);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class AprilTagSetVertical extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return apriltag.getAprilTagVertical() >= desiredVertical-3 && apriltag.getAprilTagVertical() <= desiredVertical+3;
+        return apriltag.getDistance() >= desiredVertical-3 && apriltag.getDistance()<= desiredVertical+3;
     }
     
 }
