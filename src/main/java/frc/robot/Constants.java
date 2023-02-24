@@ -124,6 +124,7 @@ public final class Constants {
   public static final double BACK_LEFT_ABS_ENCODER_ZERO = 351.3;
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
+  public static final double VERTICAL_ERROR_THRESHOLD = 0.0235; //placeholder in meters
 
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
