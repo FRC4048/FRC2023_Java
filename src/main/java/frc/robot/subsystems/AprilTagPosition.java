@@ -92,8 +92,9 @@ public class AprilTagPosition {
   }
 
   public Pose2d getPose2d() {
-    Pose2d pose2d = new Pose2d(getDistance(), getHorizontalOffset(), new Rotation2d(getRotation()));
-    return pose2d;
+    if (isLeftCameraDetectingTag() || isRightCameraDetectingTag()) {
+      return new Pose2d(getDistance(), getHorizontalOffset(), new Rotation2d(getRotation()));
+    }
+    return null;
   }
-
 }
