@@ -10,6 +10,7 @@ public class AprilTagSetHorizontal extends CommandBase {
     private Drivetrain drivetrain;
     private double desiredHorizontal;
     private AprilTagPosition apriltag;
+    double startTime;
 
     public AprilTagSetHorizontal(Drivetrain drivetrain, double desiredHorizontal, AprilTagPosition apriltag) {
         this.drivetrain = drivetrain;
@@ -24,12 +25,11 @@ public class AprilTagSetHorizontal extends CommandBase {
 
     @Override
     public void initialize() {
-
+        startTime = System.currentTimeMillis();
     }
 
     @Override
     public void execute() {
-
         Double currentHorizontalOffset = apriltag.getHorizontalOffset();
         if (currentHorizontalOffset != null) {
             if (desiredHorizontal > currentHorizontalOffset) {
@@ -42,12 +42,17 @@ public class AprilTagSetHorizontal extends CommandBase {
         } else {
             drivetrain.drive(0, 0, 0, false);
         }
- 
+
     }
 
     @Override
     public boolean isFinished() {
         Double currentHorizontalOffset = apriltag.getHorizontalOffset();
+        double currentTime = System.currentTimeMillis();
+        if ((currentTime - startTime) > 5000) {
+            return true;
+        }
+
         if (currentHorizontalOffset != null) {
             if (Math.abs(desiredHorizontal - currentHorizontalOffset) < Constants.HORIZONTAL_ERROR_THRESHOLD) {
                 return true;
