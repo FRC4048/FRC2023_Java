@@ -136,7 +136,7 @@ public final class Constants {
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
 
-  public static final double  HORIZONTAL_ERROR_THRESHOLD = 0.2;
+  public static final double  HORIZONTAL_ERROR_THRESHOLD = 0.0762;
 
 
 }
