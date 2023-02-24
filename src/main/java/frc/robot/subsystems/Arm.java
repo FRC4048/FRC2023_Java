@@ -2,14 +2,14 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -104,8 +104,10 @@ private SparkMaxPIDController pidController;
     neoMotor.getPIDController().setFF(0);
   }
 
-  public SparkMaxPIDController getPIDController() {
-    return pidController;
+  public void setPIDReference(double reference) {
+    if ((reference > Constants.NO_EXTENSION_ZONE) || (getExtender().safeToLowerArm())) {
+      pidController.setReference(reference, ControlType.kPosition, 0);
+  }
   }
 
   public CANSparkMax getNeoMotor() {

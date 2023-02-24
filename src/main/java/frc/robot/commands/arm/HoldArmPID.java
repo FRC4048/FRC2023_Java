@@ -12,13 +12,11 @@ public class HoldArmPID extends CommandBase {
 
     private Arm arm;
     private Double angle;
-    private SparkMaxPIDController pidController;
 
     public HoldArmPID(Arm arm, Double angle) {
         this.angle = angle;
         this.arm = arm;
         addRequirements(this.arm);
-        pidController = arm.getNeoMotor().getPIDController();
 
         if (Constants.DEBUG) {
         SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
@@ -42,7 +40,7 @@ public class HoldArmPID extends CommandBase {
         if ((arm.getEncoderValue() <= Constants.NO_EXTENSION_ZONE) && !(arm.getExtender().safeToLowerArm())) {
             arm.zeroPID();
         } else {
-        pidController.setReference(angle, ControlType.kPosition, 0);
+        arm.setPIDReference(angle);
         }
     }
 
