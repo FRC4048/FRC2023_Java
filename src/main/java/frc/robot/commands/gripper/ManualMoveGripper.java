@@ -21,8 +21,6 @@ public class ManualMoveGripper extends CommandBase{
     @Override
     public void execute() {
         double speed = dSupplier.getAsDouble();
-        // Scaling by half to ensure the gripper does not move too quickly
-        speed = 0.5*speed;
         gripper.move(speed);
     }
 
