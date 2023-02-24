@@ -99,7 +99,8 @@ private SparkMaxPIDController pidController;
 
   public void setVoltage(Double val) {
     if (val < 1 && !safeToExtend() && !extender.safeToLowerArm()) {
-      setVoltage(0.0);
+      //this should eventually be changed to a stow command
+      neoMotor.setVoltage(0.0);
     } else {
       if (val > Constants.ARM_MAX_VOLTS) {
         neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);

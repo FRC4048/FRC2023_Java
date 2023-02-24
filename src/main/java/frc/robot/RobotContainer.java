@@ -185,6 +185,11 @@ public class RobotContainer {
     return arm;
   }
 
+  public GripperSubsystem getGripper() {
+    return gripper;
+  }
+
+
   public CommandXboxController getController() {
     return controller;
   }
