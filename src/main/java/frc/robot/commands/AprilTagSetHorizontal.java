@@ -11,7 +11,7 @@ public class AprilTagSetHorizontal extends CommandBase {
     private Drivetrain drivetrain;
     private double desiredHorizontal;
     private AprilTagPosition apriltag;
-    double startTime;
+    private double startTime;
 
     public AprilTagSetHorizontal(Drivetrain drivetrain, double desiredHorizontal, AprilTagPosition apriltag) {
         this.drivetrain = drivetrain;
