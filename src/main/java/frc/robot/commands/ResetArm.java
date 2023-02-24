@@ -27,7 +27,7 @@ public class ResetArm extends CommandBase{
 
     @Override
     public void execute(){
-        boolean revLimit = arm.isFwdLimitSwitchReached();
+        boolean revLimit = arm.isRevLimitSwitchReached();
             if (revLimit) {
                 arm.resetEncoder();
                 limitReached = true;

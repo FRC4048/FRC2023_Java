@@ -26,7 +26,7 @@ public class ResetExtenderEncoder extends CommandBase {
                 extender.resetEncoder();
                 limitReached = true;
             } else {
-                extender.move(-.2);
+                extender.move(-.5);
         }
         
     }
