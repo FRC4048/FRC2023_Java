@@ -45,7 +45,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     if (Constants.DEBUG) {
-      SmartShuffleboard.put("Gripper", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
   }
@@ -67,10 +67,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void setVoltage(Double val) {
-    if (val > 4.5) {
-    neoMotor.setVoltage(4.5);
-  } else if (val < -4.5) {
-    neoMotor.setVoltage(-4.5);}
+    if (val > Constants.ARM_MAX_VOLTS) {
+    neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
+  } else if (val < -Constants.ARM_MAX_VOLTS) {
+    neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
     else {
       neoMotor.setVoltage(val);
     }

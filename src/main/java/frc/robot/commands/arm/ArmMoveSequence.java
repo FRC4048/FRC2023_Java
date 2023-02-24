@@ -9,6 +9,7 @@ public class ArmMoveSequence extends SequentialCommandGroup {
     private Arm arm;
     private Double angle;
 
+    //DONT SCHEDULE THIS COMMAND, schedule GoToSetpoint
     public ArmMoveSequence(Arm arm, Double angle) {
         arm.setAngle(angle);
         addCommands(

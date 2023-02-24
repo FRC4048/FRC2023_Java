@@ -1,6 +1,7 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -40,7 +41,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - arm.getEncoderValue()) < 2.5;
+        return Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD;
     }
 
     

@@ -20,6 +20,8 @@ public final class Constants {
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
   public static final int RIGHT_JOYSTICK_ID = 1;
+  public static final int CONTROLLER_ID = 2;
+  public static final int MANUAL_CONTROLLER_ID = 3;
 
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
   public static final int DRIVE_FRONT_RIGHT_S = 48;
@@ -74,6 +76,10 @@ public final class Constants {
 
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
+
+  public static final double ARM_MAX_VOLTS = 4.5;
+
+  public static final double ARM_MOVE_PID_THRESHOLD = 2;
 
 
   public static final double WHEEL_RADIUS = 0.0508;

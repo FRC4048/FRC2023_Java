@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during autonomous. */
@@ -121,6 +122,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     diagnostics.reset();
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during test mode. */
