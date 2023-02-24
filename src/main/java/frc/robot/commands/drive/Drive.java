@@ -43,6 +43,7 @@ public class Drive extends CommandBase{
             Math.signum(str) * ((Math.abs(str) - 0.1) * Constants.MAX_VELOCITY / (Constants.MAX_VELOCITY - 0.1)), 
             Math.signum(rcw) * ((Math.abs(rcw) - 0.1) * Constants.MAX_VELOCITY / (Constants.MAX_VELOCITY - 0.1)), 
             true);
+            //The subtraction from Math.abs is 0.1 - should be the deadband if the deadband is changed.
     }
 
 
