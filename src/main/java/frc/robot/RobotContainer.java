@@ -68,18 +68,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-<<<<<<< HEAD
-    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, -1));
-    RightGyroButton.onTrue(new GyroOffseter(drivetrain, +1));
-
-    xboxManual.button(Constants.A_BUTTON).onTrue(new CloseGripper(gripper));
-    xboxManual.button(Constants.B_BUTTON).onTrue(new OpenGripper(gripper));
-    xboxManual.button(4).whileTrue(new ManualMoveArm(arm, 1.5));
-    xboxManual.axisGreaterThan(Constants.R_STICK_X_AXIS, 0.25).onTrue(new ManualMoveGripper (gripper, () -> 0.8 ));
-    xboxManual.axisLessThan(Constants.R_STICK_X_AXIS, -0.25).onTrue(new ManualMoveGripper (gripper, () -> -0.8 ));
-    xboxManual.axisGreaterThan(Constants.L_STICK_Y_AXIS, 0.25).onTrue(new ManualMoveExtender (extender, () -> Constants.EXTENDER_MANUAL_SPEED ));
-    xboxManual.axisLessThan(Constants.L_STICK_Y_AXIS, -0.25).onTrue(new ManualMoveExtender (extender, () -> -Constants.EXTENDER_MANUAL_SPEED ));
-=======
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
 
@@ -91,7 +79,6 @@ public class RobotContainer {
     manualController.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));
     manualController.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new ManualMoveExtender (extender, () -> Constants.MANUAL_EXTEND_SPEED ));
     manualController.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new ManualMoveExtender (extender, () -> -Constants.MANUAL_EXTEND_SPEED ));
->>>>>>> origin/main
 
   }
 

@@ -136,4 +136,6 @@ public final class Constants {
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
+
+  public static final double SUBSTATION_PICKUP_ARM_ANGLE = 30;
 }
