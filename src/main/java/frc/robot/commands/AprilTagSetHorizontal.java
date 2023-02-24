@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.AprilTagPosition;
@@ -10,6 +11,7 @@ public class AprilTagSetHorizontal extends CommandBase {
     private Drivetrain drivetrain;
     private double desiredHorizontal;
     private AprilTagPosition apriltag;
+    private double startTime;
 
     public AprilTagSetHorizontal(Drivetrain drivetrain, double desiredHorizontal, AprilTagPosition apriltag) {
         this.drivetrain = drivetrain;
@@ -24,7 +26,7 @@ public class AprilTagSetHorizontal extends CommandBase {
 
     @Override
     public void initialize() {
-
+        this.startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -47,6 +49,9 @@ public class AprilTagSetHorizontal extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        if ((Timer.getFPGATimestamp() - startTime) > 5.00) {
+            return true;
+        }
         Double currentHorizontalOffset = apriltag.getHorizontalOffset();
         if (currentHorizontalOffset != null) {
             if (Math.abs(desiredHorizontal - currentHorizontalOffset) < Constants.HORIZONTAL_ERROR_THRESHOLD) {
