@@ -13,7 +13,6 @@ import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagTalonSrxEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
-import pabeles.concurrency.ConcurrencyOps.Reset;
 
 public class Extender extends SubsystemBase {
 
