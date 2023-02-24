@@ -21,6 +21,7 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
+  private Constants.Grid gridSlot;
 
   
   public Arm() {
@@ -48,6 +49,14 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
+  }
+
+  public Constants.Grid getGridSlot() {
+    return gridSlot;
+  }
+
+  public void setGridSlot(Constants.Grid slot) {
+    gridSlot = slot;
   }
 
   public double getEncoderValue() {

@@ -68,6 +68,18 @@ public final class Constants {
   public static final double STEER_PID_FF_V = 0;//0.8;
 
 
+  public enum Grid {
+    UP_LEFT,
+    UP_MIDDLE,
+    UP_RIGHT,
+    MIDDLE_LEFT,
+    MIDDLE_MIDDLE,
+    MIDDLE_RIGHT,
+    DOWN_LEFT,
+    DOWN_MIDDLE,
+    DOWN_RIGHT;
+  }
+
   //Arm Constants
   public static final double ARM_PID_P_IN = 0.03; 
   public static final double ARM_PID_I_IN = 0.0001;

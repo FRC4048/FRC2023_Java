@@ -73,7 +73,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.povUp().onTrue(new MatrixCommands(drivetrain, arm, "up"));
+    controller.povUp().onTrue(arm.setGridSlot(Constants.Grid.UP_MIDDLE));
     controller.povUpRight().onTrue(new MatrixCommands(drivetrain, arm, "upRight"));
     controller.povRight().onTrue(new MatrixCommands(drivetrain, arm, "right"));
     controller.povDownRight().onTrue(new MatrixCommands(drivetrain, arm, "downRight"));
