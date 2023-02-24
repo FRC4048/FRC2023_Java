@@ -9,7 +9,6 @@ import frc.robot.subsystems.Extender;
 public class ManualExtender extends CommandBase {
     private Extender extender;
     private boolean forward;
-    private double startTime;
 
     public ManualExtender(Extender extender, boolean forward) {
         this.extender = extender;
@@ -23,9 +22,7 @@ public class ManualExtender extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        startTime= Timer.getFPGATimestamp();
-    }
+    public void initialize() {}
 
     @Override
     public void execute(){
@@ -39,6 +36,6 @@ public class ManualExtender extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime > Constants.MANUAL_TIMEOUT;
+        return false;
     }
 }

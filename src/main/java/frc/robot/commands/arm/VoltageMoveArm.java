@@ -43,7 +43,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD || Timer.getFPGATimestamp() - startTime > Constants.TIMEOUT;
+        return (Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || (Timer.getFPGATimestamp() - startTime) > Constants.VOLTAGE_MOVE_ARM_TIMEOUT;
     }
 
     

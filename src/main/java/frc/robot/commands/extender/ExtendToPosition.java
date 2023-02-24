@@ -43,6 +43,6 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_ERROR_THRESHOLD) || Timer.getFPGATimestamp() - startTime > Constants.TIMEOUT;
+        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_ERROR_THRESHOLD) || (Timer.getFPGATimestamp() - startTime) > Constants.EXTEND_TO_POSITION_TIMEOUT;
     }
 }

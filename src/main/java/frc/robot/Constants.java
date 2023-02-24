@@ -41,8 +41,10 @@ public final class Constants {
 
   public static final int ARM_ID = 35;
 
-  public static final double TIMEOUT = 3;
-  public static final double MANUAL_TIMEOUT = 7;
+  public static final double VOLTAGE_MOVE_ARM_TIMEOUT = 5;
+  public static final double FORWARD_TIMEOUT = 5;
+  public static final double EXTEND_TO_POSITION_TIMEOUT = 5;
+  public static final double RESET_EXTENDER_ENCODER_TIMEOUT = 5;
   
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;

@@ -41,6 +41,6 @@ public class Forward extends CommandBase{
 
     @Override
     public boolean isFinished() {   
-        return drivetrain.getRelEnc(Constants.DRIVE_BACK_LEFT_D)-InitEncValue>Constants.WHEEL_RADIUS*2*Math.PI || Timer.getFPGATimestamp() - startTime > Constants.TIMEOUT;
+        return drivetrain.getRelEnc(Constants.DRIVE_BACK_LEFT_D) - InitEncValue > Constants.WHEEL_RADIUS * 2 * Math.PI || Timer.getFPGATimestamp() - startTime > Constants.FORWARD_TIMEOUT;
     }   
 }

@@ -42,6 +42,6 @@ public class ResetExtenderEncoder extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return limitReached || Timer.getFPGATimestamp() - startTime > Constants.TIMEOUT;
+        return limitReached || (Timer.getFPGATimestamp() - startTime) > Constants.RESET_EXTENDER_ENCODER_TIMEOUT;
     }
 }
