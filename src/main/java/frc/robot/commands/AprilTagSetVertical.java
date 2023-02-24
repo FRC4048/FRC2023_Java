@@ -8,6 +8,8 @@ public class AprilTagSetVertical extends CommandBase{
     private Drivetrain drivetrain;
     private double desiredVertical;
     private AprilTagPosition apriltag;
+    private double currentVertical;
+    private double VERTICAL_ERROR_THRESHOLD = 2.5; //meters
    
     public AprilTagSetVertical(Drivetrain drivetrain, double desiredVertical, AprilTagPosition apriltag) {
         this.drivetrain = drivetrain;
@@ -17,12 +19,18 @@ public class AprilTagSetVertical extends CommandBase{
     }
 
     public void end(boolean interrupted) {
+        drivetrain.drive(0, 0, 0, false);
     }
 
     @Override
     public void initialize() {
-
-        drivetrain.drive(desiredVertical-apriltag.getDistance(), 0, 0, false);
+        currentVertical = apriltag.getDistance();
+        if (currentVertical > desiredVertical) {
+            drivetrain.drive(2.5, 0, 0, false);
+        }
+        else {
+            drivetrain.drive(-2.5, 0, 0, false);
+        }
     }
 
     @Override
@@ -32,7 +40,8 @@ public class AprilTagSetVertical extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return apriltag.getDistance() >= desiredVertical-3 && apriltag.getDistance()<= desiredVertical+3;
+       currentVertical = apriltag.getDistance();
+       return (Math.abs(currentVertical - desiredVertical) <= VERTICAL_ERROR_THRESHOLD);
     }
     
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AprilTagSetRotation;
+import frc.robot.commands.AprilTagSetVertical;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.Stow;
@@ -75,6 +76,7 @@ public class RobotContainer {
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
 
     manualController.button(XboxController.Button.kY.value).onTrue(new AprilTagSetRotation(drivetrain, 0, aprilTag));
+    manualController.button(XboxController.Button.kX.value).onTrue(new AprilTagSetVertical(drivetrain, 0, aprilTag));
 
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
