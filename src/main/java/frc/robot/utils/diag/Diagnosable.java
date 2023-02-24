@@ -8,7 +8,7 @@ public interface Diagnosable {
      * Set the tab for the diagnosable (this is done by the diagnostics infrastructure)
      * @param shuffleBoardTab the tab to set
      */
-    void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab);
+    void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab, int width, int height);
 
     /**
      * A method called periodically that will test the diagnosable value and update the display

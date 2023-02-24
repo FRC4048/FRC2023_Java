@@ -4,13 +4,25 @@
 
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.MatrixSetter;
-import frc.robot.commands.SetArmAngle;
+import frc.robot.commands.ResetGyro;
+import frc.robot.commands.drive.Forward;
+import frc.robot.commands.drive.WheelAlign;
+import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.Diagnostics;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,8 +32,8 @@ import frc.robot.utils.SmartShuffleboard;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
-  private RobotContainer robotContainer;
+  private RobotContainer m_robotContainer;
+  private static Diagnostics diagnostics;
   private Arm arm;
 
   /**
@@ -32,11 +44,12 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
-    arm = robotContainer.getArm();
-    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(robotContainer.getDrivetrain()));
-    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(robotContainer.getDrivetrain()));
-  }
+    diagnostics = new Diagnostics();
+    m_robotContainer = new RobotContainer();
+    new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
+    new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
+    arm = m_robotContainer.getArm();
+      }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -53,38 +66,37 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(arm, 0));
-    SmartShuffleboard.putCommand("PID", "setAngle=90", new SetArmAngle(arm, 90));
-    SmartShuffleboard.putCommand("PID", "setAngle=180", new SetArmAngle(arm, 180));
-
-    SmartShuffleboard.put("PID", "encoder", Math.toDegrees(Math.toDegrees(arm.getEncoderValue())));
-
-    SmartShuffleboard.put("PID", "angle", arm.getAngle());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
     //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
 
-    m_autonomousCommand = robotContainer.getAutonomousCommand();
+
+    //add this back in later
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
   public void teleopInit() {
@@ -95,6 +107,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    //new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
+
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during operator control. */
@@ -117,11 +132,31 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    diagnostics.reset();
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    diagnostics.refresh();
+    TrajectoryConfig config = 
+      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
+
+    Trajectory testTrajectory = 
+      TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)), 
+        List.of(new Translation2d(1, 0)),
+        new Pose2d(2, 0, new Rotation2d(0)),
+        config);
+        double time = testTrajectory.getTotalTimeSeconds();
+        SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
+        SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
+  }
+
+  public static Diagnostics getDiagnostics() {
+    return diagnostics;
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
