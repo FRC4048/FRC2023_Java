@@ -20,6 +20,7 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.PowerDistributionBoard;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.luxonis.LuxonisVision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +31,7 @@ import frc.robot.utils.SmartShuffleboard;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Drivetrain drivetrain;
+  private LuxonisVision luxonisVision;
   private Arm arm;
   private Extender extender;
   private PowerDistributionBoard m_PDB;
@@ -50,6 +52,7 @@ public class RobotContainer {
     arm = new Arm();
     extender = new Extender();
     m_PDB = new PowerDistributionBoard();
+    luxonisVision = new LuxonisVision();
 
     configureBindings();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
@@ -69,6 +72,7 @@ public class RobotContainer {
     cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Substation", "Auto Allign", new AutoSubstationAllign(luxonisVision, drivetrain));
   }
 
   /**
