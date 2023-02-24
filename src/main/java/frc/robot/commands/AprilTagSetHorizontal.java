@@ -32,10 +32,10 @@ public class AprilTagSetHorizontal extends CommandBase {
         double currentHorizontalOffset = apriltag.getHorizontalOffset();
         if (desiredHorizontal > currentHorizontalOffset) {
             // desired more than current, must move right
-            drivetrain.drive(0, -0.2, 0, false);
+            drivetrain.drive(0, 0.2, 0, false);
         } else {
             // desired less than current, move left
-            drivetrain.drive(0, 0.2, 0, false);
+            drivetrain.drive(0, -0.2, 0, false);
         }
 
     }
