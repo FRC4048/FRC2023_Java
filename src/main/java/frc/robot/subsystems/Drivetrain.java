@@ -284,6 +284,8 @@ public class Drivetrain extends SubsystemBase{
     filterY = filterY + (filterY+getAccelY())/Constants.GYRO_ACCEL_FILTER;
     filterZ = filterZ + (filterZ+getAccelZ())/Constants.GYRO_ACCEL_FILTER;
 
+    SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
+    SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
 
