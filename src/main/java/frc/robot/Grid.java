@@ -2,9 +2,9 @@ package frc.robot;
 
 
 public enum Grid {
-     UP_LEFT(39,6860),
-     UP_MIDDLE(29,1565),
-     UP_RIGHT(39,6860),
+     TOP_LEFT(39,6860),
+     TOP_MIDDLE(35,5655),
+     TOP_RIGHT(39,6860),
      MIDDLE_LEFT(34,3170),
      MIDDLE_MIDDLE(29,1565),
      MIDDLE_RIGHT(34,3170),

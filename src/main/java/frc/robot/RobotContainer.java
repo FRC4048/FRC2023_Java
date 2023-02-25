@@ -21,8 +21,6 @@ import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
 
-import java.util.Arrays;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -68,13 +66,13 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    controller.povUpLeft().onTrue(new SetGridSlot(pieceGrid, Grid.UP_LEFT));
+    controller.povUpLeft().onTrue(new SetGridSlot(pieceGrid, Grid.TOP_LEFT));
     controller.povLeft().onTrue(new SetGridSlot(pieceGrid, Grid.MIDDLE_LEFT));
     controller.povDownLeft().onTrue(new SetGridSlot(pieceGrid, Grid.DOWN_LEFT));
-    controller.povUp().onTrue(new SetGridSlot(pieceGrid, Grid.UP_MIDDLE));
+    controller.povUp().onTrue(new SetGridSlot(pieceGrid, Grid.TOP_MIDDLE));
     controller.back().onTrue(new SetGridSlot(pieceGrid, Grid.MIDDLE_MIDDLE));
     controller.povDown().onTrue(new SetGridSlot(pieceGrid, Grid.DOWN_MIDDLE));
-    controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, Grid.UP_RIGHT));
+    controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, Grid.TOP_RIGHT));
     controller.povRight().onTrue(new SetGridSlot(pieceGrid, Grid.MIDDLE_RIGHT));
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, Grid.DOWN_RIGHT));
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
