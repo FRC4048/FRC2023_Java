@@ -5,10 +5,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.apriltags.RobotPosition;
+import frc.robot.utils.SmartShuffleboard;
 
-public class AprilTagPosition {
+public class AprilTagPosition extends SubsystemBase {
 
   NetworkTableEntry tagIdLeftCam;
   NetworkTableEntry yRotationLeftCam;
@@ -19,18 +23,19 @@ public class AprilTagPosition {
   NetworkTableEntry tagIdRightCam;
   NetworkTableEntry yRotationRightCam;
   NetworkTableEntry horizontalOffsetRightCam;
-  NetworkTableEntry realDistanceRightCam;  
+  NetworkTableEntry realDistanceRightCam;
   NetworkTableEntry fieldXCoordinateRight;
   NetworkTableEntry fieldYCoordinateRight;
   NetworkTableEntry fieldRotationLeft;
   NetworkTableEntry fieldRotationRight;
 
-
+  private final Field2d robotField = new Field2d();
 
   NetworkTable tableLeft;
   NetworkTable tableRight;
   double distanceFromCamLeft;
   double distanceFromCamRight;
+
   public AprilTagPosition() {
 
     tableLeft = NetworkTableInstance.getDefault().getTable("apriltag").getSubTable("left");
@@ -50,17 +55,18 @@ public class AprilTagPosition {
     this.fieldXCoordinateRight = tableRight.getEntry("trueXCoordinate");
     this.fieldYCoordinateRight = tableRight.getEntry("trueYCoordinate");
     this.fieldRotationRight = tableRight.getEntry("fieldRotation");
+
+    SmartDashboard.putData(robotField);
+
   }
 
   public boolean isLeftCameraDetectingTag() {
     return tagIdLeftCam.getInteger(0L) != 0;
   }
 
-
   public boolean isRightCameraDetectingTag() {
     return tagIdRightCam.getInteger(0L) != 0;
   }
-
 
   public Pose2d getTagRelativePose2d() {
     RobotPosition position = getRobotPosition();
@@ -77,6 +83,7 @@ public class AprilTagPosition {
     }
     return null;
   }
+
   private RobotPosition getLeftRobotPosition() {
     RobotPosition positionLeft = new RobotPosition();
     positionLeft.horizontalOffset = horizontalOffsetLeftCam.getDouble(0);
@@ -106,17 +113,32 @@ public class AprilTagPosition {
 
     else if (isRightCameraDetectingTag() && !isLeftCameraDetectingTag()) {
       return getRightRobotPosition();
-    }
-    else if (isLeftCameraDetectingTag() && isRightCameraDetectingTag()) {
-      distanceFromCamLeft = Math.sqrt((horizontalOffsetLeftCam.getDouble(0) * horizontalOffsetLeftCam.getDouble(0)) + (realDistanceLeftCam.getDouble(0) * realDistanceLeftCam.getDouble(0)));
-      distanceFromCamRight = Math.sqrt((horizontalOffsetRightCam.getDouble(0) * horizontalOffsetRightCam.getDouble(0))  + (realDistanceRightCam.getDouble(0) * realDistanceRightCam.getDouble(0)));
+    } else if (isLeftCameraDetectingTag() && isRightCameraDetectingTag()) {
+      distanceFromCamLeft = Math.sqrt((horizontalOffsetLeftCam.getDouble(0) * horizontalOffsetLeftCam.getDouble(0))
+          + (realDistanceLeftCam.getDouble(0) * realDistanceLeftCam.getDouble(0)));
+      distanceFromCamRight = Math.sqrt((horizontalOffsetRightCam.getDouble(0) * horizontalOffsetRightCam.getDouble(0))
+          + (realDistanceRightCam.getDouble(0) * realDistanceRightCam.getDouble(0)));
       if (distanceFromCamLeft <= distanceFromCamRight) {
         return getLeftRobotPosition();
-      }
-      else {
+      } else {
         return getRightRobotPosition();
       }
     }
     return null;
   }
-} 
+
+  @Override
+  public void periodic() {
+    if (Constants.DEBUG == true) {
+      RobotPosition position = getRobotPosition();
+      if (position != null) {
+        SmartShuffleboard.put("apriltag", "fieldX", position.fieldXPosition);
+        SmartShuffleboard.put("apriltag", "fieldY", position.fieldYPosition);
+        SmartShuffleboard.put("apriltag", "rotation", position.fieldRotation);
+        SmartShuffleboard.put("apriltag", "tagRotation", position.rotation);
+        robotField.setRobotPose(getFieldRelativePose2d());
+      }
+    }
+  }
+
+}
