@@ -1,21 +1,23 @@
 package frc.robot.commands.arm;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Extender;
 
 public class ArmMoveSequence extends SequentialCommandGroup {
-    
-    private Arm arm;
-    private Double angle;
-
-    //DONT SCHEDULE THIS COMMAND, schedule GoToSetpoint
-    public ArmMoveSequence(Arm arm, Double angle) {
-        arm.setAngle(angle);
+    public ArmMoveSequence(Arm arm, Extender extender, RobotContainer container) {
         addCommands(
-        new VoltageMoveArm(arm, Constants.ARM_RAISE_SPEED, angle),
-        new HoldArmPID(arm, angle)
+        new VoltageMoveArm(arm, 1d, container.getSelectedGridSlot().getArmPosition()),
+            new    HoldArmPID(arm,container.getSelectedGridSlot().getArmPosition())
+//        new ParallelCommandGroup(
+//                new HoldArmPID(arm,container.getSelectedGridSlot().getArmPosition()),
+//                new ExtendToPosition(extender,container.getSelectedGridSlot().getExtenderPosition()))
         );
+        addRequirements(arm,extender);
     }
-    
+
 }

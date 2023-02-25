@@ -90,10 +90,9 @@ public class RobotContainer {
     controller.povUpRight().onTrue(new SetGridSlot(this, Constants.Grid.UP_RIGHT));
     controller.povRight().onTrue(new SetGridSlot(this, Constants.Grid.MIDDLE_RIGHT));
     controller.povDownRight().onTrue(new SetGridSlot(this, Constants.Grid.DOWN_RIGHT));
-
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
-
+    controller.button(XboxController.Button.kA.value).onTrue(new ArmMoveSequence(arm,extender,this));
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
@@ -129,9 +128,6 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
     SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
     SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
-    SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 39", new ArmMoveSequence(arm, 39.0));
-    SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 28", new ArmMoveSequence(arm, 28.0));
-    SmartShuffleboard.putCommand("Arm", "ArmMoveSequence 20", new ArmMoveSequence(arm, 20.0));
 
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
