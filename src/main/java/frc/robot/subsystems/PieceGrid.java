@@ -9,7 +9,6 @@ import java.util.Arrays;
 public class PieceGrid extends SubsystemBase {
 
      private ArmPositionGrid selectedGridSlot = ArmPositionGrid.MIDDLE_MIDDLE;
-     private boolean gridCreated = false;
 
      public PieceGrid() {
           setupGrid();
@@ -25,7 +24,6 @@ public class PieceGrid extends SubsystemBase {
       */
      private void setupGrid() {
           Arrays.stream(ArmPositionGrid.values()).forEach(grid -> SmartShuffleboard.put("Driver",grid.name(),isSlotSelected(grid)));
-          gridCreated = false;
      }
 
 
@@ -42,8 +40,7 @@ public class PieceGrid extends SubsystemBase {
       * @param slot the target slot
       */
      public void setSelectedGridSlot(ArmPositionGrid slot) {
-          if (!gridCreated) setupGrid();
-          SmartShuffleboard.put("Driver",selectedGridSlot.name(),false);
+          setupGrid();
           selectedGridSlot = slot;
           SmartShuffleboard.put("Driver",selectedGridSlot.name(),true);
      }
