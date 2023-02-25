@@ -2,7 +2,6 @@ package frc.robot.commands.sequences;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.arm.SetArmAngle;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.Constants;
 import frc.robot.commands.arm.VoltageMoveArm;

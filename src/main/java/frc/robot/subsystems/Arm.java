@@ -82,7 +82,7 @@ private SparkMaxPIDController pidController;
   }
 
   public boolean safeToExtend() {
-    return (encoderValue > Constants.NO_EXTENSION_ZONE);
+    return (getEncoderValue() > Constants.NO_EXTENSION_ZONE);
   }
 
   public double getAngle() {

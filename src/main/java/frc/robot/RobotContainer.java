@@ -12,13 +12,11 @@ import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.Stow;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
-import frc.robot.commands.arm.ArmController;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.Forward;
+import frc.robot.commands.drive.Move;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -120,7 +118,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
     SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
 
-    SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
+    SmartShuffleboard.putCommand("Drive", "Move", new Move(getDrivetrain(), 0.5));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
 
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, gripper, extender));
