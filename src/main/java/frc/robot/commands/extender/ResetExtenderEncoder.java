@@ -21,13 +21,14 @@ public class ResetExtenderEncoder extends CommandBase {
 
     @Override
     public void execute() {
-        boolean revLimit = extender.revLimitReached();
-        if (revLimit) {
-            extender.resetEncoder();
-            limitReached = true;
-        } else {
-            extender.move(-.2);
+            boolean revLimit = extender.revLimitReached();
+            if (revLimit) {
+                extender.resetEncoder();
+                limitReached = true;
+            } else {
+                extender.move(-.5);
         }
+        
     }
 
     @Override
@@ -39,8 +40,5 @@ public class ResetExtenderEncoder extends CommandBase {
     public boolean isFinished() {
         return limitReached;
     }
-
-    
-
     
 }

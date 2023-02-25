@@ -61,7 +61,7 @@ public class Extender extends SubsystemBase {
     public boolean revLimitReached() {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
-
+    
     @Override
     public void periodic() {
         SmartShuffleboard.put("Extender", "encoder",getEncoder());
@@ -69,4 +69,5 @@ public class Extender extends SubsystemBase {
         SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
         SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
     }
+    
 }

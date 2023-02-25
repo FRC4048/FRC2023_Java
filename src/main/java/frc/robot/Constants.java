@@ -20,6 +20,8 @@ public final class Constants {
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
   public static final int RIGHT_JOYSTICK_ID = 1;
+  public static final int CONTROLLER_ID = 2;
+  public static final int MANUAL_CONTROLLER_ID = 3;
 
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
   public static final int DRIVE_FRONT_RIGHT_S = 40;
@@ -52,6 +54,7 @@ public final class Constants {
   public static final double EXTENDER_GAIN =  EXTENDER_LARGE_ERROR_SPEED / EXTENDER_LARGE_ERROR;
   public static final double EXTENDER_ERROR_THRESHOLD = 50;
 
+
   //PID Constants
   public static final double DRIVE_PID_P = 1;
   public static final double DRIVE_PID_I = 0;
@@ -65,11 +68,20 @@ public final class Constants {
   public static final double STEER_PID_FF_S = 0;//0.2;
   public static final double STEER_PID_FF_V = 0;//0.8;
 
-  public static final double ARM_PID_P_UP = 0.03;
-  public static final double ARM_PID_P_DOWN = 0.01; 
-  public static final double ARM_PID_I = 0.01;
-  public static final double ARM_PID_D = 0;
-  public static final double ARM_PID_FF = 0.02;
+
+  //Arm Constants
+  public static final double ARM_PID_P_IN = 0.03; 
+  public static final double ARM_PID_I_IN = 0.0001;
+  public static final double ARM_PID_D_IN = 0.0;
+  public static final double ARM_PID_FF_IN = 0.0;
+
+  public static final double ARM_STOW_SPEED = 3.0; //volts
+  public static final double ARM_RAISE_SPEED = 4.5; //volts
+
+  public static final double ARM_MAX_VOLTS = 4.5;
+
+  public static final double ARM_MOVE_PID_THRESHOLD = 2;
+
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -81,12 +93,16 @@ public final class Constants {
   public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
 
+  public static final double MANUAL_EXTEND_SPEED = 0.3;
+  public static final double MANUAL_ARM_SPEED = 1.5; //volts
+  public static final double MANUAL_GRIP_SPEED = 0.8;
+
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 1.5;
   public static final double MAX_ACCELERATION_AUTO = 3.0;
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.5;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.5;
-  public static final double kP_THETA = 2;
+  public static final double kP_THETA = 0.1;
   public static final double kP_X = 2.6; 
   public static final double kI_X = 0;
   public static final double kD_X = 0;
@@ -96,10 +112,6 @@ public final class Constants {
             MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCELERATION);
 
 
-  
-
-  public static final double ARM_CONTROLLER_CHANGE = 1;
-  public static final double ARM_MAX_ANGLE = 820; //encoder top: 130700, encoder mid: 102000
 
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
@@ -114,10 +126,11 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
-  public static final double GRIPPER_OPENING_SPEED = 0.5;
-  public static final double GRIPPER_CLOSING_SPEED = -0.5;
-  public static final double GRIPPER_TIMEOUT = 5.0;
+  public static final double GRIPPER_OPENING_SPEED = 1;
+  public static final double GRIPPER_CLOSING_SPEED = -1;
+  public static final double GRIPPER_TIMEOUT = 2.0;
   public static final double WANTED_TIME = 1.0;
+
   public static final double DIAG_TALONSRX_ROT = 5;
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians

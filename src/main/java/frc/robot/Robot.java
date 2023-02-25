@@ -19,8 +19,6 @@ import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.drive.Forward;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.commands.SetArmAngle;
-import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
@@ -47,15 +45,11 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     diagnostics = new Diagnostics();
     m_robotContainer = new RobotContainer();
-    SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, 0, 0).schedule();
     arm = m_robotContainer.getArm();
-    //SmartShuffleboard.putCommand("Diag", "Reset", new WheelAlign(m_robotContainer.getDrivetrain()));
-    //SmartShuffleboard.putCommand("Drive", "Move", new Forward(m_robotContainer.getDrivetrain()));
-  }
+      }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -72,13 +66,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartShuffleboard.putCommand("PID", "setAngle=0", new SetArmAngle(arm, 0));
-    SmartShuffleboard.putCommand("PID", "setAngle=600", new SetArmAngle(arm, 600));
-    SmartShuffleboard.putCommand("PID", "setAngle=1000", new SetArmAngle(arm, 1000));
-
-    SmartShuffleboard.put("PID", "encoder", Math.toDegrees(Math.toDegrees(arm.getEncoderValue())));
-
-    SmartShuffleboard.put("PID", "angle", arm.getAngle());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -97,12 +84,13 @@ public class Robot extends TimedRobot {
 
 
     //add this back in later
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during autonomous. */
@@ -120,6 +108,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     //new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
+
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during operator control. */
@@ -133,6 +123,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     diagnostics.reset();
+    m_robotContainer.getArm().zeroPID();
   }
 
   /** This function is called periodically during test mode. */
