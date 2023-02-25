@@ -19,11 +19,11 @@ public class MoveArmToGridPosition extends CommandBase {
 
      @Override
      public void initialize() {
+          CommandScheduler.getInstance().schedule(new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition(), pieceGrid.getSelectedGridSlot().getExtenderPosition()));
      }
 
      @Override
      public void execute() {
-          CommandScheduler.getInstance().schedule(new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition(), pieceGrid.getSelectedGridSlot().getExtenderPosition()));
      }
 
      @Override
