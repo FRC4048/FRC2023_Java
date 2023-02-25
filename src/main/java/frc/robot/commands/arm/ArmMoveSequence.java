@@ -12,12 +12,10 @@ public class ArmMoveSequence extends SequentialCommandGroup {
     public ArmMoveSequence(Arm arm, Extender extender, RobotContainer container) {
         addCommands(
         new VoltageMoveArm(arm, 1d, container.getSelectedGridSlot().getArmPosition()),
-            new    HoldArmPID(arm,container.getSelectedGridSlot().getArmPosition())
-//        new ParallelCommandGroup(
-//                new HoldArmPID(arm,container.getSelectedGridSlot().getArmPosition()),
-//                new ExtendToPosition(extender,container.getSelectedGridSlot().getExtenderPosition()))
+        new ParallelCommandGroup(
+                new HoldArmPID(arm,container.getSelectedGridSlot().getArmPosition()),
+                new ExtendToPosition(extender,container.getSelectedGridSlot().getExtenderPosition()))
         );
-        addRequirements(arm,extender);
     }
 
 }
