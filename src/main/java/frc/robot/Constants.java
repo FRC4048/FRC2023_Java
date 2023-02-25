@@ -40,7 +40,7 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
   public static final int ARM_ID = 35;
-  
+
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;
   public static final int GRIPPER_ENCODER_ID = 0;
@@ -69,7 +69,7 @@ public final class Constants {
 
 
   //Arm Constants
-  public static final double ARM_PID_P_IN = 0.03; 
+  public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
@@ -102,7 +102,7 @@ public final class Constants {
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.5;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.5;
   public static final double kP_THETA = 2;
-  public static final double kP_X = 2.6; 
+  public static final double kP_X = 2.6;
   public static final double kI_X = 0;
   public static final double kD_X = 0;
   public static final double kP_Y = 2.6;
@@ -112,9 +112,16 @@ public final class Constants {
 
 
 
+  public static final double ARM_TOP_ROW = 1000; //placeholder values for arm.angle
+  public static final double ARM_MID_ROW = 500;
+  public static final double ARM_BOTTOM_ROW = 0;
+
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
+     public static final double ARM_AUTO_VOLTAGE = 1d;
+  public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }

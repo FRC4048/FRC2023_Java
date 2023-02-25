@@ -6,7 +6,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 
 public class VoltageMoveArm extends CommandBase {
-    
+
     private Arm arm;
     private Double power;
     private Double angle;
@@ -17,11 +17,12 @@ public class VoltageMoveArm extends CommandBase {
         this.angle = angle;
         addRequirements(this.arm);
 
-        
+
     }
-    
+
     @Override
     public void initialize() {
+
     }
 
     @Override
@@ -44,5 +45,5 @@ public class VoltageMoveArm extends CommandBase {
         return Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD;
     }
 
-    
+
 }
