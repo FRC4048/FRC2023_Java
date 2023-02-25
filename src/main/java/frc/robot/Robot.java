@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.Forward;
 import frc.robot.commands.drive.WheelAlign;
@@ -64,8 +66,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
   }
+
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
@@ -79,7 +81,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", m_robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
+    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
 
 
     //add this back in later
@@ -114,7 +116,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    
+
   }
 
   @Override
@@ -129,12 +131,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     diagnostics.refresh();
-    TrajectoryConfig config = 
+    TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
 
-    Trajectory testTrajectory = 
+    Trajectory testTrajectory =
       TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)), 
+        new Pose2d(0, 0, new Rotation2d(0)),
         List.of(new Translation2d(1, 0)),
         new Pose2d(2, 0, new Rotation2d(0)),
         config);
