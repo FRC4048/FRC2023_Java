@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.utils.SmartShuffleboard;
 
 public class Mechanism extends SubsystemBase {
      private static Mechanism mechanism;
@@ -22,11 +24,17 @@ public class Mechanism extends SubsystemBase {
           mechanism = new Mechanism(arm,extender,gripper);
      }
 
+     @Override
+     public void periodic() {
+          SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
+          SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
+     }
+
      public boolean safeToExtend(){
-          return arm.safeToExtend();
+          return arm.getEncoderValue() > Constants.NO_EXTENSION_ZONE;
      }
      public boolean safeToLowerArm(){
-          return extender.safeToLowerArm();
+          return extender.getExtenderSensorPos() < Constants.NO_ARM_LOWER_ZONE;
      }
      
      

@@ -75,10 +75,7 @@ private SparkMaxPIDController pidController;
   public double getEncoderValue() {
     return encoder.getPosition();
   }
-
-  public boolean safeToExtend() {
-    return (getEncoderValue() > Constants.NO_EXTENSION_ZONE);
-  }
+  
 
   public double getAngle() {
     return angle;
@@ -93,7 +90,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    if (val < 1 && !safeToExtend() && !Mechanism.getInstance().safeToLowerArm()) {
+    if (val < 1 && !Mechanism.getInstance().safeToExtend() && !Mechanism.getInstance().safeToLowerArm()) {
       //this should eventually be changed to a stow command
       neoMotor.setVoltage(0.0);
     } else {

@@ -65,10 +65,7 @@ public class Extender extends SubsystemBase {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
     
-
-    public boolean safeToLowerArm() {
-        return (extenderMotor.getSelectedSensorPosition() < Constants.NO_ARM_LOWER_ZONE);
-    }
+    
 
     @Override
     public void periodic() {
@@ -78,4 +75,7 @@ public class Extender extends SubsystemBase {
         SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
     }
 
+    public double getExtenderSensorPos() {
+        return extenderMotor.getSelectedSensorPosition();
+    }
 }
