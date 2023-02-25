@@ -40,8 +40,7 @@ public class PieceGrid extends SubsystemBase {
       * @param slot the target slot
       */
      public void setSelectedGridSlot(ArmPositionGrid slot) {
-          setupGrid();
           selectedGridSlot = slot;
-          SmartShuffleboard.put("Driver",selectedGridSlot.name(),true);
+          setupGrid();
      }
 }
