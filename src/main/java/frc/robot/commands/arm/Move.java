@@ -19,7 +19,7 @@ public class Move extends CommandBase{
         0,
         0,
           new TrapezoidProfile.Constraints(
-              5, 5));
+              30, 40));
     private final SimpleMotorFeedforward m_armFeedforward = new SimpleMotorFeedforward(0.4, 0.0001);
     
     public Move (Arm arm, Extender extender) {
@@ -39,6 +39,7 @@ public class Move extends CommandBase{
         SmartShuffleboard.put("Arm", "Arm PID", armControler);
         SmartShuffleboard.put("Arm", "Arm Feed Foward", armFeedforward);
         SmartShuffleboard.put("Arm", "Ext Encoder", extender.getEncoder());
+        arm.setVoltage(armFeedforward+armControler);
     }
     @Override
     public void initialize() {
