@@ -17,8 +17,6 @@ import frc.robot.utils.diag.DiagTalonSrxSwitch;
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
-    private Arm arm;
-
     public Extender() {
         int TIMEOUT = 100;
 
@@ -41,13 +39,10 @@ public class Extender extends SubsystemBase {
     public void resetEncoder() {
         extenderMotor.setSelectedSensorPosition(0);
     }
-
-    public void setArm(Arm arm) {
-        this.arm = arm;
-    }
+    
 
     public void move(double speed) {
-        if (speed < 0 || arm.safeToExtend()) {
+        if (speed < 0 || Mechanism.getInstance().safeToExtend()) {
         extenderMotor.set(speed);
         } else {
             extenderMotor.set(0.0);
@@ -69,10 +64,7 @@ public class Extender extends SubsystemBase {
     public boolean revLimitReached() {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
-
-    public Arm getArm() {
-        return arm;
-    }
+    
 
     public boolean safeToLowerArm() {
         return (extenderMotor.getSelectedSensorPosition() < Constants.NO_ARM_LOWER_ZONE);

@@ -22,17 +22,11 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.subsystems.AprilTagPosition;
+import frc.robot.subsystems.*;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.commands.sequences.Stow;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Extender;
-import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.subsystems.PieceGrid;
-import frc.robot.subsystems.PowerDistributionBoard;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -72,8 +66,7 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
-    arm.setExtender(extender);
-    extender.setArm(arm);
+    Mechanism.newInstance(arm,extender,gripper);
     m_PDB = new PowerDistributionBoard();
     aprilTagPosition = new AprilTagPosition();
     pieceGrid = new PieceGrid();

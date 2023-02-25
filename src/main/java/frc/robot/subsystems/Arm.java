@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +24,6 @@ public class Arm extends SubsystemBase {
   private boolean pidding;
 
 
-private Extender extender;
 private SparkMaxPIDController pidController;
   
   public Arm() {
@@ -72,10 +70,7 @@ private SparkMaxPIDController pidController;
   public boolean isRevLimitSwitchReached() {
     return neoMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
   }
-
-  public void setExtender(Extender extender) {
-    this.extender = extender;
-  }
+  
 
   public double getEncoderValue() {
     return encoder.getPosition();
@@ -98,7 +93,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    if (val < 1 && !safeToExtend() && !extender.safeToLowerArm()) {
+    if (val < 1 && !safeToExtend() && !Mechanism.getInstance().safeToLowerArm()) {
       //this should eventually be changed to a stow command
       neoMotor.setVoltage(0.0);
     } else {
@@ -120,7 +115,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setPIDReference(double reference) {
-    if ((reference > Constants.NO_EXTENSION_ZONE) || (extender.safeToLowerArm())) {
+    if ((reference > Constants.NO_EXTENSION_ZONE) || (Mechanism.getInstance().safeToLowerArm())) {
       pidController.setReference(reference, ControlType.kPosition, 0);
   }
   }
@@ -140,8 +135,5 @@ private SparkMaxPIDController pidController;
     pidController.setFF(f);
   }
 
-  public Extender getExtender() {
-    return extender;
-  }
-  
+
 }
