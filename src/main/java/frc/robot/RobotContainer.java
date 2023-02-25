@@ -73,6 +73,8 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
     SmartShuffleboard.putCommand("Substation", "Auto Allign", new AutoSubstationAllign(luxonisVision, drivetrain));
+    SmartShuffleboard.putCommand("Substation", "Allign with distance", new AutoSubstation(luxonisVision, drivetrain, 1));
+    SmartShuffleboard.putCommand("Substation", "Reset Odometry", new ResetOdometry(drivetrain, 0, 0, 0, 0));
   }
 
   /**

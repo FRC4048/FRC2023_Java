@@ -16,6 +16,11 @@ public class LuxonisVision extends SubsystemBase {
   NetworkTableEntry ty;
   NetworkTableEntry tz;
   NetworkTableEntry tlabel;
+
+  //The Luxonis publishes spatial coordinates where x and y are the frame and z is depth
+  //The Odometry takes data with the field's x and y plane, with z as height
+  //Keep this in mind when using odometry with the luxonis
+
   public LuxonisVision() {
     table = NetworkTableInstance.getDefault().getTable("Luxonis");
     tx = table.getEntry("x");

@@ -22,7 +22,7 @@ public final class Constants {
   public static final int RIGHT_JOYSTICK_ID = 1;
 
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
-  public static final int DRIVE_FRONT_RIGHT_S = 48;
+  public static final int DRIVE_FRONT_RIGHT_S = 40;
   public static final int DRIVE_FRONT_RIGHT_D = 49;
   public static final int DRIVE_BACK_RIGHT_S = 46;
   public static final int DRIVE_BACK_RIGHT_D = 43;

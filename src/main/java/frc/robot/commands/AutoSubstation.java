@@ -12,19 +12,21 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.luxonis.LuxonisVision;
 
-public class AutoSubstationAllign extends CommandBase {
+public class AutoSubstation extends CommandBase {
   /** Creates a new AutoSubstationAllign. */
   LuxonisVision luxonisVision;
   Drivetrain drivetrain;
   double startTime;
-  double speed;
-  double dist;
-  double initPos;
+  double speedX, speedY;
+  double xOffset, zOffset;
+  double initXPos, initYPos;
   boolean foundTarget;
-  public AutoSubstationAllign(LuxonisVision luxonisVision, Drivetrain drivetrain) {
+  double distanceToStop;
+  public AutoSubstation(LuxonisVision luxonisVision, Drivetrain drivetrain, double distanceToStop) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.luxonisVision = luxonisVision;
     this.drivetrain = drivetrain;
+    this.distanceToStop = distanceToStop;
     addRequirements(drivetrain);
   }
 
@@ -32,27 +34,42 @@ public class AutoSubstationAllign extends CommandBase {
   @Override
   public void initialize() {
     startTime = Timer.getFPGATimestamp();
-    dist = luxonisVision.getObjectX();
-    initPos = drivetrain.getPoseY();
+    xOffset = luxonisVision.getObjectX();
+    zOffset = luxonisVision.getObjectZ();
+    initXPos = drivetrain.getPoseX();
+    initYPos = drivetrain.getPoseY();
+
     foundTarget = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    speed = 0;
-    if (!foundTarget) {
-      dist = luxonisVision.getObjectX();    
+    speedX = 0;
+    speedY = 0;
+    if (zOffset != 0) {
+      zOffset -= distanceToStop;
     }
-    if (!foundTarget & dist != 0) {
-        foundTarget = true;
+    if (!(Math.abs(xOffset*0.9) < Math.abs(initYPos-drivetrain.getPoseY()) & Math.abs(xOffset*1.1) > Math.abs(initYPos-drivetrain.getPoseY()))) {
+      speedY = 0.01*Math.signum(xOffset);
     }
+
+    if (!(Math.abs(zOffset*0.9) < Math.abs(initXPos-drivetrain.getPoseX()) & Math.abs(zOffset*1.1) > Math.abs(initXPos-drivetrain.getPoseX()))) {
+      speedX = 0.01*Math.signum(zOffset);
+    }
+
+    //if (!foundTarget) {
+      //dist = luxonisVision.getObjectX();    
+    //}
+    //if (!foundTarget & dist != 0) {
+      //  foundTarget = true;
+    //}
 
 
     if (foundTarget) {
-      drivetrain.drive(0, -0.01*Math.signum(dist), 0,  true);
+      drivetrain.drive(-speedX, -speedY, 0,  true);
     }
-    SmartShuffleboard.put("Substation","Delta Offset", dist);
+    SmartShuffleboard.put("Substation","Delta Offset", xOffset);
     SmartShuffleboard.put("Substation","Target", foundTarget);
     SmartShuffleboard.put("Substation","Obj", luxonisVision.getObjectX());
     SmartShuffleboard.put("Substation","Robot Location", drivetrain.getPoseY());
@@ -68,7 +85,7 @@ public class AutoSubstationAllign extends CommandBase {
   @Override
   public boolean isFinished() {
     //return Timer.getFPGATimestamp()-startTime > 5;
-    return (foundTarget & Math.abs(dist*0.9) < Math.abs(initPos-drivetrain.getPoseY()) & Math.abs(dist*1.1) > Math.abs(initPos-drivetrain.getPoseY())) || Timer.getFPGATimestamp()-startTime > 5;
+    return (speedX == 0 & speedY == 0) || Timer.getFPGATimestamp()-startTime > 5;
     // (luxonisVision.getObjectX() < 0.03 & luxonisVision.getObjectX() > -0.03) ||
   }
 
