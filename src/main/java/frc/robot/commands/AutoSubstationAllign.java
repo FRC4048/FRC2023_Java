@@ -33,7 +33,7 @@ public class AutoSubstationAllign extends CommandBase {
   public void initialize() {
     startTime = Timer.getFPGATimestamp();
     dist = luxonisVision.getObjectX();
-    initPos = drivetrain.getPoseX();
+    initPos = drivetrain.getPoseY();
     foundTarget = false;
   }
 
@@ -52,10 +52,10 @@ public class AutoSubstationAllign extends CommandBase {
     if (foundTarget) {
       drivetrain.drive(0, -0.01*Math.signum(dist), 0,  true);
     }
-    SmartShuffleboard.put("Substation","Dist", dist);
+    SmartShuffleboard.put("Substation","Delta Offset", dist);
     SmartShuffleboard.put("Substation","Target", foundTarget);
     SmartShuffleboard.put("Substation","Obj", luxonisVision.getObjectX());
-    SmartShuffleboard.put("Substation","Dist", drivetrain.getPoseX());
+    SmartShuffleboard.put("Substation","Robot Location", drivetrain.getPoseY());
   }
 
   // Called once the command ends or is interrupted.
@@ -68,7 +68,7 @@ public class AutoSubstationAllign extends CommandBase {
   @Override
   public boolean isFinished() {
     //return Timer.getFPGATimestamp()-startTime > 5;
-    return (foundTarget & drivetrain.getPoseX() < initPos-dist*0.8 & drivetrain.getPoseX() > initPos-dist*1.2) || Timer.getFPGATimestamp()-startTime > 5;
+    return (foundTarget & drivetrain.getPoseY() < initPos-dist*1.1 & drivetrain.getPoseY() > initPos-dist*0.9) || Timer.getFPGATimestamp()-startTime > 5;
     // (luxonisVision.getObjectX() < 0.03 & luxonisVision.getObjectX() > -0.03) ||
   }
 
