@@ -40,6 +40,8 @@ public final class Constants {
   public static final int DRIVE_CANCODER_BACK_LEFT = 58;
 
   public static final int ARM_ID = 35;
+  public static final double MAX_ARM_SETPOINT = 45;
+  public static final double MIN_ARM_SETPOINT = 0;
   
   //GRIPPER
   public static final int GRIPPER_MOTOR_ID = 8;
@@ -80,7 +82,6 @@ public final class Constants {
   public static final double ARM_MAX_VOLTS = 4.5;
 
   public static final double ARM_MOVE_PID_THRESHOLD = 2;
-
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;

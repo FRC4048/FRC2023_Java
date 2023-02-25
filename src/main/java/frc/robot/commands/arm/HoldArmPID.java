@@ -39,13 +39,12 @@ public class HoldArmPID extends CommandBase {
 
     @Override
     public void execute() {
-        arm.setPidding(true);
-        pidController.setReference(angle, ControlType.kPosition, 0);
+    
     }
 
     @Override
     public void end(boolean Interrupted) {
-        arm.setPidding(false);
+    
     }
 
     @Override

@@ -19,11 +19,13 @@ public class Arm extends SubsystemBase {
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kVoltage;
-  private boolean pidding;
+  private double armSetpoint;
 
   
   public Arm() {
     angle = 0;
+
+    armSetpoint = 10;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();  
@@ -47,8 +49,8 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     if (Constants.DEBUG) {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
-      SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
+    SmartShuffleboard.put("Arm", "Setpoint", getArmSetpoint());
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -69,10 +71,6 @@ public class Arm extends SubsystemBase {
 
   public void setAngle(double angle) {
     this.angle = angle;
-  }
-
-  public void setPidding(boolean bool) {
-    pidding = bool;
   }
 
   public void setVoltage(Double val) {
@@ -100,5 +98,17 @@ public class Arm extends SubsystemBase {
     encoder.setPosition(0);
   }
 
+  public double getArmSetpoint() {
+    return armSetpoint;
+  }
+
+  public void setArmSetpoint(double setpoint) {
+    armSetpoint = setpoint;
+    if (armSetpoint > Constants.MAX_ARM_SETPOINT) {
+      armSetpoint = Constants.MAX_ARM_SETPOINT;
+    } else if (armSetpoint < Constants.MIN_ARM_SETPOINT) {
+      armSetpoint = Constants.MIN_ARM_SETPOINT;
+    }
+  }
 
 }
