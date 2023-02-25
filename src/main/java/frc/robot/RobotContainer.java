@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.Stow;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
@@ -28,6 +27,8 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.PowerDistributionBoard;
 import frc.robot.utils.SmartShuffleboard;
+
+import java.util.Arrays;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,7 +53,9 @@ public class RobotContainer {
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
-  
+
+  private Constants.Grid selectedGridSlot = Constants.Grid.MIDDLE_MIDDLE;
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -66,20 +69,28 @@ public class RobotContainer {
 
     configureBindings();
     putShuffleboardCommands();
+    setupGrid();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
   }
 
+  /**
+   * creates a selection grid on shuffleboard which shows the selected game piece target position
+   */
+  private void setupGrid() {
+    Arrays.stream(Constants.Grid.values()).forEach(grid -> SmartShuffleboard.put("Driver",grid.name(),isSlotSelected(grid)));
+  }
+
   private void configureBindings() {
-    controller.povUpLeft().onTrue(new SetGridSlot(arm, Constants.Grid.UP_LEFT));
-    controller.povLeft().onTrue(new SetGridSlot(arm, Constants.Grid.MIDDLE_LEFT));
-    controller.povDownLeft().onTrue(new SetGridSlot(arm, Constants.Grid.DOWN_LEFT));
-    controller.povUp().onTrue(new SetGridSlot(arm, Constants.Grid.UP_MIDDLE));
-    controller.povCenter().onTrue(new SetGridSlot(arm, Constants.Grid.MIDDLE_MIDDLE));
-    controller.povDown().onTrue(new SetGridSlot(arm, Constants.Grid.DOWN_MIDDLE));
-    controller.povUpRight().onTrue(new SetGridSlot(arm, Constants.Grid.UP_RIGHT));
-    controller.povRight().onTrue(new SetGridSlot(arm, Constants.Grid.MIDDLE_RIGHT));
-    controller.povDownRight().onTrue(new SetGridSlot(arm, Constants.Grid.DOWN_RIGHT));
-    
+    controller.povUpLeft().onTrue(new SetGridSlot(this, Constants.Grid.UP_LEFT));
+    controller.povLeft().onTrue(new SetGridSlot(this, Constants.Grid.MIDDLE_LEFT));
+    controller.povDownLeft().onTrue(new SetGridSlot(this, Constants.Grid.DOWN_LEFT));
+    controller.povUp().onTrue(new SetGridSlot(this, Constants.Grid.UP_MIDDLE));
+    controller.back().onTrue(new SetGridSlot(this, Constants.Grid.MIDDLE_MIDDLE));
+    controller.povDown().onTrue(new SetGridSlot(this, Constants.Grid.DOWN_MIDDLE));
+    controller.povUpRight().onTrue(new SetGridSlot(this, Constants.Grid.UP_RIGHT));
+    controller.povRight().onTrue(new SetGridSlot(this, Constants.Grid.MIDDLE_RIGHT));
+    controller.povDownRight().onTrue(new SetGridSlot(this, Constants.Grid.DOWN_RIGHT));
+
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
 
@@ -94,6 +105,23 @@ public class RobotContainer {
 
   }
 
+  public boolean isSlotSelected(Constants.Grid slot) {
+    return slot.equals(selectedGridSlot);
+  }
+
+  public Constants.Grid getSelectedGridSlot() {
+    return selectedGridSlot;
+  }
+
+  /**
+   * sets the
+   * @param slot the target slot
+   */
+  public void setSelectedGridSlot(Constants.Grid slot) {
+    SmartShuffleboard.put("Driver",selectedGridSlot.name(),false);
+    selectedGridSlot = slot;
+    SmartShuffleboard.put("Driver",selectedGridSlot.name(),true);
+  }
   public void putShuffleboardCommands() {
 
     if (Constants.DEBUG) {
@@ -116,26 +144,26 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  
+
   /*
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    /* 
-    TrajectoryConfig config = 
+    /*
+    TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
 
-    Trajectory testTrajectory = 
+    Trajectory testTrajectory =
       TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 13.5, new Rotation2d(0)), 
+        new Pose2d(0, 13.5, new Rotation2d(0)),
         List.of(new Translation2d(1, 13.8)),
         new Pose2d(2, 13.5, new Rotation2d(0)),
         config);
 
     drivetrain.getField().getObject("traj").setTrajectory(testTrajectory);
     //change this number to change rotation amount
-    double degrees = 90;    
-    Supplier<Rotation2d> desiredRot = () -> new Rotation2d(degrees / 180 * Math.PI); 
-    
+    double degrees = 90;
+    Supplier<Rotation2d> desiredRot = () -> new Rotation2d(degrees / 180 * Math.PI);
+
     var thetaController =
       new ProfiledPIDController(
           Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
@@ -158,7 +186,7 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
-    
+
   }*/
 
   public Drivetrain getDrivetrain() {
@@ -172,7 +200,7 @@ public class RobotContainer {
   public CommandXboxController getController() {
     return controller;
   }
-  
+
   public Extender getExtender() {
     return extender;
   }

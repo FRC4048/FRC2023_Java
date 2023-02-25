@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -65,7 +66,23 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    displayGameGrid();
 
+  }
+
+  public void displayGameGrid(){
+
+//    SmartShuffleboard.put("Driver", "upLeft", m_robotContainer.isSlotSelected(Constants.Grid.UP_LEFT));
+//    SmartShuffleboard.put("Driver", "middleLeft", m_robotContainer.isSlotSelected(Constants.Grid.MIDDLE_LEFT));
+//    SmartShuffleboard.put("Driver", "downLeft", m_robotContainer.isSlotSelected(Constants.Grid.DOWN_LEFT));
+//
+//    SmartShuffleboard.put("Driver", "upMiddle", m_robotContainer.isSlotSelected(Constants.Grid.UP_MIDDLE));
+//    SmartShuffleboard.put("Driver", "middleMiddle", m_robotContainer.isSlotSelected(Constants.Grid.MIDDLE_MIDDLE));
+//    SmartShuffleboard.put("Driver", "downMiddle", m_robotContainer.isSlotSelected(Constants.Grid.DOWN_MIDDLE));
+//
+//    SmartShuffleboard.put("Driver", "upRight", m_robotContainer.isSlotSelected(Constants.Grid.UP_RIGHT));
+//    SmartShuffleboard.put("Driver", "middleRight", m_robotContainer.isSlotSelected(Constants.Grid.MIDDLE_RIGHT));
+//    SmartShuffleboard.put("Driver", "downRight", m_robotContainer.isSlotSelected(Constants.Grid.DOWN_LEFT));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -130,12 +147,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     diagnostics.refresh();
-    TrajectoryConfig config = 
+    TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
 
-    Trajectory testTrajectory = 
+    Trajectory testTrajectory =
       TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)), 
+        new Pose2d(0, 0, new Rotation2d(0)),
         List.of(new Translation2d(1, 0)),
         new Pose2d(2, 0, new Rotation2d(0)),
         config);
