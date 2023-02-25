@@ -1,7 +1,7 @@
 package frc.robot.utils.diag;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 /**
@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  */
 public abstract class DiagBoolean implements Diagnosable {
 
+    private String title;
     private String name;
     private GenericEntry networkTableEntry;
 
@@ -21,15 +22,16 @@ public abstract class DiagBoolean implements Diagnosable {
      *
      * @param name            the name of the unit. Will be used on the Shuffleboard
      */
-    public DiagBoolean(String name) {
+    public DiagBoolean(String title, String name) {
+        this.title = title;
         this.name = name;
 
         reset();
     }
 
     @Override
-    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab) {
-        networkTableEntry = shuffleBoardTab.add(name, false).getEntry();
+    public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab, int width, int height) {
+        networkTableEntry = shuffleBoardTab.getLayout(title, BuiltInLayouts.kList).withSize(width, height).add(name, false).getEntry();
     }
 
     @Override

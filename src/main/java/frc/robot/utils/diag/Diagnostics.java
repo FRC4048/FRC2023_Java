@@ -16,6 +16,7 @@ import java.util.List;
 public class Diagnostics extends SubsystemBase {
 
     public static final String SHUFFLEBOARD_TAB_NAME =  "Diagnostics";
+    public static final int width = 1, height = 4;
 
     private ShuffleboardTab shuffleBoardTab;
 
@@ -37,9 +38,10 @@ public class Diagnostics extends SubsystemBase {
     }
 
     public void addDiagnosable(Diagnosable diagnosable) {
-        diagnosable.setShuffleBoardTab(shuffleBoardTab);
+        diagnosable.setShuffleBoardTab(shuffleBoardTab, width, height);
         diagnosables.add(diagnosable);
     }
+
 
     /**
      * Refresh the display with current values.
