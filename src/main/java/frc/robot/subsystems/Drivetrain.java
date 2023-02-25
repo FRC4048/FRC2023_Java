@@ -133,6 +133,14 @@ public class Drivetrain extends SubsystemBase{
     return navxGyro;
   }
 
+  public double getPoseX() {
+    return m_odometry.getPoseMeters().getX();
+  }
+
+  public double getPoseY() {
+    return m_odometry.getPoseMeters().getY();
+  }
+
   /**
    * Method to drive the robot using joystick info.
    *
