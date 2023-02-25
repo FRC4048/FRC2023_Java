@@ -68,7 +68,7 @@ public class AutoSubstationAllign extends CommandBase {
   @Override
   public boolean isFinished() {
     //return Timer.getFPGATimestamp()-startTime > 5;
-    return (foundTarget & drivetrain.getPoseY() < initPos-dist*1.1 & drivetrain.getPoseY() > initPos-dist*0.9) || Timer.getFPGATimestamp()-startTime > 5;
+    return (foundTarget & Math.abs(dist*0.9) < Math.abs(initPos-drivetrain.getPoseY()) & Math.abs(dist*1.1) > Math.abs(initPos-drivetrain.getPoseY())) || Timer.getFPGATimestamp()-startTime > 5;
     // (luxonisVision.getObjectX() < 0.03 & luxonisVision.getObjectX() > -0.03) ||
   }
 
