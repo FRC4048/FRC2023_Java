@@ -10,7 +10,6 @@ public class VoltageMoveArm extends CommandBase {
     private Arm arm;
     private Double power;
     private Double angle;
-    private static int initCount = 0;
 
     public VoltageMoveArm(Arm arm, Double power, Double angle) {
         this.arm = arm;
@@ -23,9 +22,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public void initialize() {
-        SmartShuffleboard.put("Arm","armVoltStatus","Starting");
-        initCount++;
-        SmartShuffleboard.put("Arm","initCount",initCount);
+
     }
 
     @Override
@@ -36,13 +33,11 @@ public class VoltageMoveArm extends CommandBase {
         } else {
             arm.setVoltage(-power);
         }
-        SmartShuffleboard.put("Arm","armVoltStatus","moving");
     }
 
     @Override
     public void end(boolean Interrupted) {
         arm.setVoltage(0.0);
-        SmartShuffleboard.put("Arm","armVoltStatus","ending");
     }
 
     @Override
