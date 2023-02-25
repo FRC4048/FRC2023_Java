@@ -49,6 +49,7 @@ public class RobotContainer {
   private Joystick joyRight = new Joystick(Constants.RIGHT_JOYSTICK_ID);
   private JoystickButton LeftGyroButton= new JoystickButton(joyLeft, 1);
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
+  private JoystickButton decreaseSpeedButton = new JoystickButton(joyLeft, 2);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
@@ -65,11 +66,10 @@ public class RobotContainer {
     extender = new Extender();
     m_PDB = new PowerDistributionBoard();
     pieceGrid = new PieceGrid();
-
     configureBindings();
     putShuffleboardCommands();
 
-    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
+    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),decreaseSpeedButton));
   }
 
 
@@ -180,6 +180,8 @@ public class RobotContainer {
     return extender;
   }
 
-  
 
+  public Joystick getJoyLeft() {
+    return joyLeft;
+  }
 }
