@@ -5,10 +5,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.apriltags.RobotPosition;
+import frc.robot.utils.SmartShuffleboard;
 
-public class AprilTagPosition {
+public class AprilTagPosition extends SubsystemBase {
 
   NetworkTableEntry tagIdLeftCam;
   NetworkTableEntry yRotationLeftCam;
@@ -25,6 +28,7 @@ public class AprilTagPosition {
   NetworkTableEntry fieldRotationLeft;
   NetworkTableEntry fieldRotationRight;
 
+  private final Field2d robotField = new Field2d();
 
 
   NetworkTable tableLeft;
@@ -50,6 +54,9 @@ public class AprilTagPosition {
     this.fieldXCoordinateRight = tableRight.getEntry("trueXCoordinate");
     this.fieldYCoordinateRight = tableRight.getEntry("trueYCoordinate");
     this.fieldRotationRight = tableRight.getEntry("fieldRotation");
+
+    SmartDashboard.putData(robotField);
+    
   }
 
   public boolean isLeftCameraDetectingTag() {
@@ -73,7 +80,8 @@ public class AprilTagPosition {
   public Pose2d getFieldRelativePose2d() {
     RobotPosition position = getRobotPosition();
     if (position != null) {
-      return new Pose2d(position.fieldXPosition, position.fieldYPosition, new Rotation2d(position.fieldRotation));
+      Pose2d pose2d = new Pose2d(position.fieldXPosition, position.fieldYPosition, new Rotation2d(position.fieldRotation));
+      return pose2d;
     }
     return null;
   }
@@ -95,7 +103,7 @@ public class AprilTagPosition {
     positionRight.rotation = yRotationRightCam.getDouble(0);
     positionRight.fieldXPosition = fieldXCoordinateRight.getDouble(0);
     positionRight.fieldYPosition = fieldYCoordinateRight.getDouble(0);
-    positionRight.fieldRotation = fieldRotationRight.getDouble(0);
+    positionRight.fieldRotation = fieldRotationRight.getDouble(3.14);
     return positionRight;
   }
 
@@ -119,4 +127,20 @@ public class AprilTagPosition {
     }
     return null;
   }
+
+  @Override
+  public void periodic() {
+    RobotPosition position = getRobotPosition();
+    if (position != null) {
+      SmartShuffleboard.put("apriltag", "fieldX", position.fieldXPosition);
+      SmartShuffleboard.put("apriltag", "fieldY", position.fieldYPosition);
+      SmartShuffleboard.put("apriltag", "rotation", position.fieldRotation);
+      SmartShuffleboard.put("apriltag", "tagRotation", position.rotation);
+      // robotField.setRobotPose(getFieldRelativePose2d());
+      Pose2d robootpose = getFieldRelativePose2d();
+      robotField.setRobotPose(robootpose.getX(), robootpose.getY(), robootpose.getRotation());
+    }
+  }
+
+
 } 

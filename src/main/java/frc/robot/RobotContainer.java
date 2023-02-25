@@ -22,6 +22,7 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.subsystems.AprilTagPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -42,6 +43,7 @@ public class RobotContainer {
   private Extender extender;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
+  private AprilTagPosition aprilTagPosition;
 
   //Joysticks & Joystick Buttons
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
@@ -55,6 +57,7 @@ public class RobotContainer {
 
 
 
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
@@ -63,10 +66,12 @@ public class RobotContainer {
     arm = new Arm();
     extender = new Extender();
     m_PDB = new PowerDistributionBoard();
+    aprilTagPosition = new AprilTagPosition();
 
     configureBindings();
     putShuffleboardCommands();
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX()));
+
   }
 
   private void configureBindings() {
