@@ -2,17 +2,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Grid;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.PieceGrid;
 import frc.robot.utils.SmartShuffleboard;
 
 public class SetGridSlot extends CommandBase {
-  private final Constants.Grid gridSlot;
-  private final RobotContainer container;
+  private final Grid gridSlot;
+  private final PieceGrid pieceGrid;
 
-  public SetGridSlot(RobotContainer container, Constants.Grid gridSlot) {
+  public SetGridSlot(PieceGrid pieceGrid, Grid gridSlot) {
     this.gridSlot = gridSlot;
-    this.container = container;
+    this.pieceGrid = pieceGrid;
   }
 
   @Override
@@ -22,7 +24,7 @@ public class SetGridSlot extends CommandBase {
 
   @Override
   public void execute() {
-    container.setSelectedGridSlot(gridSlot);
+    pieceGrid.setSelectedGridSlot(gridSlot);
   }
 
   @Override

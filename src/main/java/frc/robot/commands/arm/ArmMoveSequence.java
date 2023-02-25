@@ -7,14 +7,15 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.PieceGrid;
 
 public class ArmMoveSequence extends SequentialCommandGroup {
-    public ArmMoveSequence(Arm arm, Extender extender, RobotContainer container) {
+    public ArmMoveSequence(Arm arm, Extender extender, PieceGrid pieceGrid) {
         addCommands(
-        new VoltageMoveArm(arm, 1d, container.getSelectedGridSlot().getArmPosition()),
+        new VoltageMoveArm(arm, 1d, pieceGrid.getSelectedGridSlot().getArmPosition()),
         new ParallelCommandGroup(
-                new HoldArmPID(arm,container.getSelectedGridSlot().getArmPosition()),
-                new ExtendToPosition(extender,container.getSelectedGridSlot().getExtenderPosition()))
+                new HoldArmPID(arm,pieceGrid.getSelectedGridSlot().getArmPosition()),
+                new ExtendToPosition(extender,pieceGrid.getSelectedGridSlot().getExtenderPosition()))
         );
     }
 
