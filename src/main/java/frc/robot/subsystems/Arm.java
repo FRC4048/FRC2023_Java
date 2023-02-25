@@ -9,7 +9,6 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
@@ -32,6 +31,8 @@ public class Arm extends SubsystemBase {
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
+    
+
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Retracted Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.REVERSE));
@@ -51,6 +52,13 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public boolean isFwdLimitSwitchReached() {
+    return neoMotor.getForwardLimitSwitch(Type.kNormallyOpen).isPressed();
+  }
+
+  public boolean isRevLimitSwitchReached() {
+    return neoMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
+  }
 
   public double getEncoderValue() {
     return encoder.getPosition();
@@ -88,4 +96,10 @@ public class Arm extends SubsystemBase {
   public CANSparkMax getNeoMotor() {
     return neoMotor;
   }
+
+  public void resetEncoder() {
+    encoder.setPosition(0);
+  }
+
+
 }
