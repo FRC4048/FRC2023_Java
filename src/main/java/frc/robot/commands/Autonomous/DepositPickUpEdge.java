@@ -27,11 +27,11 @@ import frc.robot.subsystems.GripperSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DepositPickUpEdge extends Autonomous {
   /** Creates a new DepositPickUpLeft. */
-  public DepositPickUpEdge(Drivetrain drivetrain, Arm arm, GripperSubsystem gripper) {
+  public DepositPickUpEdge(Drivetrain drivetrain) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    super(drivetrain, arm, gripper);
     //Supplier<Rotation2d> desiredRot = () -> new Rotation2d(Math.PI);
+    super(drivetrain);
 
     Trajectory trajectory1 = 
       TrajectoryGenerator.generateTrajectory(

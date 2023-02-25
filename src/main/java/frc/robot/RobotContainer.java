@@ -18,6 +18,7 @@ import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.Forward;
+import frc.robot.commands.drive.MoveToPosition;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -99,6 +100,7 @@ public class RobotContainer {
 
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
+    SmartShuffleboard.putCommand("Drive", "MoveToPosition", new MoveToPosition(drivetrain));
 
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, gripper, extender));
   }
@@ -151,7 +153,7 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false)); */
-    return new DepositPickUpEdge(drivetrain, arm, gripper).andThen(() -> drivetrain.drive(0,0,0, false));
+    return new DepositPickUpEdge(drivetrain).andThen(() -> drivetrain.drive(0,0,0, false));
   }
 
   public Drivetrain getDrivetrain() {

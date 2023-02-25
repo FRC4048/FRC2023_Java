@@ -18,19 +18,15 @@ import frc.robot.subsystems.GripperSubsystem;
 public class Autonomous extends SequentialCommandGroup {
   /** Creates a new Autonomous. */
   protected Drivetrain drivetrain;
-  protected Arm arm;
-  protected GripperSubsystem gripper;
   protected TrajectoryConfig config;
-
-  ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
+  protected ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
   
-  public Autonomous(Drivetrain drivetrain, Arm arm, GripperSubsystem gripper) {
+  public Autonomous(Drivetrain drivetrain) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     this.drivetrain = drivetrain;
-    this.arm = arm;
-    this.gripper = gripper;
+
     config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
   }
 }
