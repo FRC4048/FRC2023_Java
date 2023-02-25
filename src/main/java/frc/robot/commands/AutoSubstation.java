@@ -35,27 +35,27 @@ public class AutoSubstation extends CommandBase {
   public void initialize() {
     startTime = Timer.getFPGATimestamp();
     xOffset = luxonisVision.getObjectX();
-    zOffset = luxonisVision.getObjectZ();
-    initXPos = drivetrain.getPoseX();
+    //zOffset = luxonisVision.getObjectZ();
+    zOffset = luxonisVision.getObjectZ()-distanceToStop;
+    initXPos = drivetrain.getPoseX(); 
     initYPos = drivetrain.getPoseY();
 
     foundTarget = false;
   }
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     speedX = 0;
     speedY = 0;
-    if (zOffset != 0) {
-      zOffset -= distanceToStop;
-    }
+
     if (!(Math.abs(xOffset*0.9) < Math.abs(initYPos-drivetrain.getPoseY()) & Math.abs(xOffset*1.1) > Math.abs(initYPos-drivetrain.getPoseY()))) {
-      speedY = 0.01*Math.signum(xOffset);
+      speedY = 0.1*Math.signum(xOffset);
     }
 
     if (!(Math.abs(zOffset*0.9) < Math.abs(initXPos-drivetrain.getPoseX()) & Math.abs(zOffset*1.1) > Math.abs(initXPos-drivetrain.getPoseX()))) {
-      speedX = 0.01*Math.signum(zOffset);
+      speedX = 0.1*Math.signum(zOffset);
     }
 
     //if (!foundTarget) {
@@ -66,10 +66,13 @@ public class AutoSubstation extends CommandBase {
     //}
 
 
-    if (foundTarget) {
-      drivetrain.drive(-speedX, -speedY, 0,  true);
+    if (true) {
+      drivetrain.drive(speedX, -speedY, 0,  true);
     }
-    SmartShuffleboard.put("Substation","Delta Offset", xOffset);
+    SmartShuffleboard.put("Substation","Delta X Offset", xOffset);
+    SmartShuffleboard.put("Substation","Delta Y Offset", zOffset);
+    SmartShuffleboard.put("Substation","Speed X ", speedX);
+    SmartShuffleboard.put("Substation","Speed Y ", speedY);
     SmartShuffleboard.put("Substation","Target", foundTarget);
     SmartShuffleboard.put("Substation","Obj", luxonisVision.getObjectX());
     SmartShuffleboard.put("Substation","Robot Location", drivetrain.getPoseY());
