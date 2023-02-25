@@ -13,7 +13,7 @@ import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.Stow;
-import frc.robot.commands.arm.AutoCommand;
+import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.Forward;
@@ -43,18 +43,19 @@ public class RobotContainer {
   private Extender extender;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
+  private PieceGrid pieceGrid;
+
 
   //Joysticks & Joystick Buttons
   private Joystick joyLeft = new Joystick(Constants.LEFT_JOYSICK_ID);
   private Joystick joyRight = new Joystick(Constants.RIGHT_JOYSTICK_ID);
   private JoystickButton LeftGyroButton= new JoystickButton(joyLeft, 1);
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
-  private JoystickButton decreaseSpeedButton = new JoystickButton(joyLeft, 2);
+  private JoystickButton joystickLeftButton = new JoystickButton(joyLeft, 2);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
-  private PieceGrid pieceGrid;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,24 +70,24 @@ public class RobotContainer {
     configureBindings();
     putShuffleboardCommands();
 
-    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),decreaseSpeedButton));
+    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton));
   }
 
 
 
   private void configureBindings() {
-    controller.povUpLeft().onTrue(new SetGridSlot(pieceGrid, Grid.TOP_LEFT));
-    controller.povLeft().onTrue(new SetGridSlot(pieceGrid, Grid.MIDDLE_LEFT));
-    controller.povDownLeft().onTrue(new SetGridSlot(pieceGrid, Grid.DOWN_LEFT));
-    controller.povUp().onTrue(new SetGridSlot(pieceGrid, Grid.TOP_MIDDLE));
-    controller.back().onTrue(new SetGridSlot(pieceGrid, Grid.MIDDLE_MIDDLE));
-    controller.povDown().onTrue(new SetGridSlot(pieceGrid, Grid.DOWN_MIDDLE));
-    controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, Grid.TOP_RIGHT));
-    controller.povRight().onTrue(new SetGridSlot(pieceGrid, Grid.MIDDLE_RIGHT));
-    controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, Grid.DOWN_RIGHT));
+    controller.povUpLeft().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_LEFT));
+    controller.povLeft().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_LEFT));
+    controller.povDownLeft().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_LEFT));
+    controller.povUp().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_MIDDLE));
+    controller.back().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_MIDDLE));
+    controller.povDown().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_MIDDLE));
+    controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_RIGHT));
+    controller.povRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
+    controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
-    controller.button(XboxController.Button.kA.value).onTrue(new AutoCommand(arm,extender,pieceGrid));
+    controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));

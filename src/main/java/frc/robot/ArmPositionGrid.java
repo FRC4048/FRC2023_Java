@@ -1,7 +1,7 @@
 package frc.robot;
 
 
-public enum Grid {
+public enum ArmPositionGrid {
      TOP_LEFT(39,6860),
      TOP_MIDDLE(35,5655),
      TOP_RIGHT(39,6860),
@@ -15,7 +15,7 @@ public enum Grid {
      private final double armPosition;
      private final double extenderPosition;
 
-     Grid(double armPosition, double extenderPosition) {
+     ArmPositionGrid(double armPosition, double extenderPosition) {
           this.armPosition = armPosition;
           this.extenderPosition = extenderPosition;
      }

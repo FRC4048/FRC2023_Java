@@ -66,24 +66,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    displayGameGrid();
-
   }
 
-  public void displayGameGrid(){
-
-//    SmartShuffleboard.put("Driver", "upLeft", m_robotContainer.isSlotSelected(Constants.Grid.UP_LEFT));
-//    SmartShuffleboard.put("Driver", "middleLeft", m_robotContainer.isSlotSelected(Constants.Grid.MIDDLE_LEFT));
-//    SmartShuffleboard.put("Driver", "downLeft", m_robotContainer.isSlotSelected(Constants.Grid.DOWN_LEFT));
-//
-//    SmartShuffleboard.put("Driver", "upMiddle", m_robotContainer.isSlotSelected(Constants.Grid.UP_MIDDLE));
-//    SmartShuffleboard.put("Driver", "middleMiddle", m_robotContainer.isSlotSelected(Constants.Grid.MIDDLE_MIDDLE));
-//    SmartShuffleboard.put("Driver", "downMiddle", m_robotContainer.isSlotSelected(Constants.Grid.DOWN_MIDDLE));
-//
-//    SmartShuffleboard.put("Driver", "upRight", m_robotContainer.isSlotSelected(Constants.Grid.UP_RIGHT));
-//    SmartShuffleboard.put("Driver", "middleRight", m_robotContainer.isSlotSelected(Constants.Grid.MIDDLE_RIGHT));
-//    SmartShuffleboard.put("Driver", "downRight", m_robotContainer.isSlotSelected(Constants.Grid.DOWN_LEFT));
-  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

@@ -119,6 +119,9 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
+     public static final double ARM_AUTO_VOLTAGE = 1d;
+  public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }

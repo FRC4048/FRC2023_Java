@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Grid;
+import frc.robot.ArmPositionGrid;
 import frc.robot.utils.SmartShuffleboard;
 
 import java.util.Arrays;
 
 public class PieceGrid extends SubsystemBase {
 
-     private Grid selectedGridSlot = Grid.MIDDLE_MIDDLE;
+     private ArmPositionGrid selectedGridSlot = ArmPositionGrid.MIDDLE_MIDDLE;
+     private boolean gridCreated = false;
 
      public PieceGrid() {
           setupGrid();
@@ -24,15 +24,16 @@ public class PieceGrid extends SubsystemBase {
       * creates a selection grid on shuffleboard which shows the selected game piece target position
       */
      private void setupGrid() {
-          Arrays.stream(Grid.values()).forEach(grid -> SmartShuffleboard.put("Driver",grid.name(),isSlotSelected(grid)));
+          Arrays.stream(ArmPositionGrid.values()).forEach(grid -> SmartShuffleboard.put("Driver",grid.name(),isSlotSelected(grid)));
+          gridCreated = false;
      }
 
 
-     public boolean isSlotSelected(Grid slot) {
+     public boolean isSlotSelected(ArmPositionGrid slot) {
           return slot.equals(selectedGridSlot);
      }
 
-     public Grid getSelectedGridSlot() {
+     public ArmPositionGrid getSelectedGridSlot() {
           return selectedGridSlot;
      }
 
@@ -40,7 +41,8 @@ public class PieceGrid extends SubsystemBase {
       * sets the
       * @param slot the target slot
       */
-     public void setSelectedGridSlot(Grid slot) {
+     public void setSelectedGridSlot(ArmPositionGrid slot) {
+          if (!gridCreated) setupGrid();
           SmartShuffleboard.put("Driver",selectedGridSlot.name(),false);
           selectedGridSlot = slot;
           SmartShuffleboard.put("Driver",selectedGridSlot.name(),true);
