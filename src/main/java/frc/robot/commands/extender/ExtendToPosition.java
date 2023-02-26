@@ -20,6 +20,8 @@ public class ExtendToPosition extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         extender.stop();
+        if (extender.revLimitReached()) extender.resetEncoder();
+        SmartShuffleboard.put("DEBUG","EXTENDER_SPEED",0);
     }
 
     @Override
@@ -30,17 +32,20 @@ public class ExtendToPosition extends CommandBase {
     public void execute(){
         double speed = 0;
         double error = position - extender.getEncoder();
-        if (Math.abs(error) > Constants.EXTENDER_LARGE_ERROR) {
-            speed = Constants.EXTENDER_LARGE_ERROR_SPEED * Math.signum(error);
+        if (Math.abs(error) > Constants.EXTENDER_SPEED_SLOW_THRESHOLD) {
+            speed = Constants.EXTENDER_AUTO_MAX_SPEED * Math.signum(error);
+            extender.move(speed);
         } else {
-            speed = Constants.EXTENDER_MINIMUM_SPEED * Math.signum(error);
+            double targetRange = Constants.EXTENDER_AUTO_MAX_SPEED - Constants.EXTENDER_AUTO_MIN_SPEED;
+            speed = (error/ Constants.EXTENDER_SPEED_SLOW_THRESHOLD) //range is now 0-1
+                    * (targetRange) // range is now in target range shifted down by the min range
+                    + (Constants.EXTENDER_AUTO_MIN_SPEED *Math.signum(error)); // shift range to target range
+            extender.move(speed);
         }
-        
-        extender.move(speed);
     }
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_ERROR_THRESHOLD);
+        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD);
     }
 }

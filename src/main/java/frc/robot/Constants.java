@@ -48,11 +48,12 @@ public final class Constants {
   //EXTENDER
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-  public static final double EXTENDER_LARGE_ERROR = 500;
-  public static final double EXTENDER_LARGE_ERROR_SPEED = 0.4;
-  public static final double EXTENDER_MINIMUM_SPEED = 0.2;
-  public static final double EXTENDER_GAIN =  EXTENDER_LARGE_ERROR_SPEED / EXTENDER_LARGE_ERROR;
-  public static final double EXTENDER_ERROR_THRESHOLD = 50;
+  
+  public static final double EXTENDER_AUTO_MIN_SPEED = 0.2;
+  //DON'T MAKE .1, WON'T WORK
+  public static final double EXTENDER_AUTO_MAX_SPEED = 0.9999999999;
+  public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
+  public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
 
 
   //PID Constants

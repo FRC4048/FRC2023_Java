@@ -27,5 +27,8 @@ public class ManualMoveExtender extends CommandBase {
         return false;
     }
 
-    
+    @Override
+    public void end(boolean interrupted) {
+        if (extender.revLimitReached()) extender.resetEncoder();
+    }
 }
