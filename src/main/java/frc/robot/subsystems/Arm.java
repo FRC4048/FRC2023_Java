@@ -90,8 +90,9 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    val = Math.min(Math.max(val, -Constants.ARM_MAX_VOLTS), Constants.ARM_MAX_VOLTS);
-    neoMotor.setVoltage((val < 1 && !Mechanism.getInstance().safeToLowerArm()) ? 0 : val);
+    neoMotor.setVoltage(Mechanism.getInstance().validateArmVolt(val));
+//    val = Math.min(Math.max(val, -Constants.ARM_MAX_VOLTS), Constants.ARM_MAX_VOLTS);
+//    neoMotor.setVoltage((val < 1 && !Mechanism.getInstance().safeToLowerArm()) ? 0 : val);
   }
 
   public void zeroPID() {

@@ -29,22 +29,36 @@ public final class Mechanism extends SubsystemBase {
           SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
           SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
           SmartShuffleboard.put("DEBUG","CanZeroArm",safeToZeroArm());
+          SmartShuffleboard.put("DEBUG","CanOpenGripper",safeToOpenGripper());
      }
 
-     public boolean safeToExtend(){
+     private boolean safeToExtend(){
           return arm.getEncoderValue() > Constants.NO_EXTENSION_ZONE;
      }
      public boolean safeToLowerArm(){
-          return !(safeToOpenGripper() && gripper.getopenLimitSwitch()) && !(safeToExtend() && extender.getExtenderSensorPos() > Constants.NO_ARM_LOWER_ZONE);
+          return !(arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE && (gripper.getopenLimitSwitch())) && !(safeToExtend() && extender.getExtenderSensorPos() > Constants.NO_ARM_LOWER_ZONE);
      }
      public boolean safeToZeroArm(){
           return !gripper.getopenLimitSwitch() && safeToLowerArm();
      }
      public boolean safeToOpenGripper(){
-          return arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE;
+          return arm.getEncoderValue() > Constants.GRIP_NEEDS_CLOSE_ZONE;
      }
-     
-     
-     
+     public double validateArmVolt(double volt){
+          volt = clampVolts(volt,-Constants.ARM_MAX_VOLTS,Constants.ARM_MAX_VOLTS);
+          if ((volt < 0 && safeToLowerArm()) || volt > 0) return volt;
+          return 0;
+     }
+     public double validateExtenderVolt(double volt){
+          if ((volt < 0 && safeToExtend()) || volt > 0) return volt;
+          return 0;
+     }
+     public double validateGripperVolt(double volt){
+          if ((volt > 0 && safeToOpenGripper()) || volt < 0) return volt;
+          return 0;
+     }
+     public double clampVolts(double value, double min, double max){
+          return Math.min(Math.max(value, min), max);
+     }  
      
 }
