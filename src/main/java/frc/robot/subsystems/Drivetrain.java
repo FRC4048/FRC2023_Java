@@ -109,10 +109,10 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft = new SwerveModule(m_backLeftDrive, m_backLeftTurn, backLeftCanCoder, 3);
     m_backRight = new SwerveModule(m_backRightDrive, m_backRightTurn, backRightCanCoder, 4);
 
-    m_frontLeftDrive.setInverted(false);
-    m_frontRightDrive.setInverted(true);
-    m_backRightDrive.setInverted(true);
-    m_backLeftDrive.setInverted(false);
+    m_frontLeftDrive.setInverted(true);
+    m_frontRightDrive.setInverted(false);
+    m_backRightDrive.setInverted(false);
+    m_backLeftDrive.setInverted(true);
     
     m_odometry = new SwerveDriveOdometry(
         m_kinematics,
