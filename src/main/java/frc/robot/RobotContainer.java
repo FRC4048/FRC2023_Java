@@ -142,10 +142,11 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     
     //add an If selected based on chooser
-    return new SequentialCommandGroup(
+    return null;
+    /*return new SequentialCommandGroup(
       new MoveDistanceSpinTraj(drivetrain, 0.5, 0.30, Math.toRadians(180)),
       new MoveDistanceSpinTraj(drivetrain, 4.35, 0.35, Math.toRadians(0))
-      );
+      );*/
 
   }
 
