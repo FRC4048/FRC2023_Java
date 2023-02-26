@@ -6,6 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
@@ -13,8 +17,12 @@ import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.Stow;
-import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.Autonomous.MoveToPositionTraj;
+import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
+import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.Forward;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -92,6 +100,9 @@ public class RobotContainer {
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
+    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
@@ -114,6 +125,7 @@ public class RobotContainer {
 
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
+    SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
 
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, gripper, extender));
   }
@@ -125,49 +137,18 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  /*
+  
    public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    /*
-    TrajectoryConfig config =
-      new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
-
-    Trajectory testTrajectory =
-      TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 13.5, new Rotation2d(0)),
-        List.of(new Translation2d(1, 13.8)),
-        new Pose2d(2, 13.5, new Rotation2d(0)),
-        config);
-
-    drivetrain.getField().getObject("traj").setTrajectory(testTrajectory);
-    //change this number to change rotation amount
-    double degrees = 90;
-    Supplier<Rotation2d> desiredRot = () -> new Rotation2d(degrees / 180 * Math.PI);
-
-    var thetaController =
-      new ProfiledPIDController(
-          Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            testTrajectory,
-            drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
-            drivetrain.getKinematics(),
-            new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
-            new PIDController(Constants.kP_Y, 0, 0),
-            thetaController,
-            desiredRot,
-            drivetrain::setModuleStates,
-            drivetrain);
-
-    // Reset odometry to the starting pose of the trajectory.
-    drivetrain.resetOdometry(testTrajectory.getInitialPose());
-
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
+    
+    //add an If selected based on chooser
+    return null;
+    /*return new SequentialCommandGroup(
+      new MoveDistanceSpinTraj(drivetrain, 0.5, 0.30, Math.toRadians(180)),
+      new MoveDistanceSpinTraj(drivetrain, 4.35, 0.35, Math.toRadians(0))
+      );*/
 
-  }*/
+  }
 
   public Drivetrain getDrivetrain() {
     return drivetrain;
