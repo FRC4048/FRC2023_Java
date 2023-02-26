@@ -13,7 +13,6 @@ import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.arm.MoveArmToGridPosition;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.Move;
@@ -23,9 +22,6 @@ import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.*;
-import frc.robot.commands.gripper.CloseGripper;
-import frc.robot.commands.gripper.ManualMoveGripper;
-import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -66,7 +62,7 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
-    Mechanism.newInstance(arm,extender,gripper);
+    ProtectionMechanism.newInstance(arm,extender,gripper);
     m_PDB = new PowerDistributionBoard();
     aprilTagPosition = new AprilTagPosition();
     pieceGrid = new PieceGrid();
@@ -95,9 +91,6 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
-    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new Stow(arm,gripper,extender));
-    //DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE
-    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new ResetEncoders(arm,extender));
     manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new Stow(arm,gripper,extender));
     //manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
     //manualController.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));

@@ -42,7 +42,7 @@ public class Extender extends SubsystemBase {
     
 
     public void move(double speed) {
-        extenderMotor.set(Mechanism.getInstance().validateExtenderVolt(speed));
+        extenderMotor.set(ProtectionMechanism.getInstance().validateExtenderVolt(speed));
 //        if (speed < 0 || Mechanism.getInstance().safeToExtend()) {
 //        extenderMotor.set(speed);
 //        } else {
