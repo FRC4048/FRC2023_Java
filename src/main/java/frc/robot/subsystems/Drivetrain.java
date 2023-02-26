@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -122,7 +123,9 @@ public class Drivetrain extends SubsystemBase{
             m_frontRight.getPosition(),
             m_backLeft.getPosition(),
             m_backRight.getPosition()
-        }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(13.5), new Rotation2d()));
+        }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()));
+
+    setGyroOffset(180);
   }
 
   public double getGyro() {
@@ -253,13 +256,17 @@ public class Drivetrain extends SubsystemBase{
 
       SmartShuffleboard.put("Driver", "odometry x", m_odometry.getPoseMeters().getX());
       SmartShuffleboard.put("Driver", "odometry y", m_odometry.getPoseMeters().getY());
+      SmartShuffleboard.put("Driver", "odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
+
     }
 
+    if (DriverStation.isEnabled()) {
     m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
     });
+  }
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 

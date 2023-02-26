@@ -22,9 +22,8 @@ import frc.LocationChooser;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.drive.Forward;
+import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
@@ -37,6 +36,7 @@ import frc.robot.utils.diag.Diagnostics;
  */
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
+  private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private static Diagnostics diagnostics;
   private LocationChooser locationChooser;
@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
+    new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
     arm = m_robotContainer.getArm();
       }
 
@@ -109,6 +110,12 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
+
+
+    //add this back in later
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
