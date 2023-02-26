@@ -4,6 +4,7 @@ package frc.robot.commands.extender;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Extender;
+import frc.robot.utils.SmartShuffleboard;
 
 public class ExtendToPosition extends CommandBase {
     private Extender extender;
