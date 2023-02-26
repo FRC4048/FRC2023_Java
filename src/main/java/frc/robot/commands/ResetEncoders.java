@@ -8,12 +8,11 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class ResetEncoders extends SequentialCommandGroup{
-    public ResetEncoders (Arm arm, GripperSubsystem gripper, Extender extender){
+    public ResetEncoders (Arm arm, Extender extender){
         addCommands(
                 new ResetExtenderEncoder(extender).withTimeout(5),
                 new ResetArm(arm).withTimeout(3),
                 new ResetArmEncoder(arm)
-                
         );
         
     }

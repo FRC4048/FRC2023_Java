@@ -114,7 +114,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Drive", "Move", new Move(getDrivetrain(), 0.5));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
 
-    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
   }
   }
 

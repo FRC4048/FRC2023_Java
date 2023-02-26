@@ -11,16 +11,13 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 
-public class Stow extends SequentialCommandGroup {
+public class Stow extends ParallelCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
         addCommands(
-            new ParallelCommandGroup(
-                new CloseGripper(gripper).withTimeout(3),
-                new ExtendToPosition(extender, 0).withTimeout(3)
-            ),
-
-                new VoltageMoveArm(arm, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3)
+            new CloseGripper(gripper).withTimeout(3),
+            new ExtendToPosition(extender, 0).withTimeout(3),
+            new VoltageMoveArm(arm, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3)
         );
     }
 

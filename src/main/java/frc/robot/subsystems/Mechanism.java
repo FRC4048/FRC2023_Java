@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.SmartShuffleboard;
 
-public class Mechanism extends SubsystemBase {
+public final class Mechanism extends SubsystemBase {
      private static Mechanism mechanism;
      private final Arm arm;
      private final Extender extender;
@@ -36,6 +36,10 @@ public class Mechanism extends SubsystemBase {
      public boolean safeToLowerArm(){
           return extender.getExtenderSensorPos() < Constants.NO_ARM_LOWER_ZONE;
      }
+     public boolean safeToZeroArm(){
+          return gripper.getopenLimitSwitch() && safeToLowerArm();
+     }
+     
      
      
      
