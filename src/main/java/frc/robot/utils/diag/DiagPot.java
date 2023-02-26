@@ -20,8 +20,8 @@ public class DiagPot extends DiagMinMax {
      * @param maxVoltage      - the maximum value the pot needs to hit to qualify for success
      * @param pot             - the pot instance to test
      */
-    public DiagPot(String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot) {
-        super(name, minVoltage, maxVoltage);
+    public DiagPot(String title, String name, double minVoltage, double maxVoltage, AnalogPotentiometer pot) {
+        super(title, name, minVoltage, maxVoltage);
         this.pot = pot;
     }
 
