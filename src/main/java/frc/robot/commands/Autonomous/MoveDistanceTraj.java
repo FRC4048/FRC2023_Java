@@ -22,7 +22,7 @@ public class MoveDistanceTraj extends CommandBase {
     private double xChange;
     private double yChange;
     private TrajectoryConfig config;
-    private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
+    private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA_AUTO, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
     private SwerveControllerCommand moveCommand;
 
 
@@ -69,8 +69,8 @@ public class MoveDistanceTraj extends CommandBase {
             trajectory,                                                                                                                                                                                                                        
             drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
             drivetrain.getKinematics(),
-            new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
-            new PIDController(Constants.kP_Y, Constants.kI_Y, Constants.kD_Y),
+            new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
+            new PIDController(Constants.kP_Y_AUTO, Constants.kI_Y_AUTO, Constants.kD_Y_AUTO),
             thetaController,
             drivetrain::setModuleStates,
             drivetrain);

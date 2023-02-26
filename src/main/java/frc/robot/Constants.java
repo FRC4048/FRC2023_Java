@@ -102,15 +102,15 @@ public final class Constants {
   public static final double MAX_ACCELERATION_AUTO = 3.0;
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.6;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.1;
-  public static final double kP_THETA = 1.2;
-  public static final double kI_THETA = 0;
-  public static final double kD_THETA = 0;
-  public static final double kP_X = 5; 
-  public static final double kI_X = 0.5;
-  public static final double kD_X = 0;
-  public static final double kP_Y = 5; 
-  public static final double kI_Y = 0.5;
-  public static final double kD_Y = 0;
+  public static final double kP_THETA_AUTO = 1.2;
+  public static final double kI_THETA_AUTO = 0;
+  public static final double kD_THETA_AUTO = 0;
+  public static final double kP_X_AUTO = 5; 
+  public static final double kI_X_AUTO = 0.5;
+  public static final double kD_X_AUTO = 0;
+  public static final double kP_Y_AUTO = 5; 
+  public static final double kI_Y_AUTO = 0.5;
+  public static final double kD_Y_AUTO = 0;
 
   public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS =
         new TrapezoidProfile.Constraints(

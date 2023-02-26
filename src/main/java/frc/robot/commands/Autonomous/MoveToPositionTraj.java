@@ -20,7 +20,7 @@ public class MoveToPositionTraj extends CommandBase {
     private Pose2d currentPos;
     private Pose2d desiredPos;
     private TrajectoryConfig config;
-    private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
+    private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA_AUTO, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
     private SwerveControllerCommand moveCommand;
 
 
@@ -56,8 +56,8 @@ public class MoveToPositionTraj extends CommandBase {
           trajectory,
           drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
           drivetrain.getKinematics(),
-          new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
-          new PIDController(Constants.kP_Y, 0, 0),
+          new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
+          new PIDController(Constants.kP_Y_AUTO, 0, 0),
           thetaController,
           //desiredRot,
           drivetrain::setModuleStates,
