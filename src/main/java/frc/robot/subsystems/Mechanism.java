@@ -28,16 +28,20 @@ public final class Mechanism extends SubsystemBase {
      public void periodic() {
           SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
           SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
+          SmartShuffleboard.put("DEBUG","CanZeroArm",safeToZeroArm());
      }
 
      public boolean safeToExtend(){
           return arm.getEncoderValue() > Constants.NO_EXTENSION_ZONE;
      }
      public boolean safeToLowerArm(){
-          return extender.getExtenderSensorPos() < Constants.NO_ARM_LOWER_ZONE;
+          return !(safeToOpenGripper() && gripper.getopenLimitSwitch()) && !(safeToExtend() && extender.getExtenderSensorPos() > Constants.NO_ARM_LOWER_ZONE);
      }
      public boolean safeToZeroArm(){
           return !gripper.getopenLimitSwitch() && safeToLowerArm();
+     }
+     public boolean safeToOpenGripper(){
+          return arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE;
      }
      
      

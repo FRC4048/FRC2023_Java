@@ -90,19 +90,8 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    // if we are lowing the arm,and it is not safe to lower arm OR we are going below a point where the gripper needs to be closed 
-    if ((val < 1 && !Mechanism.getInstance().safeToLowerArm()) || (getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE && !Mechanism.getInstance().safeToZeroArm())) {
-      //this should eventually be changed to a stow command
-      neoMotor.setVoltage(0.0);
-    } else {
-      if (val > Constants.ARM_MAX_VOLTS) {
-        neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
-      } else if (val < -Constants.ARM_MAX_VOLTS) {
-      neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
-      else {
-        neoMotor.setVoltage(val);
-      }
-    }
+    val = Math.min(Math.max(val, -Constants.ARM_MAX_VOLTS), Constants.ARM_MAX_VOLTS);
+    neoMotor.setVoltage((val < 1 && !Mechanism.getInstance().safeToLowerArm()) ? 0 : val);
   }
 
   public void zeroPID() {
