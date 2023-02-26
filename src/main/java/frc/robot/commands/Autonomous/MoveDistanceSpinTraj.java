@@ -27,6 +27,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
     private Supplier<Rotation2d> desiredRotSupplier;
     private TrajectoryConfig config;
     private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, Constants.kI_THETA, Constants.kD_THETA, Constants.THETA_CONTROLLER_CONSTRAINTS);
+    private SwerveControllerCommand moveCommand;
 
 
     public MoveDistanceSpinTraj(Drivetrain drivetrain, double xChange, double yChange, double desiredRotRadians) {
@@ -61,7 +62,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
 
         drivetrain.getField().getObject("traj").setTrajectory(trajectory);
 
-        SwerveControllerCommand moveCommand =
+        moveCommand =
         new SwerveControllerCommand(
           trajectory,                                                                                                                                                                                                                        
           drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
@@ -74,5 +75,14 @@ public class MoveDistanceSpinTraj extends CommandBase {
           drivetrain
           );
           moveCommand.schedule();
+    }
+
+    public SwerveControllerCommand getMoveCommand(){
+        return moveCommand;
+    }
+
+    @Override
+    public boolean isFinished() {
+        return moveCommand.isFinished();
     }
 }

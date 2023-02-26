@@ -23,6 +23,7 @@ public class MoveDistanceTraj extends CommandBase {
     private double yChange;
     private TrajectoryConfig config;
     private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
+    private SwerveControllerCommand moveCommand;
 
 
     public MoveDistanceTraj(Drivetrain drivetrain, double xChange, double yChange) {
@@ -63,16 +64,21 @@ public class MoveDistanceTraj extends CommandBase {
         config);
 
         drivetrain.getField().getObject("traj").setTrajectory(trajectory);
-        SwerveControllerCommand moveCommand =
-      new SwerveControllerCommand(
-          trajectory,                                                                                                                                                                                                                        
-          drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
-          drivetrain.getKinematics(),
-          new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
-          new PIDController(Constants.kP_Y, Constants.kI_Y, Constants.kD_Y),
-          thetaController,
-          drivetrain::setModuleStates,
-          drivetrain);
-          moveCommand.schedule();
+        moveCommand =
+        new SwerveControllerCommand(
+            trajectory,                                                                                                                                                                                                                        
+            drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
+            drivetrain.getKinematics(),
+            new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
+            new PIDController(Constants.kP_Y, Constants.kI_Y, Constants.kD_Y),
+            thetaController,
+            drivetrain::setModuleStates,
+            drivetrain);
+            moveCommand.schedule();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return moveCommand.isFinished();
     }
 }

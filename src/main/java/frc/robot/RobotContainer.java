@@ -7,6 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
@@ -17,6 +20,7 @@ import frc.robot.commands.Stow;
 import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.Autonomous.MoveToPositionTraj;
+import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -137,9 +141,12 @@ public class RobotContainer {
   
    public Command getAutonomousCommand() {
     // Run path following command, then stop at the end.
+    
     return 
-    new MoveDistanceSpinTraj(drivetrain, 0.5, 0.43, Math.toRadians(180));
-    //.andThen(() -> new MoveDistanceSpinTraj(drivetrain, 4, 0.43, Math.toRadians(0)));
+    new SequentialCommandGroup(
+      new MoveDistanceSpinTraj(drivetrain, 0.5, 0.30, Math.toRadians(180)),
+      new MoveDistanceSpinTraj(drivetrain, 4.35, 0.35, Math.toRadians(0))
+      );
     //.andThen(() -> drivetrain.drive(0, 0, 0, false));
 
   }

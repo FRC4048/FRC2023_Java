@@ -19,10 +19,9 @@ public class MoveToPositionTraj extends CommandBase {
     private Drivetrain drivetrain;
     private Pose2d currentPos;
     private Pose2d desiredPos;
-    private double distance;
-    private double angle;
     private TrajectoryConfig config;
     private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
+    private SwerveControllerCommand moveCommand;
 
 
     public MoveToPositionTraj(Drivetrain drivetrain) {
@@ -52,7 +51,7 @@ public class MoveToPositionTraj extends CommandBase {
 
         drivetrain.getField().getObject("traj").setTrajectory(trajectory);
 
-        SwerveControllerCommand moveCommand =
+        moveCommand =
       new SwerveControllerCommand(
           trajectory,
           drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
@@ -65,5 +64,9 @@ public class MoveToPositionTraj extends CommandBase {
           drivetrain);
           moveCommand.schedule();
     }
-    
+
+    @Override
+    public boolean isFinished() {
+        return moveCommand.isFinished();
+    }
 }
