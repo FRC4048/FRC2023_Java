@@ -37,7 +37,7 @@ public final class Mechanism extends SubsystemBase {
           return extender.getExtenderSensorPos() < Constants.NO_ARM_LOWER_ZONE;
      }
      public boolean safeToZeroArm(){
-          return gripper.getopenLimitSwitch() && safeToLowerArm();
+          return !gripper.getopenLimitSwitch() && safeToLowerArm();
      }
      
      
