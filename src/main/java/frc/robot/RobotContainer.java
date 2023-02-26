@@ -14,14 +14,13 @@ import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.Stow;
-import frc.robot.commands.Autonomous.DepositPickUpEdge;
-import frc.robot.commands.arm.ArmMoveSequence;
-import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.Autonomous.MoveToPositionTraj;
 import frc.robot.commands.arm.ManualMoveArm;
+import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.Forward;
-import frc.robot.commands.drive.MoveDistanceTraj;
-import frc.robot.commands.drive.MoveToPositionTraj;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -97,6 +96,9 @@ public class RobotContainer {
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
+    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
@@ -132,49 +134,15 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  /*
+  
    public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    /*
-    TrajectoryConfig config =
-      new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
-
-    Trajectory testTrajectory =
-      TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 13.5, new Rotation2d(0)),
-        List.of(new Translation2d(1, 13.8)),
-        new Pose2d(2, 13.5, new Rotation2d(0)),
-        config);
-
-    drivetrain.getField().getObject("traj").setTrajectory(testTrajectory);
-    //change this number to change rotation amount
-    double degrees = 90;
-    Supplier<Rotation2d> desiredRot = () -> new Rotation2d(degrees / 180 * Math.PI);
-
-    var thetaController =
-      new ProfiledPIDController(
-          Constants.kP_THETA, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            testTrajectory,
-            drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
-            drivetrain.getKinematics(),
-            new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
-            new PIDController(Constants.kP_Y, 0, 0),
-            thetaController,
-            desiredRot,
-            drivetrain::setModuleStates,
-            drivetrain);
-
-    // Reset odometry to the starting pose of the trajectory.
-    drivetrain.resetOdometry(testTrajectory.getInitialPose());
-
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> drivetrain.drive(0, 0, 0, false));
+    return 
+    new MoveDistanceSpinTraj(drivetrain, 0.5, 0.43, Math.toRadians(180));
+    //.andThen(() -> new MoveDistanceSpinTraj(drivetrain, 4, 0.43, Math.toRadians(0)));
+    //.andThen(() -> drivetrain.drive(0, 0, 0, false));
 
-  }*/
+  }
 
   public Drivetrain getDrivetrain() {
     return drivetrain;

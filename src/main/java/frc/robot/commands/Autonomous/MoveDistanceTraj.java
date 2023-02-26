@@ -1,4 +1,4 @@
-package frc.robot.commands.drive;
+package frc.robot.commands.Autonomous;
 
 import java.util.List;
 
@@ -29,6 +29,15 @@ public class MoveDistanceTraj extends CommandBase {
         this.drivetrain = drivetrain;
         this.xChange = xChange;
         this.yChange = yChange;
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
+        
+    }
+
+    public MoveDistanceTraj(Drivetrain drivetrain, double xChange, double yChange, Rotation2d desiredRot) {
+        this.drivetrain = drivetrain;
+        this.xChange = xChange;
+        this.yChange = yChange;
         config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
         
     }
@@ -54,7 +63,6 @@ public class MoveDistanceTraj extends CommandBase {
         config);
 
         drivetrain.getField().getObject("traj").setTrajectory(trajectory);
-
         SwerveControllerCommand moveCommand =
       new SwerveControllerCommand(
           trajectory,                                                                                                                                                                                                                        
@@ -63,7 +71,6 @@ public class MoveDistanceTraj extends CommandBase {
           new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
           new PIDController(Constants.kP_Y, Constants.kI_Y, Constants.kD_Y),
           thetaController,
-          //desiredRot,
           drivetrain::setModuleStates,
           drivetrain);
           moveCommand.schedule();

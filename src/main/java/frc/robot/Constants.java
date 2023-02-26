@@ -100,19 +100,13 @@ public final class Constants {
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 1.5;
   public static final double MAX_ACCELERATION_AUTO = 3.0;
-  public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.5;
-  public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.5;
-<<<<<<< HEAD
-  public static final double kP_THETA = 0.1;
+  public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.6;
+  public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.1;
+  public static final double kP_THETA = 1.2;
   public static final double kI_THETA = 0;
   public static final double kD_THETA = 0;
   public static final double kP_X = 5; 
   public static final double kI_X = 0.5;
-=======
-  public static final double kP_THETA = 2;
-  public static final double kP_X = 2.6;
-  public static final double kI_X = 0;
->>>>>>> origin/main
   public static final double kD_X = 0;
   public static final double kP_Y = 5; 
   public static final double kI_Y = 0.5;
@@ -121,6 +115,10 @@ public final class Constants {
   public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS =
         new TrapezoidProfile.Constraints(
             MAX_ANGULAR_SPEED, MAX_ANGULAR_ACCELERATION);
+
+  public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS_AUTO =
+        new TrapezoidProfile.Constraints(
+            MAX_ANGULAR_SPEED_AUTO, MAX_ANGULAR_ACCELERATION_AUTO);
 
 
 
@@ -132,7 +130,7 @@ public final class Constants {
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
      public static final double ARM_AUTO_VOLTAGE = 1d;
-  public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
+  public static final double PRECISION_DRIVE_AND_STEER_SPD = .10f;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
