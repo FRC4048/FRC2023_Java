@@ -103,6 +103,8 @@ public final class Constants {
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.5;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.5;
   public static final double kP_THETA = 0.1;
+  public static final double kI_THETA = 0;
+  public static final double kD_THETA = 0;
   public static final double kP_X = 5; 
   public static final double kI_X = 0.5;
   public static final double kD_X = 0;

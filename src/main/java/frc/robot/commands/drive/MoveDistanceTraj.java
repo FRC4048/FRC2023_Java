@@ -57,11 +57,11 @@ public class MoveDistanceTraj extends CommandBase {
 
         SwerveControllerCommand moveCommand =
       new SwerveControllerCommand(
-          trajectory,
-          drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
+          trajectory,                                                                                                                                                                                                                        
+          drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
           drivetrain.getKinematics(),
           new PIDController(Constants.kP_X, Constants.kI_X, Constants.kD_X),
-          new PIDController(Constants.kP_Y, 0, 0),
+          new PIDController(Constants.kP_Y, Constants.kI_Y, Constants.kD_Y),
           thetaController,
           //desiredRot,
           drivetrain::setModuleStates,
