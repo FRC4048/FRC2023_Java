@@ -14,9 +14,12 @@ public class Stow extends SequentialCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
         addCommands(
-                new CloseGripper(gripper),
-                new ExtendToPosition(extender, 0),
-                new VoltageMoveArm(arm, Constants.ARM_STOW_SPEED, 0.0)
+            new ParallelCommandGroup(
+                new CloseGripper(gripper).withTimeout(3),
+                new ExtendToPosition(extender, 0).withTimeout(3)
+            ),
+       
+                new VoltageMoveArm(arm, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3)
         );
     }
 
