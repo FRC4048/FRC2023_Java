@@ -19,28 +19,38 @@ public class MoveToPositionTraj extends CommandBase {
     private Drivetrain drivetrain;
     private Pose2d currentPos;
     private Pose2d desiredPos;
+    private double desiredX;
+    private double desiredY;
     private TrajectoryConfig config;
     private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA_AUTO, 0, 0, Constants.THETA_CONTROLLER_CONSTRAINTS);
     private SwerveControllerCommand moveCommand;
 
 
-    public MoveToPositionTraj(Drivetrain drivetrain) {
+    public MoveToPositionTraj(Drivetrain drivetrain, double desiredX, double desiredY) {
         this.drivetrain = drivetrain;
+        this.desiredX = desiredX;
+        this.desiredY = desiredY;
         config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
         
     }
 
     @Override
     public void initialize() {
+        //differential drive trajectory generation does not drive in a straight line unless
+        //the starting and ending angle are the same, and the starting angle is pointing towards
+        //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
+        //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
+        //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
+        double angle = Math.atan((desiredY - drivetrain.getPoseY()) / (desiredX - drivetrain.getPoseX()));
         currentPos = new Pose2d(
-        drivetrain.getOdometry().getPoseMeters().getX(), 
-        drivetrain.getOdometry().getPoseMeters().getY(), 
-        new Rotation2d(0.0));
+        drivetrain.getPoseX(), 
+        drivetrain.getPoseY(), 
+        new Rotation2d(angle));
 
         desiredPos = new Pose2d(
-        currentPos.getX() + 1.0,
-        currentPos.getY(),
-        currentPos.getRotation());
+        desiredX,
+        desiredY,
+        new Rotation2d(angle));
 
 
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(

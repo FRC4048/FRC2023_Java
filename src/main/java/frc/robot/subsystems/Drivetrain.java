@@ -334,6 +334,14 @@ public class Drivetrain extends SubsystemBase{
     return m_odometry;
   }
 
+  public double getPoseX() {
+    return m_odometry.getPoseMeters().getX();
+  }
+
+  public double getPoseY() {
+    return m_odometry.getPoseMeters().getY();
+  }
+
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
