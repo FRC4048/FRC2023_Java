@@ -54,8 +54,8 @@ public class MoveDistanceSpinTraj extends CommandBase {
         new Rotation2d(angle));
 
         desiredPos = new Pose2d(
-        drivetrain.getOdometry().getPoseMeters().getX() + xChange, 
-        drivetrain.getOdometry().getPoseMeters().getY() + yChange, 
+        drivetrain.getPoseX() + xChange, 
+        drivetrain.getPoseY() + yChange, 
         new Rotation2d(angle));
 
 
