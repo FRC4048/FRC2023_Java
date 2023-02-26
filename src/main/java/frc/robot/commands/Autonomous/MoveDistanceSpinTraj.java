@@ -29,7 +29,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
     private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA_AUTO, Constants.kI_THETA_AUTO, Constants.kD_THETA_AUTO, Constants.THETA_CONTROLLER_CONSTRAINTS);
     private SwerveControllerCommand moveCommand;
 
-
+    //Command used to move a specific distance and turn to a specific angle
     public MoveDistanceSpinTraj(Drivetrain drivetrain, double xChange, double yChange, double desiredRotRadians) {
         this.drivetrain = drivetrain;
         this.xChange = xChange;

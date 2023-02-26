@@ -26,6 +26,7 @@ public class MoveDistanceTraj extends CommandBase {
     private SwerveControllerCommand moveCommand;
 
 
+    //Command used to move a specific distance without any rotation/angle change
     public MoveDistanceTraj(Drivetrain drivetrain, double xChange, double yChange) {
         this.drivetrain = drivetrain;
         this.xChange = xChange;

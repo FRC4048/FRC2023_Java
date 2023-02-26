@@ -26,6 +26,8 @@ public class MoveToPositionTraj extends CommandBase {
     private SwerveControllerCommand moveCommand;
 
 
+    //Command to move to specific field coordinates. Be careful using this, if you are not
+    //close to the position then the robot will take off towards it. Does not affect rotation.
     public MoveToPositionTraj(Drivetrain drivetrain, double desiredX, double desiredY) {
         this.drivetrain = drivetrain;
         this.desiredX = desiredX;
