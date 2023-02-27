@@ -9,7 +9,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 
 public class HoldArmPID extends CommandBase {
-    
+
     private Arm arm;
     private Double angle;
     private SparkMaxPIDController pidController;
@@ -34,7 +34,6 @@ public class HoldArmPID extends CommandBase {
         pidController.setI(Constants.ARM_PID_I_IN, 0);
         pidController.setD(Constants.ARM_PID_D_IN, 0);
         pidController.setFF(Constants.ARM_PID_FF_IN, 0);
-
     }
 
     @Override
@@ -53,5 +52,5 @@ public class HoldArmPID extends CommandBase {
         return false;
     }
 
-    
+
 }

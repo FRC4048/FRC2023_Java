@@ -21,12 +21,13 @@ public class Arm extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
 
-  
+
+
   public Arm() {
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
-    encoder = neoMotor.getEncoder();  
+    encoder = neoMotor.getEncoder();
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
