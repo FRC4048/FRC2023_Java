@@ -4,16 +4,16 @@
 
 package frc.robot.commands.Autonomous;
 
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.GripperSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
 public class Cube extends SequentialCommandGroup {
-  public Cube(ExampleSubsystem subsystem) {
-    addRequirements(subsystem);
-    addCommands(new ExampleCommand(subsystem));
+  public Cube() {
+    addCommands(new EmptyCommand());
   }
 }

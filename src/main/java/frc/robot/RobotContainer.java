@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.LocationChooser;
+import frc.robot.AutonomousChooser.Location;
 import frc.robot.Constants.OperatorConstants;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -61,7 +61,6 @@ public class RobotContainer {
   private AprilTagPosition aprilTagPosition;
   private PieceGrid pieceGrid;
   private AutonomousChooser autonomousChooser;
-  private LocationChooser locationChooser;
 
 
   //Joysticks & Joystick Buttons
@@ -80,11 +79,11 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
+
+    autonomousChooser = new AutonomousChooser();
     autonomousChooser.addOptions();
-    locationChooser.addOptions();
 
     autonomousChooser.initialize();
-    locationChooser.initialize();
     // Configure the trigger bindings
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
@@ -156,10 +155,6 @@ public class RobotContainer {
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autonomousChooser.getAutonomousCommand(autonomousChooser.getAction());
-  }
-
-  public int getLocation() {
-    return locationChooser.getLocation(locationChooser.getAction());
   }
 
   // return new SequentialCommandGroup(

@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.LocationChooser;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
@@ -39,7 +38,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private static Diagnostics diagnostics;
-  private LocationChooser locationChooser;
+  private AutonomousChooser locationChooser;
   private int location;
   private Arm arm;
 
