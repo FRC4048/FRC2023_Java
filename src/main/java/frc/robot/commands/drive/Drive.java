@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.SmartShuffleboard;
 
 public class Drive extends CommandBase{
 
@@ -33,15 +34,10 @@ public class Drive extends CommandBase{
 
     @Override
     public void execute() {
-//Square the values for finer movement
         double mod = decreaseSpeedButton.getAsBoolean() ? Constants.PRECISION_DRIVE_AND_STEER_SPD : 1;
         double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.1);
         double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
-
-        //fwd = fwd * fwd * Math.signum(fwd);
-        //str = str * str * Math.signum(str);
-        //rcw = rcw * rcw * Math.signum(rcw);
 
         // TODO: Call drivetrain
         drivetrain.drive(-fwd*mod, -str*mod, -rcw*mod, true);

@@ -19,6 +19,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.WheelAlign;
+import frc.robot.commands.ResetOdometry;
+import frc.robot.commands.drive.WheelAlign;
+import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
 
@@ -46,6 +49,8 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
+    new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
+    arm = m_robotContainer.getArm();
       }
 
   /**
@@ -81,7 +86,7 @@ public class Robot extends TimedRobot {
 
 
     //add this back in later
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
