@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
-    arm = m_robotContainer.getArm();
       }
 
   /**
