@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.arm.ArmMoveSequence;
-import frc.robot.commands.arm.GoToSetpoint;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.Arm;
@@ -24,8 +23,8 @@ public class SubstationSequence extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoSubstation(luxonisVision, drivetrain, 0.6),
-      new ArmMoveSequence(arm, 32.0),
-      new OpenGripper(gripperSubsystem),   
+      //new ArmMoveSequence(arm, 32.0),    needs extender setpoint added
+      //new OpenGripper(gripperSubsystem),   
       new AutoSubstation(luxonisVision, drivetrain, 0),
       new CloseGripper(gripperSubsystem)
     );

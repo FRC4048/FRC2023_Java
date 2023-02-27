@@ -21,13 +21,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetOdometry;
-<<<<<<< HEAD
-import frc.robot.commands.drive.Forward;
-=======
->>>>>>> origin/main
 import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
@@ -57,11 +52,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
-<<<<<<< HEAD
-    new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, 0, 0).schedule();
-=======
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
->>>>>>> origin/main
     arm = m_robotContainer.getArm();
       }
 

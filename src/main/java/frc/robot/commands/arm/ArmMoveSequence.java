@@ -11,7 +11,7 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.PieceGrid;
 
 /**
- * DO NOT CALL THIS DIRECTLY MUST BE WRAPPED IN A COMMAND
+ * The button binding should not call this directly
  */
 public class ArmMoveSequence extends SequentialCommandGroup {
     public ArmMoveSequence(Arm arm, Extender extender, double armTargetPosition, double extenderTargetPosition) {
