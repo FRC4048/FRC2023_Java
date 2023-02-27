@@ -13,14 +13,13 @@ public class ManualMoveExtender extends CommandBase {
     public ManualMoveExtender(Extender extender, DoubleSupplier doubleSupplier) {
         this.extender = extender;
         this.doubleSupplier = doubleSupplier;
-        addRequirements(this.extender);
+        addRequirements(extender);
     }
 
     @Override
     public void execute() {
-        double value = doubleSupplier.getAsDouble();
-        // Flipping sign, "down" is positive
-        this.extender.move(-value);
+        double speed = doubleSupplier.getAsDouble();
+        extender.move(speed);
     }
 
     @Override

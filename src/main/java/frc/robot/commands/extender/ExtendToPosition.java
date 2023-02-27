@@ -3,6 +3,7 @@ package frc.robot.commands.extender;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -31,12 +32,11 @@ public class ExtendToPosition extends CommandBase {
         double error = position - extender.getEncoder();
         if (Math.abs(error) > Constants.EXTENDER_LARGE_ERROR) {
             speed = Constants.EXTENDER_LARGE_ERROR_SPEED * Math.signum(error);
-            extender.move(speed);
-        }
-        else {
+        } else {
             speed = Constants.EXTENDER_MINIMUM_SPEED * Math.signum(error);
-            extender.move(speed);
         }
+        
+        extender.move(speed);
     }
 
     @Override

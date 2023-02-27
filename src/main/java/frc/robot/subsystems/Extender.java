@@ -17,7 +17,7 @@ import frc.robot.utils.diag.DiagTalonSrxSwitch;
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
-
+    private ProtectionMechanism protectionMechanism;
     public Extender() {
         int TIMEOUT = 100;
 
@@ -35,15 +35,20 @@ public class Extender extends SubsystemBase {
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxEncoder("Extender", "Encoder", Constants.DIAG_TALONSRX_ROT, extenderMotor));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Extended Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Retracted Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
-
     }
 
     public void resetEncoder() {
         extenderMotor.setSelectedSensorPosition(0);
     }
+    
 
     public void move(double speed) {
-        extenderMotor.set(speed);
+        extenderMotor.set(protectionMechanism.validateExtenderVolt(speed));
+//        if (speed < 0 || Mechanism.getInstance().safeToExtend()) {
+//        extenderMotor.set(speed);
+//        } else {
+//            extenderMotor.set(0.0);
+//        }
     }
 
     public void stop() {
@@ -62,6 +67,8 @@ public class Extender extends SubsystemBase {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
     
+    
+
     @Override
     public void periodic() {
         SmartShuffleboard.put("Extender", "encoder",getEncoder());
@@ -69,5 +76,12 @@ public class Extender extends SubsystemBase {
         SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
         SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
     }
-    
+
+    public double getExtenderSensorPos() {
+        return extenderMotor.getSelectedSensorPosition();
+    }
+
+    public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
+        this.protectionMechanism = protectionMechanism;
+    }
 }
