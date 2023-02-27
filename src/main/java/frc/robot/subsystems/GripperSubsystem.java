@@ -18,6 +18,7 @@ import frc.robot.utils.diag.DiagTalonSrxSwitch;
 public class GripperSubsystem extends SubsystemBase {
   public WPI_TalonSRX gripperMotor;
   private DutyCycleEncoder gripperEncoder;
+  private ProtectionMechanism protectionMechanism;
 
   public GripperSubsystem() {
     gripperMotor = new WPI_TalonSRX(Constants.GRIPPER_MOTOR_ID);
@@ -43,7 +44,7 @@ public class GripperSubsystem extends SubsystemBase {
   }
 
   public void open() {
-    gripperMotor.set(ProtectionMechanism.getInstance().validateGripperVolt(Constants.GRIPPER_OPENING_SPEED));
+    gripperMotor.set(protectionMechanism.validateGripperVolt(Constants.GRIPPER_OPENING_SPEED));
 //    gripperMotor.set(Mechanism.getInstance().safeToOpenGripper()?Constants.GRIPPER_OPENING_SPEED:0);
   }
 
@@ -56,7 +57,7 @@ public class GripperSubsystem extends SubsystemBase {
     // gripperMotor.stopMotor();
   }
   public void move(double speed) {
-    gripperMotor.set(ProtectionMechanism.getInstance().validateGripperVolt(speed));
+    gripperMotor.set(protectionMechanism.validateGripperVolt(speed));
 //    gripperMotor.set(speed > 0 && Mechanism.getInstance().safeToOpenGripper() ? speed : 0);
   }
   public double gripperPosition() {
@@ -67,5 +68,9 @@ public class GripperSubsystem extends SubsystemBase {
   }
   public double getSpeed(){
     return gripperMotor.get();
+  }
+
+  public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
+    this.protectionMechanism = protectionMechanism;
   }
 }

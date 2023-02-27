@@ -22,6 +22,7 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
+  private ProtectionMechanism protectionMechanism;
 
 
 private SparkMaxPIDController pidController;
@@ -90,7 +91,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    neoMotor.setVoltage(ProtectionMechanism.getInstance().validateArmVolt(val));
+    neoMotor.setVoltage(protectionMechanism.validateArmVolt(val));
   }
 
   public void zeroPID() {
@@ -101,7 +102,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setPIDReference(double reference) {
-    if ((reference > Constants.NO_EXTENSION_ZONE) || (ProtectionMechanism.getInstance().safeToLowerArm())) {
+    if ((reference > Constants.NO_EXTENSION_ZONE) || (protectionMechanism.safeToLowerArm())) {
       pidController.setReference(reference, ControlType.kPosition, 0);
   }
   }
@@ -121,5 +122,7 @@ private SparkMaxPIDController pidController;
     pidController.setFF(f);
   }
 
-
+  public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
+    this.protectionMechanism = protectionMechanism;
+  }
 }

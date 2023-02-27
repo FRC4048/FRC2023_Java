@@ -17,6 +17,7 @@ import frc.robot.utils.diag.DiagTalonSrxSwitch;
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
+    private ProtectionMechanism protectionMechanism;
     public Extender() {
         int TIMEOUT = 100;
 
@@ -42,7 +43,7 @@ public class Extender extends SubsystemBase {
     
 
     public void move(double speed) {
-        extenderMotor.set(ProtectionMechanism.getInstance().validateExtenderVolt(speed));
+        extenderMotor.set(protectionMechanism.validateExtenderVolt(speed));
 //        if (speed < 0 || Mechanism.getInstance().safeToExtend()) {
 //        extenderMotor.set(speed);
 //        } else {
@@ -78,5 +79,9 @@ public class Extender extends SubsystemBase {
 
     public double getExtenderSensorPos() {
         return extenderMotor.getSelectedSensorPosition();
+    }
+
+    public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
+        this.protectionMechanism = protectionMechanism;
     }
 }

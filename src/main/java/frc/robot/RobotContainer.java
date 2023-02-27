@@ -15,7 +15,6 @@ import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.Move;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -33,6 +32,7 @@ import frc.robot.utils.SmartShuffleboard;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private ProtectionMechanism protectionMechanism;
   private Drivetrain drivetrain;
   private Arm arm;
   private Extender extender;
@@ -62,7 +62,12 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
-    ProtectionMechanism.newInstance(arm,extender,gripper);
+    protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
+    
+    arm.setProtectionMechanism(protectionMechanism);
+    extender.setProtectionMechanism(protectionMechanism);
+    gripper.setProtectionMechanism(protectionMechanism);
+    
     m_PDB = new PowerDistributionBoard();
     aprilTagPosition = new AprilTagPosition();
     pieceGrid = new PieceGrid();
@@ -108,7 +113,6 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
     SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
 
-    SmartShuffleboard.putCommand("Drive", "Move", new Move(getDrivetrain(), 0.5));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
 
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));

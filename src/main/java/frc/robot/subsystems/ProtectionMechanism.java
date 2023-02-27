@@ -5,23 +5,14 @@ import frc.robot.Constants;
 import frc.robot.utils.SmartShuffleboard;
 
 public final class ProtectionMechanism extends SubsystemBase {
-     private static ProtectionMechanism mechanism;
      private final Arm arm;
      private final Extender extender;
      private final GripperSubsystem gripper;
 
-     private ProtectionMechanism(Arm arm, Extender extender, GripperSubsystem gripper) {
+     public ProtectionMechanism(Arm arm, Extender extender, GripperSubsystem gripper) {
           this.arm = arm;
           this.extender = extender;
           this.gripper = gripper;
-     }
-
-     public static ProtectionMechanism getInstance() {
-          return mechanism;
-     }
-
-     public static void newInstance(Arm arm, Extender extender, GripperSubsystem gripper) {
-          mechanism = new ProtectionMechanism(arm,extender,gripper);
      }
 
      @Override
