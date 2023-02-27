@@ -93,8 +93,8 @@ public final class Constants {
   public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
 
-  public static final double NO_EXTENSION_ZONE = 25; //max arm angle for no extension
-  public static final double NO_ARM_LOWER_ZONE = 500; //max extension for no arm lower
+  public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
+  public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;

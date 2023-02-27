@@ -7,11 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
@@ -29,8 +27,8 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.subsystems.*;
 import frc.robot.commands.sequences.Stow;
+import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
