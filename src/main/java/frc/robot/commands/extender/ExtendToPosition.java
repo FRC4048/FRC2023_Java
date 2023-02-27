@@ -9,6 +9,8 @@ import frc.robot.utils.SmartShuffleboard;
 public class ExtendToPosition extends CommandBase {
     private Extender extender;
     private double position;
+    private long startTime;
+    private final long timeout = 5000;
 
     public ExtendToPosition(Extender extender, double position) {
         this.extender = extender;
@@ -25,11 +27,13 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public void initialize() {
+        startTime = System.currentTimeMillis();
     }
 
     @Override
     public void execute(){
-        double speed = 0;
+        double speed;
+        if (System.currentTimeMillis() - startTime >= timeout)end(true);
         double error = position - extender.getEncoder();
         if (Math.abs(error) > Constants.EXTENDER_SPEED_SLOW_THRESHOLD) {
             speed = Constants.EXTENDER_AUTO_MAX_SPEED * Math.signum(error);
