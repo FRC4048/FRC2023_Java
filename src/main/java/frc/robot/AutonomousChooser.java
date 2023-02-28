@@ -4,12 +4,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.utils.SmartShuffleboard;
 
 public class AutonomousChooser {
 
     private SendableChooser<Action> actionChooser;
     private SendableChooser<Location> locationChooser;
     private Location location;
+
+    
     
     
 
@@ -24,19 +27,7 @@ public class AutonomousChooser {
 
     public AutonomousChooser() {
         actionChooser = new SendableChooser<Action>();
-    }
-
-    public void LocationChooser() {
         locationChooser = new SendableChooser<Location>();
-    }
-
-    public Location getLocation() {
-        if(locationChooser.getSelected() != null) {
-            return locationChooser.getSelected();
-        } 
-        else {
-            return Location.Middle;
-        }
     }
 
     public void addOptions() {
@@ -57,7 +48,10 @@ public class AutonomousChooser {
     public void initialize() {
         ShuffleboardTab tab = Shuffleboard.getTab("Autonomous");
         tab.add("Autonomous Action", actionChooser);
+
         tab.add("LocationChooser", locationChooser);
+        
+
     }
 
     public Action getAction() {
@@ -70,18 +64,12 @@ public class AutonomousChooser {
         
     }
 
-    public Location getLocation(Location action) {
-        if (action == Location.Middle) {
-            location = Location.Middle;
-            return location;
-        }
-        else if (action == Location.NextToSubtation) {
-            location = Location.NextToSubtation;
-            return location;
+    public Location getLocation() {
+        if (locationChooser.getSelected() != null) {
+            return locationChooser.getSelected();
         }
         else {
-            location = Location.NextToWall;
-            return location;
+            return Location.Middle;
         }
     }
     public PrintCommand getAutonomousCommand(Action action) {

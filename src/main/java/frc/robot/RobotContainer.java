@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.AutonomousChooser.Location;
 import frc.robot.Constants.OperatorConstants;
 
+import org.opencv.aruco.Aruco;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -182,4 +184,11 @@ public class RobotContainer {
   public Joystick getJoyLeft() {
     return joyLeft;
   }
+
+
+  public AutonomousChooser getAutonomousChooser() {
+    return autonomousChooser;
+  }
+
 }
+

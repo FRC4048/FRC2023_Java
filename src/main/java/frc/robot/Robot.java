@@ -26,7 +26,7 @@ import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
-
+import frc.robot.AutonomousChooser;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    
   }
 
 
@@ -84,26 +85,27 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     //add back in after creating these methods
     //autonomousCommand = m_robotContainer.getAutonomousCommand();
-    //location = m_robotContainer.getLocation();
-
-    if( autonomousCommand != null) {
-      SmartShuffleboard.put("Autonomous", "Chosen Command", autonomousCommand.getName());
-    }
-    else {
-      SmartShuffleboard.put("Autonomous", "Chosen Command", " ");
-    }
-    if(location == -1) {
-      SmartShuffleboard.put("Autonomous", "Chosen Location", "Left");
-    }
-    else if(location == 0) {
-      SmartShuffleboard.put("Autonomous", "Chosen Location", "Middle");
-    }
-    else if(location == 1) {
-      SmartShuffleboard.put("Autonomous", "Chosen Location", "Right");
-    }
-    else {
-      SmartShuffleboard.put("Autonomous", "Chosen Location", " ");
-    }
+    //location = m_robotContainer.getLocation()
+    SmartShuffleboard.put("Autonomous", "Chosen Action", m_robotContainer.getAutonomousChooser().getAction().name());
+    SmartShuffleboard.put("Autonomous", "Chosen Location", m_robotContainer.getAutonomousChooser().getLocation().name());
+    // if( autonomousCommand != null) {
+    //   SmartShuffleboard.put("Autonomous", "Chosen Command", autonomousCommand.getName());
+    // }
+    // else {
+    //   SmartShuffleboard.put("Autonomous", "Chosen Command", " ");
+    // }
+    // if(location == -1) {
+    //   SmartShuffleboard.put("Autonomous", "Chosen Location", "Left");
+    // }
+    // else if(location == 0) {
+    //   SmartShuffleboard.put("Autonomous", "Chosen Location", "Middle");
+    // }
+    // else if(location == 1) {
+    //   SmartShuffleboard.put("Autonomous", "Chosen Location", "Right");
+    // }
+    // else {
+    //   SmartShuffleboard.put("Autonomous", "Chosen Location", " ");
+    // }
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -120,6 +122,7 @@ public class Robot extends TimedRobot {
       autonomousCommand.schedule();
     }
     m_robotContainer.getArm().zeroPID();
+    
   }
 
   /** This function is called periodically during autonomous. */
