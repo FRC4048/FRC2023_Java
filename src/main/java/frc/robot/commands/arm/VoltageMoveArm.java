@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Extender;
 import frc.robot.utils.SmartShuffleboard;
 
 public class VoltageMoveArm extends CommandBase {
@@ -10,11 +11,14 @@ public class VoltageMoveArm extends CommandBase {
     private Arm arm;
     private Double power;
     private Double angle;
+    private Extender extender;
+    
 
-    public VoltageMoveArm(Arm arm, Double power, Double angle) {
+    public VoltageMoveArm(Arm arm, Double power, Double angle, Extender extender) {
         this.arm = arm;
         this.power = power;
         this.angle = angle;
+        this.extender = extender;
         addRequirements(this.arm);
 
 
@@ -31,6 +35,7 @@ public class VoltageMoveArm extends CommandBase {
         if (angle > arm.getEncoderValue()) {
             arm.setVoltage(power);
         } else {
+            if (power != Constants.ARM_STOW_SPEED && extender.getEncoder() > Constants.NO_ARM_LOWER_ZONE)
             arm.setVoltage(-power);
         }
     }

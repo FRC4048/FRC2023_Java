@@ -17,7 +17,7 @@ public class ArmMoveSequence extends ParallelCommandGroup {
     public ArmMoveSequence(Arm arm, Extender extender, double armTargetPosition, double extenderTargetPosition) {
         addCommands(
             new SequentialCommandGroup(
-                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE, armTargetPosition), 
+                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE, armTargetPosition, extender), 
                 new HoldArmPID(arm,armTargetPosition)
             ),new ExtendToPosition(extender,extenderTargetPosition)
         );
