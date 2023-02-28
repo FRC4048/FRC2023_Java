@@ -50,8 +50,7 @@ public final class Constants {
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
   
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.2;
-  //DON'T MAKE .1, WON'T WORK
-  public static final double EXTENDER_AUTO_MAX_SPEED = 0.9999999999;
+  public static final double EXTENDER_AUTO_MAX_SPEED = .5; //TODO make 1
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
 
