@@ -55,7 +55,6 @@ public final class Constants {
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
 
-
   //PID Constants
   public static final double DRIVE_PID_P = 1;
   public static final double DRIVE_PID_I = 0;

@@ -43,6 +43,7 @@ public class Extender extends SubsystemBase {
     
 
     public void move(double speed) {
+
         extenderMotor.set(protectionMechanism.validateExtenderVolt(speed));
     }
 
