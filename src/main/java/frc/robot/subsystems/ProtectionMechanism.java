@@ -39,14 +39,17 @@ public final class ProtectionMechanism extends SubsystemBase {
      }
      public double validateArmVolt(double volt){
           volt = clampVolts(volt,-Constants.ARM_MAX_VOLTS,Constants.ARM_MAX_VOLTS);
-          if ((volt < 0 && safeToLowerArm()) || volt > 0) return volt;
+          if ((volt < 0 && safeToLowerArm()) || volt > 0) return volt {
+               if ((extender.getExtenderSensorPos() > Constants.NO_ARM_LOWER_ZONE) && (volt < 0)) {
+                    return 1;
+               } else {
+                    return volt;
+               }
+          }
           return 0;
      }
      public double validateExtenderVolt(double volt){
           if ((volt < 0 && safeToExtend()) || volt > 0) {
-               if ((extender.getExtenderSensorPos() > Constants.NO_ARM_LOWER_ZONE) && (volt < 0)) {
-                    return 1.5;
-               }
                return volt;}
           return 0;
      }
