@@ -48,6 +48,6 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) ||  if (System.currentTimeMillis() - startTime >= timeout)end(true);
+        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) || (System.currentTimeMillis() - startTime >= timeout);
     }
 }
