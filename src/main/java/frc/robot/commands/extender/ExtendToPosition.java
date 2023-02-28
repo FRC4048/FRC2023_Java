@@ -23,7 +23,6 @@ public class ExtendToPosition extends CommandBase {
     public void end(boolean interrupted) {
         extender.stop();
         if (extender.revLimitReached()) extender.resetEncoder();
-        SmartShuffleboard.put("DEBUG","EXTENDER_SPEED",0);
     }
 
     @Override
