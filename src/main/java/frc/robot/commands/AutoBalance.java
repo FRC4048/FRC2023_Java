@@ -28,7 +28,7 @@ public class AutoBalance extends CommandBase{
     @Override
     public void execute() {
         angle = drivetrain.getRoll();
-        finished = ((Math.abs(angle - lastAng) > 1) && (Math.abs(angle - lastAng) < 3));
+        finished = ((Math.abs(angle - lastAng) > .1) && (Math.abs(angle - lastAng) < 5));
         SmartShuffleboard.put("Driver", "Dif", Math.abs(angle - lastAng));
         SmartShuffleboard.put("Driver", "Finished", finished);
         lastAng = angle;
@@ -48,13 +48,12 @@ public class AutoBalance extends CommandBase{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        //drivetrain.drive(0, 0, 0, true);
+        drivetrain.drive(0, 0, 0, true);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        //return finished;
-        return false;
+        return finished;
     }
 }

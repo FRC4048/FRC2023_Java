@@ -138,14 +138,6 @@ public class Drivetrain extends SubsystemBase{
     return navxGyro;
   }
 
-  public double getPoseX() {
-    return m_odometry.getPoseMeters().getX();
-  }
-
-  public double getPoseY() {
-    return m_odometry.getPoseMeters().getY();
-  }
-
   public double getAccelX() {
     return navxGyro.getRawAccelX();
   }
