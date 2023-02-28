@@ -53,6 +53,7 @@ public class Drivetrain extends SubsystemBase{
 
   private double gyroOffset = 0;
   private double filterX, filterY, filterZ = 0;
+  private float filterRoll = 0;
 
   private final AHRS navxGyro;
 
@@ -132,6 +133,10 @@ public class Drivetrain extends SubsystemBase{
 
   public double getAccelZ() {
     return navxGyro.getRawAccelZ();
+  }
+
+  public float getRoll() {
+    return navxGyro.getRoll();
   }
 
   public double getFilterAccelX() {
@@ -250,6 +255,7 @@ public class Drivetrain extends SubsystemBase{
 
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
+    SmartShuffleboard.put("Driver", "Pitch", getGyroObject().getRoll());
 
     SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
 
