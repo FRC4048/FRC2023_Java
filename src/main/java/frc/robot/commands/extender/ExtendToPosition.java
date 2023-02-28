@@ -33,7 +33,6 @@ public class ExtendToPosition extends CommandBase {
     @Override
     public void execute(){
         double speed;
-        if (System.currentTimeMillis() - startTime >= timeout)end(true);
         double error = position - extender.getEncoder();
         if (Math.abs(error) > Constants.EXTENDER_SPEED_SLOW_THRESHOLD) {
             speed = Constants.EXTENDER_AUTO_MAX_SPEED * Math.signum(error);
@@ -49,6 +48,6 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD);
+        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) ||  if (System.currentTimeMillis() - startTime >= timeout)end(true);
     }
 }
