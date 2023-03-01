@@ -5,6 +5,7 @@ import javax.swing.GroupLayout.SequentialGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
 import frc.robot.commands.ResetEncoders;
@@ -22,14 +23,15 @@ public class OneGamepiece extends SequentialCommandGroup{
     public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
         addCommands(
         new ResetEncoders(arm, extender),
-        new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_LEFT.getArmPosition()),
+        new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
         new ParallelRaceGroup(
             new SequentialCommandGroup(
-                new ExtendToPosition(extender, ArmPositionGrid.TOP_LEFT.getExtenderPosition()),
+                new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
                 new OpenGripper(gripper)
             ),
-            new HoldArmPID(arm, ArmPositionGrid.TOP_LEFT.getArmPosition())
+            new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
         ),
+        new WaitCommand(0.3),
         new Stow(arm, gripper, extender)
         // new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2, Math.toRadians(180)),
         // new MoveDistanceSpinTraj(drivetrain, 0.2, 0, 0)
