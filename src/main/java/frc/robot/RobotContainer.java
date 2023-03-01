@@ -68,16 +68,18 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
-    autonomousChooser.addOptions();
-
-    autonomousChooser.initialize();
+    
     // Configure the trigger bindings
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
+
+    autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
+    autonomousChooser.addOptions();
+
+    autonomousChooser.initialize();
     
     arm.setProtectionMechanism(protectionMechanism);
     extender.setProtectionMechanism(protectionMechanism);
