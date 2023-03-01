@@ -15,9 +15,12 @@ public class Stow extends ParallelCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
         addCommands(
-            new CloseGripper(gripper).withTimeout(3),
             new ExtendToPosition(extender, 0).withTimeout(3),
-            new VoltageMoveArm(arm, 0.0, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3)
+            new ParallelCommandGroup(
+                new CloseGripper(gripper).withTimeout(3),
+                new VoltageMoveArm(arm, 0.0, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3)
+            )
+            
         );
     }
 
