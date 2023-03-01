@@ -154,6 +154,10 @@ public class Drivetrain extends SubsystemBase{
     return navxGyro.getRoll();
   }
 
+  public float getFilterRoll() {
+    return filterRoll;
+  }
+
   public double getFilterAccelX() {
     return filterX;
   }
@@ -267,10 +271,13 @@ public class Drivetrain extends SubsystemBase{
     filterX = filterX + (filterX+getAccelX())/Constants.GYRO_ACCEL_FILTER;
     filterY = filterY + (filterY+getAccelY())/Constants.GYRO_ACCEL_FILTER;
     filterZ = filterZ + (filterZ+getAccelZ())/Constants.GYRO_ACCEL_FILTER;
+    filterRoll = (filterRoll + getRoll())/2;
+
 
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
-    SmartShuffleboard.put("Driver", "Pitch", getGyroObject().getRoll());
+    SmartShuffleboard.put("Driver", "FilterRoll", filterRoll);
+    SmartShuffleboard.put("Driver", "Roll", getRoll());
 
     SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
 
