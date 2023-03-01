@@ -13,12 +13,7 @@ import frc.robot.Constants.OperatorConstants;
 import org.opencv.aruco.Aruco;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.XboxController;  
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
@@ -82,7 +77,7 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    autonomousChooser = new AutonomousChooser();
+    autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
     autonomousChooser.addOptions();
 
     autonomousChooser.initialize();
