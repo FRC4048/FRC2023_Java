@@ -48,12 +48,11 @@ public final class Constants {
   //EXTENDER
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-  public static final double EXTENDER_LARGE_ERROR = 500;
-  public static final double EXTENDER_LARGE_ERROR_SPEED = 0.4;
-  public static final double EXTENDER_MINIMUM_SPEED = 0.2;
-  public static final double EXTENDER_GAIN =  EXTENDER_LARGE_ERROR_SPEED / EXTENDER_LARGE_ERROR;
-  public static final double EXTENDER_ERROR_THRESHOLD = 50;
-
+  
+  public static final double EXTENDER_AUTO_MIN_SPEED = 0.2;
+  public static final double EXTENDER_AUTO_MAX_SPEED = .5; //TODO make 1
+  public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
+  public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
 
   //PID Constants
   public static final double DRIVE_PID_P = 1;
@@ -93,6 +92,8 @@ public final class Constants {
   public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
 
+  public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
+  public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;
@@ -129,10 +130,14 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
-     public static final double ARM_AUTO_VOLTAGE = 1d;
-  public static final double PRECISION_DRIVE_AND_STEER_SPD = .10f;
+  public static final double ARM_AUTO_VOLTAGE_UP = 4d;
+  public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
 
-  public static class OperatorConstants {
+  public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
+  public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
+
+
+     public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
 
@@ -151,4 +156,24 @@ public final class Constants {
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
+
+  //setpoints
+  public static final double SUBSTATION_PICKUP_ARM_ANGLE = 30.0;
+
+  // arm set points
+  public static final double BOTTOM_ANGLE = 22;
+  public static final double BOTTOM_EXTENSION = 1590;
+
+  public static final double CONE_MIDDLE_ANGLE = 34;
+  public static final double CONE_MIDDLE_EXTENSION = 3170;
+  public static final double CONE_TOP_ANGLE = 39;
+  public static final double CONE_TOP_EXTENSION = 6860;
+
+  public static final double PICKUP_ANGLE = 32;
+  public static final double PICKUP_EXTENSION = 0;
+
+  public static final double CUBE_MIDDLE_ANGLE = 29;
+  public static final double CUBE_MIDDLE_EXTENSION = 1565;
+  public static final double CUBE_TOP_ANGLE = 35;
+  public static final double CUBE_TOP_EXTENSION = 5655;
 }

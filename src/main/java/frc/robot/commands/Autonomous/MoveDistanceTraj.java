@@ -26,6 +26,7 @@ public class MoveDistanceTraj extends CommandBase {
     private SwerveControllerCommand moveCommand;
 
 
+    //Command used to move a specific distance without any rotation/angle change
     public MoveDistanceTraj(Drivetrain drivetrain, double xChange, double yChange) {
         this.drivetrain = drivetrain;
         this.xChange = xChange;
@@ -45,15 +46,20 @@ public class MoveDistanceTraj extends CommandBase {
 
     @Override
     public void initialize() {
+        //differential drive trajectory generation does not drive in a straight line unless
+        //the starting and ending angle are the same, and the starting angle is pointing towards
+        //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
+        //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
+        //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
         double angle = Math.atan(yChange/xChange);
         currentPos = new Pose2d(
-        drivetrain.getOdometry().getPoseMeters().getX(), 
-        drivetrain.getOdometry().getPoseMeters().getY(), 
+        drivetrain.getPoseX(), 
+        drivetrain.getPoseY(), 
         new Rotation2d(angle));
 
         desiredPos = new Pose2d(
-        drivetrain.getOdometry().getPoseMeters().getX() + xChange, 
-        drivetrain.getOdometry().getPoseMeters().getY() + yChange, 
+        drivetrain.getPoseX() + xChange, 
+        drivetrain.getPoseY() + yChange, 
         new Rotation2d(angle));
 
 

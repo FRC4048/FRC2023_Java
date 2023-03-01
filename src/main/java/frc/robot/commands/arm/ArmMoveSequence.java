@@ -15,12 +15,22 @@ import frc.robot.subsystems.PieceGrid;
  */
 public class ArmMoveSequence extends SequentialCommandGroup {
     public ArmMoveSequence(Arm arm, Extender extender, double armTargetPosition, double extenderTargetPosition) {
-        addCommands(
-        new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE, armTargetPosition),
-        new ParallelCommandGroup(
-                new HoldArmPID(arm,armTargetPosition),
-                new ExtendToPosition(extender,extenderTargetPosition))
-        );
+        if (armTargetPosition > arm.getEncoderValue()) {
+            addCommands(
+                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
+                new ParallelCommandGroup(
+                    new HoldArmPID(arm,armTargetPosition),
+                    new ExtendToPosition(extender,extenderTargetPosition)
+                )
+            );
+        }
+        else {
+            addCommands(
+                new ExtendToPosition(extender,extenderTargetPosition),
+                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
+                new HoldArmPID(arm,armTargetPosition)
+            );
+        }
     }
 
 }

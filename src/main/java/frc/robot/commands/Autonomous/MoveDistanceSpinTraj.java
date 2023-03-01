@@ -29,7 +29,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
     private ProfiledPIDController thetaController = new ProfiledPIDController(Constants.kP_THETA_AUTO, Constants.kI_THETA_AUTO, Constants.kD_THETA_AUTO, Constants.THETA_CONTROLLER_CONSTRAINTS);
     private SwerveControllerCommand moveCommand;
 
-
+    //Command used to move a specific distance and turn to a specific angle
     public MoveDistanceSpinTraj(Drivetrain drivetrain, double xChange, double yChange, double desiredRotRadians) {
         this.drivetrain = drivetrain;
         this.xChange = xChange;
@@ -42,15 +42,20 @@ public class MoveDistanceSpinTraj extends CommandBase {
 
     @Override
     public void initialize() {
+        //differential drive trajectory generation does not drive in a straight line unless
+        //the starting and ending angle are the same, and the starting angle is pointing towards
+        //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
+        //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
+        //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
         double angle = Math.atan(yChange/xChange);
         currentPos = new Pose2d(
-        drivetrain.getOdometry().getPoseMeters().getX(), 
-        drivetrain.getOdometry().getPoseMeters().getY(), 
+        drivetrain.getPoseX(), 
+        drivetrain.getPoseY(), 
         new Rotation2d(angle));
 
         desiredPos = new Pose2d(
-        drivetrain.getOdometry().getPoseMeters().getX() + xChange, 
-        drivetrain.getOdometry().getPoseMeters().getY() + yChange, 
+        drivetrain.getPoseX() + xChange, 
+        drivetrain.getPoseY() + yChange, 
         new Rotation2d(angle));
 
 

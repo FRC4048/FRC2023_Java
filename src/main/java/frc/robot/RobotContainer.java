@@ -15,31 +15,21 @@ import org.opencv.aruco.Aruco;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;  
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.Stow;
-import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.Autonomous.MoveToPositionTraj;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.Forward;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.subsystems.AprilTagPosition;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Extender;
-import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.subsystems.PieceGrid;
-import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.commands.sequences.Stow;
+import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -50,6 +40,7 @@ import frc.robot.utils.SmartShuffleboard;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private ProtectionMechanism protectionMechanism;
   private Drivetrain drivetrain;
   private Arm arm;
   private Extender extender;
@@ -86,6 +77,12 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
+    protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
+    
+    arm.setProtectionMechanism(protectionMechanism);
+    extender.setProtectionMechanism(protectionMechanism);
+    gripper.setProtectionMechanism(protectionMechanism);
+    
     m_PDB = new PowerDistributionBoard();
     aprilTagPosition = new AprilTagPosition();
     pieceGrid = new PieceGrid();
@@ -117,6 +114,7 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new Stow(arm,gripper,extender));
     //manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
     //manualController.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));
     //manualController.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new ManualMoveExtender (extender, () -> Constants.MANUAL_EXTEND_SPEED ));
@@ -129,16 +127,16 @@ public class RobotContainer {
 
     if (Constants.DEBUG) {
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
+    SmartShuffleboard.putCommand("Extender", "Set position=4000", new ExtendToPosition(extender, 4000));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
     SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
     SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
-
-    SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
+ 
+    
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
-    SmartShuffleboard.putCommand("Driver", "MoveToPosition", new MoveToPositionTraj(drivetrain));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
 
-    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, gripper, extender));
+    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
   }
   }
 
@@ -166,6 +164,11 @@ public class RobotContainer {
   public Arm getArm() {
     return arm;
   }
+
+  public GripperSubsystem getGripper() {
+    return gripper;
+  }
+
 
   public CommandXboxController getController() {
     return controller;

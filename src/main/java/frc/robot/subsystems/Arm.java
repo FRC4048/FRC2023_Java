@@ -2,10 +2,12 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
+import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,10 +22,13 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
+  private ProtectionMechanism protectionMechanism;
 
 
-
+private SparkMaxPIDController pidController;
+  
   public Arm() {
+
     angle = 0;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -31,7 +36,7 @@ public class Arm extends SubsystemBase {
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
-    
+    pidController = neoMotor.getPIDController();
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
@@ -50,6 +55,13 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
     }
+
+    if (Constants.DEBUG) {
+      SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
+      SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
+      SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
+      SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
+      }
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -59,10 +71,12 @@ public class Arm extends SubsystemBase {
   public boolean isRevLimitSwitchReached() {
     return neoMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
   }
+  
 
   public double getEncoderValue() {
     return encoder.getPosition();
   }
+  
 
   public double getAngle() {
     return angle;
@@ -77,13 +91,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setVoltage(Double val) {
-    if (val > Constants.ARM_MAX_VOLTS) {
-    neoMotor.setVoltage(Constants.ARM_MAX_VOLTS);
-  } else if (val < -Constants.ARM_MAX_VOLTS) {
-    neoMotor.setVoltage(-Constants.ARM_MAX_VOLTS);}
-    else {
-      neoMotor.setVoltage(val);
-    }
+    neoMotor.setVoltage(protectionMechanism.validateArmVolt(val));
   }
 
   public void zeroPID() {
@@ -91,6 +99,12 @@ public class Arm extends SubsystemBase {
     neoMotor.getPIDController().setI(0);
     neoMotor.getPIDController().setD(0);
     neoMotor.getPIDController().setFF(0);
+  }
+
+  public void setPIDReference(double reference) {
+    if ((reference > Constants.NO_EXTENSION_ZONE) || (protectionMechanism.safeToLowerArm())) {
+      pidController.setReference(reference, ControlType.kPosition, 0);
+  }
   }
 
   public CANSparkMax getNeoMotor() {
@@ -101,5 +115,14 @@ public class Arm extends SubsystemBase {
     encoder.setPosition(0);
   }
 
+  public void setPID(double p, double i, double d, double f) {
+    pidController.setP(p);
+    pidController.setI(i);
+    pidController.setD(d);
+    pidController.setFF(f);
+  }
 
+  public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
+    this.protectionMechanism = protectionMechanism;
+  }
 }

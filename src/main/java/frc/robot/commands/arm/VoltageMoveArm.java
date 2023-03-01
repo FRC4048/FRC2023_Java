@@ -8,12 +8,14 @@ import frc.robot.utils.SmartShuffleboard;
 public class VoltageMoveArm extends CommandBase {
 
     private Arm arm;
-    private Double power;
+    private Double upPower;
+    private Double downPower;
     private Double angle;
 
-    public VoltageMoveArm(Arm arm, Double power, Double angle) {
+    public VoltageMoveArm(Arm arm, Double upPower, Double downPower, Double angle) {
         this.arm = arm;
-        this.power = power;
+        this.upPower = upPower;
+        this.downPower = downPower;
         this.angle = angle;
         addRequirements(this.arm);
 
@@ -27,11 +29,11 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public void execute() {
-        //negative value moves arm up
+        //positive angle -> positive power
         if (angle > arm.getEncoderValue()) {
-            arm.setVoltage(power);
+            arm.setVoltage(upPower);
         } else {
-            arm.setVoltage(-power);
+            arm.setVoltage(-downPower);
         }
     }
 
