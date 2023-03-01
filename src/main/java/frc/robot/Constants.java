@@ -130,7 +130,8 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
-     public static final double ARM_AUTO_VOLTAGE = 1d;
+  public static final double ARM_AUTO_VOLTAGE_UP = 4d;
+  public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
