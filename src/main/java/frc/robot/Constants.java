@@ -166,7 +166,7 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -0.5;
   public static final double GRIPPER_TIMEOUT = 5.0;
   public static final double WANTED_TIME = 1.0;
-  public static final double AUTO_CHARGESTATION_SPEED = 0.3;
+  public static final double AUTO_CHARGESTATION_SPEED = 0.05;
   public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
