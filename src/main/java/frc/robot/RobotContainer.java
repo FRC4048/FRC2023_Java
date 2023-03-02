@@ -28,7 +28,9 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.Stow;
+import frc.robot.commands.sequences.SubstationPickup;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -62,7 +64,24 @@ public class RobotContainer {
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
 
+  /*
+  controller bindings:
+    - a: grid select
+    - b: stow
+    - x: substation pickup
+    - y: ground pickup
 
+    - rTrigger: drop gamePiece
+    - lTrigger: grab gamePiece
+
+    - start: extend to position
+    - logitechButton: abort alt
+    - dPad: grid select
+    - leftStickPress: station pickup
+
+  manualController bindings:
+  
+  */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
@@ -112,11 +131,13 @@ public class RobotContainer {
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
 
-    manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
-    manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
-    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
-    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new Stow(arm,gripper,extender));
+    // manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
+    controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
+    controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
+    controller.button(XboxController.Button.kX.value).onTrue(new SubstationPickup(arm, extender, gripper));
+    // manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     //manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
     //manualController.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));
     //manualController.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new ManualMoveExtender (extender, () -> Constants.MANUAL_EXTEND_SPEED ));
