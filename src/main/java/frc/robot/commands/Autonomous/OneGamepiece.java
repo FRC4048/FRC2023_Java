@@ -31,9 +31,9 @@ public class OneGamepiece extends SequentialCommandGroup{
             ),
             new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
         ),
-        new Stow(arm, gripper, extender)
-        // new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2, Math.toRadians(180)),
-        // new MoveDistanceSpinTraj(drivetrain, 0.2, 0, 0)
+        new Stow(arm, gripper, extender),
+        new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2, Math.toRadians(180)),
+        new MoveDistanceSpinTraj(drivetrain, 1.5, 0, Math.toRadians(180))
 
     );
     }

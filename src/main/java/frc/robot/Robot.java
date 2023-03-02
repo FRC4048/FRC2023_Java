@@ -89,7 +89,6 @@ public class Robot extends TimedRobot {
     //autonomousCommand = m_robotContainer.getAutonomousCommand();
     //location = m_robotContainer.getLocation()
     SmartShuffleboard.put("Autonomous", "Chosen Action", m_robotContainer.getAutonomousChooser().getAction().name());
-    SmartShuffleboard.put("Autonomous", "Chosen Location", m_robotContainer.getAutonomousChooser().getLocation().name());
     // if( autonomousCommand != null) {
     //   SmartShuffleboard.put("Autonomous", "Chosen Command", autonomousCommand.getName());
     // }
