@@ -23,18 +23,7 @@ public class ArmMoveSequence extends ParallelCommandGroup {
             new SequentialCommandGroup(
                 new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE, armTargetPosition), 
                 new HoldArmPID(arm,armTargetPosition)
-            ),new ExtendToPosition(extender,extenderTargetPosition),
-                new CommandBase(){
-            @Override
-            public void execute() {
-                SmartShuffleboard.put("Arm","estAngle", ProtectionMechanism.angleFromEncoder(arm.getEncoderValue()));
-                SmartShuffleboard.put("Arm","extMax", ProtectionMechanism.maxEnc(arm.getEncoderValue()));
-            }
-            @Override
-            public boolean isFinished() {
-                return  true;
-            }
-        }
+            ),new ExtendToPosition(extender,extenderTargetPosition)
         );
     }
 

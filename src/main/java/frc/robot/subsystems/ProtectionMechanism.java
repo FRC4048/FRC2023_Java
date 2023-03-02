@@ -21,6 +21,8 @@ public final class ProtectionMechanism extends SubsystemBase {
               SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
               SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
               SmartShuffleboard.put("DEBUG","CanOpenGripper",safeToOpenGripper());
+              SmartShuffleboard.put("Arm","estAngle", ProtectionMechanism.angleFromEncoder(arm.getEncoderValue()));
+              SmartShuffleboard.put("Arm","extMax", ProtectionMechanism.maxEnc(arm.getEncoderValue()));
          }
      }
 
@@ -31,16 +33,17 @@ public final class ProtectionMechanism extends SubsystemBase {
           return arm.getEncoderValue() > Constants.NO_EXTENSION_ZONE;
      }
      public boolean safeToLowerArm(){
-          int heightOfArm = 47;
-          double armAngle = angleFromEncoder(arm.getEncoderValue());
-          double extenderMax =  heightOfArm/Math.cos(armAngle);
-          if (arm.getEncoderValue() > 25) return true;
-          if (arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE && gripper.getopenLimitSwitch()) return false;
-          return (extender.getExtenderSensorPos() < extenderMax);
+          return true;
+//          int heightOfArm = 47;
+//          double armAngle = angleFromEncoder(arm.getEncoderValue());
+//          double extenderMax =  heightOfArm/Math.cos(armAngle);
+//          if (arm.getEncoderValue() > 25) return true;
+//          if (arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE && gripper.getopenLimitSwitch()) return false;
+//          return (extender.getExtenderSensorPos() < extenderMax);
 
      }
      public static double angleFromEncoder(double value){
-          return -17.3 + (0.672 * value) + (-.00453 * Math.pow(value,2)) + (-.00328 * Math.pow(value,3)) + (.0000583 * Math.pow(value,4));
+          return 17.3 + 0.672 * value - 4.53E-03 * Math.pow(value, 2) + 3.28E-03 * Math.pow(value, 3) - 5.83E-05 * Math.pow(value, 4);
           //17.3 + 0.672x + -4.53E-03x^2 + 3.28E-03x^3 + -5.83E-05x^4
      }
 
