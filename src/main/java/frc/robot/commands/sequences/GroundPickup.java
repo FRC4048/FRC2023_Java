@@ -18,7 +18,7 @@ public class GroundPickup extends SequentialCommandGroup{
                 new ParallelCommandGroup(
                     new ExtendToPosition(extender, 2000.0),
                     new OpenGripper(gripper),
-                    new HoldArmPID(arm, 9.0)
+                    new HoldArmPID(arm, 20.0)
                 )
         );
 

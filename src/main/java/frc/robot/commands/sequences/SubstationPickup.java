@@ -11,7 +11,7 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class SubstationPickup extends SequentialCommandGroup {
-    public SubstationPickup(Arm arm, Extender extender, GripperSubsystem gripper) {
+    public SubstationPickup(Arm arm, GripperSubsystem gripper) {
         addCommands(
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 32.0),
                 new ParallelCommandGroup(

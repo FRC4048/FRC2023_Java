@@ -80,7 +80,6 @@ public class RobotContainer {
     - leftStickPress: station pickup
 
   manualController bindings:
-  
   */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -134,7 +133,7 @@ public class RobotContainer {
     // manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
-    controller.button(XboxController.Button.kX.value).onTrue(new SubstationPickup(arm, extender, gripper));
+    controller.button(XboxController.Button.kX.value).onTrue(new SubstationPickup(arm, gripper));
     // manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
@@ -172,7 +171,7 @@ public class RobotContainer {
   
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autonomousChooser.getAutonomousCommand(autonomousChooser.getAction());
+    return autonomousChooser.getAutonomousCommand();
   }
 
   // return new SequentialCommandGroup(

@@ -16,6 +16,7 @@ import frc.robot.utils.SmartShuffleboard;
 
 public class AutonomousChooser {
 
+
     private Drivetrain drivetrain;
     private Arm arm;
     private Extender extender;
@@ -23,13 +24,15 @@ public class AutonomousChooser {
     private SendableChooser<Action> actionChooser;
     private SendableChooser<Location> locationChooser;
     private Location location;
+    private Action action;
 
+    
     enum Action {
         DoNothing, Balence, PickUpTwo, PickUpOneAndBalence, CrossLine, PickUpOne;
     }
 
     enum Location {
-        NextToWall, Middle, NextToSubtation;
+        Right, Middle, Left;
     }
 
     public AutonomousChooser(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
@@ -52,8 +55,8 @@ public class AutonomousChooser {
         
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);
         locationChooser.addOption(Location.Middle.name(), Location.Middle);
-        locationChooser.addOption(Location.NextToSubtation.name(), Location.NextToSubtation);
-        locationChooser.addOption(Location.NextToWall.name(), Location.NextToWall);
+        locationChooser.addOption(Location.Left.name(), Location.Left);
+        locationChooser.addOption(Location.Right.name(), Location.Right);
     }
     
     public void initialize() {
@@ -83,17 +86,21 @@ public class AutonomousChooser {
             return Location.Middle;
         }
     }
-    public Command getAutonomousCommand(Action action) {
+
+
+    public Command getAutonomousCommand() {
+        action = actionChooser.getSelected();
+        location = locationChooser.getSelected();
         if (action == Action.DoNothing) {
             //return new PrintCommand("Do absouletly nothing");
             return new DoNothing(arm, extender);
         }
-        else if (action == Action.CrossLine && location == Location.NextToSubtation) {
+        else if (action == Action.CrossLine && location == Location.Left) {
             //return new PrintCommand("Cross the line");
             return new EmptyCommand();
 
         }
-        else if (action == Action.CrossLine && location == Location.NextToWall) {
+        else if (action == Action.CrossLine && location == Location.Right) {
             //return new PrintCommand("Cross the line");
             return new EmptyCommand();
 
@@ -108,7 +115,7 @@ public class AutonomousChooser {
             return new EmptyCommand();
 
         }
-        else if (action == Action.Balence && (location == Location.NextToSubtation || location == Location.NextToWall)){
+        else if (action == Action.Balence && (location == Location.Left || location == Location.Right)){
             //return new PrintCommand("Cross the line"); //Invalid
             return new EmptyCommand();
 
@@ -118,20 +125,20 @@ public class AutonomousChooser {
             return new EmptyCommand();
 
         }
-        else if (action == Action.PickUpTwo && location == Location.NextToSubtation) {
+        else if (action == Action.PickUpTwo && location == Location.Left) {
             //return new PrintCommand("Pick up Two");
             return new EmptyCommand();
 
         }
-        else if (action == Action.PickUpTwo && location == Location.NextToWall) {
+        else if (action == Action.PickUpTwo && location == Location.Right) {
             //return new PrintCommand("Pick up Two");
             return new EmptyCommand();
 
         }
-        else if (action == Action.PickUpOne && location == Location.NextToSubtation) {
+        else if (action == Action.PickUpOne && location == Location.Left) {
             return new OneGamepiece(drivetrain, arm, extender, gripper);
         }
-        else if (action == Action.PickUpOne && location == Location.NextToWall) {
+        else if (action == Action.PickUpOne && location == Location.Right) {
             return new OneGamepiece(drivetrain, arm, extender, gripper);
         }
         else if (action == Action.PickUpOne && location == Location.Middle) {
@@ -143,11 +150,11 @@ public class AutonomousChooser {
             return new EmptyCommand();
 
         }
-        else if (action == Action.PickUpOneAndBalence && location == Location.NextToSubtation) {
+        else if (action == Action.PickUpOneAndBalence && location == Location.Left) {
             //return new PrintCommand("Cross the line"); //Invalid
             return new EmptyCommand();
         }
-        else if (action == Action.PickUpOneAndBalence && location == Location.NextToWall) {
+        else if (action == Action.PickUpOneAndBalence && location == Location.Right) {
             //return new PrintCommand("Cross the line"); //Invalid
             return new EmptyCommand();
         }
