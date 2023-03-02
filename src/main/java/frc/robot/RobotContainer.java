@@ -71,7 +71,7 @@ public class RobotContainer {
     cmdController.button(1).onTrue(new ResetExtenderEncoder(extender));
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
-    SmartShuffleboard.putCommand("Driver", "Turn to Degee", new TurnToDegrees(drivetrain, 45));
+    SmartShuffleboard.putCommand("Driver", "Turn to Degee", new TurnToDegrees(drivetrain, 180));
   }
 
   /**
