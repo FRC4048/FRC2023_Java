@@ -131,6 +131,8 @@ public final class Constants {
   public static final int IMU = 42;
      public static final double ARM_AUTO_VOLTAGE = 1d;
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .10f;
+  public static final double TURBO_DRIVE_AND_STEER_SPD = 2f;
+
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
