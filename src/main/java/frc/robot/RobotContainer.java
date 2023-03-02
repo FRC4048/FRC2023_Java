@@ -7,23 +7,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoSubstation;
-import frc.robot.commands.AutoSubstationAllign;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.Stow;
-import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
+import frc.robot.commands.SubstationTrajAllign;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.Autonomous.MoveToPositionTraj;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -126,8 +119,6 @@ public class RobotContainer {
     if (Constants.DEBUG) {
     SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
-    SmartShuffleboard.putCommand("Substation", "Auto Allign", new AutoSubstationAllign(luxonisVision, drivetrain));
-    SmartShuffleboard.putCommand("Substation", "Allign with distance", new AutoSubstation(luxonisVision, drivetrain, 0.5));
     SmartShuffleboard.putCommand("Substation", "Reset Odometry", new ResetOdometry(drivetrain, 0, 0, 0, 0));
     SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
     SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
@@ -135,7 +126,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Drive", "Move", new Forward(getDrivetrain()));
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    SmartShuffleboard.putCommand("Substation", "Traj ALLIGN", new MoveDistanceTraj(drivetrain, 0, luxonisVision.getObjectY()));
+    SmartShuffleboard.putCommand("Substation", "Traj ALLIGN", new SubstationTrajAllign(drivetrain, luxonisVision, 1.3));
 
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, gripper, extender));
   }
