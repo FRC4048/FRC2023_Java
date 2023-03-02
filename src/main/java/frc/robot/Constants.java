@@ -100,8 +100,8 @@ public final class Constants {
   public static final double MANUAL_GRIP_SPEED = 0.8;
 
   //autonomous values
-  public static final double MAX_VELOCITY_AUTO = 1.5;
-  public static final double MAX_ACCELERATION_AUTO = 3.0;
+  public static final double MAX_VELOCITY_AUTO = 3.0;
+  public static final double MAX_ACCELERATION_AUTO = 1.5;
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.6;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.1;
   public static final double kP_THETA_AUTO = 1.2;
