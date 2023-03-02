@@ -18,8 +18,8 @@ public class DiagSonar extends DiagMinMax {
      * @param minDistance             -The minimum testing distance for the sonar; the one that will be tested against.
      * @param maxDistance             -The maximum testing distance for the sonar; the one that will be tested against.
      */
-    public DiagSonar(String name, Ultrasonic sonar, double minDistance, double maxDistance){
-        super(name, minDistance, maxDistance);
+    public DiagSonar(String title, String name, Ultrasonic sonar, double minDistance, double maxDistance){
+        super(title, name, minDistance, maxDistance);
         this.sonar = sonar;
     }
 

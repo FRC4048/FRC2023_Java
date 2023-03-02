@@ -1,59 +1,84 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
 
-public class AutoBalance extends CommandBase {
-  /** Creates a new AutoBalance. */
-  Drivetrain drivetrain;
-  double speedx, speedy;
-  double filterx, filtery;
-  public AutoBalance(Drivetrain drivetrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.drivetrain = drivetrain;
-  }
+public class AutoBalance extends CommandBase{
+    Drivetrain drivetrain;
+    float maxAngle;
+    float minAngle;
+    int finishedCounter;
+    boolean firstMax;
+    boolean firstMin;
+    boolean secondMax;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    filterx = drivetrain.getAccelX();
-    filtery = drivetrain.getAccelY();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    speedx = 0;
-    speedy= 0;
-    filterx = filterx + (filterx + drivetrain.getAccelX())/3;
-    filtery = filtery + (filtery + drivetrain.getAccelY())/5;
-    SmartShuffleboard.put("Auto Balance", "Filter x", drivetrain.getAccelX());
-    SmartShuffleboard.put("Auto Balance", "Filter y", drivetrain.getAccelY());
-    if (Math.abs(filterx) > 0.05) {
-      speedx = Math.signum(filterx) * 0.1;
+    public AutoBalance(Drivetrain drivetrain){
+        this.drivetrain = drivetrain;
+        addRequirements(drivetrain);
     }
 
-    if (Math.abs(filtery) > 0.05) {
-      speedy = Math.signum(filtery) * 0.1;
+        // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        firstMax = true;
+        firstMin = false;
+        secondMax = false;
+        minAngle = 20;
+        maxAngle = 0;
+        finishedCounter = 0;
     }
 
-    drivetrain.drive(speedx, 0, 0, true);
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        if (firstMax) {
+            firstMin = Math.abs(drivetrain.getFilterRoll()) > 15;
+            firstMax = !firstMin;
+            drivetrain.drive(.3, 0, 0, true);
+        }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    drivetrain.drive(0, 0, 0, true);
-  }
+        if (firstMin) {
+            secondMax = Math.abs(drivetrain.getFilterRoll()) < 8;
+            firstMin = !secondMax;
+            drivetrain.drive(.05, 0, 0, true);
+        }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return Math.abs(filterx) < 0.1 & Math.abs(filtery) < 0.1;
-  }
+        if (secondMax) {
+            drivetrain.drive(Constants.AUTO_CHARGESTATION_SPEED, 0, 0, true);
+            if (Math.abs(drivetrain.getFilterRoll()) > maxAngle) {
+                maxAngle = Math.abs(drivetrain.getFilterRoll());
+            }
+
+            if (maxAngle - Math.abs(drivetrain.getFilterRoll()) > 2) {
+                finishedCounter++;
+            } else {
+                finishedCounter = 0;
+            }
+        }
+        //DO NOT DELETE THIS BANGER BY MATVEY
+
+        /*while(!((accelX < 0.1 && accelX > -0.1) || (accelY < 0.1 && accelY > -0.1)))// while the robot is NOT balanced (EXACT ACCELERATION BOUNDARIES UNKNOWN)
+        {   
+            speedX = accelToSpeed(accelX);
+            speedY = accelToSpeed(accelY);
+            drivetrain.drive(speedX, speedY, 0, true);   
+        }
+        drivetrain.drive(0, 0, 0, true);*/
+
+        //DO NOT DELETE THIS BANGER BY MATVEY
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        new DriveForTime(drivetrain, -.2, .1).schedule();
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return finishedCounter > 5;
+    }
 }

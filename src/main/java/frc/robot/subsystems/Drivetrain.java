@@ -18,11 +18,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
+import frc.robot.utils.diag.DiagSparkMaxEncoder;
 
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase{
@@ -53,6 +57,7 @@ public class Drivetrain extends SubsystemBase{
 
   private double gyroOffset = 0;
   private double filterX, filterY, filterZ = 0;
+  private float filterRoll = 0;
 
   private final AHRS navxGyro;
 
@@ -85,6 +90,23 @@ public class Drivetrain extends SubsystemBase{
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
 
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Back Left", Constants.DIAG_REL_SPARK_ENCODER, m_backLeftDrive));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Back Right", Constants.DIAG_REL_SPARK_ENCODER, m_backRightDrive));
+   
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Back Left", Constants.DIAG_REL_SPARK_ENCODER, m_backLeftTurn));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Turn", "Back Right", Constants.DIAG_REL_SPARK_ENCODER, m_backRightTurn));
+  
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Front Left", Constants.DIAG_ABS_SPARK_ENCODER, frontLeftCanCoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Front Right", Constants.DIAG_ABS_SPARK_ENCODER, frontRightCanCoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Left", Constants.DIAG_ABS_SPARK_ENCODER, backLeftCanCoder));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Right", Constants.DIAG_ABS_SPARK_ENCODER, backRightCanCoder));
+
+
+
     m_frontLeft = new SwerveModule(m_frontLeftDrive, m_frontLeftTurn, frontLeftCanCoder, 1);
     m_frontRight = new SwerveModule(m_frontRightDrive, m_frontRightTurn, frontRightCanCoder, 2);
     m_backLeft = new SwerveModule(m_backLeftDrive, m_backLeftTurn, backLeftCanCoder, 3);
@@ -103,7 +125,9 @@ public class Drivetrain extends SubsystemBase{
             m_frontRight.getPosition(),
             m_backLeft.getPosition(),
             m_backRight.getPosition()
-        }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(13.5), new Rotation2d()));
+        }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()));
+
+    setGyroOffset(180);
   }
 
   public double getGyro() {
@@ -112,14 +136,6 @@ public class Drivetrain extends SubsystemBase{
 
   public AHRS getGyroObject() {
     return navxGyro;
-  }
-
-  public double getPoseX() {
-    return m_odometry.getPoseMeters().getX();
-  }
-
-  public double getPoseY() {
-    return m_odometry.getPoseMeters().getY();
   }
 
   public double getAccelX() {
@@ -132,6 +148,14 @@ public class Drivetrain extends SubsystemBase{
 
   public double getAccelZ() {
     return navxGyro.getRawAccelZ();
+  }
+
+  public float getRoll() {
+    return navxGyro.getRoll();
+  }
+
+  public float getFilterRoll() {
+    return filterRoll;
   }
 
   public double getFilterAccelX() {
@@ -247,11 +271,15 @@ public class Drivetrain extends SubsystemBase{
     filterX = filterX + (filterX+getAccelX())/Constants.GYRO_ACCEL_FILTER;
     filterY = filterY + (filterY+getAccelY())/Constants.GYRO_ACCEL_FILTER;
     filterZ = filterZ + (filterZ+getAccelZ())/Constants.GYRO_ACCEL_FILTER;
+    filterRoll = (filterRoll + getRoll())/2;
+
 
     SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
     SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
+    SmartShuffleboard.put("Driver", "FilterRoll", filterRoll);
+    SmartShuffleboard.put("Driver", "Roll", getRoll());
 
     SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
 
@@ -273,13 +301,17 @@ public class Drivetrain extends SubsystemBase{
 
       SmartShuffleboard.put("Driver", "odometry x", m_odometry.getPoseMeters().getX());
       SmartShuffleboard.put("Driver", "odometry y", m_odometry.getPoseMeters().getY());
+      SmartShuffleboard.put("Driver", "odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
+
     }
 
+    if (DriverStation.isEnabled()) {
     m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
     });
+  }
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
@@ -345,6 +377,14 @@ public class Drivetrain extends SubsystemBase{
 
   public SwerveDriveOdometry getOdometry () {
     return m_odometry;
+  }
+
+  public double getPoseX() {
+    return m_odometry.getPoseMeters().getX();
+  }
+
+  public double getPoseY() {
+    return m_odometry.getPoseMeters().getY();
   }
 
   public void setGyroOffset(double offset) {

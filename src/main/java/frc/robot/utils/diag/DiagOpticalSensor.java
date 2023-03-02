@@ -15,8 +15,8 @@ public class DiagOpticalSensor extends DiagBoolean {
      * @param name            - The sensor's name, which will be shown on Shuffleboard
      * @param digitalInput    - The DigitalInput pin the sensor is connected to
      */
-    public DiagOpticalSensor(String name, DigitalInput digitalInput){
-        super(name);
+    public DiagOpticalSensor(String title, String name, DigitalInput digitalInput){
+        super(title, name);
         this.digitalInput = digitalInput;
     }
 
