@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     diagnostics = new Diagnostics();
     m_robotContainer = new RobotContainer();
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(m_robotContainer.getDrivetrain(), 0));
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
@@ -112,9 +111,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    //SmartShuffleboard.put("Diag", "Abs Encoder", "FR", robotContainer.getDrivetrain().m_frontRight.absEncoder.getPosition());
-
-
     //add this back in later
     autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -171,8 +167,10 @@ public class Robot extends TimedRobot {
         new Pose2d(2, 0, new Rotation2d(0)),
         config);
         double time = testTrajectory.getTotalTimeSeconds();
-        SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
-        SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
+        if (Constants.DRIVETRAIN_DEBUG) {
+          SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
+          SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
+        }
   }
 
   public static Diagnostics getDiagnostics() {

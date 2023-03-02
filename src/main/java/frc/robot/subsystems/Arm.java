@@ -51,12 +51,9 @@ private SparkMaxPIDController pidController;
 
   @Override
   public void periodic() {
-    if (Constants.DEBUG) {
+    if (Constants.ARM_DEBUG) {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
-    }
-
-    if (Constants.DEBUG) {
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());

@@ -17,7 +17,7 @@ public final class ProtectionMechanism extends SubsystemBase {
 
      @Override
      public void periodic() {
-         if(Constants.DEBUG){
+         if(Constants.ARM_DEBUG || Constants.EXTENDER_DEBUG || Constants.GRIPPER_DEBUG) {
               SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
               SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
               SmartShuffleboard.put("DEBUG","CanZeroArm",safeToZeroArm());
