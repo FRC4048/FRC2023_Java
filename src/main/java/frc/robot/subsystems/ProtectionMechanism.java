@@ -21,8 +21,8 @@ public final class ProtectionMechanism extends SubsystemBase {
               SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
               SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
               SmartShuffleboard.put("DEBUG","CanOpenGripper",safeToOpenGripper());
-              SmartShuffleboard.put("Arm","estAngle", ProtectionMechanism.angleFromEncoder(arm.getEncoderValue()));
-              SmartShuffleboard.put("Arm","extMax", ProtectionMechanism.maxEnc(arm.getEncoderValue()));
+              SmartShuffleboard.put("Arm","estAngle", ProtectionMechanism.armEncoderToAngle(arm.getEncoderValue()));
+              SmartShuffleboard.put("Arm","extMax", ProtectionMechanism.maxExtenderFromArmAngle(arm.getEncoderValue()));
          }
      }
 
@@ -42,18 +42,19 @@ public final class ProtectionMechanism extends SubsystemBase {
 //          return (extender.getExtenderSensorPos() < extenderMax);
 
      }
-     public static double angleFromEncoder(double value){
+     public static double armEncoderToAngle(double value){
           return 17.3 + 0.672 * value - 4.53E-03 * Math.pow(value, 2) + 3.28E-03 * Math.pow(value, 3) - 5.83E-05 * Math.pow(value, 4);
           //17.3 + 0.672x + -4.53E-03x^2 + 3.28E-03x^3 + -5.83E-05x^4
      }
 
      /**
       * @param value arm encoder value
-      * @return the max distance in inches of extender
+      * @return the max distance in inches of extender 
+      * TODO make method return extender max encoder value
       */
-     public static double maxEnc(double value){
+     public static double maxExtenderFromArmAngle(double value){
           int heightOfArm = 47;
-          double armAngle = angleFromEncoder(value) *  Math.PI/180;
+          double armAngle = armEncoderToAngle(value) *  Math.PI/180;
           return heightOfArm/Math.cos(armAngle);
      }
      
