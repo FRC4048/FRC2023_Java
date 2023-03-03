@@ -6,13 +6,14 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
 
 public class AutoBalance extends CommandBase{
-    Drivetrain drivetrain;
-    float maxAngle;
-    float minAngle;
-    int finishedCounter;
-    boolean firstMax;
-    boolean firstMin;
-    boolean secondMax;
+    private Drivetrain drivetrain;
+    private float maxAngle;
+    private float minAngle;
+    private int finishedCounter;
+    private int minCounter;
+    private boolean firstMax;
+    private boolean firstMin;
+    private boolean secondMax;
 
     public AutoBalance(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
@@ -25,24 +26,37 @@ public class AutoBalance extends CommandBase{
         firstMax = true;
         firstMin = false;
         secondMax = false;
-        minAngle = 20;
+        minAngle = 42;         //🐭
         maxAngle = 0;
         finishedCounter = 0;
+        minCounter = 0;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+      SmartShuffleboard.put("Driver", "FirstMax", firstMax);
+      SmartShuffleboard.put("Driver", "FirstMin", firstMin);
+      SmartShuffleboard.put("Driver", "SecondMax", secondMax);
         if (firstMax) {
             firstMin = Math.abs(drivetrain.getFilterRoll()) > 15;
             firstMax = !firstMin;
-            drivetrain.drive(.3, 0, 0, true);
+            drivetrain.drive(.7, 0, 0, true);
         }
 
         if (firstMin) {
-            secondMax = Math.abs(drivetrain.getFilterRoll()) < 8;
+            //secondMax = Math.abs(drivetrain.getFilterRoll()) < 8;
+            //firstMin = !secondMax;
+            if (Math.abs(drivetrain.getFilterRoll()) < minAngle) {
+              minAngle = Math.abs(drivetrain.getFilterRoll());
+            } else if (Math.abs(drivetrain.getFilterRoll()) - minAngle >= 1) {
+              minCounter++;
+            }
+            
+            secondMax = minCounter > 10;
             firstMin = !secondMax;
-            drivetrain.drive(.05, 0, 0, true);
+
+            drivetrain.drive(.5, 0, 0, true);
         }
 
         if (secondMax) {
@@ -51,7 +65,7 @@ public class AutoBalance extends CommandBase{
                 maxAngle = Math.abs(drivetrain.getFilterRoll());
             }
 
-            if (maxAngle - Math.abs(drivetrain.getFilterRoll()) > 2) {
+            if (maxAngle - Math.abs(drivetrain.getFilterRoll()) > 1) {
                 finishedCounter++;
             } else {
                 finishedCounter = 0;
@@ -73,7 +87,7 @@ public class AutoBalance extends CommandBase{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        new DriveForTime(drivetrain, -.2, .1).schedule();
+        new DriveForTime(drivetrain, -.4, .1).schedule();
     }
 
     // Returns true when the command should end.
