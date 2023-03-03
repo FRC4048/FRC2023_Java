@@ -53,6 +53,11 @@ public final class Constants {
   public static final double EXTENDER_AUTO_MAX_SPEED = .5; //TODO make 1
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
+  public static final int MAX_EXTENDER_ENCODER_VALUE = 7342;
+  // in inches
+  public static final int EXTENDER_MAX_LENGTH = 74;
+  // in inches
+  public static final int EXTENDER_MIN_LENGTH = 44;
 
   //PID Constants
   public static final double DRIVE_PID_P = 1;
@@ -69,6 +74,7 @@ public final class Constants {
 
 
   //Arm Constants
+  public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
   public static final double ARM_PID_D_IN = 0.0;
@@ -80,6 +86,8 @@ public final class Constants {
   public static final double ARM_MAX_VOLTS = 4.5;
 
   public static final double ARM_MOVE_PID_THRESHOLD = 2;
+  //in inches
+  public static final int ARM_HEIGHT = 47;
 
 
   public static final double WHEEL_RADIUS = 0.0508;
@@ -91,6 +99,7 @@ public final class Constants {
   public static final double MAX_ACCELERATION = 6.0;
   public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
+  public static final double ARM_OUT_ROBOT_MIN = 6;
 
   public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
   public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
@@ -138,7 +147,7 @@ public final class Constants {
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
 
 
-     public static class OperatorConstants {
+  public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
 

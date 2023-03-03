@@ -21,21 +21,23 @@ public final class ProtectionMechanism extends SubsystemBase {
               SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
               SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
               SmartShuffleboard.put("DEBUG","CanOpenGripper",safeToOpenGripper());
-              SmartShuffleboard.put("DEBUG","estAngle", ProtectionMechanism.armEncoderToAngle(arm.getEncoderValue()));
-              SmartShuffleboard.put("DEBUG","extMax", ProtectionMechanism.maxExtenderFromArmAngle(arm.getEncoderValue()));
+              SmartShuffleboard.put("DEBUG","estAngle", armEncoderToAngle(arm.getEncoderValue()));
+              SmartShuffleboard.put("DEBUG","extMax", maxExtenderFromArmAngle(arm.getEncoderValue()));
          }
      }
 
-     private boolean safeToExtend(){
-          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(armEncoderToAngle(arm.getEncoderValue())) && arm.getEncoderValue() > 6;
+     public boolean safeToExtend(){
+          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) && arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN;
      }
      public boolean safeToLowerArm(){
-          if (arm.getEncoderValue() > 25) return true;
+          if (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) return true;
           if (arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE && gripper.getopenLimitSwitch()) return false;
-          return (extender.getExtenderSensorPos() < maxExtenderFromArmAngle(armEncoderToAngle(arm.getEncoderValue())));
-
+          return (extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()));
      }
-     public static double armEncoderToAngle(double value){
+     public boolean safeToOpenGripper(){
+          return arm.getEncoderValue() > Constants.GRIP_NEEDS_CLOSE_ZONE;
+     }
+     public double armEncoderToAngle(double value){
           return 17.3 + 0.672 * value - 4.53E-03 * Math.pow(value, 2) + 3.28E-03 * Math.pow(value, 3) - 5.83E-05 * Math.pow(value, 4);
           //17.3 + 0.672x + -4.53E-03x^2 + 3.28E-03x^3 + -5.83E-05x^4
      }
@@ -44,35 +46,11 @@ public final class ProtectionMechanism extends SubsystemBase {
       * @param value arm encoder value
       * @return the max distance in inches of extender
       */
-     public static double maxExtenderFromArmAngle(double value){
-          int heightOfArm = 47;
+     public double maxExtenderFromArmAngle(double value){
           double armAngle = armEncoderToAngle(value) *  Math.PI/180;
-          double maxHeightInches = heightOfArm/Math.cos(armAngle);
-          int maxExtEncVal = 7342;
-          int minHeightOfExtender = 44;
-          int maxHeightOfExtender = 74;
-          int ExtenderDiff = maxHeightOfExtender - minHeightOfExtender;
-          return (int) (maxExtEncVal * ((maxHeightInches-minHeightOfExtender)/ExtenderDiff));
+          double maxHeightInches = Constants.ARM_HEIGHT/Math.cos(armAngle);
+          int extenderDiff = Constants.EXTENDER_MAX_LENGTH - Constants.EXTENDER_MIN_LENGTH;
+          return (int) (Constants.MAX_EXTENDER_ENCODER_VALUE * ((maxHeightInches-Constants.EXTENDER_MIN_LENGTH)/extenderDiff));
      }
-     
-     public boolean safeToOpenGripper(){
-          return arm.getEncoderValue() > Constants.GRIP_NEEDS_CLOSE_ZONE;
-     }
-     public double validateArmVolt(double volt){
-          volt = clampVolts(volt,-Constants.ARM_MAX_VOLTS,Constants.ARM_MAX_VOLTS);
-          if ((volt < 0 && safeToLowerArm()) || volt > 0) return volt;
-          return 0;
-     }
-     public double validateExtenderVolt(double volt){
-          if ((volt > 0 && safeToExtend()) || volt < 0) return volt;
-          return 0;
-     }
-     public double validateGripperVolt(double volt){
-          if ((volt > 0 && safeToOpenGripper()) || volt < 0) return volt;
-          return 0;
-     }
-     public double clampVolts(double value, double min, double max){
-          return Math.min(Math.max(value, min), max);
-     }  
      
 }

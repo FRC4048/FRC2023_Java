@@ -43,8 +43,7 @@ public class Extender extends SubsystemBase {
     
 
     public void move(double speed) {
-
-        extenderMotor.set(protectionMechanism.validateExtenderVolt(speed));
+        extenderMotor.set(validateExtenderVolt(speed));
     }
 
     public void stop() {
@@ -79,5 +78,9 @@ public class Extender extends SubsystemBase {
 
     public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
         this.protectionMechanism = protectionMechanism;
+    }
+    public double validateExtenderVolt(double volt){
+        if ((volt > 0 && protectionMechanism.safeToExtend()) || volt < 0) return volt;
+        return 0;
     }
 }
