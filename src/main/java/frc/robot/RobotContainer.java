@@ -139,7 +139,7 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
-    controller.button(XboxController.Button.kX.value).onTrue(new StationPickupAuto(arm, gripper));
+    controller.button(XboxController.Button.kX.value).onTrue(new StationPickupAuto(arm, gripper, drivetrain, luxonisVision, extender));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
     manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
