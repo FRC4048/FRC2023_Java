@@ -27,25 +27,25 @@ public class ArmMoveSequence extends SequentialCommandGroup {
                     new ExtendToPosition(extender,extenderTargetPosition)
                 )
             );
-        }
-        else {
+        } else {
             addCommands(
                 new ExtendToPosition(extender,extenderTargetPosition),
                 new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
                 new HoldArmPID(arm,armTargetPosition)
-            ),new ExtendToPosition(extender,extenderTargetPosition),
+            ,new ExtendToPosition(extender,extenderTargetPosition),
                 new CommandBase() {
                     @Override
                     public void execute() {
-                        SmartShuffleboard.put("Arm", "estAngle", ProtectionMechanism.angleFromEncoder(arm.getEncoderValue()));
-                        SmartShuffleboard.put("Arm", "extMax", ProtectionMechanism.maxEnc(arm.getEncoderValue()));
+                        SmartShuffleboard.put("Arm", "estAngle", ProtectionMechanism.armEncoderToAngle(arm.getEncoderValue()));
+                        SmartShuffleboard.put("Arm", "extMax", ProtectionMechanism.maxExtenderFromArmAngle(arm.getEncoderValue()));
                     }
 
                     @Override
                     public boolean isFinished() {
                         return true;
                     }
-                } ;
+                }
+            );
         }
     }
 
