@@ -40,8 +40,8 @@ public class RobotContainer {
   private Extender extender;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
-  private AprilTagPosition aprilTagPosition;
   private PieceGrid pieceGrid;
+  private PhotonCameraSubsystem photonSubsystem;
 
 
   //Joysticks & Joystick Buttons
@@ -71,7 +71,7 @@ public class RobotContainer {
     gripper.setProtectionMechanism(protectionMechanism);
     
     m_PDB = new PowerDistributionBoard();
-    aprilTagPosition = new AprilTagPosition();
+    photonSubsystem = new PhotonCameraSubsystem();
     pieceGrid = new PieceGrid();
     configureBindings();
     putShuffleboardCommands();
