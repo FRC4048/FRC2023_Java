@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.CrossPanel;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
@@ -119,6 +120,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
     SmartShuffleboard.putCommand("Auto Balance", "Balance", new AutoBalance(drivetrain));
     SmartShuffleboard.putCommand("Driver", "Balance", new AutoBalance(drivetrain));
+    SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
     SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
     SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
  
