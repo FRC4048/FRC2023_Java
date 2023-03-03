@@ -4,25 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
-
-import org.opencv.aruco.Aruco;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;  
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.sequences.Stow;
 import frc.robot.commands.SubstationTrajAllign;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -32,9 +24,17 @@ import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.commands.sequences.GroundPickup;
-import frc.robot.commands.sequences.Stow;
 import frc.robot.commands.sequences.StationPickupAuto;
-import frc.robot.subsystems.*;
+import frc.robot.commands.sequences.StationPickupManual;
+import frc.robot.commands.sequences.Stow;
+import frc.robot.subsystems.AprilTagPosition;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.PieceGrid;
+import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.luxonis.LuxonisVision;
 
@@ -168,7 +168,10 @@ public class RobotContainer {
     
     SmartShuffleboard.putCommand("Drive", "Reset Gyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Drive", "Reset Encoders", new ResetEncoders(arm, extender));
-    SmartShuffleboard.putCommand("Substation", "Traj ALLIGN", new SubstationTrajAllign(drivetrain, luxonisVision, 1.3));
+    SmartShuffleboard.putCommand("Substation", "Traj ALLIGN", new SubstationTrajAllign(drivetrain, luxonisVision, 0.83));
+    SmartShuffleboard.putCommand("Substation", "auto pickup", new StationPickupAuto(arm, gripper, drivetrain, luxonisVision, extender));
+    SmartShuffleboard.putCommand("Substation", "manual pickup", new StationPickupManual(drivetrain, arm, extender, gripper));
+    SmartShuffleboard.putCommand("Substation", "move back", new MoveDistanceSpinTraj(drivetrain, 0.63, 0, Math.toDegrees(180)));
   }
 
   /**

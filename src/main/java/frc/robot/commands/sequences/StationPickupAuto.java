@@ -18,7 +18,7 @@ import frc.robot.utils.luxonis.LuxonisVision;
 public class StationPickupAuto extends SequentialCommandGroup {
     public StationPickupAuto(Arm arm, GripperSubsystem gripper, Drivetrain drivetrain, LuxonisVision luxonisVision, Extender extender) {
         addCommands(
-            new SubstationTrajAllign(drivetrain, luxonisVision, 1.0),
+            new SubstationTrajAllign(drivetrain, luxonisVision, 0.83),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 32.0),
             new ParallelRaceGroup(
                 new HoldArmPID(arm, 32.0),
