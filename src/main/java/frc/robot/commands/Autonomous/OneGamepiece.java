@@ -20,7 +20,9 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 
 public class OneGamepiece extends SequentialCommandGroup{
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
+    
+    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction) {
+
         addCommands(
         new ResetEncoders(arm, extender),
         new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
@@ -31,9 +33,11 @@ public class OneGamepiece extends SequentialCommandGroup{
             ),
             new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
         ),
+
         new Stow(arm, gripper, extender),
-        new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2, Math.toRadians(180)),
-        new MoveDistanceSpinTraj(drivetrain, 4.7, 0, Math.toRadians(180))
+        new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2 * direction, Math.toRadians(180)),
+        new MoveDistanceSpinTraj(drivetrain, 1.0, 0 * direction, Math.toRadians(180))
+        //change it back to 4.7
 
     );
     }
