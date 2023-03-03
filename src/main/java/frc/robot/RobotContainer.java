@@ -18,7 +18,11 @@ import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
+import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.SetGridSlot;
+import frc.robot.commands.sequences.Stow;
+import frc.robot.commands.SubstationTrajAllign;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -32,6 +36,7 @@ import frc.robot.commands.sequences.Stow;
 import frc.robot.commands.sequences.StationPickupAuto;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.luxonis.LuxonisVision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,6 +48,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private ProtectionMechanism protectionMechanism;
   private Drivetrain drivetrain;
+  private LuxonisVision luxonisVision;
   private Arm arm;
   private Extender extender;
   private PowerDistributionBoard m_PDB;
@@ -103,6 +109,7 @@ public class RobotContainer {
     gripper.setProtectionMechanism(protectionMechanism);
     
     m_PDB = new PowerDistributionBoard();
+    luxonisVision = new LuxonisVision();
     aprilTagPosition = new AprilTagPosition();
     pieceGrid = new PieceGrid();
     configureBindings();
@@ -161,6 +168,7 @@ public class RobotContainer {
     
     SmartShuffleboard.putCommand("Drive", "Reset Gyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Drive", "Reset Encoders", new ResetEncoders(arm, extender));
+    SmartShuffleboard.putCommand("Substation", "Traj ALLIGN", new SubstationTrajAllign(drivetrain, luxonisVision, 1.3));
   }
 
   /**
