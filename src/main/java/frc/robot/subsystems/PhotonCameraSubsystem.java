@@ -40,7 +40,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   int targetId;
 
-  Field2d field = new Field2d();
+
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -68,7 +68,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
-    SmartDashboard.putData(field);
   }
 
   private void checkAlliance() {
@@ -130,14 +129,13 @@ public class PhotonCameraSubsystem extends SubsystemBase {
         SmartShuffleboard.put("AprilTag", "2D", "Angle", robotFieldPose.getRotation().getDegrees());
         SmartShuffleboard.put("AprilTag", "2D", "AngleR", robotFieldPose.getRotation().getRadians());
   
-        field.setRobotPose(robotFieldPose);
+        
       } else {
         SmartShuffleboard.put("AprilTag", "2D", "2D-X", 0);
         SmartShuffleboard.put("AprilTag", "2D", "2D-Y", 0);
         SmartShuffleboard.put("AprilTag", "2D", "Angle", 0);
         SmartShuffleboard.put("AprilTag", "2D", "AngleR", 0);
   
-        field.setRobotPose(new Pose2d(-100, -100, new Rotation2d(0)));
       }
   
       if (pose3dPosition != null) {
