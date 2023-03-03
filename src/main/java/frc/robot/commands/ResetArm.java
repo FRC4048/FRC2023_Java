@@ -32,7 +32,7 @@ public class ResetArm extends CommandBase{
                 arm.resetEncoder();
                 limitReached = true;
             } else {
-            arm.setVoltage(-2.0);
+            arm.setVoltage(-1.5);
         }
     }
 
