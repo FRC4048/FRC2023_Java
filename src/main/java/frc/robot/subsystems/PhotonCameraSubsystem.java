@@ -21,6 +21,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.apriltags.AprilTagMap;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -121,37 +122,40 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   public void periodic() {
     checkAlliance();
     Pose3d pose3dPosition = getRobotFieldPose();
-    if (robotFieldPose != null) {
-      SmartShuffleboard.put("AprilTag", "2D", "2D-X", robotFieldPose.getTranslation().getX());
-      SmartShuffleboard.put("AprilTag", "2D", "2D-Y", robotFieldPose.getTranslation().getY());
-      SmartShuffleboard.put("AprilTag", "2D", "Angle", robotFieldPose.getRotation().getDegrees());
-      SmartShuffleboard.put("AprilTag", "2D", "AngleR", robotFieldPose.getRotation().getRadians());
 
-      field.setRobotPose(robotFieldPose);
-    } else {
-      SmartShuffleboard.put("AprilTag", "2D", "2D-X", 0);
-      SmartShuffleboard.put("AprilTag", "2D", "2D-Y", 0);
-      SmartShuffleboard.put("AprilTag", "2D", "Angle", 0);
-      SmartShuffleboard.put("AprilTag", "2D", "AngleR", 0);
-
-      field.setRobotPose(new Pose2d(-100, -100, new Rotation2d(0)));
-    }
-
-    if (pose3dPosition != null) {
-        SmartShuffleboard.put("AprilTag", "3D", "3D-X", pose3dPosition.getX());
-        SmartShuffleboard.put("AprilTag", "3D", "3D-Y", pose3dPosition.getY());
-        SmartShuffleboard.put("AprilTag", "3D", "3D-Z", pose3dPosition.getZ());
-        SmartShuffleboard.put("AprilTag", "3D", "3D-RX", pose3dPosition.getRotation().getX()); 
-        SmartShuffleboard.put("AprilTag", "3D", "3D-RY", pose3dPosition.getRotation().getY()); 
-        SmartShuffleboard.put("AprilTag", "3D", "3D-RZ", pose3dPosition.getRotation().getZ());   
-    }
-
-    if (tagFieldPosition != null) {
-        SmartShuffleboard.put("AprilTag", "position-x", tagFieldPosition.getX());
-        SmartShuffleboard.put("AprilTag", "position-y", tagFieldPosition.getY());
-    } else {
-        SmartShuffleboard.put("AprilTag", "position-x", 0);
-        SmartShuffleboard.put("AprilTag", "position-y", 0);
+    if (Constants.DEBUG) {
+      if (robotFieldPose != null) {
+        SmartShuffleboard.put("AprilTag", "2D", "2D-X", robotFieldPose.getTranslation().getX());
+        SmartShuffleboard.put("AprilTag", "2D", "2D-Y", robotFieldPose.getTranslation().getY());
+        SmartShuffleboard.put("AprilTag", "2D", "Angle", robotFieldPose.getRotation().getDegrees());
+        SmartShuffleboard.put("AprilTag", "2D", "AngleR", robotFieldPose.getRotation().getRadians());
+  
+        field.setRobotPose(robotFieldPose);
+      } else {
+        SmartShuffleboard.put("AprilTag", "2D", "2D-X", 0);
+        SmartShuffleboard.put("AprilTag", "2D", "2D-Y", 0);
+        SmartShuffleboard.put("AprilTag", "2D", "Angle", 0);
+        SmartShuffleboard.put("AprilTag", "2D", "AngleR", 0);
+  
+        field.setRobotPose(new Pose2d(-100, -100, new Rotation2d(0)));
+      }
+  
+      if (pose3dPosition != null) {
+          SmartShuffleboard.put("AprilTag", "3D", "3D-X", pose3dPosition.getX());
+          SmartShuffleboard.put("AprilTag", "3D", "3D-Y", pose3dPosition.getY());
+          SmartShuffleboard.put("AprilTag", "3D", "3D-Z", pose3dPosition.getZ());
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RX", pose3dPosition.getRotation().getX()); 
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RY", pose3dPosition.getRotation().getY()); 
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RZ", pose3dPosition.getRotation().getZ());   
+      }
+  
+      if (tagFieldPosition != null) {
+          SmartShuffleboard.put("AprilTag", "position-x", tagFieldPosition.getX());
+          SmartShuffleboard.put("AprilTag", "position-y", tagFieldPosition.getY());
+      } else {
+          SmartShuffleboard.put("AprilTag", "position-x", 0);
+          SmartShuffleboard.put("AprilTag", "position-y", 0);
+      }
     }
   }
 }
