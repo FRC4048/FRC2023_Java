@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.Cancel;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
@@ -125,6 +126,7 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
   
       SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
+      SmartShuffleboard.putCommand("Driver", "CANCEL", new Cancel(arm, extender, gripper));
     }
   }
 
