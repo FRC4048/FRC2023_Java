@@ -2,11 +2,11 @@ package frc.robot.commands.Autonomous;
 
 import javax.swing.GroupLayout.SequentialGroup;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.ArmPositionGrid;
+import frc.robot.AutonomousChooser;
 import frc.robot.Constants;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.sequences.Stow;
@@ -21,7 +21,7 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class OneGamepiece extends SequentialCommandGroup{
     
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction) {
+    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location, Alliance allianceColor) {
 
         addCommands(
         new ResetEncoders(arm, extender),

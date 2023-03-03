@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,11 +31,19 @@ public class AutonomousChooser {
 
     
     enum Action {
-        DoNothing, Balance, PickUpTwo, PickUpOneAndBalance, CrossLine, OnePieceMoveLeft, OnePieceMoveRight;
+        //Balance, 
+        //DepositTwo, 
+        //DepositOneAndBalance
+        DoNothing, 
+        CrossLine,  
+        OnePieceMoveLeft, 
+        OnePieceMoveRight;
     }
 
     public enum Location {	
-        Right, Middle, Left;	
+        Right, 
+        Middle, 
+        Left;	
     }
 
     
@@ -49,12 +59,12 @@ public class AutonomousChooser {
 
     public void addOptions() {
         actionChooser.setDefaultOption("Do Nothing", Action.DoNothing);
-        actionChooser.addOption("Balance", Action.Balance);
-        actionChooser.addOption("Drop Two Pieces", Action.PickUpTwo);
+        //actionChooser.addOption("Balance", Action.Balance);
+        //actionChooser.addOption("Drop Two Pieces", Action.DepositTwo);
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
-        actionChooser.addOption("Pick Up One and Balance", Action.PickUpOneAndBalance);
+        //actionChooser.addOption("Pick Up One and Balance", Action.DepositOneAndBalance);
         actionChooser.addOption("Do Nothing", Action.DoNothing);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
@@ -93,70 +103,23 @@ public class AutonomousChooser {
     public Command getAutonomousCommand() {
         action = actionChooser.getSelected();
         location = locationChooser.getSelected();
+        Alliance allianceColor = DriverStation.getAlliance();
+
+        if(allianceColor == null) {}
+
         if (action == Action.DoNothing) {
-            //return new PrintCommand("Do absouletly nothing");
             return new DoNothing(arm, extender);
         }
-        else if (action == Action.CrossLine && location == Location.Left) {
-            //return new PrintCommand("Cross the line");
-            return new CrossTheLine(drivetrain, arm, extender, Location.Left);
-
-
-        }
-        else if (action == Action.CrossLine && location == Location.Right) {
-            //return new PrintCommand("Cross the line");
-            return new CrossTheLine(drivetrain, arm, extender, Location.Right);
-        }
-
-        else if (action == Action.CrossLine && location == Location.Middle) {
-            return new EmptyCommand();
-        }
-        else if (action == Action.Balance) {
-            //return new PrintCommand("Balance");
-            return new EmptyCommand();
-
-        }
-        else if (action == Action.Balance){
-            //return new PrintCommand("Cross the line"); //Invalid
-            return new EmptyCommand();
-
-        }
-        else if (action == Action.PickUpTwo) {
-            //return new PrintCommand("Cross the line"); //Invalid
-            return new EmptyCommand();
-
-        }
-        else if (action == Action.PickUpTwo) {
-            //return new PrintCommand("Pick up Two");
-            return new EmptyCommand();
-
-        }
-        else if (action == Action.PickUpTwo) {
-            //return new PrintCommand("Pick up Two");
-            return new EmptyCommand();
-
+        else if (action == Action.CrossLine && location != Location.Middle) {
+            return new CrossTheLine(drivetrain, arm, extender, location);
         }
         else if (action == Action.OnePieceMoveLeft) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, 1);
+            return new OneGamepiece(drivetrain, arm, extender, gripper, 1, location, allianceColor);
         }
         else if (action == Action.OnePieceMoveRight) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, -1);
-        }
-        else if (action == Action.PickUpOneAndBalance) {
-            //return new PrintCommand("Cross the line");
-            return new EmptyCommand();
-
-        }
-        else if (action == Action.PickUpOneAndBalance) {
-            //return new PrintCommand("Cross the line"); //Invalid
-            return new EmptyCommand();
-        }
-        else if (action == Action.PickUpOneAndBalance) {
-            //return new PrintCommand("Cross the line"); //Invalid
-            return new EmptyCommand();
+            return new OneGamepiece(drivetrain, arm, extender, gripper, -1, location, allianceColor);
         }
         else {
-            //return new PrintCommand("Cross the line");
             return new DoNothing(arm, extender);
         }
     }
