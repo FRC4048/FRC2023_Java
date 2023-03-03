@@ -9,12 +9,15 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.diag.DiagTalonSrxEncoder;
+import frc.robot.utils.diag.DiagTalonSrxSwitch;
 
 public class Extender extends SubsystemBase {
 
     private WPI_TalonSRX extenderMotor;
-
+    private ProtectionMechanism protectionMechanism;
     public Extender() {
         int TIMEOUT = 100;
 
@@ -28,14 +31,19 @@ public class Extender extends SubsystemBase {
         extenderMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         extenderMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         extenderMotor.setSelectedSensorPosition(0);
+
+        Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxEncoder("Extender", "Encoder", Constants.DIAG_TALONSRX_ROT, extenderMotor));
+        Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Extended Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
+        Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Retracted Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
     }
 
     public void resetEncoder() {
         extenderMotor.setSelectedSensorPosition(0);
     }
+    
 
     public void move(double speed) {
-        extenderMotor.set(speed);
+        extenderMotor.set(validateExtenderVolt(speed));
     }
 
     public void stop() {
@@ -53,6 +61,8 @@ public class Extender extends SubsystemBase {
     public boolean revLimitReached() {
         return extenderMotor.isRevLimitSwitchClosed() == 1;
     }
+    
+    
 
     @Override
     public void periodic() {
@@ -60,5 +70,17 @@ public class Extender extends SubsystemBase {
 
         SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
         SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
+    }
+
+    public double getExtenderSensorPos() {
+        return extenderMotor.getSelectedSensorPosition();
+    }
+
+    public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
+        this.protectionMechanism = protectionMechanism;
+    }
+    public double validateExtenderVolt(double volt){
+        if ((volt > 0 && protectionMechanism.safeToExtend()) || volt < 0) return volt;
+        return 0;
     }
 }

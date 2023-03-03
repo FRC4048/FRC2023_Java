@@ -1,26 +1,30 @@
-package frc.robot.commands.drive;
+package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class WheelAlign extends CommandBase {
+public class ResetOdometry extends CommandBase {
     private Drivetrain drivetrain;
-    private int delay = 1000;
+    private int delay;
     private double startTime;
+    private double x, y, rot;
 
-    public WheelAlign(Drivetrain drivetrain){
+    public ResetOdometry(Drivetrain drivetrain, double x, double y, double rot, int delay){
         this.drivetrain = drivetrain;
+        this.delay = delay;
+        this.x = x;
+        this.y = y;
+        this.rot = rot;
         addRequirements(drivetrain);
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.getM_frontLeft().setSteerOffset(Constants.FRONT_LEFT_ABS_ENCODER_ZERO);
-        drivetrain.getM_frontRight().setSteerOffset(Constants.FRONT_RIGHT_ABS_ENCODER_ZERO);
-        drivetrain.getM_backLeft().setSteerOffset(Constants.BACK_LEFT_ABS_ENCODER_ZERO);
-        drivetrain.getM_backRight().setSteerOffset(Constants.BACK_RIGHT_ABS_ENCODER_ZERO);
+        drivetrain.resetOdometry(new Pose2d(Units.feetToMeters(x), Units.feetToMeters(y), new Rotation2d(rot)));
     }
 
     @Override
@@ -31,6 +35,7 @@ public class WheelAlign extends CommandBase {
     @Override
     public void execute(){
     }
+    
 
     @Override
     public boolean isFinished() {
@@ -40,5 +45,7 @@ public class WheelAlign extends CommandBase {
     @Override
     public boolean runsWhenDisabled() {
         return true;
-    }
+    }  
+
+    
 }
