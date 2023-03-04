@@ -24,13 +24,8 @@ public final class Constants {
   public static final int MANUAL_CONTROLLER_ID = 3;
 
   //S = STEER, D = DRIVE, Drivetrain ConstantsS
-<<<<<<< HEAD
-  public static final int DRIVE_FRONT_RIGHT_S = 45; //49
-  public static final int DRIVE_FRONT_RIGHT_D = 44; //49
-=======
   public static final int DRIVE_FRONT_RIGHT_S = 40;
   public static final int DRIVE_FRONT_RIGHT_D = 49;
->>>>>>> ad4f9a61ea314d33a22bfb516a7bb6332559d8c5
   public static final int DRIVE_BACK_RIGHT_S = 46;
   public static final int DRIVE_BACK_RIGHT_D = 43;
 
@@ -166,9 +161,7 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
   public static final double WANTED_TIME = 1.0;
-<<<<<<< HEAD
   public static final double AUTO_TURN_SPEED = 0.2;
-=======
 
   public static final double DIAG_TALONSRX_ROT = 5;
   public static final double DIAG_SPARK_ROT = 0.1;
@@ -194,5 +187,4 @@ public final class Constants {
   public static final double CUBE_MIDDLE_EXTENSION = 1565;
   public static final double CUBE_TOP_ANGLE = 35;
   public static final double CUBE_TOP_EXTENSION = 5655;
->>>>>>> ad4f9a61ea314d33a22bfb516a7bb6332559d8c5
 }

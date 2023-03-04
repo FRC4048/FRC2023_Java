@@ -15,13 +15,10 @@ public class Drive extends CommandBase{
     private Drivetrain drivetrain;
 
     private DoubleSupplier fwdSupplier, strSupplier, rtSupplier;
-<<<<<<< HEAD
     private double gyroPos;
     private double turnAtSpeed;
-=======
     private JoystickButton decreaseSpeedButton;
 
->>>>>>> ad4f9a61ea314d33a22bfb516a7bb6332559d8c5
 
     public Drive(
             Drivetrain drivetrain,
@@ -34,12 +31,9 @@ public class Drive extends CommandBase{
         this.fwdSupplier = fwdSupplier;
         this.strSupplier = strSupplier;
         this.rtSupplier = rtSupplier;
-<<<<<<< HEAD
 
         drivetrain.setTurnToDegreeState(false);
-=======
         this.decreaseSpeedButton = decreaseSpeedButton;
->>>>>>> ad4f9a61ea314d33a22bfb516a7bb6332559d8c5
     }
 
 
@@ -49,7 +43,6 @@ public class Drive extends CommandBase{
         double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.1);
         double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
-<<<<<<< HEAD
         turnAtSpeed = 0;
         
         //fwd = fwd * fwd * Math.signum(fwd);
@@ -64,13 +57,9 @@ public class Drive extends CommandBase{
                 drivetrain.setTurnToDegreeState(false);
             }
         }
-        // TODO: Call drivetrain
-        drivetrain.drive(-fwd, -str, -rcw-turnAtSpeed, true);
-=======
 
         // TODO: Call drivetrain
-        drivetrain.drive(-fwd*mod, -str*mod, -rcw*mod, true);
->>>>>>> ad4f9a61ea314d33a22bfb516a7bb6332559d8c5
+        drivetrain.drive(-fwd*mod, -str*mod, -rcw*mod-turnAtSpeed, true);
     }
 
 
