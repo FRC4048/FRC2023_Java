@@ -18,7 +18,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,6 +62,8 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
+  private ShuffleboardTab driverTab; 
+  private GenericEntry gyroEntry, offsetEntry, odomXEntry, odomYEntry, odomThetaEntry;
 
   private final AHRS navxGyro;
 
@@ -87,6 +95,14 @@ public class Drivetrain extends SubsystemBase{
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
+  
+    driverTab = Shuffleboard.getTab("Driver");
+
+    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withSize(1, 2).withWidget("Gyro").withSize(2, 4).getEntry();
+    //offsetEntry = driverTab.getLayout("Gyro", BuiltInLayouts.kList).add("Offset", 0).getEntry();
+    //odomXEntry = driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry x", 0).withPosition(2, 0).withSize(1, 3).getEntry();
+    //odomYEntry = driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry y", 0).getEntry();
+    //odomThetaEntry =  driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry angle", 0).getEntry();
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftDrive));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightDrive));
@@ -102,7 +118,6 @@ public class Drivetrain extends SubsystemBase{
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Front Right", Constants.DIAG_ABS_SPARK_ENCODER, frontRightCanCoder));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Left", Constants.DIAG_ABS_SPARK_ENCODER, backLeftCanCoder));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Right", Constants.DIAG_ABS_SPARK_ENCODER, backRightCanCoder));
-
 
 
     m_frontLeft = new SwerveModule(m_frontLeftDrive, m_frontLeftTurn, frontLeftCanCoder, 1);
@@ -233,8 +248,12 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
-    SmartShuffleboard.put("Driver", "Gyro", getGyro());
-    SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
+    gyroEntry.setDouble(getGyro());
+    //offsetEntry.setDouble(getGyro());
+    //odomXEntry.setDouble(m_odometry.getPoseMeters().getX());
+    //odomYEntry.setDouble(m_odometry.getPoseMeters().getY());
+    //odomThetaEntry.setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
+
 
     SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
 
@@ -253,10 +272,8 @@ public class Drivetrain extends SubsystemBase{
       SmartShuffleboard.put("Drive", "Drive Encoders", "BL D", m_backLeft.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
-
-      SmartShuffleboard.put("Driver", "odometry x", m_odometry.getPoseMeters().getX());
-      SmartShuffleboard.put("Driver", "odometry y", m_odometry.getPoseMeters().getY());
-      SmartShuffleboard.put("Driver", "odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
+      
+      
 
     }
 
