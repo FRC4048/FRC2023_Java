@@ -18,6 +18,7 @@ import frc.robot.commands.Autonomous.MoveDistanceSpinTraj;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
+import frc.robot.commands.drive.MoveDistanceX;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -168,6 +169,7 @@ public class RobotContainer {
     
     SmartShuffleboard.putCommand("Drive", "Reset Gyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Drive", "Reset Encoders", new ResetEncoders(arm, extender));
+    SmartShuffleboard.putCommand("Substation", "manual move back", new MoveDistanceX(drivetrain, -0.63));
     SmartShuffleboard.putCommand("Substation", "Traj ALLIGN", new SubstationTrajAllign(drivetrain, luxonisVision, 0.83));
     SmartShuffleboard.putCommand("Substation", "auto pickup", new StationPickupAuto(arm, gripper, drivetrain, luxonisVision, extender));
     SmartShuffleboard.putCommand("Substation", "manual pickup", new StationPickupManual(drivetrain, arm, extender, gripper));
