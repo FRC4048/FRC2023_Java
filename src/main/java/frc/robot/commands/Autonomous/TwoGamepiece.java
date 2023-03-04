@@ -4,7 +4,6 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
 import frc.robot.commands.ResetEncoders;
@@ -24,11 +23,11 @@ import frc.robot.subsystems.GripperSubsystem;
 public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation;
 
-    public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double rotation) {
+    public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
         this.rotation = rotation;
 
         addCommands(
-            new ResetOdometry(drivetrain, 0, 0, rotation, 0),
+            new ResetOdometry(drivetrain, 0, 0, 0, 0),
             new ResetEncoders(arm, extender),
 
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
