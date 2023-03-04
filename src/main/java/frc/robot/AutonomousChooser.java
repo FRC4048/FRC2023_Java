@@ -65,10 +65,8 @@ public class AutonomousChooser {
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
         //actionChooser.addOption("Pick Up One and Balance", Action.DepositOneAndBalance);
-        actionChooser.addOption("Do Nothing", Action.DoNothing);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
-        locationChooser.addOption(Location.Middle.name(), Location.Middle);	
         locationChooser.addOption(Location.Left.name(), Location.Left);	
         locationChooser.addOption(Location.Right.name(), Location.Right);
     }
@@ -105,13 +103,11 @@ public class AutonomousChooser {
         location = locationChooser.getSelected();
         Alliance allianceColor = DriverStation.getAlliance();
 
-        if(allianceColor == null) {}
-
         if (action == Action.DoNothing) {
             return new DoNothing(arm, extender);
         }
         else if (action == Action.CrossLine && location != Location.Middle) {
-            return new CrossTheLine(drivetrain, arm, extender, location);
+            return new CrossTheLine(drivetrain, arm, extender, location, allianceColor);
         }
         else if (action == Action.OnePieceMoveLeft) {
             return new OneGamepiece(drivetrain, arm, extender, gripper, 1, location, allianceColor);
