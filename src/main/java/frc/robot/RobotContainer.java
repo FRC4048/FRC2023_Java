@@ -104,7 +104,7 @@ public class RobotContainer {
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
 
     joystickLeftButton3.onTrue(new TurnToDegrees(drivetrain, 0));
-    joystickLeftButton3.onTrue(new TurnToDegrees(drivetrain, 180));
+    joystickRightButton3.onTrue(new TurnToDegrees(drivetrain, 180));
 
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kB.value).onTrue(new OpenGripper(gripper));
