@@ -36,7 +36,7 @@ public class OneGamepiece extends SequentialCommandGroup{
 
         new Stow(arm, gripper, extender),
         new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2 * direction, Math.toRadians(180)),
-        new MoveDistanceSpinTraj(drivetrain, 1.0, 0 * direction, Math.toRadians(180))
+        new MoveDistanceSpinTraj(drivetrain, 4.7, 0 * direction, Math.toRadians(180))
         //change it back to 4.7
 
     );

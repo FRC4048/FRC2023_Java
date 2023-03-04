@@ -14,7 +14,7 @@ public class CrossTheLine extends SequentialCommandGroup {
 
         addCommands(
             new ResetEncoders(arm, extender),
-            new MoveDistanceSpinTraj(drivetrain, 1, 0, Math.toRadians(180))
+            new MoveDistanceSpinTraj(drivetrain, 4, 0, Math.toRadians(180))
         );
 
     }
