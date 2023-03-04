@@ -42,10 +42,10 @@ public class TwoGamepiece extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
                 new Stow(arm, gripper, extender),
-                new MoveDistanceSpinTraj(drivetrain, 0.2, -0.2, 0)
+                new MoveDistanceSpinTraj(drivetrain, 0.2, -0.2, Math.toRadians(180))
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, 2, 0, Math.toRadians(180)),
+            new MoveDistanceSpinTraj(drivetrain, 2, 0, 0),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 9.0),
 
             new ParallelRaceGroup(
@@ -60,19 +60,16 @@ public class TwoGamepiece extends SequentialCommandGroup {
 
             new ParallelCommandGroup( 
                 new Stow(arm, gripper, extender),
-                new SequentialCommandGroup(
-                    new WaitCommand(0.5),
-                    new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
-                )
+                new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
             ),
-            new MoveDistanceSpinTraj(drivetrain, -0.2, 0.2, 0),
+            new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1, Math.toRadians(180)),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
-                    new ExtendToPosition(extender, ArmPositionGrid.TOP_RIGHT.getExtenderPosition()),
+                    new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
                     new OpenGripper(gripper)
                 ),
-                new HoldArmPID(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition())
+                new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
             ),
             new Stow(arm, gripper, extender)
         );
