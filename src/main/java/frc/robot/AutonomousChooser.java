@@ -6,15 +6,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.commands.Autonomous.OneGamepiece;
+import frc.robot.commands.Autonomous.TwoGamepiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.utils.SmartShuffleboard;
 
 public class AutonomousChooser {
 
@@ -31,7 +30,7 @@ public class AutonomousChooser {
     
     enum Action {
         //Balance, 
-        //DepositTwo, 
+        DepositTwo, 
         //DepositOneAndBalance
         DoNothing, 
         CrossLine,  
@@ -63,6 +62,7 @@ public class AutonomousChooser {
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
+        actionChooser.addOption("Two Piece", Action.DepositTwo);
         //actionChooser.addOption("Pick Up One and Balance", Action.DepositOneAndBalance);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
@@ -104,6 +104,9 @@ public class AutonomousChooser {
 
         if (action == Action.DoNothing) {
             return new DoNothing(arm, extender);
+        }
+        else if (action == Action.DepositTwo) {
+            return new TwoGamepiece(drivetrain, arm, extender, gripper);
         }
         else if (action == Action.CrossLine && location != Location.Middle) {
             return new CrossTheLine(drivetrain, arm, extender, location, allianceColor);
