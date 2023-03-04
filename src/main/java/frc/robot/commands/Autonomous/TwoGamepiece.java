@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
 import frc.robot.commands.ResetEncoders;
+import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -19,9 +20,13 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 
+
 public class TwoGamepiece extends SequentialCommandGroup {
-    public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
+    public double rotation;
+    public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double rotation) {
+        this.rotation = rotation;
         addCommands(
+            new ResetOdometry(drivetrain, 0, 0, rotation, 0),
             new ResetEncoders(arm, extender),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParallelRaceGroup(
