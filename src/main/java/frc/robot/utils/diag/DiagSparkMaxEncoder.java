@@ -17,14 +17,14 @@ public class DiagSparkMaxEncoder extends DiagDistanceTraveled {
      * @param requiredTravel  - the required difference between the initial position to qualify for success
      * @param canSparkMax     - the encoder instance to test
      */
-    public DiagSparkMaxEncoder(String name, int requiredTravel, CANSparkMax canSparkMax) {
-        super(name, requiredTravel);
+    public DiagSparkMaxEncoder(String title, String name, double requiredTravel, CANSparkMax canSparkMax) {
+        super(title, name, requiredTravel);
         this.canSparkMax = canSparkMax;
         reset();
     }
 
     @Override
-    protected int getCurrentValue() {
-        return (int)canSparkMax.getEncoder().getPosition();
+    protected double getCurrentValue() {
+        return canSparkMax.getEncoder().getPosition();
     }
 }

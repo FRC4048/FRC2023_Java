@@ -17,14 +17,14 @@ public class DiagEncoder extends DiagDistanceTraveled {
      * @param requiredTravel  - the required difference between the initial position to qualify for success
      * @param encoder         - the encoder instance to test
      */
-    public DiagEncoder(String name, int requiredTravel, Encoder encoder) {
-        super(name, requiredTravel);
+    public DiagEncoder(String title, String name, double requiredTravel, Encoder encoder) {
+        super(title, name, requiredTravel);
         this.encoder = encoder;
         reset();
     }
 
     @Override
-    protected int getCurrentValue() {
+    protected double getCurrentValue() {
         return encoder.get();
     }
 }
