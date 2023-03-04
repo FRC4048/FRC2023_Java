@@ -66,10 +66,11 @@ public class Extender extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartShuffleboard.put("Extender", "encoder",getEncoder());
-
-        SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
-        SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
+        if (Constants.EXTENDER_DEBUG) {
+            SmartShuffleboard.put("Extender", "encoder", getEncoder());
+            SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
+            SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
+        }
     }
 
     public double getExtenderSensorPos() {
