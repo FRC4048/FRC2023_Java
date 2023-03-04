@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DoNothing;
-import frc.robot.commands.Autonomous.EmptyCommand;
 import frc.robot.commands.Autonomous.OneGamepiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;

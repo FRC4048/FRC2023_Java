@@ -18,7 +18,7 @@ public class ResetExtenderEncoder extends CommandBase {
 
     @Override
     public void execute() {
-        extender.move(Constants.EXTENDER_AUTO_RESET_ENCODER);
+        extender.move(Constants.EXTENDER_AUTO_MIN_SPEED);
         }
         
 
