@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;  
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.ChangeLedID;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
@@ -46,6 +47,7 @@ public class RobotContainer {
   private Drivetrain drivetrain;
   private Arm arm;
   private Extender extender;
+  private LedPanel ledPanel;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
   private PieceGrid pieceGrid;
@@ -92,6 +94,7 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
+    ledPanel = new LedPanel();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
 
     autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
@@ -143,6 +146,9 @@ public class RobotContainer {
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+
+    controller.button(XboxController.Button.kStart.value).onTrue(new ChangeLedID(ledPanel, 1));
+    controller.button(XboxController.Button.kBack.value).onTrue(new ChangeLedID(ledPanel, -1));
    
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getLeftX()));
