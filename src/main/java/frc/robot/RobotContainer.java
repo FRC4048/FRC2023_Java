@@ -19,6 +19,7 @@ import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
+import frc.robot.commands.SetPose2d;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -63,6 +64,8 @@ public class RobotContainer {
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
 
+  private PhotonCameraSubsystem photonSubsystem;
+
   /*
   controller bindings:
     - a: grid select
@@ -104,6 +107,7 @@ public class RobotContainer {
     
     m_PDB = new PowerDistributionBoard();
     aprilTagPosition = new AprilTagPosition();
+    photonSubsystem = new PhotonCameraSubsystem();
     pieceGrid = new PieceGrid();
     configureBindings();
     putShuffleboardCommands();
@@ -161,6 +165,10 @@ public class RobotContainer {
     
     SmartShuffleboard.putCommand("Drive", "Reset Gyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Drive", "Reset Encoders", new ResetEncoders(arm, extender));
+    
+
+    SmartShuffleboard.putCommand("camera", "setPose", new SetPose2d(drivetrain, 1, 1, 0));
+
   }
 
   /**

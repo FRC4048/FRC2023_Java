@@ -21,9 +21,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.commands.SetGridSlot;
+import frc.robot.commands.SetPose2d;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.commands.ResetOdometry;
+import frc.robot.commands.ResetPoseEstimator;
 import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
@@ -56,8 +57,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
-    new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
-      }
+    new ResetPoseEstimator(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
+
+  }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics

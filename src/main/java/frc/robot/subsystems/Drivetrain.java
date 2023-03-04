@@ -9,6 +9,8 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,8 +19,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,6 +36,10 @@ import frc.robot.utils.diag.DiagSparkMaxEncoder;
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase{
 
+  private  Matrix<N3,N1> SSD;
+  private  Matrix<N3,N1> VSD;
+
+  
   private final CANSparkMax m_frontLeftDrive;
   private final CANSparkMax m_frontRightDrive;
   private final CANSparkMax m_backLeftDrive;
@@ -66,7 +75,8 @@ public class Drivetrain extends SubsystemBase{
           m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
   private final SwerveDriveOdometry m_odometry;
-   
+
+  private final SwerveDrivePoseEstimator poseEstimator;   
 
   public Drivetrain() {
     navxGyro = new AHRS();
@@ -126,6 +136,18 @@ public class Drivetrain extends SubsystemBase{
         }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()));
 
     setGyroOffset(180);
+
+    poseEstimator = new SwerveDrivePoseEstimator(
+        m_kinematics,
+        new Rotation2d(getGyro()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_backLeft.getPosition(),
+            m_backRight.getPosition()
+        }, 
+        new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()),
+        SSD, VSD);
   }
 
   public double getGyro() {
@@ -237,7 +259,7 @@ public class Drivetrain extends SubsystemBase{
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
 
     if (Constants.DRIVETRAIN_DEBUG) {
-      SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
+      SmartShuffleboard.put("Drive", "distance to desired", 2 - poseEstimator.getEstimatedPosition().getX());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", backRightCanCoder.getAbsolutePosition());
@@ -253,9 +275,9 @@ public class Drivetrain extends SubsystemBase{
       SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
 
-      SmartShuffleboard.put("Drive", "Odometry","odometry x", m_odometry.getPoseMeters().getX());
-      SmartShuffleboard.put("Drive", "Odometry","odometry y", m_odometry.getPoseMeters().getY());
-      SmartShuffleboard.put("Drive", "Odometry","odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
+      SmartShuffleboard.put("Drive", "Odometry","odometry x", poseEstimator.getEstimatedPosition().getX());
+      SmartShuffleboard.put("Drive", "Odometry","odometry y", poseEstimator.getEstimatedPosition().getY());
+      SmartShuffleboard.put("Drive", "Odometry","odometry angle", poseEstimator.getEstimatedPosition().getRotation().getDegrees());
     }
 
     if (DriverStation.isEnabled()) {
@@ -264,18 +286,44 @@ public class Drivetrain extends SubsystemBase{
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
     });
+
+    poseEstimator.update(new Rotation2d(Math.toRadians(getGyro())),
+    new SwerveModulePosition[] {
+      m_frontLeft.getPosition(), m_frontRight.getPosition(),
+      m_backLeft.getPosition(), m_backRight.getPosition()
+    });
+    poseEstimator.addVisionMeasurement(new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()),
+    Timer.getFPGATimestamp(), VSD);
   }
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
-  public void resetOdometry (Pose2d pose) {
-    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
+  // public void resetOdometry (Pose2d pose) {
+  //   poseEstimator.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
+  //   new SwerveModulePosition[] {
+  //     m_frontLeft.getPosition(), m_frontRight.getPosition(),
+  //     m_backLeft.getPosition(), m_backRight.getPosition()
+  //   }, pose);
+  // }
+
+  public void resetPoseEstimator (Pose2d pose) {
+    poseEstimator.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
     }, pose);
+    poseEstimator.setVisionMeasurementStdDevs(VSD); //TODO: Where should we put this?
   }
  
+  public void setPose2D(Pose2d pose) {
+    poseEstimator.update(pose.getRotation(),new SwerveModulePosition[] {
+      m_frontLeft.getPosition(),
+      m_frontRight.getPosition(),
+      m_backLeft.getPosition(),
+      m_backRight.getPosition()
+  });
+  }
+  
   public CANSparkMax getM_frontLeftTurn() {
     return m_frontLeftTurn;
   }
