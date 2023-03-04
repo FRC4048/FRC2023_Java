@@ -23,11 +23,14 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation;
+
     public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double rotation) {
         this.rotation = rotation;
+
         addCommands(
             new ResetOdometry(drivetrain, 0, 0, rotation, 0),
             new ResetEncoders(arm, extender),
+
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
@@ -36,12 +39,15 @@ public class TwoGamepiece extends SequentialCommandGroup {
                 ),
                 new HoldArmPID(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition())
             ),
+
             new ParallelCommandGroup(
                 new Stow(arm, gripper, extender),
                 new MoveDistanceSpinTraj(drivetrain, 0.2, -0.2, 0)
             ),
+
             new MoveDistanceSpinTraj(drivetrain, 2, 0, Math.toRadians(180)),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 9.0),
+
             new ParallelRaceGroup(
                 new ParallelCommandGroup(
                     new ExtendToPosition(extender, 2000.0),
@@ -49,10 +55,13 @@ public class TwoGamepiece extends SequentialCommandGroup {
                     ),
                 new HoldArmPID(arm, 9.0)
             ),
+
+            new CloseGripper(gripper),
+
             new ParallelCommandGroup( 
                 new Stow(arm, gripper, extender),
                 new SequentialCommandGroup(
-                    new WaitCommand(0.2),
+                    new WaitCommand(0.5),
                     new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
                 )
             ),
