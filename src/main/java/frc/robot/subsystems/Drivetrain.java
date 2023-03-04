@@ -9,6 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -64,7 +65,7 @@ public class Drivetrain extends SubsystemBase{
 
   private final Field2d m_field = new Field2d();
 
-  private final MedianFilter rollFilter;
+  private final LinearFilter rollFilter;
 
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
@@ -93,7 +94,7 @@ public class Drivetrain extends SubsystemBase{
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
 
-    rollFilter = new MedianFilter(5);
+    rollFilter = LinearFilter.movingAverage(10);
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftDrive));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightDrive));
