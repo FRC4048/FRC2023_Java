@@ -8,11 +8,12 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class AprilTagMap {
 
-    public static AprilTagFieldLayout getAprilTagLayout(boolean isRedAlliance) {
-        if (isRedAlliance) {
+    public static AprilTagFieldLayout getAprilTagLayout(Alliance alliance) {
+        if (alliance == Alliance.Red) {
 
             List<AprilTag> apriltags = new ArrayList<>();
             apriltags.add(0, new AprilTag(1, new Pose3d(1.02743, 6.938264, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 0)))));
