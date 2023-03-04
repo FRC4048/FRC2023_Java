@@ -1,3 +1,4 @@
+
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -18,7 +19,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 
-public class TwoGamepiece extends SequentialCommandGroup{
+public class TwoGamepiece extends SequentialCommandGroup {
     public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
         addCommands(
             new ResetEncoders(arm, extender),
@@ -62,5 +63,5 @@ public class TwoGamepiece extends SequentialCommandGroup{
             new Stow(arm, gripper, extender)
         );
     }
-    
 }
+
