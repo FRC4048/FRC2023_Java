@@ -12,15 +12,13 @@ import frc.robot.utils.SmartShuffleboard;
 public class MoveDistanceX extends CommandBase {
   /** Creates a new MoveDistanceX. */
   private Drivetrain drivetrain;
-  private double distance;
   private double startPos;
   private double driven;
   
-  public MoveDistanceX(Drivetrain drivetrain, double distance) {
+  public MoveDistanceX(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
-    this.distance = distance;
   }
 
   // Called when the command is initially scheduled.
@@ -40,7 +38,7 @@ public class MoveDistanceX extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.drive(0, 0, 0, true);
+    drivetrain.stop();
   }
 
   // Returns true when the command should end.

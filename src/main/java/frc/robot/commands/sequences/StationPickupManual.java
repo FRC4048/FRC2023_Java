@@ -6,6 +6,7 @@ package frc.robot.commands.sequences;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
@@ -29,18 +30,18 @@ public class StationPickupManual extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveDistanceX(drivetrain, -0.63),
+      new MoveDistanceX(drivetrain),
       new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 32.0),
-            new ParallelRaceGroup(
-                new HoldArmPID(arm, 32.0),
-                new SequentialCommandGroup(
-                    new OpenGripper(gripper),
-                    new ExtendToPosition(extender, 3000.0), //change this number later
-                    new CloseGripper(gripper),
-                    new ExtendToPosition(extender, 0)
-                )
-            ),
-            new Stow(arm, gripper, extender)
+             new ParallelRaceGroup(
+                 new HoldArmPID(arm, 31.5),
+                 new SequentialCommandGroup(
+                     new OpenGripper(gripper),
+                     new ExtendToPosition(extender, 3550.0), 
+                     new CloseGripper(gripper),
+                     new ExtendToPosition(extender, 0)
+                 )
+             ),
+             new Stow(arm, gripper, extender)
     );
   }
 }
