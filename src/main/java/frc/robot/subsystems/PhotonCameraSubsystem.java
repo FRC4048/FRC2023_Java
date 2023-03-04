@@ -27,7 +27,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private Pose2d robotFieldPose;
   PhotonPoseEstimator estimator;
   private Pose3d tagFieldPosition;
-
+  private int noTagDetectedCounter;
   // private boolean isRedAlliance;
   private Alliance currentAlliance;
 
@@ -86,11 +86,21 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     Pose3d result = calculateUsingEstimator();
     if (result != null) {
       robotFieldPose = result.toPose2d();
+      noTagDetectedCounter = 0;
       return result;
+
     } else {
-      robotFieldPose = null;
-      return null;
+      if (robotFieldPose != null) {
+        noTagDetectedCounter++;
+        if (noTagDetectedCounter >= 10) {
+          robotFieldPose = null;
+          noTagDetectedCounter = 0;
+        }
+      }
+
     }
+
+    return null;
 
   }
 
@@ -113,7 +123,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
         SmartShuffleboard.put("AprilTag", "2D", "AngleR", 0);
 
       }
-
+      SmartShuffleboard.put("AprilTag", "noTagDetectedCounter", noTagDetectedCounter);
       if (pose3dPosition != null) {
         SmartShuffleboard.put("AprilTag", "3D", "3D-X", pose3dPosition.getX());
         SmartShuffleboard.put("AprilTag", "3D", "3D-Y", pose3dPosition.getY());
