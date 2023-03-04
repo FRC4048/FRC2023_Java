@@ -43,8 +43,7 @@ public class GripperSubsystem extends SubsystemBase {
   }
 
   public void open() {
-    gripperMotor.set(protectionMechanism.validateGripperVolt(Constants.GRIPPER_OPENING_SPEED));
-//    gripperMotor.set(Mechanism.getInstance().safeToOpenGripper()?Constants.GRIPPER_OPENING_SPEED:0);
+    gripperMotor.set(validateGripperVolt(Constants.GRIPPER_OPENING_SPEED));
   }
 
   public void close() {
@@ -56,7 +55,7 @@ public class GripperSubsystem extends SubsystemBase {
     // gripperMotor.stopMotor();
   }
   public void move(double speed) {
-    gripperMotor.set(protectionMechanism.validateGripperVolt(speed));
+    gripperMotor.set(validateGripperVolt(speed));
 //    gripperMotor.set(speed > 0 && Mechanism.getInstance().safeToOpenGripper() ? speed : 0);
   }
   public double gripperPosition() {
@@ -71,5 +70,9 @@ public class GripperSubsystem extends SubsystemBase {
 
   public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
     this.protectionMechanism = protectionMechanism;
+  }
+  public double validateGripperVolt(double volt){
+    if ((volt > 0 && protectionMechanism.safeToOpenGripper()) || volt < 0) return volt;
+    return 0;
   }
 }
