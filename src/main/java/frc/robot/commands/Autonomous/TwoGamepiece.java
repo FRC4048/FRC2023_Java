@@ -24,7 +24,6 @@ public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation;
 
     public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
-        this.rotation = rotation;
 
         addCommands(
             new ResetOdometry(drivetrain, 0, 0, 0, 0),
