@@ -109,7 +109,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     updateAlliance();
     Pose3d pose3dPosition = getRobotFieldPose();
 
-    if (Constants.DEBUG) {
+    if (Constants.APRILTAG_DEBUG) {
       if (robotFieldPose != null) {
         SmartShuffleboard.put("AprilTag", "2D", "2D-X", robotFieldPose.getTranslation().getX());
         SmartShuffleboard.put("AprilTag", "2D", "2D-Y", robotFieldPose.getTranslation().getY());
