@@ -169,12 +169,10 @@ public class Drivetrain extends SubsystemBase{
     m_backLeftDrive.set(0.0);
     m_frontRightDrive.set(0.0);
     m_frontLeftDrive.set(0.0);
-    m_backRightDrive.set(0.0);
     m_backRightTurn.set(0.0);
     m_backLeftTurn.set(0.0);
     m_frontRightTurn.set(0.0);
     m_frontLeftTurn.set(0.0);
-    m_backRightTurn.set(0.0);
   }
 
   

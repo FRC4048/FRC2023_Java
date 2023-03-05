@@ -27,8 +27,8 @@ public class StationPickupManual extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new StationMoveBack(drivetrain),
-      new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 32.0),
+      new StationMoveBack(drivetrain).withTimeout(5),
+      new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE),
              new ParallelRaceGroup(
                  new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
                  new SequentialCommandGroup(

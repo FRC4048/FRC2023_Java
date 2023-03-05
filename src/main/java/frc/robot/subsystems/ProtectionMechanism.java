@@ -27,7 +27,7 @@ public final class ProtectionMechanism extends SubsystemBase {
      }
 
      public boolean safeToExtend(){
-          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) && arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN;
+          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) || arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN;
      }
      public boolean safeToLowerArm(){
           if (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) return true;
@@ -48,7 +48,6 @@ public final class ProtectionMechanism extends SubsystemBase {
       */
      public double maxExtenderFromArmAngle(double value){
           double armAngle = armEncoderToAngle(value) *  Math.PI/180;
-          if (armAngle > 1.5) return 20000;
           double maxHeightInches = Constants.ARM_HEIGHT/Math.cos(armAngle);
           int extenderDiff = Constants.EXTENDER_MAX_LENGTH - Constants.EXTENDER_MIN_LENGTH;
           return (int) (Constants.MAX_EXTENDER_ENCODER_VALUE * ((maxHeightInches-Constants.EXTENDER_MIN_LENGTH)/extenderDiff));
