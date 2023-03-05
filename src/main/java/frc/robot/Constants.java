@@ -162,10 +162,6 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
-  public static final double GRIPPER_OPENING_SPEED = 0.5;
-  public static final double GRIPPER_CLOSING_SPEED = -0.5;
-  public static final double GRIPPER_TIMEOUT = 5.0;
-  public static final double WANTED_TIME = 1.0;
   public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
