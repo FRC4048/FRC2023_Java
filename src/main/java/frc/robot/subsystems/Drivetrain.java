@@ -163,6 +163,19 @@ public class Drivetrain extends SubsystemBase{
     m_backRight.setDesiredState(desiredStates[3]);
   }
 
+  
+  public void stopMotors() {
+    m_backRightDrive.set(0.0);
+    m_backLeftDrive.set(0.0);
+    m_frontRightDrive.set(0.0);
+    m_frontLeftDrive.set(0.0);
+    m_backRightTurn.set(0.0);
+    m_backLeftTurn.set(0.0);
+    m_frontRightTurn.set(0.0);
+    m_frontLeftTurn.set(0.0);
+  }
+
+  
   public void setPower(int motorID, double value){
     switch(motorID) {
         case Constants.DRIVE_BACK_RIGHT_D:
