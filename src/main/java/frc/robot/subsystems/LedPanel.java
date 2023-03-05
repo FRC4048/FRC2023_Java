@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.utils.SmartShuffleboard;
 
-public class LedPanel {
+public class LedPanel extends SubsystemBase {
     private static int ID;
 
     private DigitalOutput output1;
@@ -12,20 +15,21 @@ public class LedPanel {
     public LedPanel() {
         ID = 0;
 
-        output1 = new DigitalOutput(0);
-        output2 = new DigitalOutput(0);
-        output3 = new DigitalOutput(0);
+        output1 = new DigitalOutput(Constants.DIGITAL_OUTPUT_1);
+        output2 = new DigitalOutput(Constants.DIGITAL_OUTPUT_2);
+        output3 = new DigitalOutput(Constants.DIGITAL_OUTPUT_3);
     }
 
-    public static int getID() {
+    public int getID() {
         return ID;
     }
 
-    public static void setID(int iD) {
+    public void setID(int iD) {
         ID = iD;
+        setPic(ID);
     }
 
-    public void setPic(int picID) {
+    private void setPic(int picID) {
         if(picID == 0) {
             output1.set(false);
             output2.set(false);
@@ -66,5 +70,12 @@ public class LedPanel {
             output2.set(true);
             output3.set(true);
         }
+    }
+
+    public void periodic() {
+        SmartShuffleboard.put("LED", "FieldDio1", output1.get());
+        SmartShuffleboard.put("LED", "FieldDio2", output2.get());
+        SmartShuffleboard.put("LED", "FieldDio3", output3.get());
+        SmartShuffleboard.put("LED", "ID", ID);
     }
 }

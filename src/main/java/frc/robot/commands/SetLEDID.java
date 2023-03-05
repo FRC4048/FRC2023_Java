@@ -3,21 +3,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LedPanel;
 
-public class ChangeLedID extends CommandBase{
-    LedPanel ledPanel; 
-    int change;
-    public ChangeLedID(LedPanel ledPanel, int change) {
-        this.ledPanel = ledPanel;
-        this.change = change;
+public class SetLEDID extends CommandBase {
+    LedPanel ledpanel;
+    int setID;
+    public SetLEDID(LedPanel ledpanel, int setID) {
+        this.ledpanel = ledpanel;
+        this.setID = setID;
     }
-
 
     @Override
     public void initialize() {
-        ledPanel.setID(ledPanel.getID() + change);
-        if (ledPanel.getID() > 7) {
-            ledPanel.setID(0);
-        }
+        ledpanel.setID(setID);
     }
 
     public boolean isFinished() {

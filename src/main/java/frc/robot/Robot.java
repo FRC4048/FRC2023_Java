@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location", m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name());
+    
   }
 
   @Override
