@@ -12,12 +12,13 @@ public class StationMoveBack extends CommandBase {
   /** Creates a new MoveDistanceX. */
   private Drivetrain drivetrain;
   private double startPos;
-  private double driven;
+  private double speed;
   
-  public StationMoveBack(Drivetrain drivetrain) {
+  public StationMoveBack(Drivetrain drivetrain, Double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +30,7 @@ public class StationMoveBack extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.drive(-0.3, 0.0, 0.0, true);
+    drivetrain.drive(speed, 0.0, 0.0, true);
   }
 
   // Called once the command ends or is interrupted.
