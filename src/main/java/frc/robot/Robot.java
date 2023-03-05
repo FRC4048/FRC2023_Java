@@ -24,7 +24,6 @@ import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.WheelAlign;
 import frc.robot.commands.ResetOdometry;
-import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
