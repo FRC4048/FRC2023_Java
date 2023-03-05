@@ -129,7 +129,7 @@ public class AprilTagPosition extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Constants.DEBUG == true) {
+    if (Constants.APRILTAG_DEBUG == true) {
       RobotPosition position = getRobotPosition();
       if (position != null) {
         SmartShuffleboard.put("apriltag", "fieldX", position.fieldXPosition);

@@ -15,7 +15,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final boolean DEBUG = true;
+  public static final boolean DRIVETRAIN_DEBUG = false;
+  public static final boolean ARM_DEBUG = false;
+  public static final boolean EXTENDER_DEBUG = false;
+  public static final boolean GRIPPER_DEBUG = false;
+  public static final boolean PDB_DEBUG = false;
+  public static final boolean APRILTAG_DEBUG = false;
 
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
@@ -108,8 +113,8 @@ public final class Constants {
   public static final double MANUAL_GRIP_SPEED = 0.8;
 
   //autonomous values
-  public static final double MAX_VELOCITY_AUTO = 1.5;
-  public static final double MAX_ACCELERATION_AUTO = 3.0;
+  public static final double MAX_VELOCITY_AUTO = 3.0;
+  public static final double MAX_ACCELERATION_AUTO = 1.5;
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.6;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.1;
   public static final double kP_THETA_AUTO = 1.2;
