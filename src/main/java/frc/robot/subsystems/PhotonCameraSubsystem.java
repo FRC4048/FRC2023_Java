@@ -40,7 +40,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   private NetworkTableEntry cameraLatency;
 
-  
+
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -71,18 +71,15 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     }
   }
 
-  /**
+/**
    * Return the camera latency from network tables, will return -1 if no value is available
    * @return
    */
   public double getCameraLatency() {
     return cameraLatency.getDouble(-1.0);
   }
-
   private void calculateUsingEstimator() {
-    if (camera.isConnected()) {
-      Optional<EstimatedRobotPose> result = estimator.update();
-      
+    if (camera.isConnected()) {Optional<EstimatedRobotPose> result = estimator.update();
 
       if (result.isPresent()) {
         estimatedPose = result.get();
@@ -118,7 +115,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   /**
    * Gets the latest robotFieldPose, could be null
-   * 
+   *
    * @return
    */
   public Pose2d getRobot2dFieldPose() {

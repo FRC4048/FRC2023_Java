@@ -9,6 +9,9 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -18,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -34,6 +38,7 @@ import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
+import org.opencv.photo.Photo;
 
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase{
@@ -63,7 +68,7 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
-  private ShuffleboardTab driverTab; 
+  private ShuffleboardTab driverTab;
   private GenericEntry gyroEntry;
   private float filterRoll = 0;
 
@@ -77,10 +82,20 @@ public class Drivetrain extends SubsystemBase{
       new SwerveDriveKinematics(
           m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
-  private final SwerveDriveOdometry m_odometry;
-   
+  private final SwerveDrivePoseEstimator poseEstimator;
 
-  public Drivetrain() {
+  private final PhotonCameraSubsystem photonVision;
+
+  /* standard deviation of robot states, the lower the numbers arm, the more we trust odometry */
+  private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+
+  /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
+  private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1.5, 1.5, 1.5);
+
+
+
+  public Drivetrain(PhotonCameraSubsystem photonVision) {
+    this.photonVision = photonVision;
     navxGyro = new AHRS();
 
     SmartDashboard.putData("Field", m_field);
@@ -99,7 +114,7 @@ public class Drivetrain extends SubsystemBase{
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
-  
+
     driverTab = Shuffleboard.getTab("Driver");
 
     gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
@@ -131,16 +146,19 @@ public class Drivetrain extends SubsystemBase{
     m_frontRightDrive.setInverted(false);
     m_backRightDrive.setInverted(false);
     m_backLeftDrive.setInverted(true);
-    
-    m_odometry = new SwerveDriveOdometry(
-        m_kinematics,
-        new Rotation2d(getGyro()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_backLeft.getPosition(),
-            m_backRight.getPosition()
-        }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()));
+
+    poseEstimator =  new SwerveDrivePoseEstimator(
+            m_kinematics,
+            new Rotation2d(getGyro()),
+            new SwerveModulePosition[] {
+                    m_frontLeft.getPosition(),
+                    m_frontRight.getPosition(),
+                    m_backLeft.getPosition(),
+                    m_backRight.getPosition()
+            },
+            new Pose2d(),
+            stateStdDevs,
+            visionMeasurementStdDevs);
 
     setGyroOffset(180);
   }
@@ -200,7 +218,7 @@ public class Drivetrain extends SubsystemBase{
     m_backRight.setDesiredState(desiredStates[3]);
   }
 
-  
+
   public void stopMotors() {
     m_backRightDrive.set(0.0);
     m_backLeftDrive.set(0.0);
@@ -212,7 +230,7 @@ public class Drivetrain extends SubsystemBase{
     m_frontLeftTurn.set(0.0);
   }
 
-  
+
   public void setPower(int motorID, double value){
     switch(motorID) {
         case Constants.DRIVE_BACK_RIGHT_D:
@@ -296,7 +314,7 @@ public class Drivetrain extends SubsystemBase{
 
 
     if (Constants.DRIVETRAIN_DEBUG) {
-      SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
+      SmartShuffleboard.put("Drive", "distance to desired", 2 - poseEstimator.getEstimatedPosition().getX());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", backRightCanCoder.getAbsolutePosition());
@@ -312,27 +330,33 @@ public class Drivetrain extends SubsystemBase{
       SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
 
-      SmartShuffleboard.put("Drive", "Odometry","odometry x", m_odometry.getPoseMeters().getX());
-      SmartShuffleboard.put("Drive", "Odometry","odometry y", m_odometry.getPoseMeters().getY());
-      SmartShuffleboard.put("Drive", "Odometry","odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
+      SmartShuffleboard.put("Drive", "Odometry","odometry x", poseEstimator.getEstimatedPosition().getX());
+      SmartShuffleboard.put("Drive", "Odometry","odometry y", poseEstimator.getEstimatedPosition().getY());
+      SmartShuffleboard.put("Drive", "Odometry","odometry angle", poseEstimator.getEstimatedPosition().getRotation().getDegrees());
     }
 
     if (DriverStation.isEnabled()) {
-    m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
-    new SwerveModulePosition[] {
-      m_frontLeft.getPosition(), m_frontRight.getPosition(),
-      m_backLeft.getPosition(), m_backRight.getPosition()
-    });
-  }
-    m_field.setRobotPose(m_odometry.getPoseMeters());
+      poseEstimator.update(new Rotation2d(Math.toRadians(getGyro())),
+              new SwerveModulePosition[]{
+                      m_frontLeft.getPosition(), m_frontRight.getPosition(),
+                      m_backLeft.getPosition(), m_backRight.getPosition()
+              });
+      if (Constants.ADD_VISION_TO_ODOMETRY) {
+        Pose2d visionPose = photonVision.getRobot2dFieldPose();
+        if (visionPose != null) {
+          poseEstimator.addVisionMeasurement(visionPose, 0); //TODO : change to vision timestamp
+        }
+      }
+    }
+    m_field.setRobotPose(poseEstimator.getEstimatedPosition());
   }
 
-  public void resetOdometry (Pose2d pose) {
-    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
-    new SwerveModulePosition[] {
-      m_frontLeft.getPosition(), m_frontRight.getPosition(),
-      m_backLeft.getPosition(), m_backRight.getPosition()
-    }, pose);
+  public void resetOdometry(Pose2d pose) {
+    poseEstimator.resetPosition(new Rotation2d(Math.toRadians(getGyro())),
+            new SwerveModulePosition[]{
+                    m_frontLeft.getPosition(), m_frontRight.getPosition(),
+                    m_backLeft.getPosition(), m_backRight.getPosition()
+            }, pose);
   }
  
   public CANSparkMax getM_frontLeftTurn() {
@@ -387,16 +411,16 @@ public class Drivetrain extends SubsystemBase{
     return m_kinematics;
   }
 
-  public SwerveDriveOdometry getOdometry () {
-    return m_odometry;
+  public SwerveDrivePoseEstimator getOdometry () {
+    return poseEstimator;
   }
 
   public double getPoseX() {
-    return m_odometry.getPoseMeters().getX();
+    return poseEstimator.getEstimatedPosition().getX();
   }
 
   public double getPoseY() {
-    return m_odometry.getPoseMeters().getY();
+    return poseEstimator.getEstimatedPosition().getY();
   }
 
   public void setGyroOffset(double offset) {

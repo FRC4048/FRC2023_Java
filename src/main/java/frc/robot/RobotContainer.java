@@ -98,7 +98,8 @@ public class RobotContainer {
 
 
     // Configure the trigger bindings
-    drivetrain = new Drivetrain();
+    photonSubsystem = new PhotonCameraSubsystem();
+    drivetrain = new Drivetrain(photonSubsystem);
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
@@ -117,7 +118,6 @@ public class RobotContainer {
     gripper.setProtectionMechanism(protectionMechanism);
 
     m_PDB = new PowerDistributionBoard();
-    photonSubsystem = new PhotonCameraSubsystem();
     pieceGrid = new PieceGrid();
     configureBindings();
     putShuffleboardCommands();

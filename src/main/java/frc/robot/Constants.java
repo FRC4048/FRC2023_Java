@@ -207,4 +207,8 @@ public final class Constants {
   public static final String PHOTON_VISION_ID = "photonvision";
   public static final String PHOTON_CAMERA_ID = "camera0";
   public static final String PHOTON_LATENCY = "latencyMillis";
+
+
+  // vision constants
+  public static final boolean ADD_VISION_TO_ODOMETRY = true;
 }
