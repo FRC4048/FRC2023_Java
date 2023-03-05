@@ -13,15 +13,12 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.apriltags.AprilTagMap;
-import frc.robot.apriltags.Filter;
+import frc.robot.apriltags.AprilTagPoseFilter;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PhotonCameraSubsystem extends SubsystemBase {
@@ -29,18 +26,18 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private static final String FMSINFO_TABLE = "FMSInfo";
   private static final String IS_RED_ALLIANCE = "IsRedAlliance";
 
-  private Filter x2DFilter = new Filter(3, 1); //Placeholder value in meters
-  private Filter y2DFilter = new Filter(3, 1); //Placeholder value in meters
-  private Filter angleFilter = new Filter(3, 0.15708); //Placeholder value in radians
-  private Filter angleRFilter = new Filter(3, 0.15708); //Placeholder value in radians
-  private Filter x3DFilter = new Filter(3, 1); //Placeholder value in meters
-  private Filter y3DFilter = new Filter(3, 1); //Placeholder value in meters
-  private Filter z3DFilter = new Filter(3, 1); //Placeholder value in meters
-  private Filter rX3DFilter = new Filter(3, 0.15708); //Placeholder value in radians
-  private Filter rY3DFilter = new Filter(3, 0.15708); //Placeholder value in radians
-  private Filter rZ3DFilter = new Filter(3, 0.15708); //Placeholder value in radians
-  private Filter positionXFilter = new Filter(3, 1); //Placeholder value in meters
-  private Filter positionYFilter = new Filter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter x2DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter y2DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter angleFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
+  private AprilTagPoseFilter angleRFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
+  private AprilTagPoseFilter x3DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter y3DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter z3DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter rX3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
+  private AprilTagPoseFilter rY3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
+  private AprilTagPoseFilter rZ3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
+  private AprilTagPoseFilter positionXFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
+  private AprilTagPoseFilter positionYFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
   
 
   private PhotonCamera camera;
