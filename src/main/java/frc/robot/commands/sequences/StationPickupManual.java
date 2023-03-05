@@ -33,7 +33,7 @@ public class StationPickupManual extends SequentialCommandGroup {
                  new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
                  new SequentialCommandGroup(
                      new OpenGripper(gripper),
-                     new ExtendToPosition(extender, Constants.SUBSTAITON_PICKUP_EXTENSION), 
+                     new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION), 
                      new CloseGripper(gripper)
                  )
              ),
