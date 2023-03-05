@@ -53,7 +53,7 @@ public final class Constants {
   //EXTENDER
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-  
+
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
   public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
@@ -120,10 +120,10 @@ public final class Constants {
   public static final double kP_THETA_AUTO = 1.2;
   public static final double kI_THETA_AUTO = 0;
   public static final double kD_THETA_AUTO = 0;
-  public static final double kP_X_AUTO = 5; 
+  public static final double kP_X_AUTO = 5;
   public static final double kI_X_AUTO = 0.5;
   public static final double kD_X_AUTO = 0;
-  public static final double kP_Y_AUTO = 5; 
+  public static final double kP_Y_AUTO = 5;
   public static final double kI_Y_AUTO = 0.5;
   public static final double kD_Y_AUTO = 0;
 
@@ -162,6 +162,7 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
+  public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
@@ -171,6 +172,13 @@ public final class Constants {
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
+
+  //chargestation
+  public static final double BALANCE_STEEP_SPEED = .7;
+  public static final double BALANCE_LOW_SPEED = .5;
+  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
+  public static final int CHARGESTATION_BALANCED = 5;
+  public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
