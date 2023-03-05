@@ -23,8 +23,6 @@ import frc.robot.subsystems.GripperSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class StationPickupManual extends SequentialCommandGroup {
   /** Creates a new StationPickupManual. */
-  private Drivetrain drivetrain;
-  private Extender extender;
   public StationPickupManual(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -32,12 +30,11 @@ public class StationPickupManual extends SequentialCommandGroup {
       new StationMoveBack(drivetrain),
       new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 32.0),
              new ParallelRaceGroup(
-                 new HoldArmPID(arm, 31.5),
+                 new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
                  new SequentialCommandGroup(
                      new OpenGripper(gripper),
-                     new ExtendToPosition(extender, 3550.0), 
-                     new CloseGripper(gripper),
-                     new ExtendToPosition(extender, 0)
+                     new ExtendToPosition(extender, Constants.SUBSTAITON_PICKUP_EXTENSION), 
+                     new CloseGripper(gripper)
                  )
              ),
              new Stow(arm, gripper, extender)

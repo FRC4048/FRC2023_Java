@@ -48,6 +48,7 @@ public final class ProtectionMechanism extends SubsystemBase {
       */
      public double maxExtenderFromArmAngle(double value){
           double armAngle = armEncoderToAngle(value) *  Math.PI/180;
+          if (armAngle > 1.5) return 20000;
           double maxHeightInches = Constants.ARM_HEIGHT/Math.cos(armAngle);
           int extenderDiff = Constants.EXTENDER_MAX_LENGTH - Constants.EXTENDER_MIN_LENGTH;
           return (int) (Constants.MAX_EXTENDER_ENCODER_VALUE * ((maxHeightInches-Constants.EXTENDER_MIN_LENGTH)/extenderDiff));
