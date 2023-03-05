@@ -57,7 +57,6 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
-  private double filterX, filterY, filterZ = 0;
   private float filterRoll = 0;
 
   private final AHRS navxGyro;
@@ -161,18 +160,6 @@ public class Drivetrain extends SubsystemBase{
 
   public float getFilterRoll() {
     return filterRoll;
-  }
-
-  public double getFilterAccelX() {
-    return filterX;
-  }
-
-  public double getFilterAccelY() {
-    return filterY;
-  }
-
-  public double getFilterAccelZ() {
-    return filterZ;
   }
 
   /**
@@ -286,9 +273,6 @@ public class Drivetrain extends SubsystemBase{
   @Override
   public void periodic() {
 
-    filterX = filterX + (filterX+getAccelX())/Constants.GYRO_ACCEL_FILTER;
-    filterY = filterY + (filterY+getAccelY())/Constants.GYRO_ACCEL_FILTER;
-    filterZ = filterZ + (filterZ+getAccelZ())/Constants.GYRO_ACCEL_FILTER;
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
 

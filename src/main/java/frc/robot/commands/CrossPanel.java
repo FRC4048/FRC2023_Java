@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class CrossPanel extends CommandBase {
@@ -15,6 +17,7 @@ public class CrossPanel extends CommandBase {
   private float climbDir;
   private boolean crossed;
   private boolean down;
+  private double startTime;
 
   public CrossPanel(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -28,6 +31,7 @@ public class CrossPanel extends CommandBase {
     climbing = false;
     crossed = false;
     down = false;
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -67,6 +71,6 @@ public class CrossPanel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (crossed && Math.abs(drivetrain.getFilterRoll()) < .7);
+    return (crossed && Math.abs(drivetrain.getFilterRoll()) < .7) || ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);
   }
 }

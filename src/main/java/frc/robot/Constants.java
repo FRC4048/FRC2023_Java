@@ -166,7 +166,6 @@ public final class Constants {
   public static final double GRIPPER_CLOSING_SPEED = -0.5;
   public static final double GRIPPER_TIMEOUT = 5.0;
   public static final double WANTED_TIME = 1.0;
-  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
   public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
@@ -177,6 +176,13 @@ public final class Constants {
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
+
+  //chargestation
+  public static final double BALANCE_STEEP_SPEED = .7;
+  public static final double BALANCE_LOW_SPEED = .5;
+  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
+  public static final int CHARGESTATION_BALANCED = 5;
+  public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 30.75;

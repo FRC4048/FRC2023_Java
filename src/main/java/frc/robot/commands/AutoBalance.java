@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -14,6 +15,7 @@ public class AutoBalance extends CommandBase{
     private boolean firstMax;
     private boolean firstMin;
     private boolean secondMax;
+    private double startTime;
 
     public AutoBalance(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
@@ -30,6 +32,7 @@ public class AutoBalance extends CommandBase{
         maxAngle = 0;
         finishedCounter = 0;
         minCounter = 0;
+        startTime = Timer.getFPGATimestamp();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +44,7 @@ public class AutoBalance extends CommandBase{
         if (firstMax) {
             firstMin = Math.abs(drivetrain.getFilterRoll()) > 15;
             firstMax = !firstMin;
-            drivetrain.drive(.7, 0, 0, true);
+            drivetrain.drive(Constants.BALANCE_STEEP_SPEED, 0, 0, true);
         }
 
         if (firstMin) {
@@ -56,7 +59,7 @@ public class AutoBalance extends CommandBase{
             secondMax = minCounter > 10;
             firstMin = !secondMax;
 
-            drivetrain.drive(.5, 0, 0, true);
+            drivetrain.drive(Constants.BALANCE_LOW_SPEED, 0, 0, true);
         }
 
         if (secondMax) {
@@ -93,6 +96,6 @@ public class AutoBalance extends CommandBase{
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return finishedCounter > 5;
+        return (finishedCounter > Constants.CHARGESTATION_BALANCED) || ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);
     }
 }
