@@ -30,6 +30,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private int noTagDetectedCounter;
   // private boolean isRedAlliance;
   private Alliance currentAlliance;
+  private double timestamp;
+  private EstimatedRobotPose estimatedPose;
 
   int targetId;
 
@@ -61,16 +63,39 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   }
 
-  private Pose3d calculateUsingEstimator() {
+  private void calculateUsingEstimator() {
     Optional<EstimatedRobotPose> result = estimator.update();
+    
+
     if (result.isPresent()) {
-      EstimatedRobotPose estimatedPose = result.get();
+      estimatedPose = result.get();
       targetId = estimatedPose.targetsUsed.get(0).getFiducialId();
       tagFieldPosition = layout.getTagPose(targetId).get();
-      Pose3d pose = estimatedPose.estimatedPose;
-      return pose;
+      robotFieldPose = estimatedPose.estimatedPose.toPose2d();
+      noTagDetectedCounter = 0;
+    } else {
+      if (robotFieldPose != null) {
+        noTagDetectedCounter++;
+        if (noTagDetectedCounter >= 10) {
+          robotFieldPose = null;
+          noTagDetectedCounter = 0;
+          estimatedPose = null;
+          targetId = 0;
+          tagFieldPosition = null;
+        }
+      }
+
     }
-    return null;
+  }
+
+  public double getDetectionTimestamp() {
+    if (estimatedPose == null) {
+      return -1;
+    } else {
+      timestamp = estimatedPose.timestampSeconds;
+      return timestamp;
+    }
+
   }
 
   /**
@@ -82,32 +107,15 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     return robotFieldPose;
   }
 
-  public Pose3d getRobotFieldPose() {
-    Pose3d result = calculateUsingEstimator();
-    if (result != null) {
-      robotFieldPose = result.toPose2d();
-      noTagDetectedCounter = 0;
-      return result;
-
-    } else {
-      if (robotFieldPose != null) {
-        noTagDetectedCounter++;
-        if (noTagDetectedCounter >= 10) {
-          robotFieldPose = null;
-          noTagDetectedCounter = 0;
-        }
-      }
-
-    }
-
-    return null;
-
-  }
-
   @Override
   public void periodic() {
     updateAlliance();
-    Pose3d pose3dPosition = getRobotFieldPose();
+    calculateUsingEstimator();
+    Pose3d pose3dPosition = null;
+    if (estimatedPose != null) {
+      pose3dPosition = estimatedPose.estimatedPose;
+    }
+
 
     if (Constants.DEBUG) {
       if (robotFieldPose != null) {
