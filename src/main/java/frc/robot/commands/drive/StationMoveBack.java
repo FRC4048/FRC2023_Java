@@ -4,10 +4,9 @@
 
 package frc.robot.commands.drive;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utils.SmartShuffleboard;
 
 public class StationMoveBack extends CommandBase {
   /** Creates a new MoveDistanceX. */
@@ -31,19 +30,17 @@ public class StationMoveBack extends CommandBase {
   @Override
   public void execute() {
     drivetrain.drive(-0.3, 0.0, 0.0, true);
-    //driven = Math.abs(startPos - drivetrain.getPoseX());
-    // SmartShuffleboard.put("Substation", "driven", driven);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.stop();
+    drivetrain.stopMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(startPos - drivetrain.getPoseX()) > 0.63;
+    return Math.abs(startPos - drivetrain.getPoseX()) > Constants.STATION_DRIVE_BACK_DISTANCE;
   }
 }

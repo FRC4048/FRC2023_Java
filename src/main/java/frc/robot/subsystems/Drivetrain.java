@@ -164,7 +164,7 @@ public class Drivetrain extends SubsystemBase{
   }
 
   
-  public void stop() {
+  public void stopMotors() {
     m_backRightDrive.set(0.0);
     m_backLeftDrive.set(0.0);
     m_frontRightDrive.set(0.0);

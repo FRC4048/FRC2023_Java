@@ -15,10 +15,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final boolean DRIVETRAIN_DEBUG = true;
-  public static final boolean ARM_DEBUG = true;
-  public static final boolean EXTENDER_DEBUG = true;
-  public static final boolean GRIPPER_DEBUG = true;
+  public static final boolean DRIVETRAIN_DEBUG = false;
+  public static final boolean ARM_DEBUG = false;
+  public static final boolean EXTENDER_DEBUG = false;
+  public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
 
@@ -55,7 +55,7 @@ public final class Constants {
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
   
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
-  public static final double EXTENDER_AUTO_MAX_SPEED = 1; //TODO make 1
+  public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
   public static final int MAX_EXTENDER_ENCODER_VALUE = 7342;
@@ -175,6 +175,7 @@ public final class Constants {
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
   public static final double SUBSTAITON_PICKUP_EXTENSION = 3800.0;
+  public static final double STATION_DRIVE_BACK_DISTANCE = 0.63;
 
   // arm set points
   public static final double BOTTOM_ANGLE = 22;
