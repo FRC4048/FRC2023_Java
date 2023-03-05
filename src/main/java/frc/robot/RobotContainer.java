@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;  
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.CancelAll;
 import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.arm.ArmMoveSequence;
@@ -29,6 +29,7 @@ import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.commands.sequences.GroundPickup;
+import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.commands.sequences.SubstationPickup;
@@ -144,6 +145,8 @@ public class RobotContainer {
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+
+    controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
    
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getLeftX()));
