@@ -1,6 +1,6 @@
 package frc.robot.commands.Autonomous;
 
-import frc.robot.commands.ResetEncoders;
+import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
