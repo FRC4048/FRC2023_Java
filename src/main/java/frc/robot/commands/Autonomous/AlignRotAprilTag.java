@@ -8,19 +8,15 @@ import frc.robot.subsystems.PhotonCameraSubsystem;
 public class AlignRotAprilTag extends CommandBase {
 
   private Pose2d robotFieldPose2d;
-  private PhotonCameraSubsystem photonSubsystem;
   // private double startTime;
-  private Drivetrain drivetrain;
   private MoveDistanceSpinTraj moveDistanceSpinTraj;
   private boolean isFinished = false;
   private double startTime;
 
   public AlignRotAprilTag(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain) {
-    this.photonSubsystem = photonSubsystem;
-    this.drivetrain = drivetrain;
+
     robotFieldPose2d = photonSubsystem.getRobot2dFieldPose();
     double desiredRotRadians = robotFieldPose2d.getRotation().getRadians();
-
     moveDistanceSpinTraj = new MoveDistanceSpinTraj(drivetrain, 0.0, 0.0, -(desiredRotRadians));
  
   }
