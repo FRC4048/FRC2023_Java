@@ -229,5 +229,9 @@ public class RobotContainer {
     return autonomousChooser;
   }
 
+  public LedPanel getLedPanel() {
+    return ledPanel;
+  }
+
 }
 
