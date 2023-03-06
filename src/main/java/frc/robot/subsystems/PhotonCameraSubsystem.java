@@ -32,8 +32,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private Alliance currentAlliance;
   private double timestamp;
   private EstimatedRobotPose estimatedPose;
-
-  int targetId;
+  private int targetId;
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -106,6 +105,10 @@ public class PhotonCameraSubsystem extends SubsystemBase {
    */
   public Pose2d getRobot2dFieldPose() {
     return robotFieldPose;
+  }
+
+  public int getTargetId() {
+    return targetId;
   }
 
   @Override

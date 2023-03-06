@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import org.opencv.photo.Photo;
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,6 +45,7 @@ public class RobotContainer {
   private GripperSubsystem gripper;
   private PieceGrid pieceGrid;
   private PhotonCameraSubsystem photonSubsystem;
+  
 
 
   //Joysticks & Joystick Buttons
@@ -65,6 +69,7 @@ public class RobotContainer {
     arm = new Arm();
     extender = new Extender();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
+
     
     arm.setProtectionMechanism(protectionMechanism);
     extender.setProtectionMechanism(protectionMechanism);
@@ -171,4 +176,9 @@ public class RobotContainer {
   public Joystick getJoyLeft() {
     return joyLeft;
   }
+  
+  public PhotonCameraSubsystem getPhotonCamera() {
+    return photonSubsystem;
+  }
+
 }
