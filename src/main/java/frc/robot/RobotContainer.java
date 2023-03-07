@@ -162,7 +162,6 @@ public class RobotContainer {
     if (Constants.EXTENDER_DEBUG) {
       SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
       SmartShuffleboard.putCommand("Extender", "Set position=4000", new ExtendToPosition(extender, 4000));
-<<<<<<< HEAD
     SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
     SmartShuffleboard.putCommand("Driver", "Turn to Degee", new TurnToDegrees(drivetrain, 45));
     
@@ -174,9 +173,7 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
       SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
   
-=======
       SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
->>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
       SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
     }
 

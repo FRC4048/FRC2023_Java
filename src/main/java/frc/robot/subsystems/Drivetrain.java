@@ -57,12 +57,9 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
-<<<<<<< HEAD
   private boolean turnToDegreeState = false;
   private double degreesToTurn = 0.0;
-=======
   private float filterRoll = 0;
->>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
 
   private final AHRS navxGyro;
 
@@ -147,7 +144,6 @@ public class Drivetrain extends SubsystemBase{
     return navxGyro;
   }
 
-<<<<<<< HEAD
   public void turnToDegrees(double degree) {
     degreesToTurn = degree;
   }
@@ -162,7 +158,7 @@ public class Drivetrain extends SubsystemBase{
 
   public void setTurnToDegreeState(boolean state) {
     turnToDegreeState = state;
-=======
+  }
   public double getAccelX() {
     return navxGyro.getRawAccelX();
   }
@@ -181,7 +177,6 @@ public class Drivetrain extends SubsystemBase{
 
   public float getFilterRoll() {
     return filterRoll;
->>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
   }
 
   /**
@@ -302,13 +297,10 @@ public class Drivetrain extends SubsystemBase{
     SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
-<<<<<<< HEAD
     SmartShuffleboard.put("Driver", "TurnToDegree", getDegreesToTurn());
     SmartShuffleboard.put("Driver", "Turn State", isTurnToDegreeOn());
-=======
     SmartShuffleboard.put("Driver", "FilterRoll", filterRoll);
     SmartShuffleboard.put("Driver", "Roll", getRoll());
->>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
 
     if (Constants.DRIVETRAIN_DEBUG) {
       SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());

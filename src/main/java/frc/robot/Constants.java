@@ -166,12 +166,8 @@ public final class Constants {
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
-<<<<<<< HEAD
   public static final double WANTED_TIME = 1.0;
   public static final double AUTO_TURN_SPEED = 0.2;
-=======
-  public static final double WANTED_TIME = 0.8;
->>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
 
   public static final double DIAG_TALONSRX_ROT = 5;
   public static final double DIAG_SPARK_ROT = 0.1;
