@@ -27,7 +27,7 @@ public final class ProtectionMechanism extends SubsystemBase {
      }
 
      public boolean safeToExtend(){
-          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) || arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN;
+          return (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) || (extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) && arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN);
      }
      public boolean safeToLowerArm(){
           if (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) return true;
@@ -43,6 +43,7 @@ public final class ProtectionMechanism extends SubsystemBase {
      }
 
      /**
+      * does use if arm angle is greater than 90
       * @param value arm encoder value
       * @return the max distance in inches of extender
       */

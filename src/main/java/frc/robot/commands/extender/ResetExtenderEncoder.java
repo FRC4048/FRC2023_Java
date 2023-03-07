@@ -6,7 +6,7 @@ import frc.robot.subsystems.Extender;
 
 public class ResetExtenderEncoder extends CommandBase {
 
-    private Extender extender;
+    private final Extender extender;
     
     public ResetExtenderEncoder(Extender extender) {
         this.extender = extender;
@@ -18,8 +18,8 @@ public class ResetExtenderEncoder extends CommandBase {
 
     @Override
     public void execute() {
-        extender.move(Constants.EXTENDER_AUTO_MIN_SPEED);
-        }
+        extender.move(-Constants.EXTENDER_AUTO_MIN_SPEED);
+    }
         
 
     @Override
