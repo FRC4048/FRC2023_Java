@@ -114,8 +114,6 @@ public class Robot extends TimedRobot {
           SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
           SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
         }
-
-      new ChangeLedID(m_robotContainer.getLedPanel(), 1).schedule();
       
   }
 
