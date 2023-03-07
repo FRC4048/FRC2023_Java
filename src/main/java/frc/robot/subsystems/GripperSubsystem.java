@@ -35,12 +35,11 @@ public class GripperSubsystem extends SubsystemBase {
  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartShuffleboard.put("Gripper", "Encoder", gripperPosition());
-
-    SmartShuffleboard.put("Gripper", "Limit Switches", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed());
-    SmartShuffleboard.put("Gripper", "Limit Switches", "rev Limit", gripperMotor.isRevLimitSwitchClosed());
-
+    if (Constants.GRIPPER_DEBUG) {
+      SmartShuffleboard.put("Gripper", "Encoder", gripperPosition());
+      SmartShuffleboard.put("Gripper", "Limit Switches", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed());
+      SmartShuffleboard.put("Gripper", "Limit Switches", "rev Limit", gripperMotor.isRevLimitSwitchClosed());
+    }
   }
 
   public void open() {

@@ -9,6 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -56,12 +57,18 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
+<<<<<<< HEAD
   private boolean turnToDegreeState = false;
   private double degreesToTurn = 0.0;
+=======
+  private float filterRoll = 0;
+>>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
 
   private final AHRS navxGyro;
 
   private final Field2d m_field = new Field2d();
+
+  private final MedianFilter rollFilter;
 
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
@@ -89,6 +96,8 @@ public class Drivetrain extends SubsystemBase{
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
+
+    rollFilter = new MedianFilter(5);
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftDrive));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightDrive));
@@ -138,6 +147,7 @@ public class Drivetrain extends SubsystemBase{
     return navxGyro;
   }
 
+<<<<<<< HEAD
   public void turnToDegrees(double degree) {
     degreesToTurn = degree;
   }
@@ -152,6 +162,26 @@ public class Drivetrain extends SubsystemBase{
 
   public void setTurnToDegreeState(boolean state) {
     turnToDegreeState = state;
+=======
+  public double getAccelX() {
+    return navxGyro.getRawAccelX();
+  }
+
+  public double getAccelY() {
+    return navxGyro.getRawAccelY();
+  }
+
+  public double getAccelZ() {
+    return navxGyro.getRawAccelZ();
+  }
+
+  public float getRoll() {
+    return navxGyro.getRoll();
+  }
+
+  public float getFilterRoll() {
+    return filterRoll;
+>>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
   }
 
   /**
@@ -181,6 +211,19 @@ public class Drivetrain extends SubsystemBase{
     m_backRight.setDesiredState(desiredStates[3]);
   }
 
+  
+  public void stopMotors() {
+    m_backRightDrive.set(0.0);
+    m_backLeftDrive.set(0.0);
+    m_frontRightDrive.set(0.0);
+    m_frontLeftDrive.set(0.0);
+    m_backRightTurn.set(0.0);
+    m_backLeftTurn.set(0.0);
+    m_frontRightTurn.set(0.0);
+    m_frontLeftTurn.set(0.0);
+  }
+
+  
   public void setPower(int motorID, double value){
     switch(motorID) {
         case Constants.DRIVE_BACK_RIGHT_D:
@@ -251,14 +294,24 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
+
+    filterRoll = (float)rollFilter.calculate((double)getRoll());
+
+
+    SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
+    SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Driver", "Gyro", getGyro());
     SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
+<<<<<<< HEAD
     SmartShuffleboard.put("Driver", "TurnToDegree", getDegreesToTurn());
     SmartShuffleboard.put("Driver", "Turn State", isTurnToDegreeOn());
+=======
+    SmartShuffleboard.put("Driver", "FilterRoll", filterRoll);
+    SmartShuffleboard.put("Driver", "Roll", getRoll());
+>>>>>>> e5ac88e7458a6a0207b7576a7b2290239493782b
 
-    SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
-
-    if (Constants.DEBUG) {
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", backRightCanCoder.getAbsolutePosition());
@@ -274,10 +327,9 @@ public class Drivetrain extends SubsystemBase{
       SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
 
-      SmartShuffleboard.put("Driver", "odometry x", m_odometry.getPoseMeters().getX());
-      SmartShuffleboard.put("Driver", "odometry y", m_odometry.getPoseMeters().getY());
-      SmartShuffleboard.put("Driver", "odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
-
+      SmartShuffleboard.put("Drive", "Odometry","odometry x", m_odometry.getPoseMeters().getX());
+      SmartShuffleboard.put("Drive", "Odometry","odometry y", m_odometry.getPoseMeters().getY());
+      SmartShuffleboard.put("Drive", "Odometry","odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
     }
 
     if (DriverStation.isEnabled()) {
