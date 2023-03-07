@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.commands.Autonomous.Balance;
 import frc.robot.commands.Autonomous.CrossTheLine;
+import frc.robot.commands.Autonomous.DepositOneAndBalance;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.commands.Autonomous.OneGamepiece;
 import frc.robot.subsystems.Arm;
@@ -17,8 +19,6 @@ import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.utils.SmartShuffleboard;
 
 public class AutonomousChooser {
-
-
     private Drivetrain drivetrain;
     private Arm arm;
     private Extender extender;
@@ -28,11 +28,11 @@ public class AutonomousChooser {
     private Location location;
     private Action action;
 
-    
     enum Action {
-        //Balance, 
+        Balance, 
         //DepositTwo, 
-        //DepositOneAndBalance
+        DepositOneAndBalanceRight,
+        DepositOneAndBalanceLeft,
         DoNothing, 
         CrossLine,  
         OnePieceMoveLeft, 
@@ -44,7 +44,6 @@ public class AutonomousChooser {
         Middle, 
         Left;	
     }
-
     
     public AutonomousChooser(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
         this.arm = arm;
@@ -63,7 +62,9 @@ public class AutonomousChooser {
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
-        //actionChooser.addOption("Pick Up One and Balance", Action.DepositOneAndBalance);
+        actionChooser.addOption("Deposit One Balance Right", Action.DepositOneAndBalanceRight);
+        actionChooser.addOption("Deposit One Balance Left", Action.DepositOneAndBalanceLeft);
+        actionChooser.addOption("Balance", Action.Balance);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
         locationChooser.addOption(Location.Left.name(), Location.Left);	
@@ -85,8 +86,6 @@ public class AutonomousChooser {
         }
         
     }
-
-
 
     public Location getLocation() {	
         if (locationChooser.getSelected() != null) {	
@@ -113,6 +112,15 @@ public class AutonomousChooser {
         }
         else if (action == Action.OnePieceMoveRight) {
             return new OneGamepiece(drivetrain, arm, extender, gripper, -1, location, allianceColor);
+        }
+        else if (action == Action.DepositOneAndBalanceRight) {
+            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -1, location, allianceColor);
+        }
+        else if (action == Action.DepositOneAndBalanceLeft) {
+            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 1, location, allianceColor);
+        }
+        else if (action == Action.Balance) {
+            return new Balance(drivetrain, arm, extender, gripper, location, allianceColor);
         }
         else {
             return new DoNothing(arm, extender);
