@@ -19,6 +19,7 @@ public class Drive extends CommandBase{
     private double turnAtSpeed;
     private JoystickButton decreaseSpeedButton;
     private int closest;
+    private double degreesToTurn;
 
 
     public Drive(
@@ -45,7 +46,14 @@ public class Drive extends CommandBase{
         double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         turnAtSpeed = 0;
-        closest = -1;
+
+        if (drivetrain.getPoseY() > 11 & drivetrain.getPoseY() < 14 & drivetrain.getAccelY() > 0.5) {
+            degreesToTurn = 0;
+        }
+
+        if (drivetrain.getPoseY() > 40 & drivetrain.getPoseY() < 43 & drivetrain.getAccelY() < -0.5) {
+            degreesToTurn = 180;
+        }
         
         //fwd = fwd * fwd * Math.signum(fwd);
         //str = str * str * Math.+signum(str);
@@ -53,11 +61,9 @@ public class Drive extends CommandBase{
         if (!drivetrain.isTurnToDegreeOn()) {
             gyroPos = drivetrain.getGyro();
         } else {
-            if (!(Math.abs(rcw)>0) & !((Math.abs(drivetrain.getGyro()%180) < 10) & (drivetrain.getGyro()) > -10)) {
-                if (Math.abs(drivetrain.getGyro()%180) < 90) {
-                    closest = 1;
-                }
-                turnAtSpeed = Constants.AUTO_TURN_SPEED * Math.signum(drivetrain.getGyro()%180)*closest;
+            if (!(Math.abs(rcw)>0) & !((Math.abs(drivetrain.getGyro()) < degreesToTurn + 10) & (drivetrain.getGyro()) > degreesToTurn-10)) {
+
+                turnAtSpeed = Constants.AUTO_TURN_SPEED * Math.signum(drivetrain.getGyro()%180);
             } else {
                 drivetrain.setTurnToDegreeState(false);
             }
