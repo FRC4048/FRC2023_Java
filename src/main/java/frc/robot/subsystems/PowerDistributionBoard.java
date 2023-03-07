@@ -11,7 +11,7 @@ public class PowerDistributionBoard extends SubsystemBase {
 
     public PowerDistributionBoard() {}
     public void periodic() {
-        if (Constants.DEBUG) {
+        if (Constants.PDB_DEBUG) {
             SmartShuffleboard.put("Power", "Pannels", "Voltage", PowerDB.getVoltage());
             SmartShuffleboard.put("Power", "Pannels", "Temp in C", PowerDB.getTemperature());
             SmartShuffleboard.put("Power", "Pannels", "Total Current", PowerDB.getTotalCurrent());

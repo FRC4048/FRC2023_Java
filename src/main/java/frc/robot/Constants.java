@@ -15,7 +15,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final boolean DEBUG = true;
+  public static final boolean DRIVETRAIN_DEBUG = false;
+  public static final boolean ARM_DEBUG = false;
+  public static final boolean EXTENDER_DEBUG = false;
+  public static final boolean GRIPPER_DEBUG = false;
+  public static final boolean PDB_DEBUG = false;
+  public static final boolean APRILTAG_DEBUG = false;
 
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
@@ -48,9 +53,9 @@ public final class Constants {
   //EXTENDER
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-  
+
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
-  public static final double EXTENDER_AUTO_MAX_SPEED = .5; //TODO make 1
+  public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
   public static final int MAX_EXTENDER_ENCODER_VALUE = 7342;
@@ -108,17 +113,17 @@ public final class Constants {
   public static final double MANUAL_GRIP_SPEED = 0.8;
 
   //autonomous values
-  public static final double MAX_VELOCITY_AUTO = 1.5;
-  public static final double MAX_ACCELERATION_AUTO = 3.0;
+  public static final double MAX_VELOCITY_AUTO = 3.0;
+  public static final double MAX_ACCELERATION_AUTO = 1.5;
   public static final double MAX_ANGULAR_SPEED_AUTO = Math.PI * 0.6;
   public static final double MAX_ANGULAR_ACCELERATION_AUTO = Math.PI * 0.1;
   public static final double kP_THETA_AUTO = 1.2;
   public static final double kI_THETA_AUTO = 0;
   public static final double kD_THETA_AUTO = 0;
-  public static final double kP_X_AUTO = 5; 
+  public static final double kP_X_AUTO = 5;
   public static final double kI_X_AUTO = 0.5;
   public static final double kD_X_AUTO = 0;
-  public static final double kP_Y_AUTO = 5; 
+  public static final double kP_Y_AUTO = 5;
   public static final double kI_Y_AUTO = 0.5;
   public static final double kD_Y_AUTO = 0;
 
@@ -157,33 +162,50 @@ public final class Constants {
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
+  public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
-  public static final double WANTED_TIME = 1.0;
+  public static final double WANTED_TIME = 0.8;
 
   public static final double DIAG_TALONSRX_ROT = 5;
   public static final double DIAG_SPARK_ROT = 0.1;
   public static final double DIAG_REL_SPARK_ENCODER = 0.1; //In radians
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
 
+  //chargestation
+  public static final double BALANCE_STEEP_SPEED = .7;
+  public static final double BALANCE_LOW_SPEED = .5;
+  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
+  public static final int CHARGESTATION_BALANCED = 5;
+  public static final double CHARGESTATION_TIMEOUT = 10;
+
   //setpoints
-  public static final double SUBSTATION_PICKUP_ARM_ANGLE = 30.0;
+  public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
+  public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
+  public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
 
   // arm set points
   public static final double BOTTOM_ANGLE = 22;
   public static final double BOTTOM_EXTENSION = 1590;
 
   public static final double CONE_MIDDLE_ANGLE = 34;
-  public static final double CONE_MIDDLE_EXTENSION = 3170;
+  public static final double CONE_MIDDLE_EXTENSION = 3420;
   public static final double CONE_TOP_ANGLE = 39;
-  public static final double CONE_TOP_EXTENSION = 6860;
-
-  public static final double PICKUP_ANGLE = 32;
-  public static final double PICKUP_EXTENSION = 0;
+  public static final double CONE_TOP_EXTENSION = 7110;
 
   public static final double CUBE_MIDDLE_ANGLE = 29;
-  public static final double CUBE_MIDDLE_EXTENSION = 1565;
+  public static final double CUBE_MIDDLE_EXTENSION = 1815;
   public static final double CUBE_TOP_ANGLE = 35;
-  public static final double CUBE_TOP_EXTENSION = 5655;
+  public static final double CUBE_TOP_EXTENSION = 5905;
+
+  // LED outputs
+
+  public static final int DIGITAL_OUTPUT_1 = 1;
+  public static final int DIGITAL_OUTPUT_2 = 2;
+  public static final int DIGITAL_OUTPUT_3 = 3;
+
+  public static final int CONE_ID = 2;
+  public static final int CUBE_ID = 1;
+  public static final int ROBOT_ID = 7;
 }
