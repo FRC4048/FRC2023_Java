@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.Autonomous.Balance;
 import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DepositOneAndBalance;
@@ -16,7 +15,6 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.utils.SmartShuffleboard;
 
 public class AutonomousChooser {
     private Drivetrain drivetrain;
@@ -62,8 +60,8 @@ public class AutonomousChooser {
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
-        actionChooser.addOption("Deposit One Balance Right", Action.DepositOneAndBalanceRight);
-        actionChooser.addOption("Deposit One Balance Left", Action.DepositOneAndBalanceLeft);
+        actionChooser.addOption("One Piece Move Right Balance", Action.DepositOneAndBalanceRight);
+        actionChooser.addOption("One Piece Move Left Balance", Action.DepositOneAndBalanceLeft);
         actionChooser.addOption("Balance", Action.Balance);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
