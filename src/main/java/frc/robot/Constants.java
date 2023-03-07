@@ -94,7 +94,7 @@ public final class Constants {
   //in inches
   public static final int ARM_HEIGHT = 47;
 
-  public static final int ARM_LOWER_DISTANCE = 3;
+  public static final double ARM_LOWER_DISTANCE = 1.5;
 
 
   public static final double WHEEL_RADIUS = 0.0508;
