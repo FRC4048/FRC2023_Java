@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -66,7 +69,7 @@ public class Robot extends TimedRobot {
     
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }    
+    }
 
   }
 
@@ -87,7 +90,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    
+
   }
 
   @Override
