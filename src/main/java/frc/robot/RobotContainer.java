@@ -100,9 +100,9 @@ public class RobotContainer {
     extender = new Extender();
     ledPanel = new LedPanel();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
-    disabledCycleLED = new CycleLED(ledPanel,1000,1,2,3,4,5,6,7);
-    testCycleLED = new CycleLED(ledPanel,1000,1,2);
-    autoCycleLED = new CycleLED(ledPanel,1000,5,6,7);
+    testCycleLED = new CycleLED(ledPanel,1,1,2,3,4,5,6,7);
+    disabledCycleLED = new CycleLED(ledPanel,1,4);
+    autoCycleLED = new CycleLED(ledPanel,1,7);
     autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
     autonomousChooser.addOptions();
 
@@ -236,13 +236,13 @@ public class RobotContainer {
     return ledPanel;
   }
 
-  public CommandBase getDisabledLedCycleCommand() {
+  public CycleLED getDisabledLedCycleCommand() {
     return disabledCycleLED;
   }
-  public CommandBase getAutoLedCycleCommand() {
+  public CycleLED getAutoLedCycleCommand() {
     return autoCycleLED;
   }
-  public CommandBase getTestLedCycleCommand() {
+  public CycleLED getTestLedCycleCommand() {
     return testCycleLED;
   }
 }

@@ -1,42 +1,35 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LedPanel;
 
-public class CycleLED extends CommandBase {
+public class CycleLED {
      
      private final int[] ledSequence;
      int currentImageIndex = 0;
      //includes system time
-     long timeSceneImgChange;
+     double timeSceneImgChange;
      private final LedPanel panel;
-     private final int delayInMilliSeconds;
+     private final double delayInSeconds;
 
-     public CycleLED(LedPanel panel, int delayInMilliSeconds, int... imageIds) {
+     public CycleLED(LedPanel panel, double delayInSeconds, int... imageIds) {
           this.ledSequence = imageIds;
           this.panel = panel;
-          this.delayInMilliSeconds = delayInMilliSeconds;
-          addRequirements(panel);
+          this.delayInSeconds = delayInSeconds;
      }
-
-     @Override
+     
      public void initialize() {
-          this.timeSceneImgChange = System.currentTimeMillis();
+          this.timeSceneImgChange = Timer.getFPGATimestamp();
      }
 
-     @Override
-     public void execute() {
-          if (System.currentTimeMillis() - timeSceneImgChange >= delayInMilliSeconds) {
+     public void refresh() {
+          if ((Timer.getFPGATimestamp() - timeSceneImgChange) >= delayInSeconds) {
                panel.setID(ledSequence[currentImageIndex]);
-               if (currentImageIndex== ledSequence.length-1) currentImageIndex= 0;
-               else currentImageIndex++;
-               timeSceneImgChange = System.currentTimeMillis();
+               currentImageIndex = (currentImageIndex + 1) % ledSequence.length;
+               timeSceneImgChange = Timer.getFPGATimestamp();
           }
      }
      
-
-     @Override
-     public boolean isFinished() {
-          return false;
-     }
+     
 }

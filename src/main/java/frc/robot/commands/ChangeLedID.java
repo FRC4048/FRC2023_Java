@@ -9,6 +9,7 @@ public class ChangeLedID extends CommandBase{
     public ChangeLedID(LedPanel ledPanel, int change) {
         this.ledPanel = ledPanel;
         this.change = change;
+        addRequirements(ledPanel);
     }
 
 
