@@ -38,7 +38,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private AprilTagPoseFilter rZ3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
   private AprilTagPoseFilter positionXFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
   private AprilTagPoseFilter positionYFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  
+
+  private boolean useFilters = true;
 
   private PhotonCamera camera;
   private AprilTagFieldLayout layout;
@@ -129,11 +130,18 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
     if (Constants.APRILTAG_DEBUG) {
       if (robotFieldPose != null) {
-        SmartShuffleboard.put("AprilTag", "2D", "2D-X", x2DFilter.calculate(robotFieldPose.getTranslation().getX()));
-        SmartShuffleboard.put("AprilTag", "2D", "2D-Y", y2DFilter.calculate(robotFieldPose.getTranslation().getY()));
-        SmartShuffleboard.put("AprilTag", "2D", "Angle", angleFilter.calculate(robotFieldPose.getRotation().getDegrees()));
-        SmartShuffleboard.put("AprilTag", "2D", "AngleR", angleRFilter.calculate(robotFieldPose.getRotation().getRadians()));
-  
+        if (useFilters) {
+          SmartShuffleboard.put("AprilTag", "2D", "2D-X", x2DFilter.calculate(robotFieldPose.getTranslation().getX()));
+          SmartShuffleboard.put("AprilTag", "2D", "2D-Y", y2DFilter.calculate(robotFieldPose.getTranslation().getY()));
+          SmartShuffleboard.put("AprilTag", "2D", "Angle", angleFilter.calculate(robotFieldPose.getRotation().getDegrees()));
+          SmartShuffleboard.put("AprilTag", "2D", "AngleR", angleRFilter.calculate(robotFieldPose.getRotation().getRadians()));
+        }
+        else {
+          SmartShuffleboard.put("AprilTag", "2D", "2D-X", robotFieldPose.getTranslation().getX());
+          SmartShuffleboard.put("AprilTag", "2D", "2D-Y", robotFieldPose.getTranslation().getY());
+          SmartShuffleboard.put("AprilTag", "2D", "Angle", robotFieldPose.getRotation().getDegrees());
+          SmartShuffleboard.put("AprilTag", "2D", "AngleR", robotFieldPose.getRotation().getRadians());
+        }
         
       } else {
         x2DFilter.resetFilter();
@@ -148,12 +156,22 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       }
       SmartShuffleboard.put("AprilTag", "noTagDetectedCounter", noTagDetectedCounter);
       if (pose3dPosition != null) {
+        if (useFilters) {
           SmartShuffleboard.put("AprilTag", "3D", "3D-X", x3DFilter.calculate(pose3dPosition.getX()));
           SmartShuffleboard.put("AprilTag", "3D", "3D-Y", y3DFilter.calculate(pose3dPosition.getY()));
           SmartShuffleboard.put("AprilTag", "3D", "3D-Z", z3DFilter.calculate(pose3dPosition.getZ()));
           SmartShuffleboard.put("AprilTag", "3D", "3D-RX", rX3DFilter.calculate(pose3dPosition.getRotation().getX())); 
           SmartShuffleboard.put("AprilTag", "3D", "3D-RY", rY3DFilter.calculate(pose3dPosition.getRotation().getY())); 
-          SmartShuffleboard.put("AprilTag", "3D", "3D-RZ", rZ3DFilter.calculate(pose3dPosition.getRotation().getZ()));   
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RZ", rZ3DFilter.calculate(pose3dPosition.getRotation().getZ()));
+        }
+        else {
+          SmartShuffleboard.put("AprilTag", "3D", "3D-X", pose3dPosition.getX());
+          SmartShuffleboard.put("AprilTag", "3D", "3D-Y", pose3dPosition.getY());
+          SmartShuffleboard.put("AprilTag", "3D", "3D-Z", pose3dPosition.getZ());
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RX", pose3dPosition.getRotation().getX()); 
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RY", pose3dPosition.getRotation().getY()); 
+          SmartShuffleboard.put("AprilTag", "3D", "3D-RZ", pose3dPosition.getRotation().getZ());
+        }   
       }
       else {
         x3DFilter.resetFilter();
@@ -165,8 +183,14 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       }
 
       if (tagFieldPosition != null) {
+        if (useFilters) {
           SmartShuffleboard.put("AprilTag", "position-x", positionXFilter.calculate(tagFieldPosition.getX()));
           SmartShuffleboard.put("AprilTag", "position-y", positionYFilter.calculate(tagFieldPosition.getY()));
+        }
+        else {
+          SmartShuffleboard.put("AprilTag", "position-x", tagFieldPosition.getX());
+          SmartShuffleboard.put("AprilTag", "position-y", tagFieldPosition.getY());
+        }
       } else {
          positionXFilter.resetFilter();
           positionYFilter.resetFilter();
