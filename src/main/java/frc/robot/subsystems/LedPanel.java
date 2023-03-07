@@ -73,9 +73,6 @@ public class LedPanel extends SubsystemBase {
     }
 
     public void periodic() {
-        SmartShuffleboard.put("LED", "FieldDio1", output1.get());
-        SmartShuffleboard.put("LED", "FieldDio2", output2.get());
-        SmartShuffleboard.put("LED", "FieldDio3", output3.get());
-        SmartShuffleboard.put("LED", "ID", ID);
+
     }
 }
