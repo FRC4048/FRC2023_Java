@@ -16,6 +16,7 @@ public class LockWheels extends CommandBase {
   public LockWheels(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+    
   }
 
   // Called when the command is initially scheduled.
