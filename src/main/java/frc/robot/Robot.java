@@ -49,13 +49,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    Objects.requireNonNull(m_robotContainer.getDisabledLedCycleCommand()).schedule();
-
+    m_robotContainer.getDisabledLedCycleCommand().initialize();
   }
 
   @Override
   public void disabledPeriodic() {
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location", m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name());
+    m_robotContainer.getDisabledLedCycleCommand().refresh();
+
   }
 
   @Override
@@ -65,11 +66,13 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
-    Objects.requireNonNull(m_robotContainer.getAutoLedCycleCommand()).schedule();
+    m_robotContainer.getAutoLedCycleCommand().initialize();
   }
 
   @Override
   public void autonomousPeriodic() {
+    m_robotContainer.getAutoLedCycleCommand().refresh();
+
   }
 
   @Override
@@ -77,8 +80,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    Objects.requireNonNull(m_robotContainer.getTestLedCycleCommand()).schedule();
     m_robotContainer.getArm().zeroPID();
+
   }
 
   @Override
@@ -91,10 +94,12 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     diagnostics.reset();
     m_robotContainer.getArm().zeroPID();
+    m_robotContainer.getTestLedCycleCommand().initialize();
   }
 
   @Override
   public void testPeriodic() {
+    m_robotContainer.getTestLedCycleCommand().refresh();
     diagnostics.refresh();
     TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
