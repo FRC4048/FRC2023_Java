@@ -27,7 +27,7 @@ public final class ProtectionMechanism extends SubsystemBase {
      }
 
      public boolean safeToExtend(){
-          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) && arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN;
+          return extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) || arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN;
      }
      public boolean safeToLowerArm(){
           if (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) return true;

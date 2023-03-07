@@ -9,10 +9,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 
+import frc.robot.commands.*;
 import org.opencv.aruco.Aruco;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;  
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.ChangeLedID;
@@ -31,6 +32,8 @@ import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.commands.sequences.GroundPickup;
+import frc.robot.commands.sequences.ResetEncoders;
+import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.commands.sequences.SubstationPickup;
 import frc.robot.subsystems.*;
@@ -89,7 +92,7 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    
+
     // Configure the trigger bindings
     drivetrain = new Drivetrain();
     gripper = new GripperSubsystem();
@@ -102,11 +105,11 @@ public class RobotContainer {
     autonomousChooser.addOptions();
 
     autonomousChooser.initialize();
-    
+
     arm.setProtectionMechanism(protectionMechanism);
     extender.setProtectionMechanism(protectionMechanism);
     gripper.setProtectionMechanism(protectionMechanism);
-    
+
     m_PDB = new PowerDistributionBoard();
     photonSubsystem = new PhotonCameraSubsystem();
     pieceGrid = new PieceGrid();
@@ -137,7 +140,7 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
-    controller.button(XboxController.Button.kX.value).onTrue(new SubstationPickup(arm, gripper));
+    controller.button(XboxController.Button.kX.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
     manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
@@ -148,9 +151,8 @@ public class RobotContainer {
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
 
-    controller.button(XboxController.Button.kStart.value).onTrue(new ChangeLedID(ledPanel, 1));
-    controller.button(XboxController.Button.kBack.value).onTrue(new ChangeLedID(ledPanel, -1));
-   
+    controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
+
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getLeftX()));
 
@@ -169,16 +171,15 @@ public class RobotContainer {
     }
 
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
-      SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
-      SmartShuffleboard.putCommand("Arm", "GO TO 10", new ArmMoveSequence(arm,extender,10,0));
+      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
+    SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
+    SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));SmartShuffleboard.putCommand("Arm", "GO TO 10", new ArmMoveSequence(arm,extender,10,0));
       SmartShuffleboard.putCommand("Arm", "GO TO 15", new ArmMoveSequence(arm,extender,15,0));
       SmartShuffleboard.putCommand("Arm", "GO TO 25", new ArmMoveSequence(arm,extender,25,0));
     }
-     
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-  
+
   }
 
   /**
@@ -187,7 +188,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  
+
    public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autonomousChooser.getAutonomousCommand();
