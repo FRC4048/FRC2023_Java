@@ -14,10 +14,10 @@ public class ChangeLedID extends CommandBase{
 
     @Override
     public void initialize() {
-        ledPanel.setID(ledPanel.getID() + change);
         if (ledPanel.getID() > 7) {
             ledPanel.setID(0);
         }
+        ledPanel.setID(ledPanel.getID() + change);
     }
 
     public boolean isFinished() {

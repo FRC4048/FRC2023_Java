@@ -21,13 +21,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.ChangeLedID;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.drive.WheelAlign;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.LedPanel;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
 import frc.robot.AutonomousChooser;
@@ -60,7 +58,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location", m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name());
-
   }
 
   @Override
@@ -114,7 +111,6 @@ public class Robot extends TimedRobot {
           SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
           SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
         }
-      
   }
 
   public static Diagnostics getDiagnostics() {

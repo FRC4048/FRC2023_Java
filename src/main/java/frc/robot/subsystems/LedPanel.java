@@ -6,7 +6,7 @@ import frc.robot.Constants;
 import frc.robot.utils.SmartShuffleboard;
 
 public class LedPanel extends SubsystemBase {
-    private static int ID;
+    private int ID;
 
     private DigitalOutput output1;
     private DigitalOutput output2;
