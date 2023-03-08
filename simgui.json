@@ -1,0 +1,12 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Autonomous/Autonomous Action": "String Chooser",
+      "/Shuffleboard/Autonomous/Location Chooser": "String Chooser",
+      "/Shuffleboard/Drive/Commands/ResetGyro": "Command",
+      "/Shuffleboard/Driver/Commands/MoveDistance": "Command",
+      "/SmartDashboard/Field": "Field2d"
+    }
+  }
+}
