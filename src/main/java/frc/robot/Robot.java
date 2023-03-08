@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,20 +13,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utils.SmartShuffleboard;
-import frc.robot.commands.SetGridSlot;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.drive.WheelAlign;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
-import frc.robot.AutonomousChooser;
 
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
@@ -63,6 +55,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
+    new AutoBalance(m_robotContainer.getDrivetrain()).schedule();
 
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
