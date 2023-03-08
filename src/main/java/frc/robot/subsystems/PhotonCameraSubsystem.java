@@ -59,7 +59,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
       @Override
       protected double getTagTimestamp() {
-        return getTimestamp();
+        return getDetectionTimestamp();
       }
     });
 
@@ -130,7 +130,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     if (estimatedPose != null) {
       pose3dPosition = estimatedPose.estimatedPose;
     }
-
+    SmartShuffleboard.put("Diagnostics","TagTimeStamp",getDetectionTimestamp());
+    SmartShuffleboard.put("Diagnostics","TagId",targetId);
 
     if (Constants.APRILTAG_DEBUG) {
       if (robotFieldPose != null) {
@@ -166,9 +167,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     }
   }
 
-  public double getTimestamp() {
-    return timestamp;
-  }
 
   public int getTargetId() {
     return targetId;

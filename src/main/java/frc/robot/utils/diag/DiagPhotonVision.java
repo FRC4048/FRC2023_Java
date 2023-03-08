@@ -13,8 +13,7 @@ public abstract class DiagPhotonVision implements Diagnosable {
     private final String name;
     private final String title;
     private int firstTagId;
-    private double firstTagTimestamp;
-    private double secondTagTimestamp;
+    private double firstTimestamp;
     protected GenericEntry networkTableEntry;
 
 
@@ -40,17 +39,14 @@ public abstract class DiagPhotonVision implements Diagnosable {
     @Override
     public void reset() {
         firstTagId = -1;
-        firstTagTimestamp = -1;
-        secondTagTimestamp = -1;
+        firstTimestamp = -1;
     }
 
     boolean getDiagResult() {
-        if (firstTagId == -1 || firstTagTimestamp == -1){
+        if (firstTagId == -1 || firstTimestamp == -1){
             firstTagId = getTagId();
-            firstTagTimestamp = getTagTimestamp();
-        } else if (secondTagTimestamp == -1 || secondTagTimestamp == firstTagTimestamp) {
-            secondTagTimestamp = getTagTimestamp();
-        } else return true;
+            firstTimestamp = getTagTimestamp();
+        } else return getTagTimestamp()==firstTimestamp;
         return false;
     }
 
