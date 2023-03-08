@@ -25,6 +25,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -75,6 +76,7 @@ public class Drivetrain extends SubsystemBase{
   private final AHRS navxGyro;
 
   private final Field2d m_field = new Field2d();
+  private DriverStation.Alliance allianceColor = DriverStation.Alliance.Invalid;
 
   private final MedianFilter rollFilter;
 
@@ -305,7 +307,9 @@ public class Drivetrain extends SubsystemBase{
 
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
-
+    if (allianceColor == DriverStation.Alliance.Invalid) {
+      allianceColor = DriverStation.getAlliance();
+    }
 
     SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
     SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
@@ -344,12 +348,22 @@ public class Drivetrain extends SubsystemBase{
       if (Constants.ADD_VISION_TO_ODOMETRY) {
         Pose2d visionPose = photonVision.getRobot2dFieldPose();
         if (visionPose != null) {
-          double visionTimestamp = photonVision.getDetectionTimestamp();
-          poseEstimator.addVisionMeasurement(visionPose, visionTimestamp); //TODO: what do they really need here? latency?
+          double latency = photonVision.getDetectionTimestamp();
+          if (latency < 0.3 && latency > 0) {
+            poseEstimator.addVisionMeasurement(visionPose, Timer.getFPGATimestamp() - latency);
+          }
         }
       }
     }
-    m_field.setRobotPose(poseEstimator.getEstimatedPosition());
+    /* if Red alliance, mirror pose on field */
+    if (allianceColor != DriverStation.Alliance.Blue) {
+      m_field.setRobotPose(new Pose2d(
+              Units.feetToMeters(Constants.FIELD_LENGTH_X_FEET) - poseEstimator.getEstimatedPosition().getX(),
+              Units.feetToMeters(Constants.FIELD_LENGTH_Y_FEET) - poseEstimator.getEstimatedPosition().getY(),
+              new Rotation2d(poseEstimator.getEstimatedPosition().getRotation().getRadians()+Math.PI)));
+    } else {
+      m_field.setRobotPose(poseEstimator.getEstimatedPosition());
+    }
   }
 
   public void resetOdometry(Pose2d pose) {
