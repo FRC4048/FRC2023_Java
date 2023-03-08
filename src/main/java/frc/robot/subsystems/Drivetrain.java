@@ -64,7 +64,7 @@ public class Drivetrain extends SubsystemBase{
 
   private double gyroOffset = 0;
   private ShuffleboardTab driverTab; 
-  private GenericEntry gyroEntry, offsetEntry, odomXEntry, odomYEntry, odomThetaEntry;
+  private GenericEntry gyroEntry;
   private float filterRoll = 0;
 
   private final AHRS navxGyro;
@@ -103,10 +103,6 @@ public class Drivetrain extends SubsystemBase{
     driverTab = Shuffleboard.getTab("Driver");
 
     gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
-    //offsetEntry = driverTab.getLayout("Gyro", BuiltInLayouts.kList).add("Offset", 0).getEntry();
-    //odomXEntry = driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry x", 0).withPosition(2, 0).withSize(1, 3).getEntry();
-    //odomYEntry = driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry y", 0).getEntry();
-    //odomThetaEntry =  driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry angle", 0).getEntry();
 
     rollFilter = new MedianFilter(5);
 
@@ -288,10 +284,6 @@ public class Drivetrain extends SubsystemBase{
   @Override
   public void periodic() {
     gyroEntry.setDouble(getGyro());
-    //offsetEntry.setDouble(getGyro());
-    //odomXEntry.setDouble(m_odometry.getPoseMeters().getX());
-    //odomYEntry.setDouble(m_odometry.getPoseMeters().getY());
-    //odomThetaEntry.setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
 
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
@@ -299,6 +291,8 @@ public class Drivetrain extends SubsystemBase{
 
     SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
     SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
+    SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
+
 
 
     if (Constants.DRIVETRAIN_DEBUG) {
