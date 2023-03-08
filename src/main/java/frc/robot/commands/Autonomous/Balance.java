@@ -16,7 +16,6 @@ public class Balance extends SequentialCommandGroup {
 
         addCommands(
             new ResetEncoders(arm, extender),
-            new MoveDistanceSpinTraj(drivetrain, 0, 3, Math.toRadians(180)),
             new AutoBalance(drivetrain)
         );
 

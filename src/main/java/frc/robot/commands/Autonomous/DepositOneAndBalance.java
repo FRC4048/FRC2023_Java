@@ -34,7 +34,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
             ),
 
             new Stow(arm, gripper, extender),
-            new MoveDistanceSpinTraj(drivetrain, 0.2 * direction, 1, Math.toRadians(180)),
+            new MoveDistanceSpinTraj(drivetrain, 0.1, 0.2 * direction, Math.toRadians(180)),
             new AutoBalance(drivetrain)
         );
 
