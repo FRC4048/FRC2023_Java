@@ -210,5 +210,5 @@ public final class Constants {
 
 
   // vision constants
-  public static final boolean ADD_VISION_TO_ODOMETRY = true;
+  public static final boolean ADD_VISION_TO_ODOMETRY = false;
 }

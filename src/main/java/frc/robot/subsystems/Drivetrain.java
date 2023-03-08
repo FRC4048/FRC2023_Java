@@ -344,7 +344,8 @@ public class Drivetrain extends SubsystemBase{
       if (Constants.ADD_VISION_TO_ODOMETRY) {
         Pose2d visionPose = photonVision.getRobot2dFieldPose();
         if (visionPose != null) {
-          poseEstimator.addVisionMeasurement(visionPose, 0); //TODO : change to vision timestamp
+          double visionTimestamp = photonVision.getDetectionTimestamp();
+          poseEstimator.addVisionMeasurement(visionPose, visionTimestamp); //TODO: what do they really need here? latency?
         }
       }
     }
