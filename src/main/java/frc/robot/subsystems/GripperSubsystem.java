@@ -35,17 +35,15 @@ public class GripperSubsystem extends SubsystemBase {
  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartShuffleboard.put("Gripper", "Encoder", gripperPosition());
-
-    SmartShuffleboard.put("Gripper", "Limit Switches", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed());
-    SmartShuffleboard.put("Gripper", "Limit Switches", "rev Limit", gripperMotor.isRevLimitSwitchClosed());
-
+    if (Constants.GRIPPER_DEBUG) {
+      SmartShuffleboard.put("Gripper", "Encoder", gripperPosition());
+      SmartShuffleboard.put("Gripper", "Limit Switches", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed());
+      SmartShuffleboard.put("Gripper", "Limit Switches", "rev Limit", gripperMotor.isRevLimitSwitchClosed());
+    }
   }
 
   public void open() {
-    gripperMotor.set(protectionMechanism.validateGripperVolt(Constants.GRIPPER_OPENING_SPEED));
-//    gripperMotor.set(Mechanism.getInstance().safeToOpenGripper()?Constants.GRIPPER_OPENING_SPEED:0);
+    gripperMotor.set(validateGripperVolt(Constants.GRIPPER_OPENING_SPEED));
   }
 
   public void close() {
@@ -57,7 +55,7 @@ public class GripperSubsystem extends SubsystemBase {
     // gripperMotor.stopMotor();
   }
   public void move(double speed) {
-    gripperMotor.set(protectionMechanism.validateGripperVolt(speed));
+    gripperMotor.set(validateGripperVolt(speed));
 //    gripperMotor.set(speed > 0 && Mechanism.getInstance().safeToOpenGripper() ? speed : 0);
   }
   public double gripperPosition() {
@@ -72,5 +70,9 @@ public class GripperSubsystem extends SubsystemBase {
 
   public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
     this.protectionMechanism = protectionMechanism;
+  }
+  public double validateGripperVolt(double volt){
+    if ((volt > 0 && protectionMechanism.safeToOpenGripper()) || volt < 0) return volt;
+    return 0;
   }
 }

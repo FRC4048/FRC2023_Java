@@ -51,12 +51,9 @@ private SparkMaxPIDController pidController;
 
   @Override
   public void periodic() {
-    if (Constants.DEBUG) {
+    if (Constants.ARM_DEBUG) {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
-    }
-
-    if (Constants.DEBUG) {
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
@@ -91,7 +88,7 @@ private SparkMaxPIDController pidController;
   }
 
   public void setVoltage(Double val) {
-    neoMotor.setVoltage(protectionMechanism.validateArmVolt(val));
+    neoMotor.setVoltage(validateArmVolt(val));
   }
 
   public void zeroPID() {
@@ -124,5 +121,13 @@ private SparkMaxPIDController pidController;
 
   public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
     this.protectionMechanism = protectionMechanism;
+  }
+  public double clampVolts(double value, double min, double max){
+    return Math.min(Math.max(value, min), max);
+  }
+  public double validateArmVolt(double volt){
+    volt = clampVolts(volt,-Constants.ARM_MAX_VOLTS,Constants.ARM_MAX_VOLTS);
+    if ((volt < 0 && protectionMechanism.safeToLowerArm()) || volt > 0) return volt;
+    return 0;
   }
 }

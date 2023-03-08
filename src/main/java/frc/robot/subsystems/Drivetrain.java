@@ -9,6 +9,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,7 +19,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,10 +63,15 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
+  private ShuffleboardTab driverTab; 
+  private GenericEntry gyroEntry;
+  private float filterRoll = 0;
 
   private final AHRS navxGyro;
 
   private final Field2d m_field = new Field2d();
+
+  private final MedianFilter rollFilter;
 
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
@@ -87,6 +99,12 @@ public class Drivetrain extends SubsystemBase{
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
+  
+    driverTab = Shuffleboard.getTab("Driver");
+
+    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
+
+    rollFilter = new MedianFilter(5);
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Left", Constants.DIAG_REL_SPARK_ENCODER, m_frontLeftDrive));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("DT Drive", "Front Right", Constants.DIAG_REL_SPARK_ENCODER, m_frontRightDrive));
@@ -102,7 +120,6 @@ public class Drivetrain extends SubsystemBase{
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Front Right", Constants.DIAG_ABS_SPARK_ENCODER, frontRightCanCoder));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Left", Constants.DIAG_ABS_SPARK_ENCODER, backLeftCanCoder));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Right", Constants.DIAG_ABS_SPARK_ENCODER, backRightCanCoder));
-
 
 
     m_frontLeft = new SwerveModule(m_frontLeftDrive, m_frontLeftTurn, frontLeftCanCoder, 1);
@@ -136,6 +153,26 @@ public class Drivetrain extends SubsystemBase{
     return navxGyro;
   }
 
+  public double getAccelX() {
+    return navxGyro.getRawAccelX();
+  }
+
+  public double getAccelY() {
+    return navxGyro.getRawAccelY();
+  }
+
+  public double getAccelZ() {
+    return navxGyro.getRawAccelZ();
+  }
+
+  public float getRoll() {
+    return navxGyro.getRoll();
+  }
+
+  public float getFilterRoll() {
+    return filterRoll;
+  }
+
   /**
    * Method to drive the robot using joystick info.
    *
@@ -163,6 +200,19 @@ public class Drivetrain extends SubsystemBase{
     m_backRight.setDesiredState(desiredStates[3]);
   }
 
+  
+  public void stopMotors() {
+    m_backRightDrive.set(0.0);
+    m_backLeftDrive.set(0.0);
+    m_frontRightDrive.set(0.0);
+    m_frontLeftDrive.set(0.0);
+    m_backRightTurn.set(0.0);
+    m_backLeftTurn.set(0.0);
+    m_frontRightTurn.set(0.0);
+    m_frontLeftTurn.set(0.0);
+  }
+
+  
   public void setPower(int motorID, double value){
     switch(motorID) {
         case Constants.DRIVE_BACK_RIGHT_D:
@@ -233,12 +283,20 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
-    SmartShuffleboard.put("Driver", "Gyro", getGyro());
-    SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
+    gyroEntry.setDouble(getGyro());
 
-    SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
 
-    if (Constants.DEBUG) {
+    filterRoll = (float)rollFilter.calculate((double)getRoll());
+
+
+    SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
+    SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
+    SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
+
+
+
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", backRightCanCoder.getAbsolutePosition());
@@ -254,10 +312,9 @@ public class Drivetrain extends SubsystemBase{
       SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", m_frontRight.getDriveEncPosition());
       SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", m_frontLeft.getDriveEncPosition());
 
-      SmartShuffleboard.put("Driver", "odometry x", m_odometry.getPoseMeters().getX());
-      SmartShuffleboard.put("Driver", "odometry y", m_odometry.getPoseMeters().getY());
-      SmartShuffleboard.put("Driver", "odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
-
+      SmartShuffleboard.put("Drive", "Odometry","odometry x", m_odometry.getPoseMeters().getX());
+      SmartShuffleboard.put("Drive", "Odometry","odometry y", m_odometry.getPoseMeters().getY());
+      SmartShuffleboard.put("Drive", "Odometry","odometry angle", m_odometry.getPoseMeters().getRotation().getDegrees());
     }
 
     if (DriverStation.isEnabled()) {

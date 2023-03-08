@@ -6,9 +6,7 @@ import frc.robot.subsystems.Extender;
 
 public class ResetExtenderEncoder extends CommandBase {
 
-    private Extender extender;
-
-    private boolean limitReached = false;
+    private final Extender extender;
     
     public ResetExtenderEncoder(Extender extender) {
         this.extender = extender;
@@ -16,30 +14,23 @@ public class ResetExtenderEncoder extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        limitReached = false;
-    }
+    public void initialize() {}
 
     @Override
     public void execute() {
-            boolean revLimit = extender.revLimitReached();
-            if (revLimit) {
-                extender.resetEncoder();
-                limitReached = true;
-            } else {
-                extender.move(-Constants.EXTENDER_AUTO_MIN_SPEED);
-        }
-        
+        extender.move(-Constants.EXTENDER_AUTO_MIN_SPEED);
     }
+        
 
     @Override
     public void end(boolean interrupted) {
         extender.stop();
+        extender.resetEncoder();
     }
 
     @Override
     public boolean isFinished() {
-        return limitReached;
+        return extender.revLimitReached();
     }
-    
 }
+

@@ -43,8 +43,7 @@ public class Extender extends SubsystemBase {
     
 
     public void move(double speed) {
-
-        extenderMotor.set(protectionMechanism.validateExtenderVolt(speed));
+        extenderMotor.set(validateExtenderVolt(speed));
     }
 
     public void stop() {
@@ -67,10 +66,11 @@ public class Extender extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartShuffleboard.put("Extender", "encoder",getEncoder());
-
-        SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
-        SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
+        if (Constants.EXTENDER_DEBUG) {
+            SmartShuffleboard.put("Extender", "encoder", getEncoder());
+            SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
+            SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
+        }
     }
 
     public double getExtenderSensorPos() {
@@ -79,5 +79,9 @@ public class Extender extends SubsystemBase {
 
     public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
         this.protectionMechanism = protectionMechanism;
+    }
+    public double validateExtenderVolt(double volt){
+        if ((volt > 0 && protectionMechanism.safeToExtend()) || volt < 0) return volt;
+        return 0;
     }
 }
