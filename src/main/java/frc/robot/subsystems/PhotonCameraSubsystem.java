@@ -45,7 +45,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     camera.setDriverMode(false);
     currentAlliance = DriverStation.getAlliance();
 
-    layout = AprilTagMap.getAprilTagLayout(currentAlliance);
+    layout = AprilTagMap.getAprilTagLayout(AprilTagMap.getAprilPosList(currentAlliance));
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
   }
@@ -54,7 +54,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     if (currentAlliance != DriverStation.getAlliance()) {
       currentAlliance = DriverStation.getAlliance();
 
-      layout = AprilTagMap.getAprilTagLayout(currentAlliance);
+      layout = AprilTagMap.getAprilTagLayout(AprilTagMap.getAprilPosList(currentAlliance));
       estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
       SmartShuffleboard.put("AprilTag", "currentAlliance", currentAlliance == Alliance.Red);
@@ -109,6 +109,10 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   public int getTargetId() {
     return targetId;
+  }
+
+  public Alliance getTargetAlliance(){
+    return currentAlliance;
   }
 
   @Override
