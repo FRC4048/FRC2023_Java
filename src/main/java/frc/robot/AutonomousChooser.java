@@ -73,127 +73,61 @@ public class AutonomousChooser {
     }
 
     public void setOdometry(Drivetrain drivetrain, Location location, Action action, Alliance alliance) {
-        double x = 0;
+        double x = 72;
         double y = 0;
-        if (alliance == Alliance.Blue) {
             
             if(action == Action.CrossLine && location == Location.Left) {
-                x = 72;
                 y = 186;
             }
             else if(action == Action.CrossLine && location == Location.Middle) {
-                x = 72;
                 y = 108;
             }
             else if(action == Action.CrossLine && location == Location.Right) {
-                x = 72;
                 y = 30;
             }
             
 
             else if(action == Action.Balance) {
-                x = 72;
                 y = 108;
             }
             
             
             else if(action == Action.DepositOneAndBalanceRight) {
-                x = 72;
                 y = 130;
             }
 
 
             else if(action == Action.DepositOneAndBalanceLeft) {
-                x = 72;
                 y = 86;
             }
 
             
             else if(action == Action.OnePieceMoveLeft && location == Location.Right) {
-                x = 72;
                 y = 20;
             }
             else if(action == Action.OnePieceMoveLeft && location == Location.Left) {
-                x = 72;
                 y = 150;
             }
             
             
             else if(action == Action.OnePieceMoveRight && location == Location.Right) {
-                x = 72;
                 y = 64;
             }
             else if(action == Action.OnePieceMoveRight && location == Location.Left) {
-                x = 72;
                 y = 194;
             }
 
             else {
-                x = 72;
                 y = 108;
             }
-        }
         
         
         
-        else if (alliance == Alliance.Red) {
+        
+        if (alliance == Alliance.Red) {
             
-            if(action == Action.CrossLine && location == Location.Left) {
-                x = 72;
-                y = 285;
-            }
-            else if(action == Action.CrossLine && location == Location.Middle) {
-                x = 72;
-                y = 207;
-            }
-            else if(action == Action.CrossLine && location == Location.Right) {
-                x = 72;
-                y = 129;
-            }
-            
-
-            else if(action == Action.Balance) {
-                x = 72;
-                y = 207;
-            }
-            
-            
-            else if(action == Action.DepositOneAndBalanceRight) {
-                x = 72;
-                y = 229;
-            }
-
-
-            else if(action == Action.DepositOneAndBalanceLeft) {
-                x = 72;
-                y = 185;
-            }
-
-            
-            else if(action == Action.OnePieceMoveLeft && location == Location.Right) {
-                x = 72;
-                y = 119;
-            }
-            else if(action == Action.OnePieceMoveLeft && location == Location.Left) {
-                x = 72;
-                y = 249;
-            }
-            
-            
-            else if(action == Action.OnePieceMoveRight && location == Location.Right) {
-                x = 72;
-                y = 163;
-            }
-            else if(action == Action.OnePieceMoveRight && location == Location.Left) {
-                x = 72;
-                y = 293;
-            }
-
-            else {
-                x = 72;
-                y = 207;
-            }
-            
+            y += 99;
+             
         }
         
         drivetrain.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(180))));
