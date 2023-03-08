@@ -156,7 +156,7 @@ public class RobotContainer {
 
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP - 1));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.ARM_AUTO_VOLTAGE_DOWN - 1));
-    
+
 
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));

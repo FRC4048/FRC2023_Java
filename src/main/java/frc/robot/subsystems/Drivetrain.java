@@ -348,12 +348,22 @@ public class Drivetrain extends SubsystemBase{
       if (Constants.ADD_VISION_TO_ODOMETRY) {
         Pose2d visionPose = photonVision.getRobot2dFieldPose();
         if (visionPose != null) {
-          double visionTimestamp = photonVision.getDetectionTimestamp();
-          poseEstimator.addVisionMeasurement(visionPose, visionTimestamp); //TODO: what do they really need here? latency?
+          double latency = photonVision.getDetectionTimestamp();
+          if (latency < 0.3 && latency > 0) {
+            poseEstimator.addVisionMeasurement(visionPose, Timer.getFPGATimestamp() - latency);
+          }
         }
       }
     }
-    m_field.setRobotPose(poseEstimator.getEstimatedPosition());
+    /* if Red alliance, mirror pose on field */
+    if (allianceColor != DriverStation.Alliance.Blue) {
+      m_field.setRobotPose(new Pose2d(
+              Units.feetToMeters(Constants.FIELD_LENGTH_X_FEET) - poseEstimator.getEstimatedPosition().getX(),
+              Units.feetToMeters(Constants.FIELD_LENGTH_Y_FEET) - poseEstimator.getEstimatedPosition().getY(),
+              new Rotation2d(poseEstimator.getEstimatedPosition().getRotation().getRadians()+Math.PI)));
+    } else {
+      m_field.setRobotPose(poseEstimator.getEstimatedPosition());
+    }
   }
 
   public void resetOdometry(Pose2d pose) {

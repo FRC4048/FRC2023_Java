@@ -214,4 +214,8 @@ public final class Constants {
 
   // vision constants
   public static final boolean ADD_VISION_TO_ODOMETRY = true;
+
+  // field
+  public static final double FIELD_LENGTH_X_FEET = 54.25;
+  public static final double FIELD_LENGTH_Y_FEET = 26.5;
 }
