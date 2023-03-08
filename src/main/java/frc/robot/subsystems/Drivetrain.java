@@ -102,7 +102,7 @@ public class Drivetrain extends SubsystemBase{
   
     driverTab = Shuffleboard.getTab("Driver");
 
-    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withSize(1, 2).withWidget("Gyro").withSize(2, 4).getEntry();
+    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
     //offsetEntry = driverTab.getLayout("Gyro", BuiltInLayouts.kList).add("Offset", 0).getEntry();
     //odomXEntry = driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry x", 0).withPosition(2, 0).withSize(1, 3).getEntry();
     //odomYEntry = driverTab.getLayout("Odometry", BuiltInLayouts.kList).add("odometry y", 0).getEntry();
