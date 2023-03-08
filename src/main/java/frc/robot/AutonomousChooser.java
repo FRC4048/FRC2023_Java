@@ -170,22 +170,22 @@ public class AutonomousChooser {
             return new DoNothing(arm, extender);
         }
         else if (action == Action.CrossLine && location != Location.Middle) {
-            return new CrossTheLine(drivetrain, arm, extender, location, allianceColor);
+            return new CrossTheLine(drivetrain, arm, extender, location);
         }
         else if (action == Action.OnePieceMoveLeft) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, 1, location, allianceColor);
+            return new OneGamepiece(drivetrain, arm, extender, gripper, 1, location);
         }
         else if (action == Action.OnePieceMoveRight) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, -1, location, allianceColor);
+            return new OneGamepiece(drivetrain, arm, extender, gripper, -1, location);
         }
         else if (action == Action.DepositOneAndBalanceRight) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -1, location, allianceColor);
+            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -1, location);
         }
         else if (action == Action.DepositOneAndBalanceLeft) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 1, location, allianceColor);
+            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 1, location);
         }
         else if (action == Action.Balance) {
-            return new Balance(drivetrain, arm, extender, gripper, location, allianceColor);
+            return new Balance(drivetrain, arm, extender, gripper, location);
         }
         else {
             return new DoNothing(arm, extender);

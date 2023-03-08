@@ -12,7 +12,7 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class Balance extends SequentialCommandGroup {
     
-    public Balance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, AutonomousChooser.Location location, Alliance allianceColor) {
+    public Balance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, AutonomousChooser.Location location) {
 
         addCommands(
             new ResetEncoders(arm, extender),

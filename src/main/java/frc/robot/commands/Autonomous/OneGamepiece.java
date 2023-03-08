@@ -21,7 +21,7 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class OneGamepiece extends SequentialCommandGroup{
     
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location, Alliance allianceColor) {
+    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location) {
 
         addCommands(
         new ResetEncoders(arm, extender),

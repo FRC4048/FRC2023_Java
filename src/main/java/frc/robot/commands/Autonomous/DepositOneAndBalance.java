@@ -20,7 +20,7 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class DepositOneAndBalance extends SequentialCommandGroup {
     
-    public DepositOneAndBalance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location, Alliance allianceColor) {
+    public DepositOneAndBalance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location) {
 
         addCommands(
             new ResetEncoders(arm, extender),
