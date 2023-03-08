@@ -61,11 +61,11 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     }
 
   }
- 
-  
+
+
   private void calculateUsingEstimator() {
     Optional<EstimatedRobotPose> result = estimator.update();
-    
+
 
     if (result.isPresent()) {
       estimatedPose = result.get();
@@ -107,8 +107,17 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     return robotFieldPose;
   }
 
-  public int getTargetId() {
-    return targetId;
+  public Integer getTargetId() {
+    if (targetId != 0) {
+      return targetId;
+    } else {
+      return null;
+    }
+  }
+
+  public Pose3d getTargetFieldPose() {
+    calculateUsingEstimator();
+    return tagFieldPosition;
   }
 
   @Override
@@ -119,7 +128,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     if (estimatedPose != null) {
       pose3dPosition = estimatedPose.estimatedPose;
     }
-
 
     if (Constants.DEBUG) {
       if (robotFieldPose != null) {

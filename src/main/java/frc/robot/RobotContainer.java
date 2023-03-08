@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Autonomous.GridAlignment;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetEncoders;
@@ -87,15 +88,15 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    controller.povUpLeft().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_LEFT));
-    controller.povLeft().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_LEFT));
-    controller.povDownLeft().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_LEFT));
-    controller.povUp().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_MIDDLE));
-    controller.back().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_MIDDLE));
-    controller.povDown().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_MIDDLE));
-    controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_RIGHT));
-    controller.povRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
-    controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
+    controller.povUpLeft().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.TOP_LEFT));
+    controller.povLeft().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.MIDDLE_LEFT));
+    controller.povDownLeft().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.DOWN_LEFT));
+    controller.povUp().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.TOP_MIDDLE));
+    controller.back().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.MIDDLE_MIDDLE));
+    controller.povDown().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.DOWN_MIDDLE));
+    controller.povUpRight().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.TOP_RIGHT));
+    controller.povRight().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
+    controller.povDownRight().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.DOWN_RIGHT));
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
