@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import frc.robot.Robot;
+import frc.robot.utils.diag.DiagPhotonVision;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -48,6 +50,18 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
     layout = AprilTagMap.getAprilTagLayout(currentAlliance);
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
+
+    Robot.getDiagnostics().addDiagnosable(new DiagPhotonVision("PV","CanReadTags") {
+      @Override
+      protected int getTagId() {
+        return getTargetId();
+      }
+
+      @Override
+      protected double getTagTimestamp() {
+        return getTimestamp();
+      }
+    });
 
   }
 
@@ -150,5 +164,13 @@ public class PhotonCameraSubsystem extends SubsystemBase {
         SmartShuffleboard.put("AprilTag", "position-y", 0);
       }
     }
+  }
+
+  public double getTimestamp() {
+    return timestamp;
+  }
+
+  public int getTargetId() {
+    return targetId;
   }
 }
