@@ -340,13 +340,20 @@ public class Drivetrain extends SubsystemBase{
     }
 
     if (DriverStation.isEnabled()) {
-    m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
-    new SwerveModulePosition[] {
-      m_frontLeft.getPosition(), m_frontRight.getPosition(),
-      m_backLeft.getPosition(), m_backRight.getPosition()
-    });
-  }
-    m_field.setRobotPose(m_odometry.getPoseMeters());
+      poseEstimator.update(new Rotation2d(Math.toRadians(getGyro())),
+              new SwerveModulePosition[]{
+                      m_frontLeft.getPosition(), m_frontRight.getPosition(),
+                      m_backLeft.getPosition(), m_backRight.getPosition()
+              });
+      if (Constants.ADD_VISION_TO_ODOMETRY) {
+        Pose2d visionPose = photonVision.getRobot2dFieldPose();
+        if (visionPose != null) {
+          double visionTimestamp = photonVision.getDetectionTimestamp();
+          poseEstimator.addVisionMeasurement(visionPose, visionTimestamp); //TODO: what do they really need here? latency?
+        }
+      }
+    }
+    m_field.setRobotPose(poseEstimator.getEstimatedPosition());
   }
 
   public void resetOdometry(Pose2d pose) {
