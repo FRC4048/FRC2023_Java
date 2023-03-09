@@ -201,4 +201,14 @@ public final class Constants {
   public static final double CUBE_MIDDLE_EXTENSION = 1815;
   public static final double CUBE_TOP_ANGLE = 35;
   public static final double CUBE_TOP_EXTENSION = 5905;
+
+  // LED outputs
+
+  public static final int DIGITAL_OUTPUT_1 = 1;
+  public static final int DIGITAL_OUTPUT_2 = 2;
+  public static final int DIGITAL_OUTPUT_3 = 3;
+
+  public static final int CONE_ID = 2;
+  public static final int CUBE_ID = 1;
+  public static final int ROBOT_ID = 7;
 }

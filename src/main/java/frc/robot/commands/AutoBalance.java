@@ -31,7 +31,7 @@ public class AutoBalance extends CommandBase{
         firstMax = true;
         firstMin = false;
         secondMax = false;
-        minAngle = 42;         //🐭
+        minAngle = 42;
         maxAngle = 0;
         finishedCounter = 0;
         minCounter = 0;
