@@ -5,6 +5,7 @@
 package frc.robot.commands.sequences;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.DriveForTime;
 import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.drive.StopDriveTrain;
@@ -19,7 +20,7 @@ public class AutoBalanceSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new StopDriveTrain(drivetrain),
+      new AutoBalance(drivetrain),
       new DriveForTime(drivetrain, -0.4, 0.1),
       new LockWheels(drivetrain),
       new StopDriveTrain(drivetrain)
