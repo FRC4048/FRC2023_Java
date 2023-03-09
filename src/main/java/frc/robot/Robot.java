@@ -15,10 +15,10 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.drive.WheelAlign;
+import frc.robot.commands.sequences.AutoBalanceSequence;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
 
@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-    new AutoBalance(m_robotContainer.getDrivetrain()).schedule();
+    new AutoBalanceSequence(m_robotContainer.getDrivetrain(), m_robotContainer.getArm(), m_robotContainer.getExtender()).schedule();
 
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
