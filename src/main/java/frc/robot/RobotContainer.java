@@ -29,6 +29,7 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.AutoBalanceSequence;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
@@ -191,6 +192,7 @@ public class RobotContainer {
     }
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
+    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new AutoBalanceSequence(drivetrain, arm, extender));
     //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
 
   }
