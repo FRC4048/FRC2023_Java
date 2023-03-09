@@ -181,7 +181,7 @@ public final class Constants {
   public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 35;
+  public static final double SUBSTATION_PICKUP_ANGLE = 35.55;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
 
