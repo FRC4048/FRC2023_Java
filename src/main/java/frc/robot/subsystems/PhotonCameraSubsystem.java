@@ -111,9 +111,9 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+
     if (periodicCounter % 5 == 0) {
-      periodicCounter++;
+      periodicCounter = 0;
       //continue periodic
     }
     else {
