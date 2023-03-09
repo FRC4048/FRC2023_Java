@@ -4,9 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,8 +14,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.SmartShuffleboard;
@@ -28,7 +25,6 @@ import frc.robot.commands.drive.WheelAlign;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
-import frc.robot.AutonomousChooser;
 
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
@@ -53,11 +49,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    m_robotContainer.getDisabledLedCycleCommand().initialize();
   }
 
   @Override
   public void disabledPeriodic() {
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location", m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name());
+    m_robotContainer.getDisabledLedCycleCommand().refresh();
+
   }
 
   @Override
@@ -66,11 +65,14 @@ public class Robot extends TimedRobot {
 
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }    
+    }
+    m_robotContainer.getAutoLedCycleCommand().initialize();
   }
 
   @Override
   public void autonomousPeriodic() {
+    m_robotContainer.getAutoLedCycleCommand().refresh();
+
   }
 
   @Override
@@ -78,13 +80,13 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-
     m_robotContainer.getArm().zeroPID();
+
   }
 
   @Override
   public void teleopPeriodic() {
-
+    
   }
 
   @Override
@@ -92,10 +94,12 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     diagnostics.reset();
     m_robotContainer.getArm().zeroPID();
+    m_robotContainer.getTestLedCycleCommand().initialize();
   }
 
   @Override
   public void testPeriodic() {
+    m_robotContainer.getTestLedCycleCommand().refresh();
     diagnostics.refresh();
     TrajectoryConfig config =
       new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());

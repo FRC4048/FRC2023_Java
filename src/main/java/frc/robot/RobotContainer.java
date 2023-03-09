@@ -5,12 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
 
 import frc.robot.commands.*;
-import org.opencv.aruco.Aruco;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -34,7 +32,6 @@ import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
-import frc.robot.commands.sequences.SubstationPickup;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -55,6 +52,9 @@ public class RobotContainer {
   private GripperSubsystem gripper;
   private PieceGrid pieceGrid;
   private AutonomousChooser autonomousChooser;
+  private CycleLED disabledCycleLED;
+  private CycleLED autoCycleLED;
+  private CycleLED testCycleLED;
   private PhotonCameraSubsystem photonSubsystem;
 
 
@@ -68,6 +68,7 @@ public class RobotContainer {
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
+  
 
   /*
   controller bindings:
@@ -99,7 +100,9 @@ public class RobotContainer {
     extender = new Extender();
     ledPanel = new LedPanel();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
-
+    testCycleLED = new CycleLED(ledPanel,1,1,2,3,4,5,6,7);
+    disabledCycleLED = new CycleLED(ledPanel,1,4);
+    autoCycleLED = new CycleLED(ledPanel,1,7);
     autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
     autonomousChooser.addOptions();
 
@@ -242,5 +245,14 @@ public class RobotContainer {
     return ledPanel;
   }
 
+  public CycleLED getDisabledLedCycleCommand() {
+    return disabledCycleLED;
+  }
+  public CycleLED getAutoLedCycleCommand() {
+    return autoCycleLED;
+  }
+  public CycleLED getTestLedCycleCommand() {
+    return testCycleLED;
+  }
 }
 
