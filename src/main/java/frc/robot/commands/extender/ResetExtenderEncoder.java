@@ -6,7 +6,7 @@ import frc.robot.subsystems.Extender;
 
 public class ResetExtenderEncoder extends CommandBase {
 
-    private Extender extender;
+    private final Extender extender;
     
     public ResetExtenderEncoder(Extender extender) {
         this.extender = extender;
