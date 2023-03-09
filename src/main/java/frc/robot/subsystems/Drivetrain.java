@@ -305,9 +305,8 @@ public class Drivetrain extends SubsystemBase{
   public void periodic() {
     gyroEntry.setDouble(getGyro());
 
-
     filterRoll = (float)rollFilter.calculate((double)getRoll());
-    if (allianceColor == DriverStation.Alliance.Invalid) {
+    if (allianceColor != DriverStation.Alliance.Red && allianceColor != DriverStation.Alliance.Blue) {
       allianceColor = DriverStation.getAlliance();
     }
 
@@ -356,7 +355,7 @@ public class Drivetrain extends SubsystemBase{
       }
     }
     /* if Red alliance, mirror pose on field */
-    if (allianceColor != DriverStation.Alliance.Blue) {
+    if (allianceColor == DriverStation.Alliance.Red) {
       m_field.setRobotPose(new Pose2d(
               Units.feetToMeters(Constants.FIELD_LENGTH_X_FEET) - poseEstimator.getEstimatedPosition().getX(),
               Units.feetToMeters(Constants.FIELD_LENGTH_Y_FEET) - poseEstimator.getEstimatedPosition().getY(),
