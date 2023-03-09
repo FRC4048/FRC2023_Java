@@ -28,10 +28,10 @@ public class OneGamepiece extends SequentialCommandGroup{
         new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
         new ParallelRaceGroup(
             new SequentialCommandGroup(
-                new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
+                new ExtendToPosition(extender, ArmPositionGrid.TOP_LEFT.getExtenderPosition()),
                 new OpenGripper(gripper)
             ),
-            new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
+            new HoldArmPID(arm, ArmPositionGrid.TOP_LEFT.getArmPosition())
         ),
 
         new Stow(arm, gripper, extender),

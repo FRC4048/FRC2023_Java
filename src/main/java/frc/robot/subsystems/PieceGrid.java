@@ -28,7 +28,7 @@ public class PieceGrid extends SubsystemBase {
                     j++;
                }
                grid = ArmPositionGrid.values()[i];
-               Shuffleboard.getTab("Driver").add(grid.name(), isSlotSelected(grid)).withPosition(7+i%3, j-1);
+               //Shuffleboard.getTab("Driver").add(grid.name(), isSlotSelected(grid)).withPosition(7+i%3, j-1);
                }
           
      }
