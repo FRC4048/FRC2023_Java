@@ -138,6 +138,7 @@ public class AutonomousChooser {
         ShuffleboardTab tab = Shuffleboard.getTab("Autonomous");
         tab.add("Autonomous Action", actionChooser);
         tab.add("Location Chooser", locationChooser);
+
     }
 
     public Action getAction() {
@@ -167,7 +168,7 @@ public class AutonomousChooser {
         setOdometry(drivetrain, location, action, allianceColor);
 
         if (action == Action.DoNothing) {
-            return new DoNothing(arm, extender);
+            return new DoNothing(arm, extender, drivetrain);
         }
         else if (action == Action.CrossLine && location != Location.Middle) {
             return new CrossTheLine(drivetrain, arm, extender, location);
@@ -188,7 +189,7 @@ public class AutonomousChooser {
             return new Balance(drivetrain, arm, extender, gripper, location);
         }
         else {
-            return new DoNothing(arm, extender);
+            return new DoNothing(arm, extender, drivetrain);
         }
     }
 }

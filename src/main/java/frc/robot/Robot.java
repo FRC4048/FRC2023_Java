@@ -63,10 +63,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    SmartShuffleboard.put("Autonomous", "Command Chosen", autonomousCommand.getName());
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }    
+
   }
 
   @Override
