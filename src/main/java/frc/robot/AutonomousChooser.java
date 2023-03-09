@@ -58,7 +58,6 @@ public class AutonomousChooser {
 
     public void addOptions() {
         actionChooser.setDefaultOption("Do Nothing", Action.DoNothing);
-        //actionChooser.addOption("Balance", Action.Balance);
         //actionChooser.addOption("Drop Two Pieces", Action.DepositTwo);
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
@@ -75,59 +74,33 @@ public class AutonomousChooser {
     public void setOdometry(Drivetrain drivetrain, Location location, Action action, Alliance alliance) {
         double x = 72;
         double y = 0;
-            
-            if(action == Action.CrossLine && location == Location.Left) {
-                y = 186;
-            }
-            else if(action == Action.CrossLine && location == Location.Middle) {
-                y = 108;
-            }
-            else if(action == Action.CrossLine && location == Location.Right) {
-                y = 30;
-            }
-            
 
-            else if(action == Action.Balance) {
-                y = 108;
-            }
-            
-            
-            else if(action == Action.DepositOneAndBalanceRight) {
-                y = 130;
-            }
+        if (action == Action.CrossLine && location == Location.Left) {
+            y = 186;
+        } else if (action == Action.CrossLine && location == Location.Middle) {
+            y = 108;
+        } else if (action == Action.CrossLine && location == Location.Right) {
+            y = 30;
+        } else if (action == Action.Balance) {
+            y = 108;
+        } else if (action == Action.DepositOneAndBalanceRight) {
+            y = 130;
+        } else if (action == Action.DepositOneAndBalanceLeft) {
+            y = 86;
+        } else if (action == Action.OnePieceMoveLeft && location == Location.Right) {
+            y = 20;
+        } else if (action == Action.OnePieceMoveLeft && location == Location.Left) {
+            y = 150;
+        } else if (action == Action.OnePieceMoveRight && location == Location.Right) {
+            y = 64;
+        } else if (action == Action.OnePieceMoveRight && location == Location.Left) {
+            y = 194;
+        } else {
+            y = 108;
+        }
 
-
-            else if(action == Action.DepositOneAndBalanceLeft) {
-                y = 86;
-            }
-
-            
-            else if(action == Action.OnePieceMoveLeft && location == Location.Right) {
-                y = 20;
-            }
-            else if(action == Action.OnePieceMoveLeft && location == Location.Left) {
-                y = 150;
-            }
-            
-            
-            else if(action == Action.OnePieceMoveRight && location == Location.Right) {
-                y = 64;
-            }
-            else if(action == Action.OnePieceMoveRight && location == Location.Left) {
-                y = 194;
-            }
-
-            else {
-                y = 108;
-            }
-        
-        
-        
-        
         if (alliance == Alliance.Red) {
-            
             y += 99;
-             
         }
         
         drivetrain.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(180))));
@@ -170,22 +143,43 @@ public class AutonomousChooser {
         if (action == Action.DoNothing) {
             return new DoNothing(arm, extender, drivetrain);
         }
-        else if (action == Action.CrossLine && location != Location.Middle) {
-            return new CrossTheLine(drivetrain, arm, extender, location);
+        else if (action == Action.CrossLine) {
+            if ((location == Location.Right) || (location == Location.Left)) {
+                return new CrossTheLine(drivetrain, arm, extender, location);
+            }
+            else {
+                return new DoNothing(arm, extender, drivetrain);
+            }
         }
         else if (action == Action.OnePieceMoveLeft) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, 1, location);
+            if (location == Location.Right) {
+                return new OneGamepiece(drivetrain, arm, extender, gripper, 0.2, location);
+            }
+            else if (location == Location.Left) {
+                return new OneGamepiece(drivetrain, arm, extender, gripper, 0.6, location);
+            }
+            else {
+                return new DoNothing(arm, extender, drivetrain);
+            }
         }
         else if (action == Action.OnePieceMoveRight) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, -1, location);
+            if (location == Location.Right) {
+                return new OneGamepiece(drivetrain, arm, extender, gripper, -0.6, location);
+            }
+            else if (location == Location.Left) {
+                return new OneGamepiece(drivetrain, arm, extender, gripper, -0.2, location);
+            }
+            else {
+                return new DoNothing(arm, extender, drivetrain);
+            }
         }
-        else if (action == Action.DepositOneAndBalanceRight) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -1, location);
+        else if (action == Action.DepositOneAndBalanceRight && location == Location.Middle) {
+            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -0.2, location);
         }
-        else if (action == Action.DepositOneAndBalanceLeft) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 1, location);
+        else if (action == Action.DepositOneAndBalanceLeft && location == Location.Middle) {
+            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 0.2, location);
         }
-        else if (action == Action.Balance) {
+        else if (action == Action.Balance && location == Location.Middle) {
             return new Balance(drivetrain, arm, extender, gripper, location);
         }
         else {

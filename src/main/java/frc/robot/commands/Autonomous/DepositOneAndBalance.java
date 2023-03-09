@@ -1,6 +1,5 @@
 package frc.robot.commands.Autonomous;
 
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
@@ -20,7 +19,7 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class DepositOneAndBalance extends SequentialCommandGroup {
     
-    public DepositOneAndBalance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location) {
+    public DepositOneAndBalance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
 
         addCommands(
             new ResetEncoders(arm, extender),
@@ -34,7 +33,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
             ),
 
             new Stow(arm, gripper, extender),
-            new MoveDistanceSpinTraj(drivetrain, 0.1, 0.2 * direction, Math.toRadians(180)),
+            new MoveDistanceSpinTraj(drivetrain, 0.1, yChange, Math.toRadians(180)),
             new AutoBalance(drivetrain)
         );
 

@@ -1,8 +1,5 @@
 package frc.robot.commands.Autonomous;
 
-import javax.swing.GroupLayout.SequentialGroup;
-
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
@@ -21,7 +18,7 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class OneGamepiece extends SequentialCommandGroup{
     
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location) {
+    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
 
         addCommands(
         new ResetEncoders(arm, extender),
@@ -35,8 +32,8 @@ public class OneGamepiece extends SequentialCommandGroup{
         ),
 
         new Stow(arm, gripper, extender),
-        new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2 * direction, Math.toRadians(180)),
-        new MoveDistanceSpinTraj(drivetrain, 4.7, 0 * direction, Math.toRadians(180))
+        new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),
+        new MoveDistanceSpinTraj(drivetrain, 4.7, 0, Math.toRadians(180))
         //change it back to 4.7
 
     );
