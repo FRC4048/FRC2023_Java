@@ -3,6 +3,7 @@ package frc.robot.utils.diag;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.utils.SmartShuffleboard;
 
 /**
  * Base class for Diagnosable that have an initial value (their "current" value) and that are required to change their
@@ -33,6 +34,8 @@ public abstract class DiagPhotonVision implements Diagnosable {
     public void refresh() {
         if (networkTableEntry != null) {
             networkTableEntry.setBoolean(getDiagResult());
+            SmartShuffleboard.put("Diagnostics","TagTimeStamp",getTagTimestamp());
+            SmartShuffleboard.put("Diagnostics","TagId",getTagId());
         }
     }
 
@@ -44,8 +47,8 @@ public abstract class DiagPhotonVision implements Diagnosable {
 
     boolean getDiagResult() {
         if (firstTagId == -1 || firstTimestamp == -1){
-            firstTagId = getTagId();
             firstTimestamp = getTagTimestamp();
+            firstTagId = getTagId();
         } else return getTagTimestamp()==firstTimestamp;
         return false;
     }

@@ -54,11 +54,13 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     Robot.getDiagnostics().addDiagnosable(new DiagPhotonVision("PV","CanReadTags") {
       @Override
       protected int getTagId() {
+        
         return getTargetId();
       }
 
       @Override
       protected double getTagTimestamp() {
+        calculateUsingEstimator();
         return getDetectionTimestamp();
       }
     });
@@ -130,9 +132,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     if (estimatedPose != null) {
       pose3dPosition = estimatedPose.estimatedPose;
     }
-    SmartShuffleboard.put("Diagnostics","TagTimeStamp",getDetectionTimestamp());
-    SmartShuffleboard.put("Diagnostics","TagId",targetId);
-
     if (Constants.APRILTAG_DEBUG) {
       if (robotFieldPose != null) {
         SmartShuffleboard.put("AprilTag", "2D", "2D-X", robotFieldPose.getTranslation().getX());
