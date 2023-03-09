@@ -51,6 +51,7 @@ public final class Constants {
   public static final int GRIPPER_ENCODER_ID = 0;
 
   //EXTENDER
+  public static final int EXTENDER_RESET_TIMEOUT = 2;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
 
@@ -79,6 +80,7 @@ public final class Constants {
 
 
   //Arm Constants
+  public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
