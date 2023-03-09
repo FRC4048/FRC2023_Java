@@ -22,7 +22,6 @@ public class AutoBalanceSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      //new ResetEncoders(arm, extender),
       new AutoBalance(drivetrain),
       new DriveForTime(drivetrain, -0.4, 0.1),
       new LockWheels(drivetrain),
