@@ -5,32 +5,36 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
 
 import frc.robot.commands.*;
-import org.opencv.aruco.Aruco;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.ChangeLedID;
+import frc.robot.commands.GyroOffseter;
+import frc.robot.commands.ResetGyro;
+import frc.robot.commands.SetGridSlot;
+import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.arm.SlightLowerArm;
 import frc.robot.commands.drive.Drive;
+import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.AutoBalanceSequence;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
-import frc.robot.commands.sequences.SubstationPickup;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -46,10 +50,14 @@ public class RobotContainer {
   private Drivetrain drivetrain;
   private Arm arm;
   private Extender extender;
+  private LedPanel ledPanel;
   private PowerDistributionBoard m_PDB;
   private GripperSubsystem gripper;
   private PieceGrid pieceGrid;
   private AutonomousChooser autonomousChooser;
+  private CycleLED disabledCycleLED;
+  private CycleLED autoCycleLED;
+  private CycleLED testCycleLED;
   private PhotonCameraSubsystem photonSubsystem;
 
 
@@ -63,6 +71,7 @@ public class RobotContainer {
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
+  
 
   /*
   controller bindings:
@@ -92,8 +101,11 @@ public class RobotContainer {
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
+    ledPanel = new LedPanel();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
-
+    testCycleLED = new CycleLED(ledPanel,1,1,2,3,4,5,6,7);
+    disabledCycleLED = new CycleLED(ledPanel,1,4);
+    autoCycleLED = new CycleLED(ledPanel,1,7);
     autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
     autonomousChooser.addOptions();
 
@@ -129,17 +141,14 @@ public class RobotContainer {
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-
-    manualController.button(XboxController.Button.kA.value).onTrue(new CloseGripper(gripper));
+    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
     controller.button(XboxController.Button.kX.value).onTrue(new SlightLowerArm(arm, extender, pieceGrid));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    manualController.axisGreaterThan(XboxController.Axis.kRightX.value, 0.1).onTrue(new ManualMoveGripper (gripper, () -> Constants.MANUAL_GRIP_SPEED ));
-    manualController.axisLessThan(XboxController.Axis.kRightX.value, -0.1).onTrue(new ManualMoveGripper (gripper, () -> -Constants.MANUAL_GRIP_SPEED ));
-    manualController.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new ManualMoveExtender (extender, () -> Constants.MANUAL_EXTEND_SPEED ));
-    manualController.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new ManualMoveExtender (extender, () -> -Constants.MANUAL_EXTEND_SPEED ));
+    
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
@@ -147,13 +156,27 @@ public class RobotContainer {
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
 
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
-    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getLeftX()));
+    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
+
+    controller.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new SetLEDID(ledPanel, Constants.CONE_ID));
+    controller.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new SetLEDID(ledPanel, Constants.CUBE_ID));
+    controller.button(XboxController.Button.kLeftStick.value).onTrue(new SetLEDID(ledPanel, Constants.ROBOT_ID));
+    controller.button(XboxController.Button.kRightStick.value).onTrue(new ChangeLedID(ledPanel, 1));
   }
 
   public void putShuffleboardCommands() {
     if (Constants.EXTENDER_DEBUG) {
       SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
       SmartShuffleboard.putCommand("Extender", "Set position=4000", new ExtendToPosition(extender, 4000));
+    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+      SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
+      SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
+      SmartShuffleboard.putCommand("Arm", "GO TO 10", new ArmMoveSequence(arm,extender,10,0));
+      SmartShuffleboard.putCommand("Arm", "GO TO 15", new ArmMoveSequence(arm,extender,15,0));
+      SmartShuffleboard.putCommand("Arm", "GO TO 25", new ArmMoveSequence(arm,extender,25,0));
+      SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
+      //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
+  
       SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
       SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
     }
@@ -167,6 +190,8 @@ public class RobotContainer {
     }
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
+    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new AutoBalanceSequence(drivetrain, arm, extender));
+    //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
 
   }
 
@@ -218,5 +243,18 @@ public class RobotContainer {
     return autonomousChooser;
   }
 
+  public LedPanel getLedPanel() {
+    return ledPanel;
+  }
+
+  public CycleLED getDisabledLedCycleCommand() {
+    return disabledCycleLED;
+  }
+  public CycleLED getAutoLedCycleCommand() {
+    return autoCycleLED;
+  }
+  public CycleLED getTestLedCycleCommand() {
+    return testCycleLED;
+  }
 }
 

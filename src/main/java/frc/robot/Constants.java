@@ -51,6 +51,7 @@ public final class Constants {
   public static final int GRIPPER_ENCODER_ID = 0;
 
   //EXTENDER
+  public static final int EXTENDER_RESET_TIMEOUT = 2;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
 
@@ -79,6 +80,7 @@ public final class Constants {
 
 
   //Arm Constants
+  public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
@@ -153,6 +155,9 @@ public final class Constants {
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
 
+  public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
+  public static final double LOCK_WHEELS_TIMEOUT = 0.1;
+
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -183,21 +188,17 @@ public final class Constants {
   public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
+  public static final double SUBSTATION_PICKUP_ANGLE = 32.5;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
 
-  // arm set points
-  public static final double BOTTOM_ANGLE = 22;
-  public static final double BOTTOM_EXTENSION = 1590;
+  // LED outputs
 
-  public static final double CONE_MIDDLE_ANGLE = 34;
-  public static final double CONE_MIDDLE_EXTENSION = 3420;
-  public static final double CONE_TOP_ANGLE = 39;
-  public static final double CONE_TOP_EXTENSION = 7110;
+  public static final int DIGITAL_OUTPUT_1 = 1;
+  public static final int DIGITAL_OUTPUT_2 = 2;
+  public static final int DIGITAL_OUTPUT_3 = 3;
 
-  public static final double CUBE_MIDDLE_ANGLE = 29;
-  public static final double CUBE_MIDDLE_EXTENSION = 1815;
-  public static final double CUBE_TOP_ANGLE = 35;
-  public static final double CUBE_TOP_EXTENSION = 5905;
+  public static final int CONE_ID = 2;
+  public static final int CUBE_ID = 1;
+  public static final int ROBOT_ID = 7;
 }

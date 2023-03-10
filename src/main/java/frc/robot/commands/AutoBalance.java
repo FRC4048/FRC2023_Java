@@ -3,6 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.commands.drive.LockWheels;
+import frc.robot.commands.drive.StopDriveTrain;
+import frc.robot.commands.sequences.AutoBalanceSequence;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
 
@@ -28,7 +31,7 @@ public class AutoBalance extends CommandBase{
         firstMax = true;
         firstMin = false;
         secondMax = false;
-        minAngle = 42;         //🐭
+        minAngle = 42;
         maxAngle = 0;
         finishedCounter = 0;
         minCounter = 0;
@@ -89,9 +92,7 @@ public class AutoBalance extends CommandBase{
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {
-        new DriveForTime(drivetrain, -.4, .1).schedule();
-    }
+    public void end(boolean interrupted) {}
 
     // Returns true when the command should end.
     @Override

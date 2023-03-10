@@ -32,16 +32,16 @@ public class SmartShuffleboard {
 
     private final static Map<String, SmartShuffleboardTab> smartTabMap = new HashMap<String, SmartShuffleboardTab>();
 
-    public static void put(String tabName, String fieldName, Object value)    // value is primitive
+    public static SimpleWidget put(String tabName, String fieldName, Object value)    // value is primitive
     {
         SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
-        smartTab.put(fieldName, value);
+        return smartTab.put(fieldName, value);
     }
 
-    public static void put(String tabName, String layoutName, String fieldName, Object value)    // value is primitive
+    public static SimpleWidget put(String tabName, String layoutName, String fieldName, Object value)    // value is primitive
     {
         SmartShuffleboardTab smartTab = getOrCreateTab(tabName);
-        smartTab.put(fieldName, layoutName, value);
+        return smartTab.put(fieldName, layoutName, value);
     }
 
     public static boolean getBoolean(String tabName, String fieldName, boolean defaultValue) {
