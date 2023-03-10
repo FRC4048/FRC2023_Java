@@ -18,11 +18,11 @@ import frc.robot.subsystems.Extender;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoBalanceSequence extends SequentialCommandGroup {
   /** Creates a new AutoBalanceSequence. */
-  public AutoBalanceSequence(Drivetrain drivetrain, Arm arm, Extender extender) {
+  public AutoBalanceSequence(Drivetrain drivetrain, Arm arm, Extender extender, int firstThresh) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoBalance(drivetrain),
+      new AutoBalance(drivetrain, firstThresh),
       new DriveForTime(drivetrain, -0.4, 0.1),
       new LockWheels(drivetrain),
       new StopDriveTrain(drivetrain)

@@ -15,13 +15,15 @@ public class AutoBalance extends CommandBase{
     private float minAngle;
     private int finishedCounter;
     private int minCounter;
+    private int firstThresh;
     private boolean firstMax;
     private boolean firstMin;
     private boolean secondMax;
     private double startTime;
 
-    public AutoBalance(Drivetrain drivetrain){
+    public AutoBalance(Drivetrain drivetrain, int firstThresh){
         this.drivetrain = drivetrain;
+        this.firstThresh = firstThresh;
         addRequirements(drivetrain);
     }
 
@@ -41,11 +43,12 @@ public class AutoBalance extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      SmartShuffleboard.put("Driver", "FirstMax", firstMax);
-      SmartShuffleboard.put("Driver", "FirstMin", firstMin);
-      SmartShuffleboard.put("Driver", "SecondMax", secondMax);
+      SmartShuffleboard.put("Auto Balance", "FirstMax", firstMax);
+      SmartShuffleboard.put("Auto Balance", "FirstMin", firstMin);
+      SmartShuffleboard.put("Auto Balance", "SecondMax", secondMax);
+      SmartShuffleboard.put("Auto Balance", "Gyro", drivetrain.getFilterRoll());
         if (firstMax) {
-            firstMin = Math.abs(drivetrain.getFilterRoll()) > 15;
+            firstMin = Math.abs(drivetrain.getFilterRoll()) > firstThresh;
             firstMax = !firstMin;
             drivetrain.drive(Constants.BALANCE_STEEP_SPEED, 0, 0, true);
         }
