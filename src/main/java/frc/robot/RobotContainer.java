@@ -17,6 +17,7 @@ import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.arm.SlightLowerArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -140,10 +141,11 @@ public class RobotContainer {
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-
+    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
-    controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
-    controller.button(XboxController.Button.kX.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
+    controller.button(XboxController.Button.kY.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
+    controller.button(XboxController.Button.kX.value).onTrue(new SlightLowerArm(arm, extender, pieceGrid));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kB.value).onTrue(new ThreshDecrease());

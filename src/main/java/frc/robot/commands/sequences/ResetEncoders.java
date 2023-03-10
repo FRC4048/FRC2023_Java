@@ -16,6 +16,5 @@ public class ResetEncoders extends SequentialCommandGroup{
                 new ResetArm(arm),
                 new ResetArmEncoder(arm)
         );
-        
     }
 }

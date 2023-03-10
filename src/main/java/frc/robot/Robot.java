@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.util.List;
-import java.util.Objects;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -62,8 +61,8 @@ public class Robot extends TimedRobot {
     
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }
-    m_robotContainer.getAutoLedCycleCommand().initialize();
+    }    
+
   }
 
   @Override

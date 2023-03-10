@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ArmPositionGrid;
+import frc.robot.utils.SmartShuffleboard;
 
 public class PieceGrid extends SubsystemBase {
 
@@ -28,9 +29,8 @@ public class PieceGrid extends SubsystemBase {
                     j++;
                }
                grid = ArmPositionGrid.values()[i];
-               Shuffleboard.getTab("Driver").add(grid.name(), isSlotSelected(grid)).withPosition(7+i%3, j-1);
-               }
-          
+               SmartShuffleboard.put("Driver", grid.name(), isSlotSelected(grid)).withPosition(7+i%3, j-1);
+          }
      }
 
 
