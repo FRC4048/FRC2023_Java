@@ -2,15 +2,15 @@ package frc.robot;
 
 
 public enum ArmPositionGrid {
-     TOP_LEFT(42,7460),
-     TOP_MIDDLE(39,6355),
-     TOP_RIGHT(42,7460),
-     MIDDLE_LEFT(37,3570),
-     MIDDLE_MIDDLE(33,2865),
-     MIDDLE_RIGHT(37,3570),
-     DOWN_LEFT(24,3300),
-     DOWN_MIDDLE(17,3000),
-     DOWN_RIGHT(24,3300);
+     TOP_LEFT(39,6860),
+     TOP_MIDDLE(35,5655),
+     TOP_RIGHT(39,6860),
+     MIDDLE_LEFT(34,3170),
+     MIDDLE_MIDDLE(29,1565),
+     MIDDLE_RIGHT(34,3170),
+     DOWN_LEFT(22,0),
+     DOWN_MIDDLE(22,0),
+     DOWN_RIGHT(22,0);
 
      private final double armPosition;
      private final double extenderPosition;
