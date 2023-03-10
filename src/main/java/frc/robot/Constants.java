@@ -186,23 +186,9 @@ public final class Constants {
   public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
+  public static final double SUBSTATION_PICKUP_ANGLE = 32.5;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
-
-  // arm set points
-  public static final double BOTTOM_ANGLE = 22;
-  public static final double BOTTOM_EXTENSION = 1590;
-
-  public static final double CONE_MIDDLE_ANGLE = 34;
-  public static final double CONE_MIDDLE_EXTENSION = 3420;
-  public static final double CONE_TOP_ANGLE = 39;
-  public static final double CONE_TOP_EXTENSION = 7110;
-
-  public static final double CUBE_MIDDLE_ANGLE = 29;
-  public static final double CUBE_MIDDLE_EXTENSION = 1815;
-  public static final double CUBE_TOP_ANGLE = 35;
-  public static final double CUBE_TOP_EXTENSION = 5905;
 
   // LED outputs
 
