@@ -154,6 +154,7 @@ public final class Constants {
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
+  public static final double TURBO_DRIVE_AND_STEER_SPD = 2f;
 
   public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
   public static final double LOCK_WHEELS_TIMEOUT = 0.1;
