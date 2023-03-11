@@ -115,7 +115,7 @@ public final class Constants {
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;
-  public static final double MANUAL_ARM_PID_SPEED = .5;
+  public static final double MANUAL_ARM_PID_SPEED = .25;
 
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 3.0;
