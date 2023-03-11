@@ -45,22 +45,22 @@ public class AutoBalance extends CommandBase{
       SmartShuffleboard.put("Driver", "FirstMin", firstMin);
       SmartShuffleboard.put("Driver", "SecondMax", secondMax);
         if (firstMax) {
-            firstMin = Math.abs(drivetrain.getFilterRoll()) > 15;
+            firstMin = Math.abs(drivetrain.getFilterRoll()) > 24;
             firstMax = !firstMin;
             drivetrain.drive(Constants.BALANCE_STEEP_SPEED, 0, 0, true);
         }
 
         if (firstMin) {
-            //secondMax = Math.abs(drivetrain.getFilterRoll()) < 8;
-            //firstMin = !secondMax;
-            if (Math.abs(drivetrain.getFilterRoll()) < minAngle) {
-              minAngle = Math.abs(drivetrain.getFilterRoll());
-            } else if (Math.abs(drivetrain.getFilterRoll()) - minAngle >= 1) {
-              minCounter++;
-            }
-            
-            secondMax = minCounter > 10;
+            secondMax = Math.abs(drivetrain.getFilterRoll()) < 15;
             firstMin = !secondMax;
+//            if (Math.abs(drivetrain.getFilterRoll()) < minAngle) {
+//              minAngle = Math.abs(drivetrain.getFilterRoll());
+//            } else if (Math.abs(drivetrain.getFilterRoll()) - minAngle >= 1) {
+//              minCounter++;
+//            }
+//
+//            secondMax = minCounter > 10;
+//            firstMin = !secondMax;
 
             drivetrain.drive(Constants.BALANCE_LOW_SPEED, 0, 0, true);
         }
