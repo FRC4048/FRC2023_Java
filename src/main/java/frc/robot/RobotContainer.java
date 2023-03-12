@@ -22,6 +22,7 @@ import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -150,9 +151,13 @@ public class RobotContainer {
     // controller.axisGreaterThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
     // controller.axisLessThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
 
-    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
-    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
+    // manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
+    // manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
+
+    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP - 1));
+    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.ARM_AUTO_VOLTAGE_DOWN - 1));
     
+
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
