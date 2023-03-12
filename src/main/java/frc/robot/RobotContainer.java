@@ -4,26 +4,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
-import frc.robot.commands.*;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.CancelAll;
 import frc.robot.commands.ChangeLedID;
+import frc.robot.commands.CrossPanel;
+import frc.robot.commands.CycleLED;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -34,7 +32,15 @@ import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.LedPanel;
+import frc.robot.subsystems.PhotonCameraSubsystem;
+import frc.robot.subsystems.PieceGrid;
+import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -162,6 +168,10 @@ public class RobotContainer {
     controller.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new SetLEDID(ledPanel, Constants.CUBE_ID));
     controller.button(XboxController.Button.kLeftStick.value).onTrue(new SetLEDID(ledPanel, Constants.ROBOT_ID));
     controller.button(XboxController.Button.kRightStick.value).onTrue(new ChangeLedID(ledPanel, 1));
+
+    // Negative Xbox axis is "up"
+    controller.axisGreaterThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
+    controller.axisLessThan(XboxController.Axis.kRightY.value, -.2).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
   }
 
   public void putShuffleboardCommands() {

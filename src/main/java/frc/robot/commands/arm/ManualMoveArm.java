@@ -3,7 +3,6 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
-import frc.robot.utils.SmartShuffleboard;
 
 public class ManualMoveArm extends CommandBase {
     
@@ -25,13 +24,10 @@ public class ManualMoveArm extends CommandBase {
     public void execute() {
         double currentPid = arm.getPidReference();
         arm.setPIDReference(currentPid + power);
-//        arm.setVoltage(power);
-
     }
 
     @Override
     public void end(boolean Interrupted) {
-//        arm.setVoltage(0.0);
     }
 
     @Override
