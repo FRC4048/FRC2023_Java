@@ -98,7 +98,7 @@ public class AutoBalance extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (((Math.abs(drivetrain.getFilterRoll()) < 13) && firstMin) ||
+        return (((Math.abs(drivetrain.getFilterRoll()) < 12) && firstMin) ||
                 ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT));
     }
 }
