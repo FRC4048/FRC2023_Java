@@ -23,6 +23,7 @@ public class Arm extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
+  private double pidreference;
 
 
 private SparkMaxPIDController pidController;
@@ -100,8 +101,13 @@ private SparkMaxPIDController pidController;
 
   public void setPIDReference(double reference) {
     if ((reference > Constants.NO_EXTENSION_ZONE) || (protectionMechanism.safeToLowerArm())) {
+      pidreference = reference;
       pidController.setReference(reference, ControlType.kPosition, 0);
   }
+  }
+
+  public double getPidReference() {
+    return pidreference;
   }
 
   public CANSparkMax getNeoMotor() {
