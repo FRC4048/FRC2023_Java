@@ -45,7 +45,7 @@ public class AutoBalance extends CommandBase {
         SmartShuffleboard.put("Driver", "FirstMin", firstMin);
         SmartShuffleboard.put("Driver", "SecondMax", secondMax);
         if (firstMax) {
-            firstMin = Math.abs(drivetrain.getFilterRoll()) > 24;
+            firstMin = Math.abs(drivetrain.getFilterRoll()) > 16.5;
             firstMax = !firstMin;
             drivetrain.drive(Constants.BALANCE_STEEP_SPEED, 0, 0, true);
         }
@@ -98,7 +98,7 @@ public class AutoBalance extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return (((Math.abs(drivetrain.getFilterRoll()) < 12) && firstMin) ||
+        return (((Math.abs(drivetrain.getFilterRoll()) < 10) && firstMin) ||
                 ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT));
     }
 }
