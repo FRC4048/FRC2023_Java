@@ -10,7 +10,7 @@ import frc.robot.subsystems.Extender;
 
 public class CrossTheLine extends SequentialCommandGroup {
     
-    public CrossTheLine (Drivetrain drivetrain, Arm arm, Extender extender, AutonomousChooser.Location location, Alliance allianceColor) {
+    public CrossTheLine (Drivetrain drivetrain, Arm arm, Extender extender, AutonomousChooser.Location location) {
 
         addCommands(
             new ResetEncoders(arm, extender),
