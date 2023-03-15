@@ -52,7 +52,7 @@ public class SmartShuffleboardTab {
         }
     }
          
-    public void put(String fieldName, Object value)   //primitive
+    public SimpleWidget put(String fieldName, Object value)   //primitive
     {
         SimpleWidget widget = widgetMap.get(fieldName);
         if (widget != null)
@@ -65,9 +65,10 @@ public class SmartShuffleboardTab {
             widget = tab.add(fieldName, value);
             widgetMap.put(fieldName, widget);
         }
+        return widget;
     }
  
-    public void put(String fieldName, String layoutName, Object value)   //primitive
+    public SimpleWidget put(String fieldName, String layoutName, Object value)   //primitive
     {
         ShuffleboardLayout layout;
         try {
@@ -88,6 +89,7 @@ public class SmartShuffleboardTab {
             widget = layout.add(fieldName, value);
             widgetMap.put(fieldName, widget);
         }
+        return widget;
     }
 
     public boolean getBoolean(String fieldName, boolean defaultValue) {

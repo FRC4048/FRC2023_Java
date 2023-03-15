@@ -64,27 +64,29 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
 
   private void calculateUsingEstimator() {
-    Optional<EstimatedRobotPose> result = estimator.update();
+    if (camera.isConnected()) {
+      Optional<EstimatedRobotPose> result = estimator.update();
+      
 
-
-    if (result.isPresent()) {
-      estimatedPose = result.get();
-      targetId = estimatedPose.targetsUsed.get(0).getFiducialId();
-      tagFieldPosition = layout.getTagPose(targetId).get();
-      robotFieldPose = estimatedPose.estimatedPose.toPose2d();
-      noTagDetectedCounter = 0;
-    } else {
-      if (robotFieldPose != null) {
-        noTagDetectedCounter++;
-        if (noTagDetectedCounter >= 10) {
-          robotFieldPose = null;
-          noTagDetectedCounter = 0;
-          estimatedPose = null;
-          targetId = 0;
-          tagFieldPosition = null;
+      if (result.isPresent()) {
+        estimatedPose = result.get();
+        targetId = estimatedPose.targetsUsed.get(0).getFiducialId();
+        tagFieldPosition = layout.getTagPose(targetId).get();
+        robotFieldPose = estimatedPose.estimatedPose.toPose2d();
+        noTagDetectedCounter = 0;
+      } else {
+        if (robotFieldPose != null) {
+          noTagDetectedCounter++;
+          if (noTagDetectedCounter >= 10) {
+            robotFieldPose = null;
+            noTagDetectedCounter = 0;
+            estimatedPose = null;
+            targetId = 0;
+            tagFieldPosition = null;
+          }
         }
-      }
 
+      }
     }
   }
 
@@ -135,6 +137,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
 
     if (Constants.APRILTAG_DEBUG) {
+      SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());
       if (robotFieldPose != null) {
         SmartShuffleboard.put("AprilTag", "2D", "2D-X", robotFieldPose.getTranslation().getX());
         SmartShuffleboard.put("AprilTag", "2D", "2D-Y", robotFieldPose.getTranslation().getY());

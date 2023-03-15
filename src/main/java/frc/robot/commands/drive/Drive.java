@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utils.SmartShuffleboard;
 
 public class Drive extends CommandBase{
 
@@ -15,13 +14,16 @@ public class Drive extends CommandBase{
 
     private DoubleSupplier fwdSupplier, strSupplier, rtSupplier;
     private JoystickButton decreaseSpeedButton;
+    private JoystickButton increaseSpeedButton;
 
 
     public Drive(
             Drivetrain drivetrain,
             DoubleSupplier fwdSupplier,
             DoubleSupplier strSupplier,
-            DoubleSupplier rtSupplier, JoystickButton decreaseSpeedButton) {
+            DoubleSupplier rtSupplier, 
+            JoystickButton decreaseSpeedButton,
+            JoystickButton increaseSpeedButton) {
         addRequirements(drivetrain);
 
         this.drivetrain = drivetrain;
@@ -29,12 +31,18 @@ public class Drive extends CommandBase{
         this.strSupplier = strSupplier;
         this.rtSupplier = rtSupplier;
         this.decreaseSpeedButton = decreaseSpeedButton;
+        this.increaseSpeedButton = increaseSpeedButton;
     }
 
 
     @Override
     public void execute() {
-        double mod = decreaseSpeedButton.getAsBoolean() ? Constants.PRECISION_DRIVE_AND_STEER_SPD : 1;
+        double mod = 1;
+        if (decreaseSpeedButton.getAsBoolean()) {
+            mod = Constants.PRECISION_DRIVE_AND_STEER_SPD;
+        } else if (increaseSpeedButton.getAsBoolean()) {
+            mod = Constants.TURBO_DRIVE_AND_STEER_SPD;
+        }
         double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.05);
         double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.05);
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.05);
