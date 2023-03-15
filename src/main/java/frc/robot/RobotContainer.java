@@ -4,27 +4,27 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
-import frc.robot.commands.*;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.CancelAll;
 import frc.robot.commands.ChangeLedID;
+import frc.robot.commands.CrossPanel;
+import frc.robot.commands.CycleLED;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
+import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
@@ -35,7 +35,15 @@ import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.LedPanel;
+import frc.robot.subsystems.PhotonCameraSubsystem;
+import frc.robot.subsystems.PieceGrid;
+import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.SmartShuffleboard;
 
 /**
@@ -123,9 +131,13 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton));
 
-    UsbCamera camera = CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(0);
+    
   }
 
+  
+
+  
 
 
   private void configureBindings() {
