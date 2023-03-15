@@ -203,4 +203,8 @@ public final class Constants {
   public static final int CONE_ID = 2;
   public static final int CUBE_ID = 1;
   public static final int ROBOT_ID = 7;
+
+  public static final String PHOTON_VISION_ID = "photonvision";
+  public static final String PHOTON_CAMERA_ID = "camera0";
+  public static final String PHOTON_LATENCY = "latencyMillis";
 }
