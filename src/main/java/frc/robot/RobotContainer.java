@@ -136,32 +136,42 @@ public class RobotContainer {
     controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_RIGHT));
     controller.povRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
-    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
-    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+    
+    //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
-    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
     controller.button(XboxController.Button.kX.value).onTrue(new SlightLowerArm(arm, extender, pieceGrid));
-    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
-    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    
-
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-
+    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
+    controller.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
 
-    extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
-    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
+    //arm move on stick
+    controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+    controller.axisLessThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    
+    //extender move on stick
+    controller.axisGreaterThan(XboxController.Axis.kRightTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> -Constants.EXTENDER_MANUAL_SPEED));
+    controller.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> Constants.EXTENDER_MANUAL_SPEED));
 
+    //led panel
     controller.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new SetLEDID(ledPanel, Constants.CONE_ID));
     controller.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new SetLEDID(ledPanel, Constants.CUBE_ID));
     controller.button(XboxController.Button.kLeftStick.value).onTrue(new SetLEDID(ledPanel, Constants.ROBOT_ID));
     controller.button(XboxController.Button.kRightStick.value).onTrue(new ChangeLedID(ledPanel, 1));
+  
+    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+    
+    extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
+    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
+
+    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
+    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
   }
 
   public void putShuffleboardCommands() {
