@@ -115,6 +115,7 @@ public final class Constants {
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;
+  public static final double MANUAL_ARM_PID_SPEED = .2;
 
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 3.0;
@@ -154,6 +155,7 @@ public final class Constants {
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
+  public static final double TURBO_DRIVE_AND_STEER_SPD = 1.3;
 
   public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
   public static final double LOCK_WHEELS_TIMEOUT = 0.1;
@@ -188,7 +190,7 @@ public final class Constants {
   public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 32.5;
+  public static final double SUBSTATION_PICKUP_ANGLE = 33.5;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
 

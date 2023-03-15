@@ -22,6 +22,7 @@ import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -66,6 +67,7 @@ public class RobotContainer {
   private JoystickButton LeftGyroButton= new JoystickButton(joyLeft, 1);
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
   private JoystickButton joystickLeftButton = new JoystickButton(joyLeft, 2);
+  private JoystickButton joystickRightButton = new JoystickButton(joyRight, 2);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
@@ -120,7 +122,7 @@ public class RobotContainer {
     configureBindings();
     putShuffleboardCommands();
 
-    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton));
+    drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton, joystickRightButton));
   }
 
 
@@ -145,9 +147,17 @@ public class RobotContainer {
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
     controller.button(XboxController.Button.kX.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
-    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
-    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+
+    // controller.axisGreaterThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
+    // controller.axisLessThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
+
+    // manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
+    // manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
+
+    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP - 1));
+    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.ARM_AUTO_VOLTAGE_DOWN - 1));
     
+
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
