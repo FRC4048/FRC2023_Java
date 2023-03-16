@@ -5,10 +5,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -23,6 +26,7 @@ public class Arm extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
+  private Rev2mDistanceSensor distanceSensor;
 
 
 private SparkMaxPIDController pidController;
@@ -36,6 +40,8 @@ private SparkMaxPIDController pidController;
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
+    distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
+
     pidController = neoMotor.getPIDController();
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
@@ -46,6 +52,11 @@ private SparkMaxPIDController pidController;
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
+
+    distanceSensor.setAutomaticMode(false);
+    distanceSensor.setDistanceUnits(Unit.kInches);
+    distanceSensor.setRangeProfile(RangeProfile.kHighSpeed);
+
 
   }
 
@@ -58,6 +69,8 @@ private SparkMaxPIDController pidController;
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
+
+      SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
       }
   }
 
