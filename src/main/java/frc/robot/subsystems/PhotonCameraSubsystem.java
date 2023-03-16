@@ -13,10 +13,10 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.IntegerLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,7 +38,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private EstimatedRobotPose estimatedPose;
   int targetId;
 
-  private DataLog dataLog = new DataLog();
+  private DataLog dataLog = DataLogManager.getLog();
+
   private DoubleLogEntry dataLogEntryPose2dX = new DoubleLogEntry(dataLog, "/photonLog/Pose2d_X");
   private DoubleLogEntry dataLogEntryPose2dY = new DoubleLogEntry(dataLog, "/photonLog/Pose2d_Y");
   private DoubleLogEntry dataLogEntryPose2dRotation = new DoubleLogEntry(dataLog, "/photonLog/Pose2dRotationRadians");
@@ -134,11 +135,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
         dataLogEntryPose2dY.append(getRobot2dFieldPose().getY());
         dataLogEntryPose2dRotation.append(getRobot2dFieldPose().getRotation().getRadians());
       }
-      else {
-        dataLogEntryPose2dX.append(-111111);
-        dataLogEntryPose2dY.append(-111111);
-        dataLogEntryPose2dRotation.append(-111111); 
-      }
+      else {}
       dataLogEntryTagDetected.append(targetId);
 
     }
