@@ -22,7 +22,6 @@ public class AlignAprilTag extends CommandBase {
   private PhotonCameraSubsystem photonSubsystem;
   private Drivetrain drivetrain;
   PieceGrid pieceGrid;
-  double startTime;
 
   public AlignAprilTag(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain, PieceGrid pieceGrid) {
     this.photonSubsystem = photonSubsystem;
@@ -34,7 +33,6 @@ public class AlignAprilTag extends CommandBase {
   @Override
   public void initialize() {
     double moveDistance;
-    startTime = System.currentTimeMillis();
     robotFieldPose2d = photonSubsystem.getRobot2dFieldPose();
     tagPose2d = photonSubsystem.getTargetFieldPose().toPose2d(); // TODO: Check math on this
     if (robotFieldPose2d != null) {
