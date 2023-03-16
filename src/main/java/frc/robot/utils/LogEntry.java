@@ -1,16 +1,17 @@
 package frc.robot.utils;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.util.datalog.BooleanLogEntry;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.*;
 import edu.wpi.first.wpilibj.DataLogManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LogEntry {
     private DataLog dataLog;
-    boolean loggingEnabled;
-    String name;
+    private boolean loggingEnabled;
+    private String name;
+    private Map<String, DataLogEntry> entryMap = new HashMap<>();
 
     public LogEntry(String name, boolean enabled) {
         this.name = "/REDSHIFT" + name;
@@ -21,8 +22,12 @@ public class LogEntry {
     }
 
     public void logPose2d(Pose2d pose) {
-        DoubleArrayLogEntry poseEntry = new DoubleArrayLogEntry(dataLog, name);
         if (loggingEnabled) {
+            DoubleArrayLogEntry poseEntry = (DoubleArrayLogEntry) entryMap.get(name);
+            if (poseEntry == null) {
+                poseEntry = new DoubleArrayLogEntry(dataLog, name);
+                entryMap.put(name, poseEntry);
+            }
             if (pose == null) {
                 pose = new Pose2d();
             }
@@ -32,15 +37,23 @@ public class LogEntry {
     }
 
     public void logDouble(Double value) {
-        DoubleLogEntry doubleEntry = new DoubleLogEntry(dataLog, name);
         if (loggingEnabled) {
+            DoubleLogEntry doubleEntry = (DoubleLogEntry) entryMap.get(name);
+            if (doubleEntry == null) {
+                doubleEntry = new DoubleLogEntry(dataLog, name);
+                entryMap.put(name, doubleEntry);
+            }
             doubleEntry.append(value);
         }
     }
 
     public void logBoolean(Boolean value) {
-        BooleanLogEntry booleanEntry = new BooleanLogEntry(dataLog, name);
         if (loggingEnabled) {
+            BooleanLogEntry booleanEntry = (BooleanLogEntry) entryMap.get(name);
+            if (booleanEntry == null) {
+                booleanEntry = new BooleanLogEntry(dataLog, name);
+                entryMap.put(name, booleanEntry);
+            }
             booleanEntry.append(value);
         }
     }
