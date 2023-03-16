@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 /**
@@ -21,7 +22,8 @@ public final class Constants {
   public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
-
+  public static final boolean APRILTAG_LOGGING = true;
+  
   public static final boolean ENABLE_LOGGING = true;
 
   //JOYSTICKS

@@ -13,6 +13,10 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.IntegerLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,8 +36,13 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private Alliance currentAlliance;
   private double timestamp;
   private EstimatedRobotPose estimatedPose;
-
   int targetId;
+
+  private DataLog dataLog = new DataLog();
+  private DoubleLogEntry dataLogEntryPose2dX = new DoubleLogEntry(dataLog, "/photonLog/Pose2d_X");
+  private DoubleLogEntry dataLogEntryPose2dY = new DoubleLogEntry(dataLog, "/photonLog/Pose2d_Y");
+  private DoubleLogEntry dataLogEntryPose2dRotation = new DoubleLogEntry(dataLog, "/photonLog/Pose2dRotationRadians");
+  private IntegerLogEntry dataLogEntryTagDetected = new IntegerLogEntry(dataLog, "/photonLog/tagDetected");
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -63,11 +72,9 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   }
 
-
   private void calculateUsingEstimator() {
     if (camera.isConnected()) {
       Optional<EstimatedRobotPose> result = estimator.update();
-      
 
       if (result.isPresent()) {
         estimatedPose = result.get();
@@ -106,8 +113,10 @@ public class PhotonCameraSubsystem extends SubsystemBase {
    * 
    * @return
    */
+
   public Pose2d getRobot2dFieldPose() {
     return robotFieldPose;
+
   }
 
   @Override
@@ -119,6 +128,20 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       pose3dPosition = estimatedPose.estimatedPose;
     }
 
+    if (Constants.APRILTAG_LOGGING) {
+      if (getRobot2dFieldPose() != null) {
+        dataLogEntryPose2dX.append(getRobot2dFieldPose().getX());
+        dataLogEntryPose2dY.append(getRobot2dFieldPose().getY());
+        dataLogEntryPose2dRotation.append(getRobot2dFieldPose().getRotation().getRadians());
+      }
+      else {
+        dataLogEntryPose2dX.append(-111111);
+        dataLogEntryPose2dY.append(-111111);
+        dataLogEntryPose2dRotation.append(-111111); 
+      }
+      dataLogEntryTagDetected.append(targetId);
+
+    }
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());
