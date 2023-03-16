@@ -35,6 +35,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private Alliance currentAlliance;
   private double timestamp;
   private EstimatedRobotPose estimatedPose;
+  private int periodicCounter = 0;
 
   int targetId;
 
@@ -127,6 +128,16 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if (periodicCounter % 5 == 0) {
+      periodicCounter = 0;
+      //continue periodic
+    }
+    else {
+      periodicCounter++;
+      return;  //break out
+    }
+    
     updateAlliance();
     calculateUsingEstimator();
     Pose3d pose3dPosition = null;
