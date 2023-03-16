@@ -12,7 +12,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.utils.LogEntry;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
@@ -24,11 +24,6 @@ public class Arm extends SubsystemBase {
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
   private double pidreference;
-
-  LogEntry encoderLogEntry;
-  LogEntry piddingLogEntry;
-  LogEntry forwardLimitLogEntry;
-  LogEntry backwardLimitLogEntry;
 
 private SparkMaxPIDController pidController;
   
@@ -47,10 +42,6 @@ private SparkMaxPIDController pidController;
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
-    encoderLogEntry = new LogEntry("/ARM/ENCODER", Constants.ENABLE_LOGGING);
-    piddingLogEntry = new LogEntry("/ARM/PIDDING", Constants.ENABLE_LOGGING);
-    forwardLimitLogEntry = new LogEntry("/ARM/FLIMIT", Constants.ENABLE_LOGGING);
-    backwardLimitLogEntry = new LogEntry("/ARM/BLIMIT", Constants.ENABLE_LOGGING);
   }
 
   @Override
@@ -63,10 +54,10 @@ private SparkMaxPIDController pidController;
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
     }
-    encoderLogEntry.logDouble(getEncoderValue());
-    piddingLogEntry.logBoolean(pidding);
-    forwardLimitLogEntry.logBoolean(isFwdLimitSwitchReached());
-    backwardLimitLogEntry.logBoolean(isRevLimitSwitchReached());
+    Logger.logDouble("/Arm/Encoder", getEncoderValue(), Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/Arm/Pidding", pidding, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/Arm/FwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/Arm/RevLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
   }
 
   public boolean isFwdLimitSwitchReached() {

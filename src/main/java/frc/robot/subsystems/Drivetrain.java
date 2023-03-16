@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.utils.LogEntry;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
@@ -76,9 +76,6 @@ public class Drivetrain extends SubsystemBase{
           m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
   private final SwerveDriveOdometry m_odometry;
-
-  LogEntry robotOdometryLogEntry;
-  LogEntry gyroLogEntry;
 
   public Drivetrain() {
     navxGyro = new AHRS();
@@ -142,8 +139,6 @@ public class Drivetrain extends SubsystemBase{
         }, new Pose2d(Units.feetToMeters(0.0), Units.feetToMeters(0), new Rotation2d()));
 
     setGyroOffset(180);
-    robotOdometryLogEntry = new LogEntry("/ODOMETRY/ROBOT", Constants.ENABLE_LOGGING);
-    gyroLogEntry = new LogEntry("/DRIVETRAIN/GYRO", Constants.ENABLE_LOGGING);
   }
 
   public double getGyro() {
@@ -273,7 +268,7 @@ public class Drivetrain extends SubsystemBase{
   public void periodic() {
     double gyroValue = getGyro();
     gyroEntry.setDouble(gyroValue);
-    gyroLogEntry.logDouble(gyroValue);
+    Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
@@ -311,7 +306,7 @@ public class Drivetrain extends SubsystemBase{
     });
   }
     m_field.setRobotPose(m_odometry.getPoseMeters());
-    robotOdometryLogEntry.logPose2d(m_odometry.getPoseMeters());
+    Logger.logPose2d("/Odometry/robot",m_odometry.getPoseMeters(), Constants.ENABLE_LOGGING);
   }
 
   public void resetOdometry (Pose2d pose) {

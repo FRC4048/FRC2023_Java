@@ -2,24 +2,18 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.utils.LogEntry;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public final class ProtectionMechanism extends SubsystemBase {
      private final Arm arm;
      private final Extender extender;
      private final GripperSubsystem gripper;
-     private LogEntry canExtendLogEntry;
-     private LogEntry canLowerArmLogEntry;
-     private LogEntry canOpenGripperLogEntry;
 
      public ProtectionMechanism(Arm arm, Extender extender, GripperSubsystem gripper) {
           this.arm = arm;
           this.extender = extender;
           this.gripper = gripper;
-          canExtendLogEntry = new LogEntry("/PROTECTION/CANEXTEND", Constants.ENABLE_LOGGING);
-          canLowerArmLogEntry = new LogEntry("/PROTECTION/CANLOWER", Constants.ENABLE_LOGGING);
-          canOpenGripperLogEntry = new LogEntry("/PROTECTION/CANOPEN", Constants.ENABLE_LOGGING);
      }
 
      @Override
@@ -31,9 +25,9 @@ public final class ProtectionMechanism extends SubsystemBase {
               SmartShuffleboard.put("DEBUG","estAngle", armEncoderToAngle(arm.getEncoderValue()));
               SmartShuffleboard.put("DEBUG","extMax", maxExtenderFromArmAngle(arm.getEncoderValue()));
          }
-         canExtendLogEntry.logBoolean(safeToExtend());
-         canLowerArmLogEntry.logBoolean(safeToLowerArm());
-         canOpenGripperLogEntry.logBoolean(safeToOpenGripper());
+         Logger.logBoolean("/protection/safeToExtend", safeToExtend(), Constants.ENABLE_LOGGING);
+         Logger.logBoolean("/protection/safeToLowerArm", safeToLowerArm(), Constants.ENABLE_LOGGING);
+         Logger.logBoolean("/protection/safeToOpenGripper", safeToOpenGripper(), Constants.ENABLE_LOGGING);
      }
 
      public boolean safeToExtend(){

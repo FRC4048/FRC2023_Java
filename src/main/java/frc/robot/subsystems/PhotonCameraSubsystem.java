@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import frc.robot.utils.LogEntry;
+import frc.robot.utils.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -39,7 +39,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private int periodicCounter = 0;
 
   int targetId;
-  LogEntry visionOdometryLogEntry;
 
   private NetworkTableEntry cameraLatency;
 
@@ -61,7 +60,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
     layout = AprilTagMap.getAprilTagLayout(currentAlliance);
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
-    visionOdometryLogEntry = new LogEntry("/ODOMETRY/VISION", Constants.ENABLE_LOGGING);
   }
 
   private void updateAlliance() {
@@ -148,7 +146,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       pose3dPosition = estimatedPose.estimatedPose;
     }
 
-    visionOdometryLogEntry.logPose2d(robotFieldPose);
+    Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());

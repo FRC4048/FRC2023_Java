@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.utils.LogEntry;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagDutyCycleEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
@@ -20,8 +20,6 @@ public class GripperSubsystem extends SubsystemBase {
   public WPI_TalonSRX gripperMotor;
   private DutyCycleEncoder gripperEncoder;
   private ProtectionMechanism protectionMechanism;
-  private LogEntry openLimitLogEntry;
-  private LogEntry encoderLogEntry;
 
   public GripperSubsystem() {
     gripperMotor = new WPI_TalonSRX(Constants.GRIPPER_MOTOR_ID);
@@ -32,8 +30,6 @@ public class GripperSubsystem extends SubsystemBase {
     Robot.getDiagnostics().addDiagnosable(new DiagDutyCycleEncoder("Gripper", "Encoder", 10, gripperEncoder));
     Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Gripper", "Open Switch", gripperMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Gripper", "Close Switch", gripperMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
-    openLimitLogEntry = new LogEntry("/GRIPPER/LIMIT", Constants.ENABLE_LOGGING);
-    encoderLogEntry = new LogEntry("/GRIPPER/ENCODER", Constants.ENABLE_LOGGING);
   }
  
  
@@ -44,8 +40,8 @@ public class GripperSubsystem extends SubsystemBase {
       SmartShuffleboard.put("Gripper", "Limit Switches", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed());
       SmartShuffleboard.put("Gripper", "Limit Switches", "rev Limit", gripperMotor.isRevLimitSwitchClosed());
     }
-    openLimitLogEntry.logBoolean(getopenLimitSwitch());
-    encoderLogEntry.logDouble(gripperPosition());
+    Logger.logBoolean("/Gripper/Limit", getopenLimitSwitch(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/Gripper/Encoder", gripperPosition(),Constants.ENABLE_LOGGING);
   }
 
   public void open() {

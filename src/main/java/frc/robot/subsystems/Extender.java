@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.utils.LogEntry;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagTalonSrxEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
@@ -18,9 +18,6 @@ import frc.robot.utils.diag.DiagTalonSrxSwitch;
 public class Extender extends SubsystemBase {
     private WPI_TalonSRX extenderMotor;
     private ProtectionMechanism protectionMechanism;
-    LogEntry encoderLogEntry;
-    LogEntry forwardLimitLogEntry;
-    LogEntry backwardLimitLogEntry;
 
     public Extender() {
         int TIMEOUT = 100;
@@ -39,9 +36,6 @@ public class Extender extends SubsystemBase {
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxEncoder("Extender", "Encoder", Constants.DIAG_TALONSRX_ROT, extenderMotor));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Extended Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
         Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Extender", "Retracted Switch", extenderMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
-        encoderLogEntry = new LogEntry("/EXTENDER/ENCODER", Constants.ENABLE_LOGGING);
-        forwardLimitLogEntry = new LogEntry("/EXTENDER/FLIMIT", Constants.ENABLE_LOGGING);
-        backwardLimitLogEntry = new LogEntry("/EXTENDER/BLIMIT", Constants.ENABLE_LOGGING);
     }
 
     public void resetEncoder() {
@@ -78,9 +72,9 @@ public class Extender extends SubsystemBase {
             SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
             SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
         }
-        encoderLogEntry.logDouble(getEncoder());
-        forwardLimitLogEntry.logBoolean(fwdLimitReached());
-        backwardLimitLogEntry.logBoolean(revLimitReached());
+        Logger.logDouble("/Extender/Encoder",getEncoder(), Constants.ENABLE_LOGGING);
+        Logger.logBoolean("/Extender/fwdLimit", fwdLimitReached(),Constants.ENABLE_LOGGING);
+        Logger.logBoolean("/Extender/revLimit", revLimitReached(),Constants.ENABLE_LOGGING);
     }
 
     public double getExtenderSensorPos() {
