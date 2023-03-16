@@ -53,6 +53,7 @@ public final class Constants {
   public static final int GRIPPER_ENCODER_ID = 0;
 
   //EXTENDER
+  public static final int EXTENDER_RESET_TIMEOUT = 2;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
 
@@ -81,6 +82,7 @@ public final class Constants {
 
 
   //Arm Constants
+  public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
@@ -152,6 +154,10 @@ public final class Constants {
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
+  public static final double TURBO_DRIVE_AND_STEER_SPD = 1.3;
+
+  public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
+  public static final double LOCK_WHEELS_TIMEOUT = 0.1;
 
 
   public static class OperatorConstants {
@@ -214,6 +220,10 @@ public final class Constants {
 
   // vision constants
   public static final boolean ADD_VISION_TO_ODOMETRY = true;
+  public static final double VISION_MAX_LATENCY = 0.3;
+  public static final String PHOTON_VISION_ID = "photonvision";
+  public static final String PHOTON_CAMERA_ID = "camera0";
+  public static final String PHOTON_LATENCY = "latencyMillis";
 
   // field
   public static final double FIELD_LENGTH_X_FEET = 54.25;
