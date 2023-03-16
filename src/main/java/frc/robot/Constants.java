@@ -16,7 +16,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public static final boolean DRIVETRAIN_DEBUG = false;
-  public static final boolean ARM_DEBUG = false;
+  public static final boolean ARM_DEBUG = true;
   public static final boolean EXTENDER_DEBUG = false;
   public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
@@ -82,7 +82,7 @@ public final class Constants {
 
 
   //Arm Constants
-  public static final int ARM_POT_ID = 45; //TODO: Change this!!!!!!
+  public static final int ARM_POT_ID =45; //TODO: Change this!!!!!!
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;

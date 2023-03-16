@@ -6,11 +6,13 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
@@ -21,7 +23,8 @@ public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
-  private AnalogInput analogInput;
+  // private WPI_CANCoder cancoder;
+  private SparkMaxAnalogSensor analogSensor;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
@@ -34,9 +37,10 @@ private SparkMaxPIDController pidController;
 
     angle = 0;
 
-    neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
+    neoMotor = new CANSparkMax(Constants.ARM_POT_ID, MotorType.kBrushless); //Change to Constants.ARM_ID
     encoder = neoMotor.getEncoder();
-    analogInput = new AnalogInput(Constants.ARM_POT_ID);
+    // cancoder = new WPI_CANCoder(Constants.ARM_POT_ID);
+    analogSensor = neoMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
@@ -56,7 +60,7 @@ private SparkMaxPIDController pidController;
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.put("Arm","arm pot", analogInput.getValue());
+      SmartShuffleboard.put("Arm","arm pot", analogSensor.getPosition());
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
@@ -121,8 +125,8 @@ private SparkMaxPIDController pidController;
     encoder.setPosition(0);
   }
 
-  public AnalogInput getAnalogInput(){
-    return analogInput;
+  public SparkMaxAnalogSensor getAnalogSensor(){
+    return analogSensor;
   }
 
   public void setPID(double p, double i, double d, double f) {
