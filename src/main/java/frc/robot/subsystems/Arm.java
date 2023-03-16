@@ -27,7 +27,7 @@ public class Arm extends SubsystemBase {
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
   private Rev2mDistanceSensor distanceSensor;
-
+  private boolean heightCheck;
 
 private SparkMaxPIDController pidController;
   
@@ -53,7 +53,7 @@ private SparkMaxPIDController pidController;
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
 
-    distanceSensor.setAutomaticMode(false);
+    distanceSensor.setAutomaticMode(true);
     distanceSensor.setDistanceUnits(Unit.kInches);
     distanceSensor.setRangeProfile(RangeProfile.kHighSpeed);
 
@@ -62,6 +62,11 @@ private SparkMaxPIDController pidController;
 
   @Override
   public void periodic() {
+    if (distanceSensor.getRange() < 15) {
+      heightCheck = true;
+    } else {
+      heightCheck = false;
+    }
     if (Constants.ARM_DEBUG) {
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
@@ -69,9 +74,10 @@ private SparkMaxPIDController pidController;
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
-
+      SmartShuffleboard.put("Arm", "Height Check 15 in", heightCheck);
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
       }
+
   }
 
   public boolean isFwdLimitSwitchReached() {
