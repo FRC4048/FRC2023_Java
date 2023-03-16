@@ -7,7 +7,10 @@ package frc.robot.utils.logging.wrappers;
 import java.util.Set;
 import java.util.TreeSet;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -17,6 +20,8 @@ import frc.robot.utils.logging.Logging;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SequentialCommandGroupWrapper extends CommandGroupBase {
+  private StringLogEntry initializeEntry;
+  private StringLogEntry endEntry;
   private SequentialCommandGroup seqCommandGroup;
   private String ident;
   private final Set<String> requirements = new TreeSet<String>();
@@ -29,22 +34,16 @@ public class SequentialCommandGroupWrapper extends CommandGroupBase {
   public SequentialCommandGroupWrapper(SequentialCommandGroup seqCommandGroup, String ident) {
     this.seqCommandGroup = seqCommandGroup;
     this.ident = ident;
-  }
-
-  /* Define how to log events */
-  private void log(final String text) {
-  final StringBuilder sb = new StringBuilder();
-  sb.append(this.getClass().getSimpleName());
-  sb.append(" ");
-  sb.append(ident);
-  Logging.instance().traceMessage(Logging.MessageLevel.INFORMATION, sb.toString(), requirements.toString(), text);
+    DataLog log = DataLogManager.getLog();
+    this.initializeEntry = new StringLogEntry(log, ident+ "-initialize");
+    this.endEntry = new StringLogEntry(log, ident+"-end");
   }
 
   /* Overide events for logging */
   // Called once the command ends or is interrupted.
   @Override
   public void initialize() {
-    log("initialize");
+    this.initializeEntry.append("Initializing");
     seqCommandGroup.initialize();
   }
 
@@ -55,6 +54,7 @@ public class SequentialCommandGroupWrapper extends CommandGroupBase {
 
   @Override
   public final void end(boolean interrupted) {
+    this.initializeEntry.append("Ending");
     seqCommandGroup.end(interrupted);
   }
 

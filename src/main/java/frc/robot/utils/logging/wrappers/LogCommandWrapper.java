@@ -7,6 +7,9 @@
 
 package frc.robot.utils.logging.wrappers;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.utils.logging.Logging;
@@ -16,11 +19,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class LogCommandWrapper extends CommandBase {
+  private StringLogEntry initializeEntry;
+  private StringLogEntry endEntry;
   private Command command;
   private String ident;
   private final Set<String> requirements = new TreeSet<String>();
 
-  
   public LogCommandWrapper(Command command) {
     this(command, command.getName());
   }
@@ -32,12 +36,15 @@ public class LogCommandWrapper extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.command = command;
     this.ident = ident;
+    DataLog log = DataLogManager.getLog();
+    this.initializeEntry = new StringLogEntry(log, ident+"-initialize");
+    this.endEntry = new StringLogEntry(log, ident+"-end");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    log("initialize");
+    this.initializeEntry.append("Initializing");
     command.initialize();
   }
 
@@ -50,26 +57,14 @@ public class LogCommandWrapper extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    log("end");
+    this.endEntry.append("Ending");
     command.end(interrupted);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean result = command.isFinished();
-    if(result) {
-      log("isFinished");
-    }
-    return result;
-  }
-  
-  private void log(final String text) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(this.getClass().getSimpleName());
-		sb.append(" ");
-		sb.append(ident);
-		Logging.instance().traceMessage(Logging.MessageLevel.INFORMATION, sb.toString(), requirements.toString(), text);
+    return command.isFinished();
   }
   
   public Command getWrappedCommand() {
