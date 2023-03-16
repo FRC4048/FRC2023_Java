@@ -149,8 +149,8 @@ public class RobotContainer {
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
 
     //arm move on stick
-    controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    controller.axisLessThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    controller.axisLessThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
     
     //extender move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> -Constants.EXTENDER_MANUAL_SPEED));
