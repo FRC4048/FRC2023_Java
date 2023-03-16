@@ -1,15 +1,7 @@
 package frc.robot.commands.Autonomous;
 
-import java.util.List;
-
-import org.photonvision.PhotonTargetSortMode;
-
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.apriltags.AprilTagMap;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonCameraSubsystem;
 import frc.robot.subsystems.PieceGrid;
@@ -23,6 +15,13 @@ public class AlignAprilTag extends CommandBase {
   private Drivetrain drivetrain;
   PieceGrid pieceGrid;
 
+  /**
+   * Aligns the robot to a certain area for drop-off
+   * 
+   * @param photonSubsystem Where the camera data is being taken from
+   * @param drivetrain Drivetrain used for movement
+   * @param pieceGrid The area of the grid you want to go to
+   */
   public AlignAprilTag(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain, PieceGrid pieceGrid) {
     this.photonSubsystem = photonSubsystem;
     this.drivetrain = drivetrain;
@@ -32,7 +31,6 @@ public class AlignAprilTag extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double moveDistance;
     robotFieldPose2d = photonSubsystem.getRobot2dFieldPose();
     tagPose2d = photonSubsystem.getTargetFieldPose().toPose2d(); // TODO: Check math on this
     if (robotFieldPose2d != null) {
