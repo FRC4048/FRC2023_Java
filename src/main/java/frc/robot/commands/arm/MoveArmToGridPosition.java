@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.PieceGrid;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class MoveArmToGridPosition extends CommandBase {
      private Arm arm;
@@ -19,7 +20,7 @@ public class MoveArmToGridPosition extends CommandBase {
 
      @Override
      public void initialize() {
-          CommandScheduler.getInstance().schedule(new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition(), pieceGrid.getSelectedGridSlot().getExtenderPosition()));
+          CommandScheduler.getInstance().schedule(new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition(), pieceGrid.getSelectedGridSlot().getExtenderPosition())));
      }
 
      @Override

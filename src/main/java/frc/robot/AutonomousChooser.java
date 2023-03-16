@@ -15,6 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class AutonomousChooser {
 
@@ -103,19 +104,19 @@ public class AutonomousChooser {
         Alliance allianceColor = DriverStation.getAlliance();
 
         if (action == Action.DoNothing) {
-            return new DoNothing(arm, extender);
+            return new SequentialCommandGroupWrapper(new DoNothing(arm, extender));
         }
         else if (action == Action.CrossLine && location != Location.Middle) {
-            return new CrossTheLine(drivetrain, arm, extender, location, allianceColor);
+            return new SequentialCommandGroupWrapper(new CrossTheLine(drivetrain, arm, extender, location, allianceColor));
         }
         else if (action == Action.OnePieceMoveLeft) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, 1, location, allianceColor);
+            return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 1, location, allianceColor));
         }
         else if (action == Action.OnePieceMoveRight) {
-            return new OneGamepiece(drivetrain, arm, extender, gripper, -1, location, allianceColor);
+            return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -1, location, allianceColor));
         }
         else {
-            return new DoNothing(arm, extender);
+            return new SequentialCommandGroupWrapper(new DoNothing(arm, extender));
         }
     }
 }

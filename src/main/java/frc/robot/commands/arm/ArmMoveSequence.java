@@ -13,6 +13,7 @@ import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.PieceGrid;
 import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
 
 /**
  * DO NOT CALL THIS DIRECTLY MUST BE WRAPPED IN A COMMAND
@@ -22,10 +23,10 @@ public class ArmMoveSequence extends SequentialCommandGroup {
         if (armTargetPosition > arm.getEncoderValue()) {
             addCommands(
                 new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
-                new ParallelCommandGroup(
+                new ParCommandGroupWrapper(new ParallelCommandGroup(
                     new HoldArmPID(arm,armTargetPosition),
                     new ExtendToPosition(extender,extenderTargetPosition)
-                )
+                ))
             );
         } else {
             addCommands(

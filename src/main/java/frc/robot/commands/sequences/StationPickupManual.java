@@ -17,6 +17,8 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -29,15 +31,15 @@ public class StationPickupManual extends SequentialCommandGroup {
     addCommands(
       new StationMoveBack(drivetrain, -0.3).withTimeout(5),
       new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE),
-             new ParallelRaceGroup(
+      new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                  new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
-                 new SequentialCommandGroup(
+                 new SequentialCommandGroupWrapper(new SequentialCommandGroup(
                      new OpenGripper(gripper),
                      new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION), 
                      new CloseGripper(gripper)
                  )
-             ),
-             new Stow(arm, gripper, extender)
+             ))),
+             new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender))
     );
   }
 }
