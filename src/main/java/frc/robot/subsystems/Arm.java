@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.SmartShuffleboard;
@@ -20,6 +21,7 @@ public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
+  private AnalogInput analogInput;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
@@ -34,26 +36,27 @@ private SparkMaxPIDController pidController;
 
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();
+    analogInput = new AnalogInput(Constants.ARM_POT_ID);
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
     pidController = neoMotor.getPIDController();
 
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Pot", Constants.ARM_POT_ID, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Retracted Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.REVERSE));
 
 
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
-    encoder.setPosition(0);
+    // encoder.setPosition(0);
 
   }
 
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm","arm pot", analogInput.getValue());
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
@@ -116,6 +119,10 @@ private SparkMaxPIDController pidController;
 
   public void resetEncoder() {
     encoder.setPosition(0);
+  }
+
+  public AnalogInput getAnalogInput(){
+    return analogInput;
   }
 
   public void setPID(double p, double i, double d, double f) {
