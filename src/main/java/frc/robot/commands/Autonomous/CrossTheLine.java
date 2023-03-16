@@ -11,7 +11,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class CrossTheLine extends SequentialCommandGroup {
     
-    public CrossTheLine (Drivetrain drivetrain, Arm arm, Extender extender, AutonomousChooser.Location location, Alliance allianceColor) {
+    public CrossTheLine (Drivetrain drivetrain, Arm arm, Extender extender, AutonomousChooser.Location location) {
 
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),

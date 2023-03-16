@@ -1,8 +1,5 @@
 package frc.robot.commands.Autonomous;
 
-import javax.swing.GroupLayout.SequentialGroup;
-
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
@@ -23,22 +20,22 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class OneGamepiece extends SequentialCommandGroup{
     
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, int direction, AutonomousChooser.Location location, Alliance allianceColor) {
+    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
 
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
         new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
-        new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
-            new SequentialCommandGroupWrapper(new SequentialCommandGroup(
-                new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
+        new ParallelRaceGroup(
+            new SequentialCommandGroup(
+                new ExtendToPosition(extender, ArmPositionGrid.TOP_LEFT.getExtenderPosition()),
                 new OpenGripper(gripper)
-            )),
-            new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
-        )),
+            ),
+            new HoldArmPID(arm, ArmPositionGrid.TOP_LEFT.getArmPosition())
+        ),
 
-        new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
-        new MoveDistanceSpinTraj(drivetrain, 0.2, 0.2 * direction, Math.toRadians(180)),
-        new MoveDistanceSpinTraj(drivetrain, 4.7, 0 * direction, Math.toRadians(180))
+        new Stow(arm, gripper, extender),
+        new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),
+        new MoveDistanceSpinTraj(drivetrain, 4.7, 0, Math.toRadians(180))
         //change it back to 4.7
 
     );
