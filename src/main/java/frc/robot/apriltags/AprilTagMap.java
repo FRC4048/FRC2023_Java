@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class AprilTagMap {
   
-    public static List<AprilTag> getAprilPosList(Alliance alliance) {
+    public static AprilTagFieldLayout getAprilTagLayout(Alliance alliance) {
         if (alliance == Alliance.Red) {
 
             List<AprilTag> apriltags = new ArrayList<>();
@@ -25,9 +25,9 @@ public class AprilTagMap {
             apriltags.add(6, new AprilTag(7, new Pose3d(15.513558, 5.261864, 0.462788,  new Rotation3d(new Quaternion(0, 0, 0, 1.0)))));
             apriltags.add(7, new AprilTag(8, new Pose3d(15.513558, 6.938264, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1.0)))));
 
-            // AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(apriltags, 16.54175, 8.0137);
-            // return aprilTagFieldLayout;
-            return apriltags;
+             AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(apriltags, 16.54175, 8.0137);
+             return aprilTagFieldLayout;
+            //return apriltags;
         } else {
             List<AprilTag> apriltags = new ArrayList<>();
             apriltags.add(0, new AprilTag(1, new Pose3d(15.513558, 1.071626, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 1.0)))));
@@ -39,17 +39,10 @@ public class AprilTagMap {
             apriltags.add(6, new AprilTag(7, new Pose3d(1.02743, 2.748026, 0.462788,  new Rotation3d(new Quaternion(0, 0, 0, 0)))));
             apriltags.add(7, new AprilTag(8, new Pose3d(1.02743, 1.071626, 0.462788, new Rotation3d(new Quaternion(0, 0, 0, 0)))));
 
-            return apriltags;
-            // AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(apriltags, 16.54175, 8.0137);
-            // return aprilTagFieldLayout;
+            //return apriltags;
+            AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(apriltags, 16.54175, 8.0137);
+            return aprilTagFieldLayout;
         }
 
     }
-    //Getter to return aprilTagList
-
-    public static AprilTagFieldLayout getAprilTagLayout(List<AprilTag> aprilTags){
-        AprilTagFieldLayout aprilTagFieldLayout = new AprilTagFieldLayout(aprilTags, 16.54175, 8.0137);
-        return aprilTagFieldLayout;
-    }
-
 }

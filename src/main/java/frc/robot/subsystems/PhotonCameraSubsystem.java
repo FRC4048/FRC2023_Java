@@ -65,7 +65,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     if (currentAlliance != DriverStation.getAlliance()) {
       currentAlliance = DriverStation.getAlliance();
 
-      layout = AprilTagMap.getAprilTagLayout(AprilTagMap.getAprilPosList(currentAlliance));
+      layout = AprilTagMap.getAprilTagLayout(currentAlliance);
       estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
       SmartShuffleboard.put("AprilTag", "currentAlliance", currentAlliance == Alliance.Red);
