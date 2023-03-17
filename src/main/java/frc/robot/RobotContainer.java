@@ -73,25 +73,6 @@ public class RobotContainer {
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
-  
-
-  /*
-  controller bindings:
-    - a: grid select
-    - b: stow
-    - x: substation pickup
-    - y: ground pickup
-
-    - rTrigger: drop gamePiece
-    - lTrigger: grab gamePiece
-
-    - start: extend to position
-    - logitechButton: abort alt
-    - dPad: grid select
-    - leftStickPress: station pickup
-
-  manualController bindings:
-  */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
@@ -138,17 +119,12 @@ public class RobotContainer {
     controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_RIGHT));
     controller.povRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
-    
-    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
-    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
-    
+
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
     controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
     controller.button(XboxController.Button.kX.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
-    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
