@@ -14,6 +14,7 @@ import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
 public class Stow extends SequentialCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
+        setName("Stow");
         addCommands(
             new ExtendToPosition(extender, 0).withTimeout(3),
             new ParCommandGroupWrapper(new ParallelCommandGroup(

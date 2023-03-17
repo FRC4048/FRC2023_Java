@@ -1,6 +1,5 @@
 package frc.robot.commands.Autonomous;
 
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.AutonomousChooser;
 import frc.robot.commands.sequences.ResetEncoders;
@@ -12,7 +11,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class CrossTheLine extends SequentialCommandGroup {
     
     public CrossTheLine (Drivetrain drivetrain, Arm arm, Extender extender, AutonomousChooser.Location location) {
-
+        setName("CrossTheLine");
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
             new MoveDistanceSpinTraj(drivetrain, 4, 0, Math.toRadians(180))

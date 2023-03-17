@@ -10,6 +10,7 @@ import frc.robot.subsystems.Extender;
 /** An example command that uses an example subsystem. */
 public class DoNothing extends SequentialCommandGroup {
   public DoNothing(Arm arm, Extender extender, Drivetrain drivetrain) {
+    setName("DoNothing");
     addCommands(
     new InstantCommand(drivetrain::stopMotors, drivetrain),
     new ResetEncoders(arm, extender),

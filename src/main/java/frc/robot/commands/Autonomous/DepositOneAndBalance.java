@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
 import frc.robot.AutonomousChooser;
 import frc.robot.Constants;
-import frc.robot.commands.AutoBalance;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -21,7 +20,7 @@ import frc.robot.subsystems.GripperSubsystem;
 public class DepositOneAndBalance extends SequentialCommandGroup {
     
     public DepositOneAndBalance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
-
+        setName("DepositOneAndBalance");
         addCommands(
             new ResetEncoders(arm, extender),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),

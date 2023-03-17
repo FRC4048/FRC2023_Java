@@ -11,7 +11,6 @@ import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.drive.StationMoveBack;
 import frc.robot.commands.extender.ExtendToPosition;
-import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -26,6 +25,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class StationPickupManual extends SequentialCommandGroup {
   /** Creates a new StationPickupManual. */
   public StationPickupManual(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
+    setName("StationPickupManual");
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
