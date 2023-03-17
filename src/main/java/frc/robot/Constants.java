@@ -184,10 +184,12 @@ public final class Constants {
 
   //chargestation
   public static final double BALANCE_STEEP_SPEED = .7;
-  public static final double BALANCE_LOW_SPEED = .5;
-  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
-  public static final int CHARGESTATION_BALANCED = 5;
+  public static final double BALANCE_LOW_SPEED = .07;
+  public static final double BALANCE_HIGH_SPEED = 0.25;
+  public static final int BALANCE_END = 10; //amount of cycles we want to be balanced for
   public static final double CHARGESTATION_TIMEOUT = 10;
+  public static final float BALANCE_kP = (float) 0.02;
+  public static final double BALANCE_THRESH = 2; //consider balanced within +-2 degrees of 0
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 33.5;

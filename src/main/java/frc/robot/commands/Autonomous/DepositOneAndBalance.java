@@ -5,12 +5,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
 import frc.robot.AutonomousChooser;
 import frc.robot.Constants;
-import frc.robot.commands.AutoBalance;
+import frc.robot.commands.BalancePID;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.Arm;
@@ -35,7 +36,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
 
             new Stow(arm, gripper, extender),
             new MoveDistanceSpinTraj(drivetrain, 0.1, yChange, Math.toRadians(180)),
-            new AutoBalanceSequence(drivetrain, arm, extender)
+            new PIDBalanceSequence(drivetrain, true)
         );
 
     }

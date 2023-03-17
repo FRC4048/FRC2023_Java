@@ -283,6 +283,8 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
+    SmartShuffleboard.put("Balance", "Roll", "Roll", filterRoll);
+
     gyroEntry.setDouble(getGyro());
 
 
