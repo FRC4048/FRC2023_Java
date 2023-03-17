@@ -65,18 +65,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_robotContainer.getDrivetrain().setAllianceColor(DriverStation.getAlliance());
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
-
   }
 
   @Override
   public void autonomousPeriodic() {
     m_robotContainer.getAutoLedCycleCommand().refresh();
-
   }
 
   @Override
@@ -85,7 +83,6 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
     m_robotContainer.getArm().zeroPID();
-
   }
 
   @Override

@@ -306,9 +306,6 @@ public class Drivetrain extends SubsystemBase{
     gyroEntry.setDouble(getGyro());
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
-    if (allianceColor != DriverStation.Alliance.Red && allianceColor != DriverStation.Alliance.Blue) {
-      allianceColor = DriverStation.getAlliance();
-    }
 
     SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
     SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
@@ -449,5 +446,9 @@ public class Drivetrain extends SubsystemBase{
 
   public Field2d getField() {
     return m_field;
+  }
+
+  public void setAllianceColor(DriverStation.Alliance color) {
+    allianceColor = color;
   }
 }
