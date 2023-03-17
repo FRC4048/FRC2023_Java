@@ -12,18 +12,12 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonCameraSubsystem;
 import frc.robot.subsystems.PieceGrid;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class GridAlignment extends SequentialCommandGroup {
 
-  /** Creates a new GridAlignment. */
   public GridAlignment(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain, PieceGrid pieceGrid, ArmPositionGrid gridSlot) {
     new AlignAprilTag(photonSubsystem, drivetrain, pieceGrid);
-    new WaitCommand(5);//Placeholder
+    new WaitCommand(1);// Just to be safe, also placeholder
     new SetGridSlot(pieceGrid, gridSlot);
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands();
   }
 }
