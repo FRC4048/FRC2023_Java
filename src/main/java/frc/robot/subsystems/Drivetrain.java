@@ -66,6 +66,7 @@ public class Drivetrain extends SubsystemBase{
   private float filterRoll = 0;
 
   private final AHRS navxGyro;
+  private double navxGyroValue;
 
   private final Field2d m_field = new Field2d();
 
@@ -79,6 +80,8 @@ public class Drivetrain extends SubsystemBase{
 
   public Drivetrain() {
     navxGyro = new AHRS();
+
+    navxGyroValue = -1;
 
     SmartDashboard.putData("Field", m_field);
     
@@ -130,7 +133,7 @@ public class Drivetrain extends SubsystemBase{
     
     m_odometry = new SwerveDriveOdometry(
         m_kinematics,
-        new Rotation2d(getGyro()),
+        new Rotation2d(getNavxGyroValue()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -141,6 +144,10 @@ public class Drivetrain extends SubsystemBase{
     setGyroOffset(180);
   }
 
+  public double getNavxGyroValue() {
+    return navxGyroValue;
+  }
+  
   public double getGyro() {
     return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
   }
@@ -301,7 +308,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     if (DriverStation.isEnabled()) {
-    m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
+    m_odometry.update((new Rotation2d(Math.toRadians(getNavxGyroValue()))),
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
@@ -312,7 +319,7 @@ public class Drivetrain extends SubsystemBase{
   }
 
   public void resetOdometry (Pose2d pose) {
-    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
+    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getNavxGyroValue())), 
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
