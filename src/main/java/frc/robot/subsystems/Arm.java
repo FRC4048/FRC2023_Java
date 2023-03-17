@@ -77,10 +77,6 @@ private SparkMaxPIDController pidController;
     return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
   }
 
-  public void movePid(double setpoint) {
-    //neoMotor.getPIDController()
-  }
-
   public void setPidding(boolean bool) {
     pidding = bool;
   }
