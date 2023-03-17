@@ -6,6 +6,7 @@ import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 /** An example command that uses an example subsystem. */
 public class DoNothing extends SequentialCommandGroup {
@@ -13,7 +14,7 @@ public class DoNothing extends SequentialCommandGroup {
     setName("DoNothing");
     addCommands(
     new InstantCommand(drivetrain::stopMotors, drivetrain),
-    new ResetEncoders(arm, extender),
+    new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
     new InstantCommand(drivetrain::stopMotors, drivetrain)
     );
     }
