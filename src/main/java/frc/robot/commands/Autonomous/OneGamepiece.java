@@ -15,6 +15,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class OneGamepiece extends SequentialCommandGroup{
@@ -24,13 +25,13 @@ public class OneGamepiece extends SequentialCommandGroup{
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
         new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
-        new ParallelRaceGroup(
+        new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
             new SequentialCommandGroup(
                 new ExtendToPosition(extender, ArmPositionGrid.TOP_LEFT.getExtenderPosition()),
                 new OpenGripper(gripper)
             ),
             new HoldArmPID(arm, ArmPositionGrid.TOP_LEFT.getArmPosition())
-        ),
+        )),
 
         new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
         new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),
