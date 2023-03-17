@@ -1,18 +1,23 @@
 package frc.robot.utils;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.util.datalog.*;
-import edu.wpi.first.wpilibj.DataLogManager;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DataLogEntry;
+import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.IntegerLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 
 public class Logger {
     private static DataLog dataLog = DataLogManager.getLog();
     private static Map<String, DataLogEntry> entryMap = new HashMap<>();
 
-    public static void logDouble(String topicName, Double value, Boolean logThis) {
+    public static void logDouble(String topicName, double value, boolean logThis) {
         if (!logThis) {
             return;
         }
@@ -20,7 +25,15 @@ public class Logger {
         doubleEntry.append(value);
     }
 
-    public static void logBoolean(String topicName, Boolean value, Boolean logThis) {
+    public static void logInteger(String topicName, int value, boolean logThis) {
+        if (!logThis) {
+            return;
+        }
+        IntegerLogEntry integerEntry = (IntegerLogEntry)getEntry(topicName + "_Integer", (name) -> new IntegerLogEntry(dataLog, name));
+        integerEntry.append(value);
+    }
+
+    public static void logBoolean(String topicName, boolean value, boolean logThis) {
         if (!logThis) {
             return;
         }
@@ -28,7 +41,7 @@ public class Logger {
         booleanEntry.append(value);
     }
 
-    public static void logPose2d(String topicName, Pose2d value, Boolean logThis) {
+    public static void logPose2d(String topicName, Pose2d value, boolean logThis) {
         if (!logThis) {
             return;
         }

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import frc.robot.utils.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -14,10 +13,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.datalog.IntegerLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -26,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.apriltags.AprilTagMap;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PhotonCameraSubsystem extends SubsystemBase {
@@ -135,8 +131,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (periodicCounter % 5 == 0) {
-      periodicCounter = 0;
+    if (periodicCounter % 6 == 0) {
+      periodicCounter = 1;
       //continue periodic
     }
     else {
@@ -152,6 +148,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     }
 
     Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
+    Logger.logInteger("/Vision/tagID", targetId, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());
