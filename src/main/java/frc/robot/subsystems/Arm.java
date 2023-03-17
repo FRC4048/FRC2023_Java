@@ -20,9 +20,7 @@ import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 
 public class Arm extends SubsystemBase {
-  private double angle;
   private CANSparkMax neoMotor;
-  private RelativeEncoder encoder;
   // private WPI_CANCoder cancoder;
   private SparkMaxAnalogSensor analogSensor;
   public double kP, kI, kD, kIz, kFF, kVoltage;
@@ -35,10 +33,7 @@ private SparkMaxPIDController pidController;
   
   public Arm() {
 
-    angle = 0;
-
     neoMotor = new CANSparkMax(Constants.ARM_POT_ID, MotorType.kBrushless); //Change to Constants.ARM_ID
-    encoder = neoMotor.getEncoder();
     // cancoder = new WPI_CANCoder(Constants.ARM_POT_ID);
     analogSensor = neoMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
@@ -60,7 +55,7 @@ private SparkMaxPIDController pidController;
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.put("Arm","arm pot", analogSensor.getPosition());
+      SmartShuffleboard.put("Arm","arm pot", getEncoderValue());
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
@@ -79,16 +74,11 @@ private SparkMaxPIDController pidController;
   
 
   public double getEncoderValue() {
-    return encoder.getPosition();
-  }
-  
-
-  public double getAngle() {
-    return angle;
+    return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
   }
 
-  public void setAngle(double angle) {
-    this.angle = angle;
+  public void movePid(double setpoint) {
+    //neoMotor.getPIDController()
   }
 
   public void setPidding(boolean bool) {
@@ -119,10 +109,6 @@ private SparkMaxPIDController pidController;
 
   public CANSparkMax getNeoMotor() {
     return neoMotor;
-  }
-
-  public void resetEncoder() {
-    encoder.setPosition(0);
   }
 
   public SparkMaxAnalogSensor getAnalogSensor(){

@@ -30,7 +30,7 @@ public class ResetArm extends CommandBase{
     public void execute(){
         boolean revLimit = arm.isRevLimitSwitchReached();
             if (revLimit) {
-                arm.resetEncoder();
+                //arm.resetEncoder();
                 limitReached = true;
             } else {
             arm.setVoltage(-2.0);

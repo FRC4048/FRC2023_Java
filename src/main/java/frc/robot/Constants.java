@@ -84,11 +84,13 @@ public final class Constants {
   //Arm Constants
   public static final int ARM_POT_ID =45; //TODO: Change this!!!!!!
   public static final int ARM_RESET_TIMEOUT = 2;
-  public static final int ARM_MONITOR_ZONE = 25;
+  public static final int ARM_MONITOR_ZONE = 25; //Change
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
+
+  public static final double ARM_MIN_ENC_VAL = 0.5;
 
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
@@ -109,7 +111,7 @@ public final class Constants {
   public static final double MAX_ACCELERATION = 6.0;
   public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
-  public static final double ARM_OUT_ROBOT_MIN = 6;
+  public static final double ARM_OUT_ROBOT_MIN = 6; //Change
 
   public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
   public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
@@ -155,7 +157,7 @@ public final class Constants {
      public static final double ARM_AUTO_VOLTAGE = 3d;
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
-  public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
+  public static final double GRIP_NEEDS_CLOSE_ZONE = 15; //Change
   public static final double TURBO_DRIVE_AND_STEER_SPD = 1.3;
 
   public static final double LOCK_WHEEL_ROT_SPEED = 0.3;

@@ -16,7 +16,7 @@ public class ResetArmEncoder extends CommandBase {
 
     @Override
     public void initialize() {
-        arm.resetEncoder();  
+        //arm.resetEncoder();  
     }
 
     @Override
