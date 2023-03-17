@@ -191,7 +191,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new AutoBalanceSequence(drivetrain, arm, extender));
+    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new AutoBalanceSequence(drivetrain, arm, extender)));
     //SmartShuffleboard.putCommand("Drive", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
     //SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
   }

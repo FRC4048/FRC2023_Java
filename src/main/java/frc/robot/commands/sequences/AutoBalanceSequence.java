@@ -19,6 +19,7 @@ import frc.robot.subsystems.Extender;
 public class AutoBalanceSequence extends SequentialCommandGroup {
   /** Creates a new AutoBalanceSequence. */
   public AutoBalanceSequence(Drivetrain drivetrain, Arm arm, Extender extender) {
+    setName("AutoBalanceSequence");
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
