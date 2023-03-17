@@ -25,7 +25,7 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;

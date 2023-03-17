@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.AutonomousChooser;
 import frc.robot.commands.BalancePID;
-import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.subsystems.Arm;

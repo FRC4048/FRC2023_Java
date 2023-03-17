@@ -10,7 +10,7 @@ import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.Stow;
