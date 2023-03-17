@@ -14,11 +14,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.ChangeLedID;
-import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ResetGyro;
-import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
@@ -191,7 +186,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
     SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new AutoBalanceSequence(drivetrain, arm, extender));
     //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-
+    SmartShuffleboard.putCommand("Arm", "Auto Close", new AutoCloseGripper(arm, gripper));
   }
 
   /**
