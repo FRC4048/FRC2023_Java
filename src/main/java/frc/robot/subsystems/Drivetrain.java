@@ -277,7 +277,6 @@ public class Drivetrain extends SubsystemBase{
     gyroEntry.setDouble(gyroValue);
     Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
 
-    gyroEntry.setDouble(getNavxGyroValue());
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
