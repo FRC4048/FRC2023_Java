@@ -187,7 +187,7 @@ public class Drivetrain extends SubsystemBase{
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
               fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, navxGyro.getRotation2d())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, new Rotation2d(Math.toRadians(getNavxGyroValue())))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_VELOCITY);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
