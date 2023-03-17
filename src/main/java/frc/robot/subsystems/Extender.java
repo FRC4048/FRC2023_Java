@@ -10,14 +10,15 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagTalonSrxEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
 
 public class Extender extends SubsystemBase {
-
     private WPI_TalonSRX extenderMotor;
     private ProtectionMechanism protectionMechanism;
+
     public Extender() {
         int TIMEOUT = 100;
 
@@ -71,6 +72,9 @@ public class Extender extends SubsystemBase {
             SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
             SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
         }
+        Logger.logDouble("/Extender/Encoder",getEncoder(), Constants.ENABLE_LOGGING);
+        Logger.logBoolean("/Extender/fwdLimit", fwdLimitReached(),Constants.ENABLE_LOGGING);
+        Logger.logBoolean("/Extender/revLimit", revLimitReached(),Constants.ENABLE_LOGGING);
     }
 
     public double getExtenderSensorPos() {

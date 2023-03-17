@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import frc.robot.utils.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -41,7 +42,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   private NetworkTableEntry cameraLatency;
 
-  
+
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -137,13 +138,15 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       periodicCounter++;
       return;  //break out
     }
-    
+
     updateAlliance();
     calculateUsingEstimator();
     Pose3d pose3dPosition = null;
     if (estimatedPose != null) {
       pose3dPosition = estimatedPose.estimatedPose;
     }
+
+    Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());
