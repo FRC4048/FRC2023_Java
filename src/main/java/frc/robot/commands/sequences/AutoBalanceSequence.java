@@ -23,7 +23,7 @@ public class AutoBalanceSequence extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new AutoBalance(drivetrain),
-      new DriveForTime(drivetrain, -0.4, 0.1),
+      new DriveForTime(drivetrain, -0.4, 0.4),
       new LockWheels(drivetrain),
       new StopDriveTrain(drivetrain)
     );

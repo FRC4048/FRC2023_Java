@@ -18,10 +18,13 @@ public class ManualMoveArm extends CommandBase {
 
     @Override
     public void initialize() {
+        //arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
     }
 
     @Override
     public void execute() {
+        double currentPid = arm.getPidReference();
+        //arm.setPIDReference(currentPid + power);
         arm.setVoltage(power);
 
     }

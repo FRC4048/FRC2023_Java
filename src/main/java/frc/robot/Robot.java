@@ -102,20 +102,16 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     m_robotContainer.getTestLedCycleCommand().refresh();
     diagnostics.refresh();
-    TrajectoryConfig config =
-      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
-
-    Trajectory testTrajectory =
-      TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(new Translation2d(1, 0)),
-        new Pose2d(2, 0, new Rotation2d(0)),
-        config);
-        double time = testTrajectory.getTotalTimeSeconds();
-        if (Constants.DRIVETRAIN_DEBUG) {
-          SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
-          SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
-        }
+//    TrajectoryConfig config =
+//      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
+//
+//    Trajectory testTrajectory =
+//      TrajectoryGenerator.generateTrajectory(
+//        new Pose2d(0, 0, new Rotation2d(0)),
+//        List.of(new Translation2d(1, 0)),
+//        new Pose2d(2, 0, new Rotation2d(0)),
+//        config);
+//        double time = testTrajectory.getTotalTimeSeconds();
   }
 
   public static Diagnostics getDiagnostics() {
