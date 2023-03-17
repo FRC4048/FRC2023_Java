@@ -139,6 +139,9 @@ public class RobotContainer {
     controller.povRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
     
+    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
+    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+    
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
