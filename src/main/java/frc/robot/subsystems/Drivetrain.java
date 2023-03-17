@@ -273,11 +273,9 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
-    SmartShuffleboard.put("Balance", "Roll", "Roll", filterRoll);
-
-    double gyroValue = getGyro();
-    gyroEntry.setDouble(gyroValue);
-    Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
+    navxGyroValue = getGyro();
+    gyroEntry.setDouble(getNavxGyroValue());
+    Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
@@ -393,7 +391,7 @@ public class Drivetrain extends SubsystemBase{
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
-    navxGyro.getFusedHeading();
+    //navxGyro.getFusedHeading();
   }
   
   public double getGyroOffset() {
