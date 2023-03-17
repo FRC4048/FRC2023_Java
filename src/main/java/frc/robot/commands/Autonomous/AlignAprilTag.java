@@ -1,6 +1,7 @@
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonCameraSubsystem;
@@ -9,7 +10,7 @@ import frc.robot.subsystems.PieceGrid;
 public class AlignAprilTag extends CommandBase {
 
   private Pose2d robotFieldPose2d;
-  private Pose2d tagPose2d;
+  private Pose3d tagPose2d;
   private MoveDistanceSpinTraj moveDistanceSpinTraj; //This is needed ignore the warning
   private PhotonCameraSubsystem photonSubsystem;
   private Drivetrain drivetrain;
@@ -32,9 +33,9 @@ public class AlignAprilTag extends CommandBase {
   @Override
   public void initialize() {
     robotFieldPose2d = photonSubsystem.getRobot2dFieldPose();
-    tagPose2d = photonSubsystem.getTargetFieldPose().toPose2d(); // TODO: Check math on this
+    tagPose2d = photonSubsystem.getTargetFieldPose();
     if (robotFieldPose2d != null) {
-      double desiredYChange = robotFieldPose2d.getY() - tagPose2d.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition();
+      double desiredYChange = tagPose2d.getY() - robotFieldPose2d.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); // TODO: Check math on this
       moveDistanceSpinTraj = new MoveDistanceSpinTraj(drivetrain, 0.0, desiredYChange, Math.PI);
     }
   }
