@@ -82,7 +82,7 @@ public final class Constants {
 
 
   //Arm Constants
-  public static final int ARM_POT_ID =45; //TODO: Change this!!!!!!
+  public static final int ARM_POT_ID = 45; //TODO: Change this!!!!!!
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
@@ -90,12 +90,14 @@ public final class Constants {
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
 
+  public static final double ARM_MIN_ENC_VAL = 2.18;
+
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
 
   public static final double ARM_MAX_VOLTS = 4.5;
 
-  public static final double ARM_MOVE_PID_THRESHOLD = 2;
+  public static final double ARM_MOVE_PID_THRESHOLD = 0.03;
   //in inches
   public static final int ARM_HEIGHT = 47;
 
@@ -111,7 +113,7 @@ public final class Constants {
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
   public static final double ARM_OUT_ROBOT_MIN = 6;
 
-  public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
+  public static final double NO_EXTENSION_ZONE = 0.24; //max arm angle for no extension
   public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
@@ -152,7 +154,7 @@ public final class Constants {
   public static final int IMU = 42;
   public static final double ARM_AUTO_VOLTAGE_UP = 4d;
   public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
-     public static final double ARM_AUTO_VOLTAGE = 3d;
+  public static final double ARM_AUTO_VOLTAGE = 3d;
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
@@ -191,7 +193,7 @@ public final class Constants {
   public static final double CHARGESTATION_TIMEOUT = 10;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 33.5;
+  public static final double SUBSTATION_PICKUP_ANGLE = 0.49;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
 

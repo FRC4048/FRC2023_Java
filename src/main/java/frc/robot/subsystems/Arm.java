@@ -9,8 +9,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
-import com.ctre.phoenix.sensors.WPI_CANCoder;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,44 +21,42 @@ public class Arm extends SubsystemBase {
   private double angle;
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
-  // private WPI_CANCoder cancoder;
-  private SparkMaxAnalogSensor analogSensor;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
   private double pidreference;
-
-
-private SparkMaxPIDController pidController;
+  
+  private SparkMaxAnalogSensor analogSensor;
+  private SparkMaxPIDController pidController;
   
   public Arm() {
 
     angle = 0;
 
-    neoMotor = new CANSparkMax(Constants.ARM_POT_ID, MotorType.kBrushless); //Change to Constants.ARM_ID
+    neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();
-    // cancoder = new WPI_CANCoder(Constants.ARM_POT_ID);
     analogSensor = neoMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
     pidController = neoMotor.getPIDController();
 
-    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Pot", Constants.ARM_POT_ID, neoMotor));
+    Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Retracted Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.REVERSE));
 
 
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
-    // encoder.setPosition(0);
+    encoder.setPosition(0);
 
   }
 
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.put("Arm","arm pot", analogSensor.getPosition());
+      SmartShuffleboard.put("Arm","arm pot", getAnalogValue() * 1000); //I scaled this on the suffleboard to make Lou happy, values used elsewhere are based on raw potentiometer readings (offset from stow position)
+      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
@@ -82,6 +78,9 @@ private SparkMaxPIDController pidController;
     return encoder.getPosition();
   }
   
+  public double getAnalogValue(){
+    return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
+  }
 
   public double getAngle() {
     return angle;
@@ -97,6 +96,10 @@ private SparkMaxPIDController pidController;
 
   public void setVoltage(Double val) {
     neoMotor.setVoltage(validateArmVolt(val));
+  }
+
+  public SparkMaxAnalogSensor getAnalogSensor(){
+    return analogSensor;
   }
 
   public void zeroPID() {
@@ -123,10 +126,6 @@ private SparkMaxPIDController pidController;
 
   public void resetEncoder() {
     encoder.setPosition(0);
-  }
-
-  public SparkMaxAnalogSensor getAnalogSensor(){
-    return analogSensor;
   }
 
   public void setPID(double p, double i, double d, double f) {

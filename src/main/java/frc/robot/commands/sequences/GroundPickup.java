@@ -14,11 +14,11 @@ import frc.robot.subsystems.GripperSubsystem;
 public class GroundPickup extends SequentialCommandGroup{
     public GroundPickup(Arm arm, Extender extender, GripperSubsystem gripper) {
         addCommands(
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 9.0),
+            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 0.23),
                 new ParallelCommandGroup(
                     new ExtendToPosition(extender, 2000.0),
                     new OpenGripper(gripper),
-                    new HoldArmPID(arm, 20.0)
+                    new HoldArmPID(arm, 0.23)
                 )
         );
 
