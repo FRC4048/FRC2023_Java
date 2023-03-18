@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
 
@@ -25,13 +24,12 @@ public class Arm extends SubsystemBase {
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
   private double pidreference;
-  private SparkMaxAnalogSensor analogSensor;
-  private SparkMaxPIDController pidController;
+
+private SparkMaxPIDController pidController;
   
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();
-    analogSensor = neoMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
@@ -49,9 +47,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-
-      SmartShuffleboard.put("Arm","arm pot", getAnalogValue() * 1000); //I scaled this on the suffleboard to make Lou happy, values used elsewhere are based on raw potentiometer readings (offset from stow position)
-      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
@@ -75,18 +71,6 @@ public class Arm extends SubsystemBase {
   public double getEncoderValue() {
     return encoder.getPosition();
   }
-  
-  public double getAnalogValue(){
-    return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
-  }
-
-  public double getAngle() {
-    return angle;
-  }
-
-  public void setAngle(double angle) {
-    this.angle = angle;
-  }
 
   public void setPidding(boolean bool) {
     pidding = bool;
@@ -94,10 +78,6 @@ public class Arm extends SubsystemBase {
 
   public void setVoltage(Double val) {
     neoMotor.setVoltage(validateArmVolt(val));
-  }
-
-  public SparkMaxAnalogSensor getAnalogSensor(){
-    return analogSensor;
   }
 
   public void zeroPID() {
