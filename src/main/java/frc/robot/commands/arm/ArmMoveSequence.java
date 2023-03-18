@@ -32,8 +32,8 @@ public class ArmMoveSequence extends SequentialCommandGroup {
         } else {
             addCommands(
                 new ExtendToPosition(extender,extenderTargetPosition),
-                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
-                new HoldArmPID(arm,armTargetPosition)
+                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition) 
+                //new HoldArmPID(arm,armTargetPosition)
                 );
         }
     }

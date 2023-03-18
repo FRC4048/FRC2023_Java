@@ -3,6 +3,8 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Logger;
+import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class VoltageMoveArm extends LoggedCommand {
@@ -31,9 +33,9 @@ public class VoltageMoveArm extends LoggedCommand {
     public void execute() {
         //positive angle -> positive power
         if (angle > arm.getAnalogValue()) {
-            arm.setVoltage(upPower);
+            arm.setVoltage(1.5);
         } else {
-            arm.setVoltage(-downPower);
+            arm.setVoltage(1.0);
         }
     }
 
@@ -45,6 +47,10 @@ public class VoltageMoveArm extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
+        Logger.logDouble("/arm/angle", angle, Constants.ENABLE_LOGGING);
+        Logger.logDouble("/arm/analogValue", arm.getAnalogValue(), Constants.ENABLE_LOGGING);
+
+
         return (Math.abs(angle - arm.getAnalogValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
     }
 

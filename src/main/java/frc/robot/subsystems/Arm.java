@@ -50,7 +50,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     if (Constants.ARM_DEBUG) {
 
-      SmartShuffleboard.put("Arm","arm pot", getAnalogValue() * 1000); //I scaled this on the suffleboard to make Lou happy, values used elsewhere are based on raw potentiometer readings (offset from stow position)
+      SmartShuffleboard.put("Arm","arm pot", getAnalogValue() * 42/0.7); //I scaled this on the suffleboard to make Lou happy, values used elsewhere are based on raw potentiometer readings (offset from stow position)
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
@@ -100,6 +100,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setPIDReference(double reference) {
+    reference = reference *42/0.7;
     if ((reference > Constants.NO_EXTENSION_ZONE) || (protectionMechanism.safeToLowerArm())) {
       pidreference = reference;
       pidController.setReference(reference, ControlType.kPosition, 0);

@@ -96,9 +96,9 @@ public final class Constants {
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
 
-  public static final double ARM_MAX_VOLTS = 4.5;
+  public static final double ARM_MAX_VOLTS = 2; //initially 4.5
 
-  public static final double ARM_MOVE_PID_THRESHOLD = 0.03;
+  public static final double ARM_MOVE_PID_THRESHOLD = 2;
   //in inches
   public static final int ARM_HEIGHT = 47;
 
@@ -116,7 +116,7 @@ public final class Constants {
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
   public static final double ARM_OUT_ROBOT_MIN = 6;
 
-  public static final double NO_EXTENSION_ZONE = 0.24; //max arm angle for no extension
+  public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
   public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
@@ -155,7 +155,7 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
-  public static final double ARM_AUTO_VOLTAGE_UP = 4d;
+  public static final double ARM_AUTO_VOLTAGE_UP = 2.5d;
   public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
   public static final double ARM_AUTO_VOLTAGE = 3d;
 
