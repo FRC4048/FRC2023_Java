@@ -11,7 +11,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 /** An example command that uses an example subsystem. */
 public class DoNothing extends SequentialCommandGroup {
   public DoNothing(Arm arm, Extender extender, Drivetrain drivetrain) {
-    setName("DoNothing");
+    setName("DoNothingSequence");
     addCommands(
     new InstantCommand(drivetrain::stopMotors, drivetrain),
     new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),

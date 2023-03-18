@@ -15,13 +15,13 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class Stow extends SequentialCommandGroup {
 
     public Stow (Arm arm, GripperSubsystem gripper, Extender extender){
-        setName("Stow");
+        setName("StowSequence");
         addCommands(
             new ExtendToPosition(extender, 0).withTimeout(3),
             new ParCommandGroupWrapper(new ParallelCommandGroup(
                 new CloseGripper(gripper).withTimeout(3),
-                new VoltageMoveArm(arm, 0.0, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3))
-            ),
+                new VoltageMoveArm(arm, 0.0, Constants.ARM_STOW_SPEED, 0.0).withTimeout(3)
+                ), "ArmStowParCommand"),
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender))
         );  
     }

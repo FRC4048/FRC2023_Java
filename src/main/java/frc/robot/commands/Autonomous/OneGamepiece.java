@@ -21,17 +21,17 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class OneGamepiece extends SequentialCommandGroup{
     
     public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
-        setName("OneGamepeice");
+        setName("OneGamepeiceSequence");
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
         new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
         new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
-            new SequentialCommandGroup(
+            new SequentialCommandGroupWrapper(new SequentialCommandGroup(
                 new ExtendToPosition(extender, ArmPositionGrid.TOP_LEFT.getExtenderPosition()),
                 new OpenGripper(gripper)
-            ),
+            ), "DropGamePieceSequence"),
             new HoldArmPID(arm, ArmPositionGrid.TOP_LEFT.getArmPosition())
-        )),
+        ), "DepositGamePieceParRace"),
 
         new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
         new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),

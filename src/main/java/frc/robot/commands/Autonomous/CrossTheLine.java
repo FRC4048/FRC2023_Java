@@ -11,7 +11,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class CrossTheLine extends SequentialCommandGroup {
     
     public CrossTheLine (Drivetrain drivetrain, Arm arm, Extender extender, AutonomousChooser.Location location) {
-        setName("CrossTheLine");
+        setName("CrossTheLineSequence");
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
             new MoveDistanceSpinTraj(drivetrain, 4, 0, Math.toRadians(180))

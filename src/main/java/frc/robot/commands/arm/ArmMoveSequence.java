@@ -27,7 +27,7 @@ public class ArmMoveSequence extends SequentialCommandGroup {
                 new ParCommandGroupWrapper(new ParallelCommandGroup(
                     new HoldArmPID(arm,armTargetPosition),
                     new ExtendToPosition(extender,extenderTargetPosition)
-                ))
+                ), "ArmPositionParCommand")
             );
         } else {
             addCommands(

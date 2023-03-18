@@ -9,7 +9,7 @@ import frc.robot.subsystems.Extender;
 
 public class ResetEncoders extends SequentialCommandGroup{
     public ResetEncoders (Arm arm, Extender extender){
-        setName("ResetEncoders");
+        setName("ResetEncodersSequence");
         addCommands(
                 new ResetExtenderEncoder(extender),
                 new ResetArm(arm),

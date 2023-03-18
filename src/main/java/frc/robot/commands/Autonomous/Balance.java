@@ -13,7 +13,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class Balance extends SequentialCommandGroup {
 
     public Balance(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, AutonomousChooser.Location location) {
-        setName("Balance");
+        setName("BalanceSequence");
 
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),

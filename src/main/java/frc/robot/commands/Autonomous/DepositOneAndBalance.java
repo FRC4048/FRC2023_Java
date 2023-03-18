@@ -22,17 +22,17 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class DepositOneAndBalance extends SequentialCommandGroup {
     
     public DepositOneAndBalance (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
-        setName("DepositOneAndBalance");
+        setName("DepositOneAndBalanceSequence");
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
             new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
-                new SequentialCommandGroup(
+                new SequentialCommandGroupWrapper(new SequentialCommandGroup(
                     new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
                     new OpenGripper(gripper)
-                ),
+                ), "DropGamePieceSequence"),
                 new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
-            )),
+            ), "DepositGamePieceParRace"),
 
             new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
             new MoveDistanceSpinTraj(drivetrain, 0.1, yChange, Math.toRadians(180)),

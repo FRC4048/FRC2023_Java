@@ -25,7 +25,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class StationPickupManual extends SequentialCommandGroup {
   /** Creates a new StationPickupManual. */
   public StationPickupManual(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
-    setName("StationPickupManual");
+    setName("StationPickupManualSequence");
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -37,9 +37,9 @@ public class StationPickupManual extends SequentialCommandGroup {
                      new OpenGripper(gripper),
                      new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION) 
                      // new CloseGripper(gripper)
-                 )
+                 ), "StationPickupManualPositionSequence"
              )
              // new Stow(arm, gripper, extender)
-    )));
+    ), "StationPickupManualParRace"));
   }
 }
