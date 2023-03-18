@@ -8,16 +8,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.SmartShuffleboard;
 
 public class CrossPanel extends CommandBase {
   /** Creates a new DriveOverPanel. */
   private Drivetrain drivetrain;
   private boolean climbing;
-  private double speed;
-  private float climbDir;
   private boolean crossed;
-  private boolean down;
   private double startTime;
+  private int counter;
 
   public CrossPanel(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,47 +29,37 @@ public class CrossPanel extends CommandBase {
   public void initialize() {
     climbing = false;
     crossed = false;
-    down = false;
     startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((Math.abs(drivetrain.getFilterRoll()) > 10) && !climbing) {
-      climbing = true;
-      climbDir = drivetrain.getFilterRoll();
-    }
-    
-    if ((Math.signum(-drivetrain.getFilterRoll()) == Math.signum(climbDir)) && 
-         Math.abs(drivetrain.getFilterRoll()) > 10) {
-          climbing = false;
-          crossed = true;
-    }
+    counter = !climbing ? (Math.abs(drivetrain.getFilterRoll()) > 5 ? counter + 1 : 0) : (Math.abs(drivetrain.getFilterRoll()) < 2 ? counter + 1 : 0);
 
-    if (!down) {
-      speed = 1;
-    } else {
-      speed = .6;
-    }
+    climbing = !climbing ? (counter > Constants.CROSS_CLIMB) : climbing;
 
-    if ((drivetrain.getFilterRoll() < 7 && drivetrain.getFilterRoll() > -7) && climbing) {
-      speed = 0.05;
-      down = true;
-    }
+    crossed = (counter > Constants.CROSS_END) && climbing;
 
-    drivetrain.drive(speed, 0, 0, true);
+    drivetrain.drive(.6, 0, 0, true);
+
+    SmartShuffleboard.put("Cross", "Counter", "Counter", counter);
+    SmartShuffleboard.put("Cross", "Climbing", "Climbing", climbing);
+    SmartShuffleboard.put("Cross", "Crossed", "Crossed", crossed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.drive(0, 0, 0, true);
+    drivetrain.stopMotors();
+    SmartShuffleboard.put("Cross", "Counter", "Counter", counter);
+    SmartShuffleboard.put("Cross", "Climbing", "Climbing", climbing);
+    SmartShuffleboard.put("Cross", "Crossed", "Crossed", crossed);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (crossed && Math.abs(drivetrain.getFilterRoll()) < .7) || ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);
+    return crossed || ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);
   }
 }

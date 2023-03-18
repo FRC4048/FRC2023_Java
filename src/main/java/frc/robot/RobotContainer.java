@@ -30,6 +30,8 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.CrossAndBalance;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
@@ -133,7 +135,7 @@ public class RobotContainer {
 
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
-    controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)));
+    controller.button(XboxController.Button.kB.value).onTrue(/*new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender))*/ new CrossAndBalance(drivetrain));
     controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper)));
     controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new StationPickupManual(drivetrain, arm, extender, gripper))));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
@@ -158,7 +160,7 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    
+
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
 
