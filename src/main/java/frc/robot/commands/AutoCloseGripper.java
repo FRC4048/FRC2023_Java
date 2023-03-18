@@ -37,14 +37,14 @@ public class AutoCloseGripper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (arm.getRange() < 10) {
+    if (arm.getRange() > 0 && arm.getRange() < 10) {
       cycleCounter++;
     } else {
       cycleCounter = 0;
     }
 
     if (cycleCounter > Constants.AUTO_CLOSE_GRIP_CYCLES) {
-      //new CloseGripper(gripper).schedule();
+      new CloseGripper(gripper).schedule();
       overSubstation = true;
     }
     SmartShuffleboard.put("Arm", "Gripper Close", overSubstation);

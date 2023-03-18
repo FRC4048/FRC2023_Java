@@ -132,7 +132,8 @@ public class RobotContainer {
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
-    controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
+    //controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
+    controller.button(XboxController.Button.kA.value).onTrue(new AutoCloseGripper(arm, gripper)); //temp
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
