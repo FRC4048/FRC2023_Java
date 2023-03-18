@@ -277,6 +277,8 @@ public class Drivetrain extends SubsystemBase{
     gyroEntry.setDouble(gyroValue);
     Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
 
+    gyroEntry.setDouble(getNavxGyroValue());
+
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
     SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
@@ -391,7 +393,7 @@ public class Drivetrain extends SubsystemBase{
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
-    navxGyro.getFusedHeading();
+    //navxGyro.getFusedHeading();
   }
   
   public double getGyroOffset() {
