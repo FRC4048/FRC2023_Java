@@ -7,7 +7,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class MoveDistanceOffset extends CommandBase{
     private Drivetrain drivetrain;
-    private double changeX, changeY, startPosX, startPosY, speedX, speedY, maxSpeed, startTime;
+    private double changeX, changeY, startPosX, startPosY, speedX, speedY, maxSpeed, startTime, ratioCalc;
     
 
     public MoveDistanceOffset(Drivetrain drivetrain, double changeX, double changeY, double maxSpeed) {
@@ -26,13 +26,15 @@ public class MoveDistanceOffset extends CommandBase{
         startPosX = drivetrain.getPoseX();
         startPosY = drivetrain.getPoseY();
 
-        if(changeX > changeY) {
-            speedX = maxSpeed;
-            speedY = speedX * (changeY/changeX);
+        if(Math.abs(changeX) > Math.abs(changeY)) {
+            speedX = Math.signum(changeX) * maxSpeed;
+            ratioCalc = changeX/maxSpeed;
+            speedY = changeY/ratioCalc;
         }
         else {
-            speedY = maxSpeed;
-            speedX = speedY * (changeX/changeY);
+            speedY = Math.signum(changeY) * maxSpeed;
+            ratioCalc = changeY/maxSpeed;
+            speedX = changeX/ratioCalc;
         }
         
     }
@@ -49,7 +51,7 @@ public class MoveDistanceOffset extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        if(Math.abs(startPosX - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE && Math.abs(startPosY - drivetrain.getPoseY()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE) {
+        if(Math.abs(startPosX - drivetrain.getPoseX()) > Math.abs(changeX) && Math.abs(startPosY - drivetrain.getPoseY()) > Math.abs(changeY)) {
             return true;
         }
         return (Timer.getFPGATimestamp() - startTime) > Constants.MOVE_OFFSET_TIMEOUT;
