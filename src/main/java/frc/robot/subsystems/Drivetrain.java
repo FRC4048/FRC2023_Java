@@ -266,6 +266,8 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
+    SmartShuffleboard.put("Balance", "Roll", "Roll", filterRoll);
+
     double gyroValue = getGyro();
     gyroEntry.setDouble(gyroValue);
     Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);

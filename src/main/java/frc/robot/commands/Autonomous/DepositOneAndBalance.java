@@ -9,7 +9,7 @@ import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.Arm;
@@ -36,7 +36,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
 
             new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
             new MoveDistanceSpinTraj(drivetrain, 0.1, yChange, Math.toRadians(180)),
-            new SequentialCommandGroupWrapper(new AutoBalanceSequence(drivetrain, arm, extender))
+            new PIDBalanceSequence(drivetrain, true)
         );
 
     }
