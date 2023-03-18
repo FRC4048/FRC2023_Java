@@ -7,20 +7,15 @@
 
 package frc.robot.utils.logging.wrappers;
 
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.StringLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.utils.logging.Logging;
-import frc.robot.utils.logging.Logging.MessageLevel;
-
 import java.util.Set;
 import java.util.TreeSet;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.utils.Logger;
+
 public class LogCommandWrapper extends CommandBase {
-  private StringLogEntry initializeEntry;
-  private StringLogEntry endEntry;
   private Command command;
   private String ident;
   private final Set<String> requirements = new TreeSet<String>();
@@ -36,15 +31,12 @@ public class LogCommandWrapper extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.command = command;
     this.ident = ident;
-    DataLog log = DataLogManager.getLog();
-    this.initializeEntry = new StringLogEntry(log, ident+"-initialize");
-    this.endEntry = new StringLogEntry(log, ident+"-end");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.initializeEntry.append("Initializing");
+    Logger.logBoolean("/Commands/" + ident, true, Constants.ENABLE_LOGGING);
     command.initialize();
   }
 
@@ -57,7 +49,7 @@ public class LogCommandWrapper extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.endEntry.append("Ending");
+    Logger.logBoolean("/Commands/" + ident, false, Constants.ENABLE_LOGGING);
     command.end(interrupted);
   }
 
