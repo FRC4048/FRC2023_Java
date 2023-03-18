@@ -45,6 +45,6 @@ public class StationMoveBack extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(startPos - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
+    return (Math.abs(startPos - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE) || ((Timer.getFPGATimestamp() - startTime) > Constants.SUBSTATION_DRIVE_BACK_TIMEOUT);
   }
 }
