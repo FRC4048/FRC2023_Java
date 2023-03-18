@@ -144,12 +144,16 @@ public class Drivetrain extends SubsystemBase{
     setGyroOffset(180);
   }
 
-  private double getNavxGyroValue() {
+  public double getNavxGyroValue() {
     return navxGyroValue;
   }
   
   public double getGyro() {
     return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
+  }
+
+  private AHRS getGyroObject() {
+    return navxGyro;
   }
 
   public float getRoll() {
