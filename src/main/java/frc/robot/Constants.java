@@ -21,7 +21,7 @@ public final class Constants {
   public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
-  
+
   public static final boolean ENABLE_LOGGING = true;
 
   //JOYSTICKS
@@ -205,6 +205,9 @@ public final class Constants {
   public static final int CONE_ID = 2;
   public static final int CUBE_ID = 1;
   public static final int ROBOT_ID = 7;
+
+  //MoveCommand Timeouts
+  public static final double MOVE_OFFSET_TIMEOUT = 5.0;
 
   public static final String PHOTON_VISION_ID = "photonvision";
   public static final String PHOTON_CAMERA_ID = "camera0";

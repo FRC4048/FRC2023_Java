@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Autonomous.MoveDistanceOffset;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.ChangeLedID;
 import frc.robot.commands.GyroOffseter;
@@ -110,7 +111,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton, joystickRightButton));
 
     UsbCamera camera = CameraServer.startAutomaticCapture(0);
-    
+
   }
 
 
@@ -138,7 +139,7 @@ public class RobotContainer {
     //arm move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     controller.axisLessThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    
+
     //extender move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> -Constants.EXTENDER_MANUAL_SPEED));
     controller.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> Constants.EXTENDER_MANUAL_SPEED));
@@ -148,12 +149,13 @@ public class RobotContainer {
     controller.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new SetLEDID(ledPanel, Constants.CUBE_ID));
     controller.button(XboxController.Button.kLeftStick.value).onTrue(new SetLEDID(ledPanel, Constants.ROBOT_ID));
     controller.button(XboxController.Button.kRightStick.value).onTrue(new ChangeLedID(ledPanel, 1));
-  
+
     manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    
+
+
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
 
@@ -162,6 +164,13 @@ public class RobotContainer {
   }
 
   public void putShuffleboardCommands() {
+    SmartShuffleboard.putCommand("MDO", "1, 1", new MoveDistanceOffset(drivetrain, 1, 1, 0.5));
+    SmartShuffleboard.putCommand("MDO", "-1, -1", new MoveDistanceOffset(drivetrain, -1, -1, 0.5));
+    SmartShuffleboard.putCommand("MDO", "-1, 1", new MoveDistanceOffset(drivetrain, -1, 1, 0.5));
+    SmartShuffleboard.putCommand("MDO", "1, -1", new MoveDistanceOffset(drivetrain, 1, -1, 0.5));
+
+
+
     if (Constants.EXTENDER_DEBUG) {
       SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
       SmartShuffleboard.putCommand("Extender", "Set position=4000", new ExtendToPosition(extender, 4000));

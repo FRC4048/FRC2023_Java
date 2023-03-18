@@ -1,24 +1,26 @@
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class MoveDistanceOffset extends CommandBase{
     private Drivetrain drivetrain;
-    private double changeX, changeY, startPosX, startPosY, speedX, speedY, maxSpeed;
+    private double changeX, changeY, startPosX, startPosY, speedX, speedY, maxSpeed, startTime;
+    
 
-    public MoveDistanceOffset(Drivetrain drivetrain, double changeX, double changeY, double speedX, double speedY, double speed, double maxSpeed) {
+    public MoveDistanceOffset(Drivetrain drivetrain, double changeX, double changeY, double maxSpeed) {
         this.drivetrain = drivetrain;
         this.changeX = changeX;
         this.changeY = changeY;
-        this.speedX = speedX;
-        this.speedY = speedY;
         this.maxSpeed = maxSpeed;
     }
 
     @Override
     public void initialize() {
+        startTime = Timer.getFPGATimestamp();
+
         startPosX = drivetrain.getPoseX();
         startPosY = drivetrain.getPoseY();
 
@@ -48,6 +50,6 @@ public class MoveDistanceOffset extends CommandBase{
         if(Math.abs(startPosX - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE && Math.abs(startPosY - drivetrain.getPoseY()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE) {
             return true;
         }
-        return false;
+        return (Timer.getFPGATimestamp() - startTime) > Constants.MOVE_OFFSET_TIMEOUT;
     }
 }
