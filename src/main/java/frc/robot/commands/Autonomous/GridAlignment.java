@@ -15,6 +15,7 @@ import frc.robot.subsystems.PieceGrid;
 public class GridAlignment extends SequentialCommandGroup {
 
   public GridAlignment(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain, PieceGrid pieceGrid, ArmPositionGrid gridSlot) {
+    setName("DepositOneAndBalanceSequence");
     new AlignAprilTag(photonSubsystem, drivetrain, pieceGrid);
     new WaitCommand(1);// Just to be safe, also placeholder
     new SetGridSlot(pieceGrid, gridSlot);

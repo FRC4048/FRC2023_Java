@@ -121,15 +121,15 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    controller.povUpLeft().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.TOP_LEFT));
-    controller.povLeft().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.MIDDLE_LEFT));
-    controller.povDownLeft().onTrue(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.DOWN_LEFT));
-    controller.povUp().onTrue(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.TOP_MIDDLE));
-    controller.back().onTrue(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.MIDDLE_MIDDLE));
-    controller.povDown().onTrue(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.DOWN_MIDDLE));
-    controller.povUpRight().onTrue(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.TOP_RIGHT));
-    controller.povRight().onTrue(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
-    controller.povDownRight().onTrue(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.DOWN_RIGHT));
+    controller.povUpLeft().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.TOP_LEFT)));
+    controller.povLeft().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.MIDDLE_LEFT)));
+    controller.povDownLeft().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain, pieceGrid, ArmPositionGrid.DOWN_LEFT)));
+    controller.povUp().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.TOP_MIDDLE)));
+    controller.back().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.MIDDLE_MIDDLE)));
+    controller.povDown().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.DOWN_MIDDLE)));
+    controller.povUpRight().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.TOP_RIGHT)));
+    controller.povRight().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.MIDDLE_RIGHT)));
+    controller.povDownRight().onTrue(new SequentialCommandGroupWrapper(new GridAlignment(photonSubsystem, drivetrain,pieceGrid, ArmPositionGrid.DOWN_RIGHT)));
 
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
