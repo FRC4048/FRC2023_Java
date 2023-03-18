@@ -9,11 +9,12 @@ import frc.robot.subsystems.PieceGrid;
 
 public class AlignAprilTag extends CommandBase {
 
-  private Pose2d robotFieldPose2d;
-  private Pose3d tagPose2d;
+  private Pose2d robotFieldPose;
+  private Pose3d tagPose;
   private MoveDistanceSpinTraj moveDistanceSpinTraj; //This is needed ignore the warning
   private PhotonCameraSubsystem photonSubsystem;
   private Drivetrain drivetrain;
+  private double desiredYChange;
   PieceGrid pieceGrid;
 
   /**
@@ -32,10 +33,10 @@ public class AlignAprilTag extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    robotFieldPose2d = photonSubsystem.getRobot2dFieldPose();
-    tagPose2d = photonSubsystem.getTargetFieldPose();
-    if (robotFieldPose2d != null) {
-      double desiredYChange = tagPose2d.getY() - robotFieldPose2d.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); // TODO: Check math on this
+    robotFieldPose = photonSubsystem.getRobot2dFieldPose();
+    tagPose = photonSubsystem.getTargetFieldPose();
+    if (robotFieldPose != null) {
+      desiredYChange = tagPose.getY() - robotFieldPose.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); // TODO: Check math on this
       moveDistanceSpinTraj = new MoveDistanceSpinTraj(drivetrain, 0.0, desiredYChange, Math.PI);
     }
   }
