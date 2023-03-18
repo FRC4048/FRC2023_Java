@@ -26,7 +26,7 @@ public class AprilTagPoseFilter {
     }
 
     /**
-     * ONLY TO BE USED FOR UNIT TESTS
+     * Checks if the inputed value should be filtered or not using the tolerence given and the average of the last few values
      * 
      * @param averageLast average of the past few values
      * @param input       new value to check if valid or not
@@ -55,8 +55,8 @@ public class AprilTagPoseFilter {
             values.addLast(newInput);
         }
         double intermediateAverage = 0;
-        for (int temp = values.size(); temp > 0; temp--) {
-            intermediateAverage = intermediateAverage + values.get(temp);
+        for (int i = values.size(); i > 0; i--) {
+            intermediateAverage = intermediateAverage + values.get(i);
         }
         intermediateAverage = intermediateAverage / values.size();
         average = intermediateAverage;
@@ -78,5 +78,16 @@ public class AprilTagPoseFilter {
      */
     public double getAverage() {
         return average;
+    }
+
+    /**
+     * @return The last values used when doing calculations in the order {oldest value, 2nd oldest value, ... 2nd newest value, newest value}
+     */
+    public double[] getValuesInFilter() {
+        double[] output = new double[values.size() - 1];
+        for (int i = 0; i >= (values.size() - 1); i++) {
+            output[i] = values.get(i);
+        }
+        return output;
     }
 }

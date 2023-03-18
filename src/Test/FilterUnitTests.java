@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.beans.Transient;
+
 import edu.wpi.first.util.CircularBuffer;
 
 public class FilterUnitTests {
     @Test
     public void testBasicFilter() {
-       Filter filter = new Filter(3, 5);
+        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 5);
 
        double result = filter.calculate(50);
        assertEquals(50, result, .001);
@@ -44,7 +46,7 @@ public class FilterUnitTests {
 
     @Test 
     public void testIsValid() {
-        Filter filter = new Filter(3, 50);
+        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 50);
         filter.calculate(50);
         filter.calculate(50);
         filter.calculate(50);
@@ -64,7 +66,7 @@ public class FilterUnitTests {
 
     @Test
     public void testNegativeFilter() {
-        Filter filter = new Filter(3, 10);
+        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 10);
         filter.calculate(10);
         filter.calculate(0);
         filter.calculate(-1);
@@ -83,5 +85,25 @@ public class FilterUnitTests {
         double avg = filter.getAverage();
         System.out.println(avg);
         assertEquals(-10, avg, 0.0001);
+    }
+
+    @Test
+    public void testFilterInput() {
+        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 10);
+        filter.calculate(10);
+        filter.calculate(0);
+        filter.calculate(-1);
+        filter.calculate(-1);
+        filter.calculate(-1);
+        filter.calculate(0);
+        filter.calculate(0);
+        filter.calculate(0);
+        filter.calculate(1);
+        filter.calculate(2);
+        filter.calculate(3);
+        double[] input = filter.getValuesInFilter();
+        assertEquals(1, input[1], 0.01);
+        assertEquals(2, input[2], 0.01);
+        assertEquals(3, input[3], 0.01);
     }
 }
