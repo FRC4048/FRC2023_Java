@@ -21,7 +21,7 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 public class OneGamepiece extends SequentialCommandGroup{
     
     public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
-        setName("OneGamepeiceSequence");
+        setName("OneGamepieceSequence");
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
         new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
