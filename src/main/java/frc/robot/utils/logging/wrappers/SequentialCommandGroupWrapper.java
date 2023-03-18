@@ -7,9 +7,7 @@ package frc.robot.utils.logging.wrappers;
 import java.util.Set;
 import java.util.TreeSet;
 
-import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -32,7 +30,6 @@ public class SequentialCommandGroupWrapper extends CommandGroupBase {
   public SequentialCommandGroupWrapper(SequentialCommandGroup seqCommandGroup, String ident) {
     this.seqCommandGroup = seqCommandGroup;
     this.ident = ident;
-    DataLog log = DataLogManager.getLog();
   }
 
   /* Overide events for logging */

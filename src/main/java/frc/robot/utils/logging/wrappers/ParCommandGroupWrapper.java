@@ -11,8 +11,8 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.utils.logging.Logging;
+import frc.robot.Constants;
+import frc.robot.utils.Logger;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -32,20 +32,11 @@ public class ParCommandGroupWrapper extends CommandGroupBase {
     this.ident = ident;
   }
 
-  /* Define how to log events */
-  private void log(final String text) {
-  final StringBuilder sb = new StringBuilder();
-  sb.append(this.getClass().getSimpleName());
-  sb.append(" ");
-  sb.append(ident);
-  Logging.instance().traceMessage(Logging.MessageLevel.INFORMATION, sb.toString(), requirements.toString(), text);
-  }
-
   /* Overide events for logging */
   // Called once the command ends or is interrupted.
   @Override
   public void initialize() {
-    log("initialize");
+    Logger.logBoolean("/Commands/" + ident, true, Constants.ENABLE_LOGGING);
     parallelCommandGroup.initialize();
   }
 
@@ -56,6 +47,7 @@ public class ParCommandGroupWrapper extends CommandGroupBase {
 
   @Override
   public final void end(boolean interrupted) {
+    Logger.logBoolean("/Commands/" + ident, false, Constants.ENABLE_LOGGING);
     parallelCommandGroup.end(interrupted);
   }
 
