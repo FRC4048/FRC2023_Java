@@ -36,7 +36,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
 
             new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
             new MoveDistanceSpinTraj(drivetrain, 0.1, yChange, Math.toRadians(180)),
-            new PIDBalanceSequence(drivetrain, true)
+            new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true))
         );
 
     }

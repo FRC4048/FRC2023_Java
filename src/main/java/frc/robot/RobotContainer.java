@@ -177,7 +177,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
 
-    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new PIDBalanceSequence(drivetrain, true));
+    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true)));
     //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
   }
 
