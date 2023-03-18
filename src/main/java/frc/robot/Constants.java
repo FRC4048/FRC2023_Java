@@ -54,9 +54,9 @@ public final class Constants {
 
   //EXTENDER
   public static final int EXTENDER_RESET_TIMEOUT = 2;
+  public static final double EXTEND_TO_POSITION_TIMEOUT = 3;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
   public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
@@ -83,6 +83,7 @@ public final class Constants {
 
   //Arm Constants
   public static final int ARM_RESET_TIMEOUT = 2;
+  public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
@@ -200,6 +201,7 @@ public final class Constants {
   public static final double SUBSTATION_PICKUP_ANGLE = 33.5;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
+  public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
 
   // LED outputs
 

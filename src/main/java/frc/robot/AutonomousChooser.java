@@ -19,6 +19,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class AutonomousChooser {
     private Drivetrain drivetrain;
@@ -153,36 +154,36 @@ public class AutonomousChooser {
         setOdometry(drivetrain, location, action, allianceColor);
 
         if (action == Action.DoNothing) {
-            return new DoNothing(arm, extender, drivetrain);
+            return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
         }
         else if (action == Action.CrossLine) {
             if ((location == Location.Right) || (location == Location.Left)) {
-                return new CrossTheLine(drivetrain, arm, extender, location);
+                return new SequentialCommandGroupWrapper(new CrossTheLine(drivetrain, arm, extender, location));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.OnePieceMoveLeft) {
             if (location == Location.Right) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, 0.2, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 0.2, location));
             }
             else if (location == Location.Left) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, 0.6, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 0.6, location));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.OnePieceMoveRight) {
             if (location == Location.Right) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, -0.6, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -0.6, location));
             }
             else if (location == Location.Left) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, -0.2, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -0.2, location));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.TwoPieceMoveLeft) {
@@ -208,16 +209,16 @@ public class AutonomousChooser {
             }
         }
         else if (action == Action.DepositOneAndBalanceRight && location == Location.Middle) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -0.2, location);
+            return new SequentialCommandGroupWrapper(new DepositOneAndBalance(drivetrain, arm, extender, gripper, -0.2, location));
         }
         else if (action == Action.DepositOneAndBalanceLeft && location == Location.Middle) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 0.2, location);
+            return new SequentialCommandGroupWrapper(new DepositOneAndBalance(drivetrain, arm, extender, gripper, 0.2, location));
         }
         else if (action == Action.Balance && location == Location.Middle) {
-            return new Balance(drivetrain, arm, extender, gripper, location);
+            return new SequentialCommandGroupWrapper(new Balance(drivetrain, arm, extender, gripper, location));
         }
         else {
-            return new DoNothing(arm, extender, drivetrain);
+            return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
         }
     }
 }
