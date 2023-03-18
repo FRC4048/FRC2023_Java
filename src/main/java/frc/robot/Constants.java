@@ -183,6 +183,7 @@ public final class Constants {
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
 
   //chargestation
+
   public static final double BALANCE_STEEP_SPEED = .7;
   public static final double BALANCE_LOW_SPEED = .07;
   public static final double BALANCE_HIGH_SPEED = 0.25;
@@ -190,6 +191,7 @@ public final class Constants {
   public static final double CHARGESTATION_TIMEOUT = 10;
   public static final float BALANCE_kP = (float) 0.02;
   public static final double BALANCE_THRESH = 2; //consider balanced within +-2 degrees of 0
+  public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 33.5;

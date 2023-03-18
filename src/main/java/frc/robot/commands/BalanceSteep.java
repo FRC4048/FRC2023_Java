@@ -36,13 +36,13 @@ public class BalanceSteep extends CommandBase {
     SmartShuffleboard.put("Balance", "Steep End", "Steep End", counter > Constants.BALANCE_END);
     SmartShuffleboard.put("Balance", "Steep Counter", "Steep Counter", counter);
 
-    counter = Math.abs(drivetrain.getFilterRoll()) > 10 ? counter + 1 : 0;
+    counter = Math.abs(drivetrain.getFilterRoll()) > Constants.BALANCE_STEEP ? counter + 1 : 0;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.drive(0, 0, 0, true);
+    drivetrain.stopMotors();
     SmartShuffleboard.put("Balance", "Steep End", "Steep End", counter > Constants.BALANCE_END);
     SmartShuffleboard.put("Balance", "Steep Counter", "Steep Counter", counter);
   }

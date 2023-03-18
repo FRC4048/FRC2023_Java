@@ -21,9 +21,9 @@ public class PIDBalanceSequence extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new BalanceSteep(drivetrain, forward),
-      new BalancePID(drivetrain)
-      //new LockWheels(drivetrain),
-      //new StopDriveTrain(drivetrain)
+      new BalancePID(drivetrain),
+      new LockWheels(drivetrain),
+      new StopDriveTrain(drivetrain)
     );
   }
 }
