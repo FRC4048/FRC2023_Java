@@ -148,28 +148,12 @@ public class Drivetrain extends SubsystemBase{
     setGyroOffset(180);
   }
 
-  public double getNavxGyroValue() {
+  private double getNavxGyroValue() {
     return navxGyroValue;
   }
   
   public double getGyro() {
     return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
-  }
-
-  public AHRS getGyroObject() {
-    return navxGyro;
-  }
-
-  public double getAccelX() {
-    return navxGyro.getRawAccelX();
-  }
-
-  public double getAccelY() {
-    return navxGyro.getRawAccelY();
-  }
-
-  public double getAccelZ() {
-    return navxGyro.getRawAccelZ();
   }
 
   public float getRoll() {
@@ -296,9 +280,6 @@ public class Drivetrain extends SubsystemBase{
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
-
-    SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
-    SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
 
     if (Constants.DRIVETRAIN_DEBUG) {
