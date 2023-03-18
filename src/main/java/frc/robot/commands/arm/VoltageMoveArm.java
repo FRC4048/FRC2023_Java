@@ -30,7 +30,7 @@ public class VoltageMoveArm extends LoggedCommand {
     @Override
     public void execute() {
         //positive angle -> positive power
-        if (angle > arm.getEncoderValue()) {
+        if (angle > arm.getAnalogValue()) {
             arm.setVoltage(upPower);
         } else {
             arm.setVoltage(-downPower);
@@ -45,7 +45,7 @@ public class VoltageMoveArm extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
+        return (Math.abs(angle - arm.getAnalogValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
     }
 
 
