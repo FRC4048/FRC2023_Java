@@ -3,8 +3,9 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.AutonomousChooser;
-import frc.robot.commands.AutoBalance;
-import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.BalancePID;
+import frc.robot.commands.sequences.CycleBalnceSequence;
+import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -17,7 +18,7 @@ public class Balance extends SequentialCommandGroup {
 
         addCommands(
                 new ResetEncoders(arm, extender),
-                new AutoBalanceSequence(drivetrain, arm, extender)
+                new PIDBalanceSequence(drivetrain, true)
         );
     }
 }
