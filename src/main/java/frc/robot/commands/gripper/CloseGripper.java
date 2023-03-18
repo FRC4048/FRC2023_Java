@@ -15,6 +15,7 @@ public class CloseGripper extends CommandBase {
     private double currentVelocity = 0;
     private Double grabStartTime = null;
 
+
     public CloseGripper(GripperSubsystem gripper) {
         this.gripper = gripper;
         addRequirements(gripper);

@@ -54,9 +54,9 @@ public final class Constants {
 
   //EXTENDER
   public static final int EXTENDER_RESET_TIMEOUT = 2;
+  public static final double EXTEND_TO_POSITION_TIMEOUT = 3;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
   public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
@@ -83,6 +83,7 @@ public final class Constants {
 
   //Arm Constants
   public static final int ARM_RESET_TIMEOUT = 2;
+  public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
@@ -177,6 +178,8 @@ public final class Constants {
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
+  public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 10;
+  public static final int AUTO_CLOSE_GRIP_CYCLES = 5;
   public static final double WANTED_TIME = 0.8;
 
   public static final double DIAG_TALONSRX_ROT = 5;
@@ -185,16 +188,22 @@ public final class Constants {
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
 
   //chargestation
+
   public static final double BALANCE_STEEP_SPEED = .7;
-  public static final double BALANCE_LOW_SPEED = .5;
-  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
-  public static final int CHARGESTATION_BALANCED = 5;
+  public static final double BALANCE_LOW_SPEED = .04;
+  public static final double BALANCE_HIGH_SPEED = 0.15;
+  public static final int BALANCE_PID_END = 50; //amount of cycles we want to be balanced for
+  public static final int BALANCE_STEEP_END = 20;
   public static final double CHARGESTATION_TIMEOUT = 10;
+  public static final float BALANCE_kP = (float) 0.015;
+  public static final double BALANCE_THRESH = 8; //consider balanced within +-2 degrees of 0
+  public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 33.5;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
+  public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
 
   // LED outputs
 

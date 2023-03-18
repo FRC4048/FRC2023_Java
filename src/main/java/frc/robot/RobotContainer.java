@@ -18,11 +18,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceOffset;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.ChangeLedID;
-import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ResetGyro;
-import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
@@ -35,13 +30,15 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.AutoBalanceSequence;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.GroundPickup;
+import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -129,9 +126,9 @@ public class RobotContainer {
 
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
-    controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
-    controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
-    controller.button(XboxController.Button.kX.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
+    controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)));
+    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper)));
+    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new StationPickupManual(drivetrain, arm, extender, gripper))));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
@@ -154,8 +151,7 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-
-
+    
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
 
@@ -177,22 +173,23 @@ public class RobotContainer {
     if (Constants.EXTENDER_DEBUG) {
       SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
       SmartShuffleboard.putCommand("Extender", "Set position=4000", new ExtendToPosition(extender, 4000));
-      SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
+      SmartShuffleboard.putCommand("Extender", "Stow", new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)));
     }
 
     if (Constants.ARM_DEBUG) {
+      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
-      SmartShuffleboard.putCommand("Arm", "GO TO 10", new ArmMoveSequence(arm, extender, 10, 0));
-      SmartShuffleboard.putCommand("Arm", "GO TO 15", new ArmMoveSequence(arm, extender, 15, 0));
-      SmartShuffleboard.putCommand("Arm", "GO TO 25", new ArmMoveSequence(arm, extender, 25, 0));
+      SmartShuffleboard.putCommand("Arm", "GO TO 10", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 10, 0)));
+      SmartShuffleboard.putCommand("Arm", "GO TO 15", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 15, 0)));
+      SmartShuffleboard.putCommand("Arm", "GO TO 25", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 25, 0)));
     }
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
-    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
+    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new AutoBalanceSequence(drivetrain, arm, extender));
-    //SmartShuffleboard.putCommand("Drive", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    //SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
+    SmartShuffleboard.putCommand("Arm", "Auto Close", new AutoCloseGripper(arm, gripper));
+    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true)));
+    //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
   }
 
   /**
