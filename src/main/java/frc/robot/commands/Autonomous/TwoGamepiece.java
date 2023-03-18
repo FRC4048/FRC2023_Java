@@ -12,6 +12,7 @@ import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.Arm;
@@ -51,43 +52,32 @@ public class TwoGamepiece extends SequentialCommandGroup {
                 ), "Moving To Pickup"
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, 2, 0, 0),
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, 9.0),
-
-            new ParRaceCommandGroupWrapper(
-                new ParallelRaceGroup(
-                    new ParCommandGroupWrapper(
-                        new ParallelCommandGroup(
-                            new ExtendToPosition(extender, ArmPositionGrid.DOWN_RIGHT.getExtenderPosition()),
-                            new OpenGripper(gripper)
-                        ), "Extend To pickup"
-                    ),
-                    new HoldArmPID(arm, ArmPositionGrid.DOWN_RIGHT.getArmPosition())
-                ), "Picking Up"
-            ),
+            new MoveDistanceSpinTraj(drivetrain, 5, 0, 0),
+            
+            new GroundPickup(arm, extender, gripper),
 
             new CloseGripper(gripper),
 
             new ParCommandGroupWrapper(
-                new ParallelCommandGroup( 
-                    new Stow(arm, gripper, extender),
-                    new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
-                ), "Move Back To Grid"
-            ),
-            //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
-            new ParRaceCommandGroupWrapper(
-                new ParallelRaceGroup(
-                    new ParCommandGroupWrapper(
-                        new ParallelCommandGroup(
-                            new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
-                            new OpenGripper(gripper)
-                        ), "Extend To Drop Off"
-                    ),
-                    new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
-                ), "Drop Off On Grid"
-            ),
-            new Stow(arm, gripper, extender)
+                 new ParallelCommandGroup( 
+                    new Stow(arm, gripper, extender)
+                     //new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
+                 ), "Move Back To Grid"
+             )
+            // //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
+            // new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
+            // new ParRaceCommandGroupWrapper(
+            //     new ParallelRaceGroup(
+            //         new ParCommandGroupWrapper(
+            //             new ParallelCommandGroup(
+            //                 new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
+            //                 new OpenGripper(gripper)
+            //             ), "Extend To Drop Off"
+            //         ),
+            //         new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
+            //     ), "Drop Off On Grid"
+            // ),
+            // new Stow(arm, gripper, extender)
         );
     }
 }
