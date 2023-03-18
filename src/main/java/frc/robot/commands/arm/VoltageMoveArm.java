@@ -1,12 +1,11 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
-import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class VoltageMoveArm extends CommandBase {
+public class VoltageMoveArm extends LoggedCommand {
 
     private Arm arm;
     private double upPower;
@@ -24,6 +23,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public void initialize() {
+        super.initialize();
         startTime = Timer.getFPGATimestamp();
     }
 
@@ -39,6 +39,7 @@ public class VoltageMoveArm extends CommandBase {
 
     @Override
     public void end(boolean Interrupted) {
+        super.end(Interrupted);
         arm.setVoltage(0.0);
     }
 

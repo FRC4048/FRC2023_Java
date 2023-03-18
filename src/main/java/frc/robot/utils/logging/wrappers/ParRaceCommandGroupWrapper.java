@@ -4,9 +4,6 @@
 
 package frc.robot.utils.logging.wrappers;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
@@ -20,7 +17,6 @@ import frc.robot.utils.Logger;
 public class ParRaceCommandGroupWrapper extends CommandGroupBase {
   private ParallelRaceGroup ParRaceGroup;
   private String ident;
-  private final Set<String> requirements = new TreeSet<String>();
 
   /* Creates a new Wrapper. */
   public ParRaceCommandGroupWrapper(ParallelRaceGroup ParRaceGroup) {
@@ -30,6 +26,7 @@ public class ParRaceCommandGroupWrapper extends CommandGroupBase {
   public ParRaceCommandGroupWrapper(ParallelRaceGroup ParRaceGroup, String ident) {
     this.ParRaceGroup = ParRaceGroup;
     this.ident = ident;
+    m_requirements.addAll(ParRaceGroup.getRequirements());
   }
   
   /* Overide events for logging */

@@ -4,9 +4,6 @@
 
 package frc.robot.utils.logging.wrappers;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
@@ -20,7 +17,6 @@ import frc.robot.utils.Logger;
 public class ParDeadlineCommandGroupWrapper extends CommandGroupBase {
   private ParallelDeadlineGroup seqCommandGroup;
   private String ident;
-  private final Set<String> requirements = new TreeSet<String>();
 
   /* Creates a new SequentialCommandGroupWrapper. */
   public ParDeadlineCommandGroupWrapper(ParallelDeadlineGroup seqCommandGroup) {
@@ -30,6 +26,7 @@ public class ParDeadlineCommandGroupWrapper extends CommandGroupBase {
   public ParDeadlineCommandGroupWrapper(ParallelDeadlineGroup seqCommandGroup, String ident) {
     this.seqCommandGroup = seqCommandGroup;
     this.ident = ident;
+    m_requirements.addAll(seqCommandGroup.getRequirements());
   }
 
   /* Overide events for logging */
