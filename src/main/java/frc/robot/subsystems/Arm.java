@@ -6,34 +6,32 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 
 public class Arm extends SubsystemBase {
-  private double angle;
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
   private double pidreference;
-
-
-private SparkMaxPIDController pidController;
+  private SparkMaxAnalogSensor analogSensor;
+  private SparkMaxPIDController pidController;
   
   public Arm() {
-
-    angle = 0;
-
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();
+    analogSensor = neoMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
@@ -43,23 +41,27 @@ private SparkMaxPIDController pidController;
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Retracted Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.REVERSE));
 
-
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
-
   }
 
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
+
+      SmartShuffleboard.put("Arm","arm pot", getAnalogValue() * 1000); //I scaled this on the suffleboard to make Lou happy, values used elsewhere are based on raw potentiometer readings (offset from stow position)
       SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
-      }
+    }
+    Logger.logDouble("/Arm/Encoder", getEncoderValue(), Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/Arm/Pidding", pidding, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/Arm/FwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/Arm/RevLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -69,12 +71,14 @@ private SparkMaxPIDController pidController;
   public boolean isRevLimitSwitchReached() {
     return neoMotor.getReverseLimitSwitch(Type.kNormallyOpen).isPressed();
   }
-  
 
   public double getEncoderValue() {
     return encoder.getPosition();
   }
   
+  public double getAnalogValue(){
+    return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
+  }
 
   public double getAngle() {
     return angle;
@@ -90,6 +94,10 @@ private SparkMaxPIDController pidController;
 
   public void setVoltage(Double val) {
     neoMotor.setVoltage(validateArmVolt(val));
+  }
+
+  public SparkMaxAnalogSensor getAnalogSensor(){
+    return analogSensor;
   }
 
   public void zeroPID() {
