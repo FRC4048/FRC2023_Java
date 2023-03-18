@@ -25,17 +25,16 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
@@ -118,7 +117,6 @@ public class Drivetrain extends SubsystemBase{
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
 
     driverTab = Shuffleboard.getTab("Driver");
-
     gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
 
     rollFilter = new MedianFilter(5);
@@ -284,34 +282,20 @@ public class Drivetrain extends SubsystemBase{
           return m_frontRight.getDriveEncPosition();          
         case Constants.DRIVE_FRONT_LEFT_D:
           return m_frontLeft.getDriveEncPosition();
-            
-        // case Constants.DRIVE_BACK_RIGHT_S:
-        //     m_backRightTurn.set(value);
-        //     break;
-        // case Constants.DRIVE_BACK_LEFT_S:
-        //     m_backLeftTurn.set(value);
-        //     break;
-        // case Constants.DRIVE_FRONT_RIGHT_S:
-        //     m_frontRightTurn.set(value);
-        //     break;
-        // case Constants.DRIVE_FRONT_LEFT_S:
-        //     m_frontLeftTurn.set(value);=
-        //     break;
         default: return CAN;
     }
   }
 
   @Override
   public void periodic() {
-    gyroEntry.setDouble(getGyro());
-
+    double gyroValue = getGyro();
+    gyroEntry.setDouble(gyroValue);
+Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
     SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
     SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
-
-
 
     if (Constants.DRIVETRAIN_DEBUG) {
       SmartShuffleboard.put("Drive", "distance to desired", 2 - poseEstimator.getEstimatedPosition().getX());

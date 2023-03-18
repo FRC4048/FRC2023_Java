@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import frc.robot.utils.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -35,6 +36,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private Alliance currentAlliance;
   private double timestamp;
   private EstimatedRobotPose estimatedPose;
+  private int periodicCounter = 0;
 
   int targetId;
 
@@ -124,12 +126,24 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if (periodicCounter % 5 == 0) {
+      periodicCounter = 0;
+      //continue periodic
+    }
+    else {
+      periodicCounter++;
+      return;  //break out
+    }
+
     updateAlliance();
     calculateUsingEstimator();
     Pose3d pose3dPosition = null;
     if (estimatedPose != null) {
       pose3dPosition = estimatedPose.estimatedPose;
     }
+
+    Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());

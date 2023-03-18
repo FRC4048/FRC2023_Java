@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public final class ProtectionMechanism extends SubsystemBase {
@@ -24,6 +25,9 @@ public final class ProtectionMechanism extends SubsystemBase {
               SmartShuffleboard.put("DEBUG","estAngle", armEncoderToAngle(arm.getEncoderValue()));
               SmartShuffleboard.put("DEBUG","extMax", maxExtenderFromArmAngle(arm.getEncoderValue()));
          }
+         Logger.logBoolean("/protection/safeToExtend", safeToExtend(), Constants.ENABLE_LOGGING);
+         Logger.logBoolean("/protection/safeToLowerArm", safeToLowerArm(), Constants.ENABLE_LOGGING);
+         Logger.logBoolean("/protection/safeToOpenGripper", safeToOpenGripper(), Constants.ENABLE_LOGGING);
      }
 
      public boolean safeToExtend(){
