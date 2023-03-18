@@ -80,14 +80,6 @@ public class Arm extends SubsystemBase {
     return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
   }
 
-  public double getAngle() {
-    return angle;
-  }
-
-  public void setAngle(double angle) {
-    this.angle = angle;
-  }
-
   public void setPidding(boolean bool) {
     pidding = bool;
   }
