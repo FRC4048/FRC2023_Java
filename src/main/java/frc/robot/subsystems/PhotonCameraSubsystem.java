@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import frc.robot.utils.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -22,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.apriltags.AprilTagMap;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PhotonCameraSubsystem extends SubsystemBase {
@@ -84,7 +84,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private void calculateUsingEstimator() {
     if (camera.isConnected()) {
       Optional<EstimatedRobotPose> result = estimator.update();
-      
 
       if (result.isPresent()) {
         estimatedPose = result.get();
@@ -123,15 +122,17 @@ public class PhotonCameraSubsystem extends SubsystemBase {
    * 
    * @return
    */
+
   public Pose2d getRobot2dFieldPose() {
     return robotFieldPose;
+
   }
 
   @Override
   public void periodic() {
 
-    if (periodicCounter % 5 == 0) {
-      periodicCounter = 0;
+    if (periodicCounter % 6 == 0) {
+      periodicCounter = 1;
       //continue periodic
     }
     else {
@@ -147,6 +148,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     }
 
     Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
+    Logger.logInteger("/Vision/tagID", targetId, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());

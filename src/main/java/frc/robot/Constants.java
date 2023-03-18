@@ -21,7 +21,7 @@ public final class Constants {
   public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
-
+  
   public static final boolean ENABLE_LOGGING = true;
 
   //JOYSTICKS
@@ -97,6 +97,8 @@ public final class Constants {
   public static final double ARM_MOVE_PID_THRESHOLD = 2;
   //in inches
   public static final int ARM_HEIGHT = 47;
+
+  public static final int ARM_LOWER_DISTANCE = 3;
 
 
   public static final double WHEEL_RADIUS = 0.0508;
