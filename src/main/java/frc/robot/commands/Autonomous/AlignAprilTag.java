@@ -28,6 +28,7 @@ public class AlignAprilTag extends CommandBase {
     this.photonSubsystem = photonSubsystem;
     this.drivetrain = drivetrain;
     this.pieceGrid = pieceGrid;
+    addRequirements(photonSubsystem, drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +36,7 @@ public class AlignAprilTag extends CommandBase {
   public void initialize() {
     robotFieldPose = photonSubsystem.getRobot2dFieldPose();
     tagPose = photonSubsystem.getTargetFieldPose();
-    if (robotFieldPose != null) {
+    if (robotFieldPose != null && tagPose != null) {
       desiredYChange = tagPose.getY() - robotFieldPose.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); // TODO: Check math on this
       moveDistanceSpinTraj = new MoveDistanceSpinTraj(drivetrain, 0.0, desiredYChange, Math.PI);
     }
