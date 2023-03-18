@@ -189,6 +189,9 @@ public final class Constants {
   public static final int CHARGESTATION_BALANCED = 5;
   public static final double CHARGESTATION_TIMEOUT = 10;
 
+  //luxonis
+  public static final double LUXONIS_THRESH = 0.05;
+
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 33.5;
   public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;

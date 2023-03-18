@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -13,6 +14,8 @@ public class LuxonisAllign extends CommandBase {
   /** Creates a new LuxonisAllign. */
   LuxonisVision luxonisVision;
   Drivetrain drivetrain;
+  int counter;
+  double startTime;
   public LuxonisAllign(LuxonisVision luxonisVision, Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.luxonisVision = luxonisVision;
@@ -22,14 +25,15 @@ public class LuxonisAllign extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //counter = Math.abs(roll) < Constants.LUXONIS_Y_THRESH ? counter + 1 : 0;
+    counter = Math.abs(luxonisVision.getObjectY()) < Constants.LUXONIS_THRESH ? counter + 1 : 0;
 
-    drivetrain.drive(0, Math.signum(luxonisVision.getObjectY() * 0.2), 0, true);
+    drivetrain.drive(0, Math.signum(luxonisVision.getObjectY()) * 0.2, 0, true);
   }
 
   // Called once the command ends or is interrupted.
@@ -41,8 +45,7 @@ public class LuxonisAllign extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
-    //return (counter > Constants.BALANCE_PID_END) || 
-    //       ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);;
+    return (counter > 6) || 
+           ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);
   }
 }
