@@ -14,6 +14,7 @@ import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DepositOneAndBalance;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.commands.Autonomous.OneGamepiece;
+import frc.robot.commands.Autonomous.TwoGamepiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
