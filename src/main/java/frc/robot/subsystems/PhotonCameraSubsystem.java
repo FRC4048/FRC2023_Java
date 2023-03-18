@@ -13,11 +13,15 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.apriltags.AprilTagMap;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PhotonCameraSubsystem extends SubsystemBase {
@@ -32,8 +36,13 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private Alliance currentAlliance;
   private double timestamp;
   private EstimatedRobotPose estimatedPose;
+  private int periodicCounter = 0;
 
   int targetId;
+
+  private NetworkTableEntry cameraLatency;
+
+
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -42,13 +51,15 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       new Rotation3d(0, 0, 0));
 
   public PhotonCameraSubsystem() {
-    camera = new PhotonCamera("camera0");
+    camera = new PhotonCamera(Constants.PHOTON_CAMERA_ID);
     camera.setDriverMode(false);
     currentAlliance = DriverStation.getAlliance();
 
+    NetworkTable cameraTable = NetworkTableInstance.getDefault().getTable(Constants.PHOTON_VISION_ID).getSubTable(Constants.PHOTON_CAMERA_ID);
+    cameraLatency = cameraTable.getEntry(Constants.PHOTON_LATENCY);
+
     layout = AprilTagMap.getAprilTagLayout(currentAlliance);
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
-
   }
 
   private void updateAlliance() {
@@ -60,14 +71,19 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
       SmartShuffleboard.put("AprilTag", "currentAlliance", currentAlliance == Alliance.Red);
     }
-
   }
 
+  /**
+   * Return the camera latency from network tables, will return -1 if no value is available
+   * @return
+   */
+  public double getCameraLatency() {
+    return cameraLatency.getDouble(-1.0);
+  }
 
   private void calculateUsingEstimator() {
     if (camera.isConnected()) {
       Optional<EstimatedRobotPose> result = estimator.update();
-      
 
       if (result.isPresent()) {
         estimatedPose = result.get();
@@ -106,12 +122,24 @@ public class PhotonCameraSubsystem extends SubsystemBase {
    * 
    * @return
    */
+
   public Pose2d getRobot2dFieldPose() {
     return robotFieldPose;
+
   }
 
   @Override
   public void periodic() {
+
+    if (periodicCounter % 6 == 0) {
+      periodicCounter = 1;
+      //continue periodic
+    }
+    else {
+      periodicCounter++;
+      return;  //break out
+    }
+
     updateAlliance();
     calculateUsingEstimator();
     Pose3d pose3dPosition = null;
@@ -119,6 +147,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       pose3dPosition = estimatedPose.estimatedPose;
     }
 
+    Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
+    Logger.logInteger("/Vision/tagID", targetId, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());
