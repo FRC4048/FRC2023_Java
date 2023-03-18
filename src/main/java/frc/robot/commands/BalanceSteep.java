@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public class BalanceSteep extends CommandBase {
@@ -32,10 +33,16 @@ public class BalanceSteep extends CommandBase {
   @Override
   public void execute() {
     double speed = forward ? Constants.BALANCE_STEEP_SPEED : -Constants.BALANCE_STEEP_SPEED;
+
+    Logger.logDouble("/filterRoll", (double) drivetrain.getFilterRoll(), Constants.ENABLE_LOGGING);
+
     drivetrain.drive(speed, 0, 0, true);
-    SmartShuffleboard.put("Balance", "Steep Speed", "Steep Speed", speed);
-    SmartShuffleboard.put("Balance", "Steep End", "Steep End", counter > Constants.BALANCE_STEEP_END);
-    SmartShuffleboard.put("Balance", "Steep Counter", "Steep Counter", counter);
+    
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Balance", "Steep Speed", "Steep Speed", speed);
+      SmartShuffleboard.put("Balance", "Steep End", "Steep End", counter > Constants.BALANCE_STEEP_END);
+      SmartShuffleboard.put("Balance", "Steep Counter", "Steep Counter", counter);
+    }
 
     counter = Math.abs(drivetrain.getFilterRoll()) > Constants.BALANCE_STEEP ? counter + 1 : 0;
   }

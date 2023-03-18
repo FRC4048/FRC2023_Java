@@ -4,11 +4,13 @@
 
 package frc.robot.commands;
 
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public class BalancePID extends CommandBase {
@@ -37,13 +39,17 @@ public class BalancePID extends CommandBase {
     float dir = -Math.signum(roll); //- if battery away + if arm away
     double speed = Math.abs(roll) > Constants.BALANCE_THRESH ? MathUtil.clamp(Math.abs((Math.abs(roll) - Constants.BALANCE_THRESH)) * Constants.BALANCE_kP, Constants.BALANCE_LOW_SPEED, Constants.BALANCE_HIGH_SPEED) : 0;
 
+    Logger.logDouble("/filterRoll", (double) roll, Constants.ENABLE_LOGGING);
+
     counter = Math.abs(roll) < Constants.BALANCE_THRESH ? counter + 1 : 0;
 
     drivetrain.drive(dir * speed, 0, 0, true);
 
-    SmartShuffleboard.put("Balance", "PID End", "PID End", counter > Constants.BALANCE_PID_END);
-    SmartShuffleboard.put("Balance", "PID Counter", "PID Counter", counter);
-    SmartShuffleboard.put("Balance", "PID Speed", "PID Speed", dir * speed);
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Balance", "PID End", "PID End", counter > Constants.BALANCE_PID_END);
+      SmartShuffleboard.put("Balance", "PID Counter", "PID Counter", counter);
+      SmartShuffleboard.put("Balance", "PID Speed", "PID Speed", dir * speed);
+    }
   }
 
   // Called once the command ends or is interrupted.
