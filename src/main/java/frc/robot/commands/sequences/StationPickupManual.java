@@ -11,12 +11,13 @@ import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.drive.StationMoveBack;
 import frc.robot.commands.extender.ExtendToPosition;
-import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -24,20 +25,21 @@ import frc.robot.subsystems.GripperSubsystem;
 public class StationPickupManual extends SequentialCommandGroup {
   /** Creates a new StationPickupManual. */
   public StationPickupManual(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
+    setName("StationPickupManualSequence");
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new StationMoveBack(drivetrain, -0.3).withTimeout(5),
+      new StationMoveBack(drivetrain, -0.3),
       new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE),
-             new ParallelRaceGroup(
+      new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                  new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
-                 new SequentialCommandGroup(
+                 new SequentialCommandGroupWrapper(new SequentialCommandGroup(
                      new OpenGripper(gripper),
                      new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION) 
                      // new CloseGripper(gripper)
-                 )
+                 ), "StationPickupManualPositionSequence"
              )
              // new Stow(arm, gripper, extender)
-    );
+    ), "StationPickupManualParRace"));
   }
 }

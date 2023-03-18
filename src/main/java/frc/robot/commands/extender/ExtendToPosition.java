@@ -1,6 +1,7 @@
 package frc.robot.commands.extender;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
@@ -10,8 +11,7 @@ import frc.robot.utils.SmartShuffleboard;
 public class ExtendToPosition extends CommandBase {
     private Extender extender;
     private double position;
-    private long startTime;
-    private final long timeout = 5000;
+    private double startTime;
 
     public ExtendToPosition(Extender extender, double position) {
         this.extender = extender;
@@ -27,7 +27,7 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public void initialize() {
-        startTime = System.currentTimeMillis();
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -48,6 +48,6 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) || (System.currentTimeMillis() - startTime >= timeout);
+        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.EXTEND_TO_POSITION_TIMEOUT);
     }
 }

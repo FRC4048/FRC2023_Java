@@ -1,28 +1,28 @@
 package frc.robot.commands.arm;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.PieceGrid;
-import frc.robot.utils.logging.wrappers.LoggedCommand;
-import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
-public class MoveArmToGridPosition extends LoggedCommand {
+public class SlightLowerArm extends CommandBase {
      private Arm arm;
      private Extender extender;
      private PieceGrid pieceGrid;
 
-     public MoveArmToGridPosition(Arm arm, Extender extender, PieceGrid pieceGrid) {
+     public SlightLowerArm(Arm arm, Extender extender, PieceGrid pieceGrid) {
           this.arm = arm;
           this.extender = extender;
           this.pieceGrid = pieceGrid;
-          setName("MoveArmToGridPosition");
      }
 
      @Override
      public void initialize() {
-          super.initialize();
-          CommandScheduler.getInstance().schedule(new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition(), pieceGrid.getSelectedGridSlot().getExtenderPosition())));
+          CommandScheduler.getInstance().schedule(
+          new HoldArmPID(arm, pieceGrid.getSelectedGridSlot().getArmPosition() - Constants.ARM_LOWER_DISTANCE));     
+          //new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition() - Constants.ARM_LOWER_DISTANCE, pieceGrid.getSelectedGridSlot().getExtenderPosition()));
      }
 
      @Override
