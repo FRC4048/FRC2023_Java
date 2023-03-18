@@ -4,6 +4,7 @@
 
 package frc.robot.commands.drive;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -13,6 +14,7 @@ public class StationMoveBack extends CommandBase {
   private Drivetrain drivetrain;
   private double startPos;
   private double speed;
+  private double startTime;
   
   public StationMoveBack(Drivetrain drivetrain, Double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,6 +26,7 @@ public class StationMoveBack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    startTime = Timer.getFPGATimestamp();
     startPos = drivetrain.getPoseX();
   }
 
@@ -42,6 +45,6 @@ public class StationMoveBack extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(startPos - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE;
+    return (Math.abs(startPos - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE) || ((Timer.getFPGATimestamp() - startTime) > Constants.SUBSTATION_DRIVE_BACK_TIMEOUT);
   }
 }
