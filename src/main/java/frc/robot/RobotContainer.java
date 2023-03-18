@@ -168,6 +168,9 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("MDO", "-1, -1", new MoveDistanceOffset(drivetrain, -1, -1, 0.5));
     SmartShuffleboard.putCommand("MDO", "-1, 1", new MoveDistanceOffset(drivetrain, -1, 1, 0.5));
     SmartShuffleboard.putCommand("MDO", "1, -1", new MoveDistanceOffset(drivetrain, 1, -1, 0.5));
+    
+    SmartShuffleboard.putCommand("MDO", "Forward", new MoveDistanceOffset(drivetrain, 1, 0, 0.5));
+    SmartShuffleboard.putCommand("MDO", "Backwards", new MoveDistanceOffset(drivetrain, -1, 0, 0.5));
 
 
 
