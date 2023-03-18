@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
-import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.ResetEncoders;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -23,10 +23,9 @@ import frc.robot.subsystems.GripperSubsystem;
 public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation;
 
-    public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
+    public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
 
         addCommands(
-            new ResetOdometry(drivetrain, 0, 0, 0, 0),
             new ResetEncoders(arm, extender),
 
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
@@ -40,7 +39,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
                 new Stow(arm, gripper, extender),
-                new MoveDistanceSpinTraj(drivetrain, 0.2, -0.2, Math.toRadians(180))
+                new MoveDistanceSpinTraj(drivetrain, 0.2, -0.2 * direction, Math.toRadians(180))
             ),
 
             new MoveDistanceSpinTraj(drivetrain, 2, 0, 0),
@@ -60,7 +59,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
                 new Stow(arm, gripper, extender),
                 new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
             ),
-            new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1, Math.toRadians(180)),
+            //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParallelRaceGroup(
                 new SequentialCommandGroup(
