@@ -15,6 +15,8 @@ public class MoveDistanceOffset extends CommandBase{
         this.changeX = changeX;
         this.changeY = changeY;
         this.maxSpeed = maxSpeed;
+
+        addRequirements(this.drivetrain);
     }
 
     @Override
