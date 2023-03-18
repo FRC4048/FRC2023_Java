@@ -103,6 +103,10 @@ public class AutonomousChooser {
             y = 150;
         } else if (action == Action.TwoPieceMoveRight && location == Location.Left) {
             y = 194;
+        } else if (action == Action.TwoPieceMoveRight && location == Location.Right) {
+            y = 64;
+        } else if (action == Action.TwoPieceMoveLeft && location == Location.Right) {
+            y = 20;
         } else {
             y = 108;
         }
