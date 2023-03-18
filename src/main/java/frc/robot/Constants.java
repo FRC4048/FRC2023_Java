@@ -98,7 +98,7 @@ public final class Constants {
 
   public static final double ARM_MAX_VOLTS = 2; //initially 4.5
 
-  public static final double ARM_MOVE_PID_THRESHOLD = 2;
+  public static final double ARM_MOVE_PID_THRESHOLD = 0.03;
   //in inches
   public static final int ARM_HEIGHT = 47;
 

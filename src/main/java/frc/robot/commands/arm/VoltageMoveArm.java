@@ -33,9 +33,9 @@ public class VoltageMoveArm extends LoggedCommand {
     public void execute() {
         //positive angle -> positive power
         if (angle > arm.getAnalogValue()) {
-            arm.setVoltage(1.5);
+            arm.setVoltage(2.5);
         } else {
-            arm.setVoltage(1.0);
+            arm.setVoltage(2.5);
         }
     }
 
