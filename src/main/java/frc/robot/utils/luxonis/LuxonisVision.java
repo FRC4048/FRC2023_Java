@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.SmartShuffleboard;
 
 public class LuxonisVision extends SubsystemBase {
   /** Creates a new LuxonisVision. */
@@ -45,8 +46,17 @@ public class LuxonisVision extends SubsystemBase {
     return tlabel.getString("null");
   }
 
+  public boolean hasTargetLock() {
+    return tlabel != null;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartShuffleboard.put("Luxonis", "Object Label", getObjectLabel());
+    SmartShuffleboard.put("Luxonis", "Object X", getObjectX());
+    SmartShuffleboard.put("Luxonis", "Object Y", getObjectY());
+    SmartShuffleboard.put("Luxonis", "Object Z", getObjectZ());
+
   }
 }

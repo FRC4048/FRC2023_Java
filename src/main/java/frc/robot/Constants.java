@@ -191,6 +191,7 @@ public final class Constants {
 
   //luxonis
   public static final double LUXONIS_THRESH = 0.05;
+  public static final int LUXONIS_ALLIGN_TIMEOUT = 3;
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 33.5;

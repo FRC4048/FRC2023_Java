@@ -14,11 +14,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.ChangeLedID;
-import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ResetGyro;
-import frc.robot.commands.SetGridSlot;
-import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
@@ -37,6 +32,7 @@ import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
 import frc.robot.subsystems.*;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.luxonis.LuxonisVision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -59,6 +55,7 @@ public class RobotContainer {
   private CycleLED autoCycleLED;
   private CycleLED testCycleLED;
   private PhotonCameraSubsystem photonSubsystem;
+  private LuxonisVision luxonisVision;
 
 
   //Joysticks & Joystick Buttons
@@ -103,6 +100,7 @@ public class RobotContainer {
     arm = new Arm();
     extender = new Extender();
     ledPanel = new LedPanel();
+    luxonisVision = new LuxonisVision();
     protectionMechanism = new ProtectionMechanism(arm,extender,gripper);
     testCycleLED = new CycleLED(ledPanel,1,1,2,3,4,5,6,7);
     disabledCycleLED = new CycleLED(ledPanel,1,4);
@@ -139,7 +137,8 @@ public class RobotContainer {
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
-    controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
+    //controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
+    controller.button(XboxController.Button.kA.value).onTrue(new LuxonisAllign(luxonisVision, drivetrain));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
