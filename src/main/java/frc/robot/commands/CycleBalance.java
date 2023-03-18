@@ -18,6 +18,7 @@ public class CycleBalance extends CommandBase {
   public CycleBalance(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -48,6 +49,6 @@ public class CycleBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finishCounter > Constants.BALANCE_END;
+    return finishCounter > Constants.BALANCE_PID_END;
   }
 }

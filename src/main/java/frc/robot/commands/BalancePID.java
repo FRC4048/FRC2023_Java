@@ -20,6 +20,7 @@ public class BalancePID extends CommandBase {
   public BalancePID(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -36,11 +37,11 @@ public class BalancePID extends CommandBase {
     float dir = -Math.signum(roll);
     double speed = Math.abs(roll) > Constants.BALANCE_THRESH ? MathUtil.clamp(Math.abs((Math.abs(roll) - Constants.BALANCE_THRESH)) * Constants.BALANCE_kP, Constants.BALANCE_LOW_SPEED, Constants.BALANCE_HIGH_SPEED) : 0;
 
-    counter = Math.abs(roll) < Constants.BALANCE_THRESH ? counter+1 : 0;
+    counter = Math.abs(roll) < Constants.BALANCE_THRESH ? counter + 1 : 0;
 
     drivetrain.drive(dir * speed, 0, 0, true);
 
-    SmartShuffleboard.put("Balance", "PID End", "PID End", counter > Constants.BALANCE_END);
+    SmartShuffleboard.put("Balance", "PID End", "PID End", counter > Constants.BALANCE_PID_END);
     SmartShuffleboard.put("Balance", "PID Counter", "PID Counter", counter);
     SmartShuffleboard.put("Balance", "PID Speed", "PID Speed", dir * speed);
   }
@@ -54,7 +55,7 @@ public class BalancePID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (counter > Constants.BALANCE_END) || 
+    return (counter > Constants.BALANCE_PID_END) || 
            ((Timer.getFPGATimestamp() - startTime) > Constants.CHARGESTATION_TIMEOUT);
   }
 }
