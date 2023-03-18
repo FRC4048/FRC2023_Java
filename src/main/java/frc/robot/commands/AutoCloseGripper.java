@@ -37,7 +37,7 @@ public class AutoCloseGripper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (arm.getRange() > 0 && arm.getRange() < 10) {
+    if (arm.getGroundDistance() < 10 && arm.getGroundDistance() > 0) {
       cycleCounter++;
     } else {
       cycleCounter = 0;
