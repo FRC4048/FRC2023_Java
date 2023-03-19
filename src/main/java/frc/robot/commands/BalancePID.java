@@ -37,7 +37,11 @@ public class BalancePID extends CommandBase {
   public void execute() {
     float roll = drivetrain.getFilterRoll();
     float dir = -Math.signum(roll); //- if battery away + if arm away
-    double speed = Math.abs(roll) > Constants.BALANCE_THRESH ? MathUtil.clamp(Math.abs((Math.abs(roll) - Constants.BALANCE_THRESH)) * Constants.BALANCE_kP, Constants.BALANCE_LOW_SPEED, Constants.BALANCE_HIGH_SPEED) : 0;
+    double speed = Math.abs(roll) > Constants.BALANCE_THRESH ? 
+      MathUtil.clamp(
+        Math.abs((Math.abs(roll) - Constants.BALANCE_THRESH)) * Constants.BALANCE_kP, 
+        Constants.BALANCE_LOW_SPEED, 
+        Constants.BALANCE_HIGH_SPEED) : 0;
 
     Logger.logDouble("/filterRoll", (double) roll, Constants.ENABLE_LOGGING);
 
