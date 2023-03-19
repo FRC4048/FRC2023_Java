@@ -30,6 +30,8 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.CrossAndBalance;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
@@ -174,13 +176,17 @@ public class RobotContainer {
     }
 
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
       SmartShuffleboard.putCommand("Arm", "GO TO 10", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 10, 0)));
       SmartShuffleboard.putCommand("Arm", "GO TO 15", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 15, 0)));
       SmartShuffleboard.putCommand("Arm", "GO TO 25", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 25, 0)));
     }
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
+      SmartShuffleboard.putCommand("Driver", "Cross+Balance", new CrossAndBalance(drivetrain));
+    }
+
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));

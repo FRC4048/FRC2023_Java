@@ -198,6 +198,8 @@ public final class Constants {
   public static final float BALANCE_kP = (float) 0.015;
   public static final double BALANCE_THRESH = 8; //consider balanced within +-2 degrees of 0
   public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
+  public static final double CROSS_END = 30;
+  public static final double CROSS_CLIMB = 20;
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 29.4;
