@@ -108,7 +108,7 @@ public class RobotContainer {
     extender.setProtectionMechanism(protectionMechanism);
     gripper.setProtectionMechanism(protectionMechanism);
 
-    m_PDB = new PowerDistributionBoard();
+//    m_PDB = new PowerDistributionBoard();
     photonSubsystem = new PhotonCameraSubsystem();
     pieceGrid = new PieceGrid();
     configureBindings();

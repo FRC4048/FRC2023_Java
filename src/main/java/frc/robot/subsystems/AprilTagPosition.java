@@ -12,6 +12,10 @@ import frc.robot.Constants;
 import frc.robot.apriltags.RobotPosition;
 import frc.robot.utils.SmartShuffleboard;
 
+/**
+ * @see frc.robot.subsystems.PhotonCameraSubsystem 
+ */
+@Deprecated 
 public class AprilTagPosition extends SubsystemBase {
 
   NetworkTableEntry tagIdLeftCam;
