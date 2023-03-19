@@ -22,6 +22,8 @@ public final class Constants {
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
 
+  public static final boolean ENABLE_LOGGING = true;
+
   //JOYSTICKS
   public static final int LEFT_JOYSICK_ID = 0;
   public static final int RIGHT_JOYSTICK_ID = 1;
@@ -51,9 +53,10 @@ public final class Constants {
   public static final int GRIPPER_ENCODER_ID = 0;
 
   //EXTENDER
+  public static final int EXTENDER_RESET_TIMEOUT = 2;
+  public static final double EXTEND_TO_POSITION_TIMEOUT = 3;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
-
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
   public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
@@ -79,30 +82,34 @@ public final class Constants {
 
 
   //Arm Constants
+  public static final int ARM_RESET_TIMEOUT = 2;
+  public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.03;
   public static final double ARM_PID_I_IN = 0.0001;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
 
+  public static final double ARM_MIN_ENC_VAL = 2.145;
+  public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
+
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
-
   public static final double ARM_MAX_VOLTS = 4.5;
-
-  public static final double ARM_MOVE_PID_THRESHOLD = 2;
+  public static final double ARM_MOVE_PID_THRESHOLD = 2.0;
   //in inches
   public static final int ARM_HEIGHT = 47;
 
+  public static final int ARM_LOWER_DISTANCE = 3;
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
   public static final double CHASSIS_DRIVE_GEAR_RATIO = 8.142857; // this value should be x:1
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
-  public static final double MAX_VELOCITY = 3.0; // 3 meters per second
+  public static final double MAX_VELOCITY = 4.0; // 4 meters per second
   public static final double MAX_ACCELERATION = 6.0;
-  public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
+  public static final double MAX_ANGULAR_SPEED = Math.PI * 6; // 1 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
   public static final double ARM_OUT_ROBOT_MIN = 6;
 
@@ -111,6 +118,7 @@ public final class Constants {
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;
+  public static final double MANUAL_ARM_PID_SPEED = .2;
 
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 3.0;
@@ -146,10 +154,14 @@ public final class Constants {
   public static final int IMU = 42;
   public static final double ARM_AUTO_VOLTAGE_UP = 4d;
   public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
-     public static final double ARM_AUTO_VOLTAGE = 3d;
+  public static final double ARM_AUTO_VOLTAGE = 3d;
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
+  public static final double TURBO_DRIVE_AND_STEER_SPD = 1.3;
+
+  public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
+  public static final double LOCK_WHEELS_TIMEOUT = 0.1;
 
 
   public static class OperatorConstants {
@@ -166,6 +178,8 @@ public final class Constants {
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
+  public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 10;
+  public static final int AUTO_CLOSE_GRIP_CYCLES = 5;
   public static final double WANTED_TIME = 0.8;
 
   public static final double DIAG_TALONSRX_ROT = 5;
@@ -174,30 +188,27 @@ public final class Constants {
   public static final double DIAG_ABS_SPARK_ENCODER = 20; //In degrees
 
   //chargestation
+
   public static final double BALANCE_STEEP_SPEED = .7;
-  public static final double BALANCE_LOW_SPEED = .5;
-  public static final double AUTO_CHARGESTATION_SPEED = 0.4;
-  public static final int CHARGESTATION_BALANCED = 5;
+  public static final double BALANCE_LOW_SPEED = .04;
+  public static final double BALANCE_HIGH_SPEED = 0.15;
+  public static final int BALANCE_PID_END = 50; //amount of cycles we want to be balanced for
+  public static final int BALANCE_STEEP_END = 20;
   public static final double CHARGESTATION_TIMEOUT = 10;
+  public static final float BALANCE_kP = (float) 0.015;
+  public static final double BALANCE_THRESH = 8; //consider balanced within +-2 degrees of 0
+  public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
+  public static final double CROSS_END = 30;
+  public static final double CROSS_CLIMB = 20;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
-  public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
+  public static final double SUBSTATION_PICKUP_ANGLE = 29.4;
+  public static final double SUBSTATION_POST_PICKUP_ANGLE = 30.0;
+  public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
+  public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
+  public static final double GROUND_PICKUP_ANGLE = 13.0;
 
-  // arm set points
-  public static final double BOTTOM_ANGLE = 22;
-  public static final double BOTTOM_EXTENSION = 1590;
-
-  public static final double CONE_MIDDLE_ANGLE = 34;
-  public static final double CONE_MIDDLE_EXTENSION = 3420;
-  public static final double CONE_TOP_ANGLE = 39;
-  public static final double CONE_TOP_EXTENSION = 7110;
-
-  public static final double CUBE_MIDDLE_ANGLE = 29;
-  public static final double CUBE_MIDDLE_EXTENSION = 1815;
-  public static final double CUBE_TOP_ANGLE = 35;
-  public static final double CUBE_TOP_EXTENSION = 5905;
 
   // LED outputs
 
@@ -208,4 +219,11 @@ public final class Constants {
   public static final int CONE_ID = 2;
   public static final int CUBE_ID = 1;
   public static final int ROBOT_ID = 7;
+
+  //MoveCommand Timeouts
+  public static final double MOVE_OFFSET_TIMEOUT = 5.0;
+
+  public static final String PHOTON_VISION_ID = "photonvision";
+  public static final String PHOTON_CAMERA_ID = "camera0";
+  public static final String PHOTON_LATENCY = "latencyMillis";
 }

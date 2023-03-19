@@ -2,6 +2,7 @@ package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 public class ResetArm extends CommandBase{
@@ -38,7 +39,7 @@ public class ResetArm extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return limitReached || Timer.getFPGATimestamp() - startTime > 3;
+        return limitReached || Timer.getFPGATimestamp() - startTime > Constants.ARM_RESET_TIMEOUT;
     }
     
 }

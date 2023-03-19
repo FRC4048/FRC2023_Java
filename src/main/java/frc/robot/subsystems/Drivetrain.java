@@ -19,12 +19,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
@@ -57,9 +61,12 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight;
 
   private double gyroOffset = 0;
+  private ShuffleboardTab driverTab; 
+  private GenericEntry gyroEntry;
   private float filterRoll = 0;
 
   private final AHRS navxGyro;
+  private double navxGyroValue;
 
   private final Field2d m_field = new Field2d();
 
@@ -70,10 +77,11 @@ public class Drivetrain extends SubsystemBase{
           m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
   private final SwerveDriveOdometry m_odometry;
-   
 
   public Drivetrain() {
     navxGyro = new AHRS();
+
+    navxGyroValue = -1;
 
     SmartDashboard.putData("Field", m_field);
     
@@ -91,6 +99,9 @@ public class Drivetrain extends SubsystemBase{
     frontRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_FRONT_RIGHT);
     backLeftCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_LEFT);
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
+  
+    driverTab = Shuffleboard.getTab("Driver");
+    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
 
     rollFilter = new MedianFilter(5);
 
@@ -110,7 +121,6 @@ public class Drivetrain extends SubsystemBase{
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxAbsEncoder("DT CanCoder", "Back Right", Constants.DIAG_ABS_SPARK_ENCODER, backRightCanCoder));
 
 
-
     m_frontLeft = new SwerveModule(m_frontLeftDrive, m_frontLeftTurn, frontLeftCanCoder, 1);
     m_frontRight = new SwerveModule(m_frontRightDrive, m_frontRightTurn, frontRightCanCoder, 2);
     m_backLeft = new SwerveModule(m_backLeftDrive, m_backLeftTurn, backLeftCanCoder, 3);
@@ -123,7 +133,7 @@ public class Drivetrain extends SubsystemBase{
     
     m_odometry = new SwerveDriveOdometry(
         m_kinematics,
-        new Rotation2d(getGyro()),
+        new Rotation2d(getNavxGyroValue()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -134,24 +144,12 @@ public class Drivetrain extends SubsystemBase{
     setGyroOffset(180);
   }
 
-  public double getGyro() {
+  public double getNavxGyroValue() {
+    return navxGyroValue;
+  }
+  
+  private double getGyro() {
     return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
-  }
-
-  public AHRS getGyroObject() {
-    return navxGyro;
-  }
-
-  public double getAccelX() {
-    return navxGyro.getRawAccelX();
-  }
-
-  public double getAccelY() {
-    return navxGyro.getRawAccelY();
-  }
-
-  public double getAccelZ() {
-    return navxGyro.getRawAccelZ();
   }
 
   public float getRoll() {
@@ -173,7 +171,7 @@ public class Drivetrain extends SubsystemBase{
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
               fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, navxGyro.getRotation2d())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, new Rotation2d(Math.toRadians(getNavxGyroValue())))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_VELOCITY);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -253,35 +251,19 @@ public class Drivetrain extends SubsystemBase{
           return m_frontRight.getDriveEncPosition();          
         case Constants.DRIVE_FRONT_LEFT_D:
           return m_frontLeft.getDriveEncPosition();
-            
-        // case Constants.DRIVE_BACK_RIGHT_S:
-        //     m_backRightTurn.set(value);
-        //     break;
-        // case Constants.DRIVE_BACK_LEFT_S:
-        //     m_backLeftTurn.set(value);
-        //     break;
-        // case Constants.DRIVE_FRONT_RIGHT_S:
-        //     m_frontRightTurn.set(value);
-        //     break;
-        // case Constants.DRIVE_FRONT_LEFT_S:
-        //     m_frontLeftTurn.set(value);=
-        //     break;
         default: return CAN;
     }
   }
 
   @Override
   public void periodic() {
+    navxGyroValue = getGyro();
+    gyroEntry.setDouble(getNavxGyroValue());
+    Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
 
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
-
-    SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
-    SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
-    SmartShuffleboard.put("Driver", "Gyro", getGyro());
-    SmartShuffleboard.put("Driver", "Offset", getGyroOffset());
-    SmartShuffleboard.put("Driver", "FilterRoll", filterRoll);
-    SmartShuffleboard.put("Driver", "Roll", getRoll());
+    SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
 
     if (Constants.DRIVETRAIN_DEBUG) {
       SmartShuffleboard.put("Drive", "distance to desired", 2 - m_odometry.getPoseMeters().getX());
@@ -306,17 +288,18 @@ public class Drivetrain extends SubsystemBase{
     }
 
     if (DriverStation.isEnabled()) {
-    m_odometry.update(new Rotation2d(Math.toRadians(getGyro())),
+    m_odometry.update((new Rotation2d(Math.toRadians(getNavxGyroValue()))),
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
     });
   }
     m_field.setRobotPose(m_odometry.getPoseMeters());
+    Logger.logPose2d("/Odometry/robot",m_odometry.getPoseMeters(), Constants.ENABLE_LOGGING);
   }
 
   public void resetOdometry (Pose2d pose) {
-    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getGyro())), 
+    m_odometry.resetPosition(new Rotation2d(Math.toRadians(getNavxGyroValue())), 
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
@@ -390,7 +373,7 @@ public class Drivetrain extends SubsystemBase{
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
-    navxGyro.getFusedHeading();
+    //navxGyro.getFusedHeading();
   }
   
   public double getGyroOffset() {

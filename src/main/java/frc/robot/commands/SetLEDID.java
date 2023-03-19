@@ -9,6 +9,7 @@ public class SetLEDID extends CommandBase {
     public SetLEDID(LedPanel ledpanel, int setID) {
         this.ledpanel = ledpanel;
         this.setID = setID;
+        addRequirements(ledpanel);
     }
 
     @Override

@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -14,21 +12,16 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utils.SmartShuffleboard;
-import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.drive.WheelAlign;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.drive.WheelAlign;
-import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.Diagnostics;
-import frc.robot.AutonomousChooser;
 
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
@@ -37,12 +30,16 @@ public class Robot extends TimedRobot {
  
   @Override
   public void robotInit() {
+    if (Constants.ENABLE_LOGGING) {
+      DataLogManager.start();
+      DriverStation.startDataLog(DataLogManager.getLog(), false);
+    }
     diagnostics = new Diagnostics();
     m_robotContainer = new RobotContainer();
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
-      }
+  }
 
 
   @Override
@@ -53,24 +50,30 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    m_robotContainer.getDisabledLedCycleCommand().initialize();
   }
 
   @Override
   public void disabledPeriodic() {
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location", m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name());
+    m_robotContainer.getDisabledLedCycleCommand().refresh();
+
   }
 
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }    
+
   }
 
   @Override
   public void autonomousPeriodic() {
+    m_robotContainer.getAutoLedCycleCommand().refresh();
+
   }
 
   @Override
@@ -78,13 +81,13 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-
     m_robotContainer.getArm().zeroPID();
+
   }
 
   @Override
   public void teleopPeriodic() {
-
+    
   }
 
   @Override
@@ -92,25 +95,23 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     diagnostics.reset();
     m_robotContainer.getArm().zeroPID();
+    m_robotContainer.getTestLedCycleCommand().initialize();
   }
 
   @Override
   public void testPeriodic() {
+    m_robotContainer.getTestLedCycleCommand().refresh();
     diagnostics.refresh();
-    TrajectoryConfig config =
-      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
-
-    Trajectory testTrajectory =
-      TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(new Translation2d(1, 0)),
-        new Pose2d(2, 0, new Rotation2d(0)),
-        config);
-        double time = testTrajectory.getTotalTimeSeconds();
-        if (Constants.DRIVETRAIN_DEBUG) {
-          SmartShuffleboard.put("BZ", "traj current x", testTrajectory.sample(time).poseMeters.getX());
-          SmartShuffleboard.put("BZ", "traj current Vx", testTrajectory.sample(time).velocityMetersPerSecond);
-        }
+//    TrajectoryConfig config =
+//      new TrajectoryConfig(Constants.MAX_VELOCITY, Constants.MAX_ACCELERATION).setKinematics(m_robotContainer.getDrivetrain().getKinematics());
+//
+//    Trajectory testTrajectory =
+//      TrajectoryGenerator.generateTrajectory(
+//        new Pose2d(0, 0, new Rotation2d(0)),
+//        List.of(new Translation2d(1, 0)),
+//        new Pose2d(2, 0, new Rotation2d(0)),
+//        config);
+//        double time = testTrajectory.getTotalTimeSeconds();
   }
 
   public static Diagnostics getDiagnostics() {
