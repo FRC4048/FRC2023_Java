@@ -34,8 +34,6 @@ public abstract class DiagPhotonVision implements Diagnosable {
     public void refresh() {
         if (networkTableEntry != null) {
             networkTableEntry.setBoolean(getDiagResult());
-            SmartShuffleboard.put("Diagnostics","TagTimeStamp",getTagTimestamp());
-            SmartShuffleboard.put("Diagnostics","TagId",getTagId());
         }
     }
 
@@ -49,7 +47,9 @@ public abstract class DiagPhotonVision implements Diagnosable {
         if (firstTagId == -1 || firstTimestamp == -1){
             firstTimestamp = getTagTimestamp();
             firstTagId = getTagId();
-        } else return getTagTimestamp()==firstTimestamp;
+        } else {
+            return getTagTimestamp() != firstTimestamp;
+        }
         return false;
     }
 
