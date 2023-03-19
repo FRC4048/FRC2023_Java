@@ -5,11 +5,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -17,6 +20,7 @@ import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
+import frc.robot.utils.diag.DiagToFSensor;
 
 public class Arm extends SubsystemBase {
   private CANSparkMax neoMotor;
@@ -24,6 +28,7 @@ public class Arm extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kVoltage;
   private boolean pidding;
   private ProtectionMechanism protectionMechanism;
+  private Rev2mDistanceSensor distanceSensor;
   private double pidreference;
   private SparkMaxAnalogSensor analogSensor;
   private SparkMaxPIDController pidController;
@@ -35,15 +40,24 @@ public class Arm extends SubsystemBase {
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
+    distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
+
     pidController = neoMotor.getPIDController();
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Retracted Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.REVERSE));
+    Robot.getDiagnostics().addDiagnosable(new DiagToFSensor("Arm", "Time of Flight", distanceSensor, 5, 15));
 
     neoMotor.restoreFactoryDefaults();
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
+
+    distanceSensor.setAutomaticMode(true);
+    distanceSensor.setDistanceUnits(Unit.kInches);
+    distanceSensor.setRangeProfile(RangeProfile.kHighSpeed);
+
+
   }
 
   @Override
@@ -58,7 +72,8 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
-    }
+      SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
+      }
     Logger.logDouble("/Arm/Encoder", getEncoderValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/Arm/AnalogEncoder", getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("Arm/encoderRatio", getEncoderValue()/getAnalogValue(), Constants.ENABLE_LOGGING);
@@ -78,7 +93,7 @@ public class Arm extends SubsystemBase {
   public double getEncoderValue() {
     return encoder.getPosition();
   }
-  
+
   public double getAnalogValue(){
     return (analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
   }
@@ -119,6 +134,10 @@ public class Arm extends SubsystemBase {
 
   public void resetEncoder() {
     encoder.setPosition(0);
+  }
+
+  public double getGroundDistance() {
+    return distanceSensor.getRange();
   }
 
   public void setPID(double p, double i, double d, double f) {
