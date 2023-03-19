@@ -74,6 +74,7 @@ public class Drivetrain extends SubsystemBase{
   private float filterRoll = 0;
 
   private final AHRS navxGyro;
+  private double navxGyroValue;
 
   private final Field2d m_field = new Field2d();
   private DriverStation.Alliance allianceColor = DriverStation.Alliance.Invalid;
@@ -99,6 +100,8 @@ public class Drivetrain extends SubsystemBase{
   public Drivetrain(PhotonCameraSubsystem photonVision) {
     this.photonVision = photonVision;
     navxGyro = new AHRS();
+
+    navxGyroValue = -1;
 
     SmartDashboard.putData("Field", m_field);
     
@@ -150,7 +153,7 @@ public class Drivetrain extends SubsystemBase{
 
     poseEstimator =  new SwerveDrivePoseEstimator(
             m_kinematics,
-            new Rotation2d(getGyro()),
+            new Rotation2d(getNavxGyroValue()),
             new SwerveModulePosition[] {
                     m_frontLeft.getPosition(),
                     m_frontRight.getPosition(),
@@ -164,24 +167,12 @@ public class Drivetrain extends SubsystemBase{
     setGyroOffset(180);
   }
 
-  public double getGyro() {
+  public double getNavxGyroValue() {
+    return navxGyroValue;
+  }
+
+  private double getGyro() {
     return (navxGyro.getAngle() % 360)*-1; //ccw should be positive
-  }
-
-  public AHRS getGyroObject() {
-    return navxGyro;
-  }
-
-  public double getAccelX() {
-    return navxGyro.getRawAccelX();
-  }
-
-  public double getAccelY() {
-    return navxGyro.getRawAccelY();
-  }
-
-  public double getAccelZ() {
-    return navxGyro.getRawAccelZ();
   }
 
   public float getRoll() {
@@ -203,7 +194,7 @@ public class Drivetrain extends SubsystemBase{
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(
               fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, navxGyro.getRotation2d())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, new Rotation2d(Math.toRadians(getNavxGyroValue())))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_VELOCITY);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -289,13 +280,11 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
-    double gyroValue = getGyro();
-    gyroEntry.setDouble(gyroValue);
-Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
+    navxGyroValue = getGyro();
+    gyroEntry.setDouble(getNavxGyroValue());
+Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
-    SmartShuffleboard.put("Auto Balance", "Accel x", getAccelX());
-    SmartShuffleboard.put("Auto Balance", "Accel y", getAccelY());
     SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
 
     if (Constants.DRIVETRAIN_DEBUG) {
@@ -321,7 +310,7 @@ Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
     }
 
     if (DriverStation.isEnabled()) {
-      poseEstimator.update(new Rotation2d(Math.toRadians(getGyro())),
+      poseEstimator.update((new Rotation2d(Math.toRadians(getNavxGyroValue()))),
               new SwerveModulePosition[]{
                       m_frontLeft.getPosition(), m_frontRight.getPosition(),
                       m_backLeft.getPosition(), m_backRight.getPosition()
@@ -348,7 +337,7 @@ Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
   }
 
   public void resetOdometry(Pose2d pose) {
-    poseEstimator.resetPosition(new Rotation2d(Math.toRadians(getGyro())),
+    poseEstimator.resetPosition(new Rotation2d(Math.toRadians(getNavxGyroValue())),
             new SwerveModulePosition[]{
                     m_frontLeft.getPosition(), m_frontRight.getPosition(),
                     m_backLeft.getPosition(), m_backRight.getPosition()
@@ -422,7 +411,7 @@ Logger.logDouble("/Drivetrain/gyro", gyroValue, Constants.ENABLE_LOGGING);
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
-    navxGyro.getFusedHeading();
+    //navxGyro.getFusedHeading();
   }
   
   public double getGyroOffset() {
