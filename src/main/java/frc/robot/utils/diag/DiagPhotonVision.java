@@ -3,7 +3,6 @@ package frc.robot.utils.diag;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.utils.SmartShuffleboard;
 
 /**
  * Base class for Diagnosable that have an initial value (their "current" value) and that are required to change their
@@ -17,7 +16,6 @@ public abstract class DiagPhotonVision implements Diagnosable {
     private double firstTimestamp;
     protected GenericEntry networkTableEntry;
 
-
     public DiagPhotonVision(String title, String name) {
         this.title = title;
         this.name = name;
@@ -27,8 +25,6 @@ public abstract class DiagPhotonVision implements Diagnosable {
     public void setShuffleBoardTab(ShuffleboardTab shuffleBoardTab, int width, int height) {
         networkTableEntry = shuffleBoardTab.getLayout(title, BuiltInLayouts.kList).withSize(width, height).add(name, false).getEntry(); //getLayout(title, BuiltInLayouts.kList)
     }
-
-    
 
     @Override
     public void refresh() {
