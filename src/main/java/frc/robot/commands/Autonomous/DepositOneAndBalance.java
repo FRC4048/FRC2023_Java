@@ -35,7 +35,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
             ), "DepositGamePieceParRace"),
 
             new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
-            new MoveDistanceSpinTraj(drivetrain, 0.1, yChange, Math.toRadians(180)),
+            new MoveDistanceOffset(drivetrain, 0.1, yChange, 0.5),
             new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true))
         );
 
