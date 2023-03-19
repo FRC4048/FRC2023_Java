@@ -195,7 +195,7 @@ public final class Constants {
   public static final int BALANCE_PID_END = 50; //amount of cycles we want to be balanced for
   public static final int BALANCE_STEEP_END = 60;
   public static final double CHARGESTATION_TIMEOUT = 10;
-  public static final float BALANCE_kP = (float) 0.006;
+  public static final float BALANCE_kP = (float) 0.01;
   public static final double BALANCE_THRESH = 8.5; //consider balanced within +-2 degrees of 0
   public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
   public static final double CROSS_END = 30;
