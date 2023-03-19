@@ -135,7 +135,7 @@ public class RobotContainer {
 
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
-    controller.button(XboxController.Button.kB.value).onTrue(/*new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender))*/ new CrossAndBalance(drivetrain));
+    controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)));
     controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper)));
     controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new StationPickupManual(drivetrain, arm, extender, gripper))));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
@@ -176,13 +176,17 @@ public class RobotContainer {
     }
 
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
       SmartShuffleboard.putCommand("Arm", "GO TO 10", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 10, 0)));
       SmartShuffleboard.putCommand("Arm", "GO TO 15", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 15, 0)));
       SmartShuffleboard.putCommand("Arm", "GO TO 25", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 25, 0)));
     }
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
+      SmartShuffleboard.putCommand("Driver", "Cross+Balance", new CrossAndBalance(drivetrain));
+    }
+
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
