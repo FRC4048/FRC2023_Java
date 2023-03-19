@@ -1,6 +1,7 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.SmartShuffleboard;
@@ -8,9 +9,9 @@ import frc.robot.utils.SmartShuffleboard;
 public class ManualMoveArm extends CommandBase {
     
     private Arm arm;
-    private Double power;
+    private double power;
 
-    public ManualMoveArm(Arm arm, Double power) {
+    public ManualMoveArm(Arm arm, double power) {
         this.arm = arm;
         this.power = power;
         addRequirements(this.arm);
@@ -32,6 +33,7 @@ public class ManualMoveArm extends CommandBase {
     @Override
     public void end(boolean Interrupted) {
         arm.setVoltage(0.0);
+        new HoldArmPID(arm, arm.getAnalogValue()).schedule();
     }
 
     @Override
@@ -39,5 +41,5 @@ public class ManualMoveArm extends CommandBase {
         return false;
     }
 
-    
+
 }
