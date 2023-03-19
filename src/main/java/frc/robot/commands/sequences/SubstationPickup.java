@@ -17,7 +17,7 @@ public class SubstationPickup extends SequentialCommandGroup {
     public SubstationPickup(Arm arm, GripperSubsystem gripper, Extender extender) {
         addCommands(
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE),
-            new HoldArmPID(arm, 0.49),
+            new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION),
                     new OpenGripper(gripper)),
