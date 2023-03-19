@@ -17,11 +17,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.arm.ArmMoveSequence;
-import frc.robot.commands.arm.ManualMoveArm;
-import frc.robot.commands.arm.MoveArmToGridPosition;
-import frc.robot.commands.arm.SlightLowerArm;
-import frc.robot.commands.arm.VoltageMoveArm;
+import frc.robot.commands.arm.*;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -134,7 +130,7 @@ public class RobotContainer {
 
     //arm move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
-    controller.axisLessThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+    controller.axisLessThan(XboxController.Axis.kRightY.value, -0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
 
     //extender move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> -Constants.EXTENDER_MANUAL_SPEED));

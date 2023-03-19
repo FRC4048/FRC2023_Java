@@ -82,7 +82,6 @@ public final class Constants {
 
 
   //Arm Constants
-  public static final int ARM_POT_ID = 45; //TODO: Change this!!!!!!
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
@@ -91,19 +90,17 @@ public final class Constants {
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
 
-  public static final double ARM_MIN_ENC_VAL = 2.18;
+  public static final double ARM_MIN_ENC_VAL = 2.145;
+  public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
 
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
-
-  public static final double ARM_MAX_VOLTS = 2; //initially 4.5
-
-  public static final double ARM_MOVE_PID_THRESHOLD = 0.03;
+  public static final double ARM_MAX_VOLTS = 4.5;
+  public static final double ARM_MOVE_PID_THRESHOLD = 2.0;
   //in inches
   public static final int ARM_HEIGHT = 47;
 
   public static final int ARM_LOWER_DISTANCE = 3;
-
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
@@ -155,7 +152,7 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
-  public static final double ARM_AUTO_VOLTAGE_UP = 2.5d;
+  public static final double ARM_AUTO_VOLTAGE_UP = 4d;
   public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
   public static final double ARM_AUTO_VOLTAGE = 3d;
 
@@ -201,10 +198,12 @@ public final class Constants {
   public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 0.49;
-  public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
+  public static final double SUBSTATION_PICKUP_ANGLE = 29.4;
+  public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
+  public static final double GROUND_PICKUP_ANGLE = 13.0;
+
 
   // LED outputs
 

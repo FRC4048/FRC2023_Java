@@ -50,8 +50,9 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     if (Constants.ARM_DEBUG) {
 
-      SmartShuffleboard.put("Arm","arm pot", getAnalogValue() * 42/0.7); //I scaled this on the suffleboard to make Lou happy, values used elsewhere are based on raw potentiometer readings (offset from stow position)
-      SmartShuffleboard.put("Arm", "arm encoder", (getEncoderValue()));
+      SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
+      SmartShuffleboard.put("Arm", "analog encoder",getAnalogValue());
+      SmartShuffleboard.put("Arm", "analog raw encoder",analogSensor.getPosition());
       SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
@@ -59,6 +60,8 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
     }
     Logger.logDouble("/Arm/Encoder", getEncoderValue(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("/Arm/AnalogEncoder", getAnalogValue(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("Arm/encoderRatio", getEncoderValue()/getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/Arm/Pidding", pidding, Constants.ENABLE_LOGGING);
     Logger.logBoolean("/Arm/FwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/Arm/RevLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
@@ -77,14 +80,14 @@ public class Arm extends SubsystemBase {
   }
   
   public double getAnalogValue(){
-    return analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL;
+    return (analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
   }
 
   public void setPidding(boolean bool) {
     pidding = bool;
   }
 
-  public void setVoltage(Double val) {
+  public void setVoltage(double val) {
     neoMotor.setVoltage(validateArmVolt(val));
   }
 
@@ -100,11 +103,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void setPIDReference(double reference) {
-    reference = reference *42/0.7;
     if ((reference > Constants.NO_EXTENSION_ZONE) || (protectionMechanism.safeToLowerArm())) {
       pidreference = reference;
       pidController.setReference(reference, ControlType.kPosition, 0);
-  }
+    }
   }
 
   public double getPidReference() {
