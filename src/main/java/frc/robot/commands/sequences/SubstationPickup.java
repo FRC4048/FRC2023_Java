@@ -1,6 +1,5 @@
 package frc.robot.commands.sequences;
 
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.LookForSubstation;
@@ -18,16 +17,15 @@ public class SubstationPickup extends SequentialCommandGroup {
         addCommands(
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE),
             new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE),
-                new ParallelRaceGroup(
-                    new SequentialCommandGroup(new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION),
-                    new OpenGripper(gripper)),
+                new SequentialCommandGroup(
+                    new ExtendToPosition(extender, Constants.SUBSTATION_PICKUP_EXTENSION),
+                    new OpenGripper(gripper),
                     new LookForSubstation()         
                 ),
                 new SequentialCommandGroup(
                     new CloseGripper(gripper),
-                    new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE)
+                    new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_POST_PICKUP_ANGLE)
                 )
-    
         );
     }
 }

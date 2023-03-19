@@ -201,6 +201,7 @@ public final class Constants {
 
   //setpoints
   public static final double SUBSTATION_PICKUP_ANGLE = 29.4;
+  public static final double SUBSTATION_POST_PICKUP_ANGLE = 30.0;
   public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
