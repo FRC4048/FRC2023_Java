@@ -30,31 +30,40 @@ public class CrossPanel extends CommandBase {
     climbing = false;
     crossed = false;
     startTime = Timer.getFPGATimestamp();
+    counter = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    counter = !climbing ? (Math.abs(drivetrain.getFilterRoll()) > 5 ? counter + 1 : 0) : (Math.abs(drivetrain.getFilterRoll()) < 2 ? counter + 1 : 0);
+    if (!climbing) {
+      counter = (Math.abs(drivetrain.getFilterRoll()) > 5 ? counter + 1 : 0);
+    } else {
+      counter = (Math.abs(drivetrain.getFilterRoll()) < 2 ? counter + 1 : 0);
+    }
 
-    climbing = !climbing ? (counter > Constants.CROSS_CLIMB) : climbing;
+    if (!climbing && (counter > Constants.CROSS_CLIMB)) {
+      climbing = true;
+      counter = 0;
+    }
 
-    crossed = (counter > Constants.CROSS_END) && climbing;
+    if (climbing && (counter > Constants.CROSS_END)) {
+      crossed = true;
+    }
 
     drivetrain.drive(.6, 0, 0, true);
 
-    SmartShuffleboard.put("Cross", "Counter", "Counter", counter);
-    SmartShuffleboard.put("Cross", "Climbing", "Climbing", climbing);
-    SmartShuffleboard.put("Cross", "Crossed", "Crossed", crossed);
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Cross", "Counter", "Counter", counter);
+      SmartShuffleboard.put("Cross", "Climbing", "Climbing", climbing);
+      SmartShuffleboard.put("Cross", "Crossed", "Crossed", crossed);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     drivetrain.stopMotors();
-    SmartShuffleboard.put("Cross", "Counter", "Counter", counter);
-    SmartShuffleboard.put("Cross", "Climbing", "Climbing", climbing);
-    SmartShuffleboard.put("Cross", "Crossed", "Crossed", crossed);
   }
 
   // Returns true when the command should end.
