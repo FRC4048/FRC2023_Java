@@ -66,6 +66,9 @@ public class GripperSubsystem extends SubsystemBase {
   public boolean getopenLimitSwitch() {
     return gripperMotor.isFwdLimitSwitchClosed() == 1;
   }
+  public boolean getClosedLimitSwitch() {
+    return gripperMotor.isRevLimitSwitchClosed() == 1;
+  }
   public double getSpeed(){
     return gripperMotor.get();
   }
