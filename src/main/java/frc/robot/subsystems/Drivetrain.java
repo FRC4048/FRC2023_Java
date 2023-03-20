@@ -313,7 +313,7 @@ public class Drivetrain extends SubsystemBase{
                       m_backLeft.getPosition(), m_backRight.getPosition()
               });
       Logger.logPose2d("/Odometry/robot", poseEstimator.getEstimatedPosition(), Constants.ENABLE_LOGGING);
-      if (Constants.ADD_VISION_TO_ODOMETRY) {
+      if (Constants.ADD_VISION_TO_ODOMETRY && DriverStation.isTeleop()) {
         Pose2d visionPose = photonVision.getRobot2dFieldPose();
         if (visionPose != null) {
           double latency = photonVision.getCameraLatency();
