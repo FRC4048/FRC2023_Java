@@ -44,7 +44,7 @@ public class AutoCloseGripper extends CommandBase {
     }
 
     if (cycleCounter > Constants.AUTO_CLOSE_GRIP_CYCLES) {
-      //new CloseGripper(gripper).schedule();
+      new CloseGripper(gripper).schedule();
       overSubstation = true;
     }
 
