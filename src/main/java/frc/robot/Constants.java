@@ -16,9 +16,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public static final boolean DRIVETRAIN_DEBUG = false;
-  public static final boolean ARM_DEBUG = false;
-  public static final boolean EXTENDER_DEBUG = false;
-  public static final boolean GRIPPER_DEBUG = false;
+  public static final boolean ARM_DEBUG = true;
+  public static final boolean EXTENDER_DEBUG = true;
+  public static final boolean GRIPPER_DEBUG = true;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
 
@@ -85,18 +85,19 @@ public final class Constants {
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
-  public static final double ARM_PID_P_IN = 0.03;
-  public static final double ARM_PID_I_IN = 0.0001;
+  public static final double ARM_PID_P_IN = 0.2;
+  public static final double ARM_PID_I_IN = 0.0;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
+  public static final double ARM_OVERSHOOT = 1.5;
 
-  public static final double ARM_MIN_ENC_VAL = 2.145;
+  public static final double ARM_MIN_ENC_VAL = 2.0;
   public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
 
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
   public static final double ARM_MAX_VOLTS = 4.5;
-  public static final double ARM_MOVE_PID_THRESHOLD = 2.0;
+  public static final double ARM_MOVE_PID_THRESHOLD = 1.0;
   //in inches
   public static final int ARM_HEIGHT = 47;
 

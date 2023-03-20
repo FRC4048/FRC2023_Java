@@ -43,9 +43,9 @@ public class Drive extends CommandBase{
         } else if (increaseSpeedButton.getAsBoolean()) {
             mod = Constants.TURBO_DRIVE_AND_STEER_SPD;
         }
-        double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.05);
-        double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.05);
-        double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.05);
+        double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.1);
+        double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
+        double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
 
         // TODO: Call drivetrain
         drivetrain.drive(-fwd*mod, -str*mod, -rcw*mod, true);

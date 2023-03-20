@@ -19,7 +19,7 @@ public class VoltageMoveArm extends LoggedCommand {
         this.arm = arm;
         this.upPower = upPower;
         this.downPower = downPower;
-        this.angle = angle;
+        this.angle = angle + Constants.ARM_OVERSHOOT;
         addRequirements(this.arm);
     }
 
@@ -53,6 +53,4 @@ public class VoltageMoveArm extends LoggedCommand {
 
         return (Math.abs(angle - arm.getAnalogValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
     }
-
-
 }
