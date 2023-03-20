@@ -16,12 +16,12 @@ public class LoggedCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.logBoolean("/Commands/" + getName(), true, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/commands/" + getName(), true, Constants.ENABLE_LOGGING);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.logBoolean("/Commands/" + getName(), false, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/commands/" + getName(), false, Constants.ENABLE_LOGGING);
   }
 }

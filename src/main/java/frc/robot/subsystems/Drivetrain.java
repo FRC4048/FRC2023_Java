@@ -279,7 +279,7 @@ public class Drivetrain extends SubsystemBase{
   public void periodic() {
     navxGyroValue = getGyro();
     gyroEntry.setDouble(getNavxGyroValue());
-    Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
+    Logger.logDouble("/drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
     SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
@@ -312,13 +312,15 @@ public class Drivetrain extends SubsystemBase{
                       m_frontLeft.getPosition(), m_frontRight.getPosition(),
                       m_backLeft.getPosition(), m_backRight.getPosition()
               });
-      Logger.logPose2d("/Odometry/robot", poseEstimator.getEstimatedPosition(), Constants.ENABLE_LOGGING);
+      Logger.logPose2d("/odometry/robot", poseEstimator.getEstimatedPosition(), Constants.ENABLE_LOGGING);
       if (Constants.ADD_VISION_TO_ODOMETRY && DriverStation.isTeleop()) {
         Pose2d visionPose = photonVision.getRobot2dFieldPose();
         if (visionPose != null) {
           double latency = photonVision.getCameraLatency();
           if ((latency > 0) && (latency < Constants.VISION_MAX_LATENCY)) {
+            Logger.logBoolean("/odometry/addingVision", true,Constants.ENABLE_LOGGING);
             poseEstimator.addVisionMeasurement(visionPose, Timer.getFPGATimestamp() - latency);
+            Logger.logBoolean("/odometry/addingVision", false,Constants.ENABLE_LOGGING);
           }
         }
       }

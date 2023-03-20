@@ -52,8 +52,8 @@ public class Robot extends TimedRobot {
 
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
-    Logger.logDouble("/Robot/loopTime", time, Constants.ENABLE_LOGGING);
-    Logger.logBoolean("Robot/tooLong", time > 0.2 ? true : false, Constants.ENABLE_LOGGING);
+    Logger.logDouble("/robot/loopTime", time, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/robot/tooLong", time > 0.2 ? true : false, Constants.ENABLE_LOGGING);
   }
 
 

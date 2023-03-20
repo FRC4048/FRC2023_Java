@@ -181,8 +181,8 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       pose3dPosition = estimatedPose.estimatedPose;
     }
 
-    Logger.logPose2d("/Odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
-    Logger.logInteger("/Vision/tagID", targetId, Constants.ENABLE_LOGGING);
+    Logger.logPose2d("/ddometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
+    Logger.logInteger("/vision/tagID", targetId, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
       SmartShuffleboard.put("AprilTag", "isConnected", camera.isConnected());
