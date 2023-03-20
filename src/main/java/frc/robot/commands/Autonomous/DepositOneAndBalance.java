@@ -1,10 +1,12 @@
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
 import frc.robot.AutonomousChooser;
 import frc.robot.Constants;
+import frc.robot.commands.CrossPanel;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -16,6 +18,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
 import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
@@ -33,11 +36,9 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
                 ), "DropGamePieceSequence"),
                 new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
             ), "DepositGamePieceParRace"),
-
-            new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
-            new MoveDistanceOffset(drivetrain, 0.1, yChange, 0.5),
-            new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true))
+                new ParCommandGroupWrapper(new ParallelCommandGroup(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender),"stow"),
+                                                                    new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true),"Balance"))
+                )
         );
-
     }
 }
