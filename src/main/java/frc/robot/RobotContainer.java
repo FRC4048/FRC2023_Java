@@ -128,7 +128,7 @@ public class RobotContainer {
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)));
     controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper)));
-    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new SubstationAutoPickup(arm, extender, gripper))));
+    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new SubstationAutoPickup(arm, gripper, extender))));
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
