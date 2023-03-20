@@ -132,7 +132,7 @@ private SparkMaxPIDController pidController;
     encoder.setPosition(0);
   }
 
-  public double getGroundDistance() {
+  public double getDistance() {
     return distanceSensor.getRange();
   }
 
