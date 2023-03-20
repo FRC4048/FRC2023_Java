@@ -6,7 +6,9 @@ import com.revrobotics.CANSparkMax.ControlType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.Logging;
 
 public class HoldArmPID extends CommandBase {
 
@@ -33,6 +35,10 @@ public class HoldArmPID extends CommandBase {
     @Override
     public void end(boolean Interrupted) {
         arm.setPidding(false);
+        Logger.logDouble("arm/pid/voltage", arm.getNeoMotor().getBusVoltage(), Constants.ENABLE_LOGGING);
+        Logger.logDouble("arm/pid/current", angle, Constants.ENABLE_LOGGING);
+        Logger.logDouble("arm/pid/desired", arm.getAnalogValue(), Constants.ENABLE_LOGGING);
+
     }
 
     @Override

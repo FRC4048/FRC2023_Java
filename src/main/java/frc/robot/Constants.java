@@ -15,10 +15,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final boolean DRIVETRAIN_DEBUG = true;
-  public static final boolean ARM_DEBUG = false;
-  public static final boolean EXTENDER_DEBUG = false;
-  public static final boolean GRIPPER_DEBUG = false;
+  public static final boolean DRIVETRAIN_DEBUG = false;
+  public static final boolean ARM_DEBUG = true;
+  public static final boolean EXTENDER_DEBUG = true;
+  public static final boolean GRIPPER_DEBUG = true;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
 
@@ -85,31 +85,32 @@ public final class Constants {
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
-  public static final double ARM_PID_P_IN = 0.03;
-  public static final double ARM_PID_I_IN = 0.0001;
+  public static final double ARM_PID_P_IN = 0.2;
+  public static final double ARM_PID_I_IN = 0.0;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
+  public static final double ARM_OVERSHOOT = 1.5;
+
+  public static final double ARM_MIN_ENC_VAL = 2.0;
+  public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
 
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
-
   public static final double ARM_MAX_VOLTS = 4.5;
-
-  public static final double ARM_MOVE_PID_THRESHOLD = 2;
+  public static final double ARM_MOVE_PID_THRESHOLD = 1.0;
   //in inches
   public static final int ARM_HEIGHT = 47;
 
   public static final int ARM_LOWER_DISTANCE = 3;
-
 
   public static final double WHEEL_RADIUS = 0.0508;
   public static final int ENCODER_RESOLUTION = 4096;
   public static final double CHASSIS_DRIVE_GEAR_RATIO = 8.142857; // this value should be x:1
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
-  public static final double MAX_VELOCITY = 3.0; // 3 meters per second
+  public static final double MAX_VELOCITY = 4.0; // 4 meters per second
   public static final double MAX_ACCELERATION = 6.0;
-  public static final double MAX_ANGULAR_SPEED = Math.PI * 3; // 1/2 rotation per second
+  public static final double MAX_ANGULAR_SPEED = Math.PI * 6; // 1 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
   public static final double ARM_OUT_ROBOT_MIN = 6;
 
@@ -153,7 +154,7 @@ public final class Constants {
   public static final int IMU = 42;
   public static final double ARM_AUTO_VOLTAGE_UP = 4d;
   public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
-     public static final double ARM_AUTO_VOLTAGE = 3d;
+  public static final double ARM_AUTO_VOLTAGE = 3d;
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 15;
@@ -188,21 +189,26 @@ public final class Constants {
 
   //chargestation
 
-  public static final double BALANCE_STEEP_SPEED = .7;
-  public static final double BALANCE_LOW_SPEED = .04;
-  public static final double BALANCE_HIGH_SPEED = 0.15;
+  public static final double BALANCE_STEEP_SPEED = .75;
+  public static final double BALANCE_LOW_SPEED = .01;
+  public static final double BALANCE_HIGH_SPEED = 0.06;
   public static final int BALANCE_PID_END = 50; //amount of cycles we want to be balanced for
-  public static final int BALANCE_STEEP_END = 20;
+  public static final int BALANCE_STEEP_END = 60;
   public static final double CHARGESTATION_TIMEOUT = 10;
-  public static final float BALANCE_kP = (float) 0.015;
-  public static final double BALANCE_THRESH = 8; //consider balanced within +-2 degrees of 0
+  public static final float BALANCE_kP = (float) 0.01;
+  public static final double BALANCE_THRESH = 8.5; //consider balanced within +-2 degrees of 0
   public static final double BALANCE_STEEP = 10; //angle require for BalanceSteep() to end
+  public static final double CROSS_END = 30;
+  public static final double CROSS_CLIMB = 20;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 30.75;
-  public static final double SUBSTATION_PICKUP_EXTENSION = 3800.0;
+  public static final double SUBSTATION_PICKUP_ANGLE = 29.4;
+  public static final double SUBSTATION_POST_PICKUP_ANGLE = 30.0;
+  public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
+  public static final double GROUND_PICKUP_ANGLE = 13.0;
+
 
   // LED outputs
   public static final int DIGITAL_OUTPUT_1 = 1;

@@ -30,6 +30,8 @@ import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
+import frc.robot.commands.sequences.CrossAndBalance;
+import frc.robot.commands.sequences.CycleBalnceSequence;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
@@ -108,7 +110,7 @@ public class RobotContainer {
     extender.setProtectionMechanism(protectionMechanism);
     gripper.setProtectionMechanism(protectionMechanism);
 
-    m_PDB = new PowerDistributionBoard();
+//    m_PDB = new PowerDistributionBoard();
     pieceGrid = new PieceGrid();
     configureBindings();
     putShuffleboardCommands();
@@ -146,7 +148,7 @@ public class RobotContainer {
 
     //arm move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
-    controller.axisLessThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+    controller.axisLessThan(XboxController.Axis.kRightY.value, -0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
 
     //extender move on stick
     controller.axisGreaterThan(XboxController.Axis.kRightTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> -Constants.EXTENDER_MANUAL_SPEED));
@@ -162,7 +164,7 @@ public class RobotContainer {
     manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
-    
+
     extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
     gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
 
@@ -178,18 +180,22 @@ public class RobotContainer {
     }
 
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
       SmartShuffleboard.putCommand("Arm", "GO TO 10", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 10, 0)));
       SmartShuffleboard.putCommand("Arm", "GO TO 15", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 15, 0)));
       SmartShuffleboard.putCommand("Arm", "GO TO 25", new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, 25, 0)));
     }
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
+      SmartShuffleboard.putCommand("Driver", "Cross+Balance", new CrossAndBalance(drivetrain));
+    }
+
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
     SmartShuffleboard.putCommand("Arm", "Auto Close", new AutoCloseGripper(arm, gripper));
-    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true)));
+    SmartShuffleboard.putCommand("Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true)));
     //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
   }
 
