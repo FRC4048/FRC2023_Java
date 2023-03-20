@@ -204,22 +204,7 @@ public final class Constants {
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
 
-  // arm set points
-  public static final double BOTTOM_ANGLE = 22;
-  public static final double BOTTOM_EXTENSION = 1590;
-
-  public static final double CONE_MIDDLE_ANGLE = 34;
-  public static final double CONE_MIDDLE_EXTENSION = 3420;
-  public static final double CONE_TOP_ANGLE = 39;
-  public static final double CONE_TOP_EXTENSION = 7110;
-
-  public static final double CUBE_MIDDLE_ANGLE = 29;
-  public static final double CUBE_MIDDLE_EXTENSION = 1815;
-  public static final double CUBE_TOP_ANGLE = 35;
-  public static final double CUBE_TOP_EXTENSION = 5905;
-
   // LED outputs
-
   public static final int DIGITAL_OUTPUT_1 = 1;
   public static final int DIGITAL_OUTPUT_2 = 2;
   public static final int DIGITAL_OUTPUT_3 = 3;

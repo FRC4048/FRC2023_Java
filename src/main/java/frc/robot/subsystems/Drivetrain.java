@@ -26,8 +26,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -39,7 +37,6 @@ import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxAbsEncoder;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
-import org.opencv.photo.Photo;
 
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase{
@@ -282,7 +279,7 @@ public class Drivetrain extends SubsystemBase{
   public void periodic() {
     navxGyroValue = getGyro();
     gyroEntry.setDouble(getNavxGyroValue());
-Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
+    Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
     SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
@@ -315,6 +312,7 @@ Logger.logDouble("/Drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
                       m_frontLeft.getPosition(), m_frontRight.getPosition(),
                       m_backLeft.getPosition(), m_backRight.getPosition()
               });
+      Logger.logPose2d("/Odometry/robot", poseEstimator.getEstimatedPosition(), Constants.ENABLE_LOGGING);
       if (Constants.ADD_VISION_TO_ODOMETRY) {
         Pose2d visionPose = photonVision.getRobot2dFieldPose();
         if (visionPose != null) {
