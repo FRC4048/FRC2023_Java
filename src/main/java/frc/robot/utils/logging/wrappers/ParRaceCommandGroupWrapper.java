@@ -33,7 +33,7 @@ public class ParRaceCommandGroupWrapper extends CommandGroupBase {
   // Called once the command ends or is interrupted.
   @Override
   public void initialize() {
-    Logger.logBoolean("/Commands/" + ident, true, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/commands/" + ident, true, Constants.ENABLE_LOGGING);
     ParRaceGroup.initialize();
   }
 
@@ -44,7 +44,7 @@ public class ParRaceCommandGroupWrapper extends CommandGroupBase {
 
   @Override
   public final void end(boolean interrupted) {
-    Logger.logBoolean("/Commands/" + ident, false, Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/commands/" + ident, false, Constants.ENABLE_LOGGING);
     ParRaceGroup.end(interrupted);
   }
 

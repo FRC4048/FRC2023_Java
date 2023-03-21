@@ -33,9 +33,8 @@ public class AutonomousChooser {
     enum Action {
         Balance, 
         //DepositTwo, 
-        DepositOneAndBalanceRight,
-        DepositOneAndBalanceLeft,
-        DoNothing, 
+        DepositOneAndBalance,
+        DoNothing,
         CrossLine,  
         OnePieceMoveLeft, 
         OnePieceMoveRight;
@@ -63,8 +62,7 @@ public class AutonomousChooser {
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
-        actionChooser.addOption("One Piece Move Right Balance", Action.DepositOneAndBalanceRight);
-        actionChooser.addOption("One Piece Move Left Balance", Action.DepositOneAndBalanceLeft);
+        actionChooser.addOption("One Piece and Balance", Action.DepositOneAndBalance);
         actionChooser.addOption("Balance", Action.Balance);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
@@ -84,10 +82,8 @@ public class AutonomousChooser {
             y = 30;
         } else if (action == Action.Balance) {
             y = 108;
-        } else if (action == Action.DepositOneAndBalanceRight) {
-            y = 130;
-        } else if (action == Action.DepositOneAndBalanceLeft) {
-            y = 86;
+        } else if (action == Action.DepositOneAndBalance) {
+            y = 108;
         } else if (action == Action.OnePieceMoveLeft && location == Location.Right) {
             y = 20;
         } else if (action == Action.OnePieceMoveLeft && location == Location.Left) {
@@ -174,11 +170,8 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
-        else if (action == Action.DepositOneAndBalanceRight && location == Location.Middle) {
+        else if (action == Action.DepositOneAndBalance && location == Location.Middle) {
             return new SequentialCommandGroupWrapper(new DepositOneAndBalance(drivetrain, arm, extender, gripper, -0.2, location));
-        }
-        else if (action == Action.DepositOneAndBalanceLeft && location == Location.Middle) {
-            return new SequentialCommandGroupWrapper(new DepositOneAndBalance(drivetrain, arm, extender, gripper, 0.2, location));
         }
         else if (action == Action.Balance && location == Location.Middle) {
             return new SequentialCommandGroupWrapper(new Balance(drivetrain, arm, extender, gripper, location));
