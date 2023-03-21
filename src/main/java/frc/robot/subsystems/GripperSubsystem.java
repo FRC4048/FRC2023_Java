@@ -40,8 +40,9 @@ public class GripperSubsystem extends SubsystemBase {
       SmartShuffleboard.put("Gripper", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed()==1);
       SmartShuffleboard.put("Gripper", "rev Limit", gripperMotor.isRevLimitSwitchClosed()==1);
     }
-    Logger.logBoolean("/Gripper/Limit", getopenLimitSwitch(),Constants.ENABLE_LOGGING);
-    Logger.logDouble("/Gripper/Encoder", gripperPosition(),Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/gripper/closedLimit", getClosedLimitSwitch(),Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/gripper/openLimit", getopenLimitSwitch(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/gripper/encoder", gripperPosition(),Constants.ENABLE_LOGGING);
   }
 
   public void open() {

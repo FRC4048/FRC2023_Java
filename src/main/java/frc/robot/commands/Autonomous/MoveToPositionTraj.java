@@ -66,7 +66,7 @@ public class MoveToPositionTraj extends CommandBase {
         moveCommand =
       new SwerveControllerCommand(
           trajectory,
-          drivetrain.getOdometry()::getPoseMeters, // Functional interface to feed supplier
+          drivetrain.getOdometry()::getEstimatedPosition, // Functional interface to feed supplier
           drivetrain.getKinematics(),
           new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
           new PIDController(Constants.kP_Y_AUTO, 0, 0),

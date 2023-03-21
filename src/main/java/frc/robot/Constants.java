@@ -119,7 +119,6 @@ public final class Constants {
   public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
   public static final double MANUAL_GRIP_SPEED = 0.8;
-  public static final double MANUAL_ARM_PID_SPEED = .2;
 
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 3.0;
@@ -212,7 +211,6 @@ public final class Constants {
 
 
   // LED outputs
-
   public static final int DIGITAL_OUTPUT_1 = 1;
   public static final int DIGITAL_OUTPUT_2 = 2;
   public static final int DIGITAL_OUTPUT_3 = 3;
@@ -221,10 +219,18 @@ public final class Constants {
   public static final int CUBE_ID = 1;
   public static final int ROBOT_ID = 7;
 
+
+  // vision constants
+  public static final boolean ADD_VISION_TO_ODOMETRY = true;
+  public static final double VISION_MAX_LATENCY = 0.3;
   //MoveCommand Timeouts
   public static final double MOVE_OFFSET_TIMEOUT = 5.0;
 
   public static final String PHOTON_VISION_ID = "photonvision";
   public static final String PHOTON_CAMERA_ID = "camera0";
   public static final String PHOTON_LATENCY = "latencyMillis";
+
+  // field
+  public static final double FIELD_LENGTH_X_FEET = 54.25;
+  public static final double FIELD_LENGTH_Y_FEET = 26.5;
 }

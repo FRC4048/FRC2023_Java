@@ -84,13 +84,15 @@ public class RobotContainer {
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
 
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
 
 
     // Configure the trigger bindings
-    drivetrain = new Drivetrain();
+    photonSubsystem = new PhotonCameraSubsystem();
+    drivetrain = new Drivetrain(photonSubsystem);
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
@@ -109,7 +111,6 @@ public class RobotContainer {
     gripper.setProtectionMechanism(protectionMechanism);
 
 //    m_PDB = new PowerDistributionBoard();
-    photonSubsystem = new PhotonCameraSubsystem();
     pieceGrid = new PieceGrid();
     configureBindings();
     putShuffleboardCommands();
@@ -138,6 +139,9 @@ public class RobotContainer {
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)));
     controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper)));
     controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new StationPickupManual(drivetrain, arm, extender, gripper))));
+
+
+
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
     controller.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
