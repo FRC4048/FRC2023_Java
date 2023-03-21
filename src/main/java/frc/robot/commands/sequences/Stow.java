@@ -21,9 +21,8 @@ public class Stow extends SequentialCommandGroup {
             new ParCommandGroupWrapper(new ParallelCommandGroup(
                 new CloseGripper(gripper).withTimeout(3),
                 new VoltageMoveArm(arm, 0.0, Constants.ARM_STOW_SPEED, 0.0)
-                ), "ArmStowParCommand"),
-            new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender))
-        );  
+                ), "ArmStowParCommand")
+        );
     }
 
 }

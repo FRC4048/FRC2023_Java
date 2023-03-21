@@ -72,9 +72,9 @@ public class Extender extends SubsystemBase {
             SmartShuffleboard.put("Extender", "Fwd Limt", fwdLimitReached());
             SmartShuffleboard.put("Extender", "Rev Limit", revLimitReached());
         }
-        Logger.logDouble("/Extender/Encoder",getEncoder(), Constants.ENABLE_LOGGING);
-        Logger.logBoolean("/Extender/fwdLimit", fwdLimitReached(),Constants.ENABLE_LOGGING);
-        Logger.logBoolean("/Extender/revLimit", revLimitReached(),Constants.ENABLE_LOGGING);
+        Logger.logDouble("/extender/encoder",getEncoder(), Constants.ENABLE_LOGGING);
+        Logger.logBoolean("/extender/fwdLimit", fwdLimitReached(),Constants.ENABLE_LOGGING);
+        Logger.logBoolean("/extender/revLimit", revLimitReached(),Constants.ENABLE_LOGGING);
     }
 
     public double getExtenderSensorPos() {

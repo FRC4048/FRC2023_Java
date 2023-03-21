@@ -34,10 +34,9 @@ public class OneGamepiece extends SequentialCommandGroup{
         ), "DepositGamePieceParRace"),
 
         new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender)),
-        new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),
+        new MoveDistanceOffset(drivetrain, 0.2, yChange, 0.5),
         new MoveDistanceSpinTraj(drivetrain, 4.7, 0, Math.toRadians(180))
         //change it back to 4.7
-
     );
     }
 

@@ -76,7 +76,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
         moveCommand =
         new SwerveControllerCommand(
           trajectory,                                                                                                                                                                                                                        
-          drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
+          drivetrain.getOdometry()::getEstimatedPosition, // Functionalp interface to feed supplier
           drivetrain.getKinematics(),
           new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
           new PIDController(Constants.kP_Y_AUTO, Constants.kI_Y_AUTO, Constants.kD_Y_AUTO),
