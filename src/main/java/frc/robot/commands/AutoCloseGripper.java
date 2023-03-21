@@ -37,14 +37,13 @@ public class AutoCloseGripper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (arm.getDistance() < 23 && arm.getDistance() > 0) {
+    if (arm.getDistance() < Constants.AUTO_CLOSE_GRIP_DISTANCE && arm.getDistance() > 0) {
       cycleCounter++;
     } else {
       cycleCounter = 0;
     }
 
     if (cycleCounter > Constants.AUTO_CLOSE_GRIP_CYCLES) {
-      new CloseGripper(gripper).schedule();
       overSubstation = true;
     }
 
@@ -57,7 +56,6 @@ public class AutoCloseGripper extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    new CloseGripper(gripper).schedule();
   }
 
   // Returns true when the command should end.

@@ -18,6 +18,7 @@ public class OpenGripper extends CommandBase{
     }
     @Override
     public void end(boolean interrupted) {
+        gripper.setHasPiece(false);
         gripper.stop();
     }
 
