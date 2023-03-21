@@ -48,36 +48,36 @@ public class TwoGamepiece extends SequentialCommandGroup {
                     new SequentialCommandGroupWrapper(
                         new Stow(arm, gripper, extender)
                     ),
-                    new MoveDistanceSpinTraj(drivetrain, 0.2, -0.2 * direction, Math.toRadians(180))
+                    new MoveDistanceSpinTraj(drivetrain, 0.2, -0.4 * direction, Math.toRadians(180))
                 ), "Moving To Pickup"
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, 5, 0, 0),
+            new MoveDistanceSpinTraj(drivetrain, 4.9, .2 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
             
             new GroundPickup(arm, extender, gripper),
 
-            new CloseGripper(gripper),
+            new CloseGripper(gripper).withTimeout(1.5),
 
-            new ParCommandGroupWrapper(
-                 new ParallelCommandGroup( 
-                    new Stow(arm, gripper, extender)
-                     //new MoveDistanceSpinTraj(drivetrain, -2, 0, Math.toRadians(180))
-                 ), "Move Back To Grid"
-             )
-            // //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
-            // new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
-            // new ParRaceCommandGroupWrapper(
-            //     new ParallelRaceGroup(
-            //         new ParCommandGroupWrapper(
-            //             new ParallelCommandGroup(
-            //                 new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
-            //                 new OpenGripper(gripper)
-            //             ), "Extend To Drop Off"
-            //         ),
-            //         new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
-            //     ), "Drop Off On Grid"
-            // ),
-            // new Stow(arm, gripper, extender)
+            new Stow(arm, gripper, extender),
+
+            new MoveDistanceSpinTraj(drivetrain, -4.9, 0, Math.toRadians(180)),
+
+            new MoveDistanceSpinTraj(drivetrain, 0, -.205 * direction, Math.toRadians(180)),
+            
+            //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
+            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
+            new ParRaceCommandGroupWrapper(
+                new ParallelRaceGroup(
+                    new ParCommandGroupWrapper(
+                        new ParallelCommandGroup(
+                            new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
+                            new OpenGripper(gripper)
+                        ), "Extend To Drop Off"
+                    ),
+                    new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
+                ), "Drop Off On Grid"
+            ),
+            new Stow(arm, gripper, extender)
         );
     }
 }

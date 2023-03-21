@@ -3,7 +3,6 @@ package frc.robot.commands.Autonomous;
 import java.util.List;
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Logger;
 
 public class MoveDistanceSpinTraj extends CommandBase {
     
@@ -30,7 +30,11 @@ public class MoveDistanceSpinTraj extends CommandBase {
     private SwerveControllerCommand moveCommand;
 
     //Command used to move a specific distance and turn to a specific angle
-    public MoveDistanceSpinTraj(Drivetrain drivetrain, double xChange, double yChange, double desiredRotRadians) {
+    public MoveDistanceSpinTraj(
+        Drivetrain drivetrain, 
+        double xChange, 
+        double yChange, 
+        double desiredRotRadians) {
         this.drivetrain = drivetrain;
         this.xChange = xChange;
         this.yChange = yChange;
@@ -64,6 +68,8 @@ public class MoveDistanceSpinTraj extends CommandBase {
         List.of(),
         desiredPos,
         config);
+
+        Logger.logTrajectory("/movedistancetraj", trajectory, Constants.ENABLE_LOGGING);
 
         drivetrain.getField().getObject("traj").setTrajectory(trajectory);
 
