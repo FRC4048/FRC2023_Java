@@ -51,7 +51,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
         //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
         //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
         //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
-        double angle = Math.atan(yChange/xChange);
+        double angle = getTargetAngle();
         currentPos = new Pose2d(
         drivetrain.getPoseX(), 
         drivetrain.getPoseY(), 
@@ -86,6 +86,33 @@ public class MoveDistanceSpinTraj extends CommandBase {
           drivetrain
           );
           moveCommand.schedule();
+    }
+
+    // The calculated angle must be the absolute angle on a unit circle otherwise the
+    // pose estimator might rotate the robot during the move. Calculate the direction of the 
+    // vector of (Y2 - Y2) / (X2 - X1) by adding the necessary quadrant adjustments to the atan.
+    private double getTargetAngle() {
+        double angle = 0;
+        if (xChange != 0) { // very important, otherwise divide by 0 errors
+            double arctan = Math.abs(Math.atan((yChange) / xChange));
+            if (xChange > 0 && yChange >= 0) {
+                // first quadrant
+                angle = arctan;
+            } else if (xChange < 0 && yChange >= 0) {
+                // second quadrant
+                angle = Math.PI - arctan;
+            } else if (xChange < 0 && yChange < 0) {
+                // third quadrant
+                angle = Math.PI + arctan;
+            } else {
+                angle = (Math.PI*2) - arctan;
+            }
+        } else {
+            // Trick the trajectory generator to think the robot is facing up or down
+            // This is only when the desired X change is exactly 0
+            angle = (Math.PI / 2) * Math.signum(yChange);
+        }
+        return angle;
     }
 
     public SwerveControllerCommand getMoveCommand(){
