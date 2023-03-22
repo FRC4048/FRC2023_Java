@@ -4,19 +4,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.*;
-
-import java.util.Arrays;
-import java.util.List;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ResetGyro;
@@ -53,7 +44,6 @@ public class Robot extends TimedRobot {
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
     Logger.logDouble("/robot/loopTime", time, Constants.ENABLE_LOGGING);
-    Logger.logBoolean("/robot/tooLong", time > 0.2 ? true : false, Constants.ENABLE_LOGGING);
   }
 
 
