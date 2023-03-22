@@ -42,7 +42,7 @@ public class Drive extends CommandBase{
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         
         if (decreaseSpeedButton.getAsBoolean()) {
-            drivetrain.drive(-0.1 * Math.signum(fwd), -0.1 * Math.signum(str), -0.1 * Math.signum(rcw), true);
+            drivetrain.drive(-0.4 * Math.signum(fwd), -0.1 * str, -0.13 * Math.signum(rcw), true);
         } else {
             drivetrain.drive(-fwd, -str, -rcw, true);
         }
