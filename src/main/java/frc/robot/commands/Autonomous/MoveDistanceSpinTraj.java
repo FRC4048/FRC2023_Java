@@ -3,7 +3,6 @@ package frc.robot.commands.Autonomous;
 import java.util.List;
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,12 +10,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class MoveDistanceSpinTraj extends CommandBase {
+public class MoveDistanceSpinTraj extends LoggedCommand {
     
     private Drivetrain drivetrain;
     private Pose2d currentPos;
@@ -42,6 +41,7 @@ public class MoveDistanceSpinTraj extends CommandBase {
 
     @Override
     public void initialize() {
+        super.initialize();
         //differential drive trajectory generation does not drive in a straight line unless
         //the starting and ending angle are the same, and the starting angle is pointing towards
         //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos

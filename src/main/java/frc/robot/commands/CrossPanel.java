@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class CrossPanel extends CommandBase {
+public class CrossPanel extends LoggedCommand {
   /** Creates a new DriveOverPanel. */
   private Drivetrain drivetrain;
   private boolean climbing;
@@ -27,6 +27,7 @@ public class CrossPanel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     climbing = false;
     crossed = false;
     startTime = Timer.getFPGATimestamp();
@@ -63,6 +64,7 @@ public class CrossPanel extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     drivetrain.stopMotors();
   }
 

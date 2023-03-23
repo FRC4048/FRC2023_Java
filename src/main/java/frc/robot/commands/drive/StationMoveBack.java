@@ -5,11 +5,11 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class StationMoveBack extends CommandBase {
+public class StationMoveBack extends LoggedCommand {
   /** Creates a new MoveDistanceX. */
   private Drivetrain drivetrain;
   private double startPos;
@@ -26,6 +26,7 @@ public class StationMoveBack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     startTime = Timer.getFPGATimestamp();
     startPos = drivetrain.getPoseX();
   }
@@ -39,6 +40,7 @@ public class StationMoveBack extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     drivetrain.stopMotors();
   }
 

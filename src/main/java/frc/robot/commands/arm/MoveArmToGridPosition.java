@@ -26,10 +26,6 @@ public class MoveArmToGridPosition extends LoggedCommand {
      }
 
      @Override
-     public void execute() {
-     }
-
-     @Override
      public boolean isFinished() {
           return true;
      }

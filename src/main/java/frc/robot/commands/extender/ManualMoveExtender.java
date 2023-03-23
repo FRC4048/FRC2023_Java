@@ -2,10 +2,10 @@ package frc.robot.commands.extender;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Extender;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class ManualMoveExtender extends CommandBase {
+public class ManualMoveExtender extends LoggedCommand {
     
     private Extender extender;
     private DoubleSupplier doubleSupplier;
@@ -29,6 +29,7 @@ public class ManualMoveExtender extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
         if (extender.revLimitReached()) extender.resetEncoder();
     }
 }
