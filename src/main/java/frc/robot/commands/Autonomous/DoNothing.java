@@ -14,7 +14,7 @@ public class DoNothing extends SequentialCommandGroup {
     setName("-Auto-Do-Nothing");
     addCommands(
     new InstantCommand(drivetrain::stopMotors, drivetrain),
-    new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"Auto-Reset-Encoders"),
+    new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-Reset-Encoders"),
     new InstantCommand(drivetrain::stopMotors, drivetrain)
     );
     }
