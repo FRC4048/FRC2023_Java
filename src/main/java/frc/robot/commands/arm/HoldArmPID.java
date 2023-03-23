@@ -20,6 +20,8 @@ public class HoldArmPID extends LoggedCommand {
     public void initialize() {
         super.initialize();
         arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
+        Logger.logDouble("arm/pid/angle", angle, Constants.ENABLE_LOGGING);
+
     }
 
     @Override
@@ -32,9 +34,7 @@ public class HoldArmPID extends LoggedCommand {
     public void end(boolean Interrupted) {
         super.end(Interrupted);
         arm.setPidding(false);
-        Logger.logDouble("arm/pid/voltage", arm.getNeoMotor().getBusVoltage(), Constants.ENABLE_LOGGING);
-        Logger.logDouble("arm/pid/current", angle, Constants.ENABLE_LOGGING);
-        Logger.logDouble("arm/pid/desired", arm.getAnalogValue(), Constants.ENABLE_LOGGING);
+        Logger.logDouble("arm/pid/angle", 0, Constants.ENABLE_LOGGING);
 
     }
 
