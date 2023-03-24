@@ -2,13 +2,11 @@ package frc.robot.commands.extender;
 
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
-import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class ExtendToPosition extends CommandBase {
+public class ExtendToPosition extends LoggedCommand {
     private Extender extender;
     private double position;
     private double startTime;
@@ -21,12 +19,14 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
         extender.stop();
         if (extender.revLimitReached()) extender.resetEncoder();
     }
 
     @Override
     public void initialize() {
+        super.initialize();
         startTime = Timer.getFPGATimestamp();
     }
 

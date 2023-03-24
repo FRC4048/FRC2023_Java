@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class ResetGyro extends CommandBase {
+public class ResetGyro extends LoggedCommand {
     private Drivetrain drivetrain;
     private int delay;
     private double startTime;
@@ -17,18 +17,15 @@ public class ResetGyro extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
         drivetrain.resetGyro();
     }
 
     @Override
     public void initialize() {
+        super.initialize();
         startTime = Timer.getFPGATimestamp();
     }
-
-    @Override
-    public void execute(){
-    }
-    
 
     @Override
     public boolean isFinished() {

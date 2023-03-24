@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LedPanel;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class ChangeLedID extends CommandBase{
+public class ChangeLedID extends LoggedCommand{
     LedPanel ledPanel; 
     int change;
     public ChangeLedID(LedPanel ledPanel, int change) {
@@ -15,6 +15,7 @@ public class ChangeLedID extends CommandBase{
 
     @Override
     public void initialize() {
+        super.initialize();
         int nextID = ledPanel.getID();
         nextID += change;
         if (nextID > 7) {
