@@ -3,6 +3,7 @@ package frc.robot.commands.sequences;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
 import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.arm.HoldArmPID;
@@ -20,18 +21,18 @@ public class SubstationAutoPickup extends SequentialCommandGroup {
     public SubstationAutoPickup(Arm arm, GripperSubsystem gripper, Extender extender) {
         setName("-auto-substation-pickup-");
         addCommands(
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, Constants.SUBSTATION_PICKUP_ANGLE),
+            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                     new ParCommandGroupWrapper(new ParallelCommandGroup(
-                        new ExtendToPosition(extender, 2000),
+                        new ExtendToPosition(extender, ArmPositionGrid.SUBSTATION_PICKUP.getExtenderPosition()),
                         new OpenGripper(gripper),
                         new WaitForSubstationDistance(arm, gripper)
                     )),
-                    new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE)
+                    new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition())
                 )),
             new CloseGripper(gripper),
             //slight lift after grab
-            new HoldArmPID(arm, Constants.SUBSTATION_PICKUP_ANGLE + 3)
+            new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition())
         );
     }
 }

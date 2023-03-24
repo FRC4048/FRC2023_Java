@@ -203,9 +203,6 @@ public final class Constants {
   public static final double CROSS_CLIMB = 20;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 33;
-  public static final double SUBSTATION_POST_PICKUP_ANGLE = 30.0;
-  public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
 
