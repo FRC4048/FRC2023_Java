@@ -14,6 +14,7 @@ import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DepositOneAndBalance;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.commands.Autonomous.OneGamepiece;
+import frc.robot.commands.Autonomous.TwoGamepiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -32,6 +33,8 @@ public class AutonomousChooser {
 
     enum Action {
         Balance, 
+        TwoPieceMoveLeft,
+        TwoPieceMoveRight, 
         //DepositTwo, 
         DepositOneAndBalance,
         DoNothing,
@@ -64,6 +67,8 @@ public class AutonomousChooser {
         actionChooser.addOption("Cross the Line", Action.CrossLine);
         actionChooser.addOption("One Piece and Balance", Action.DepositOneAndBalance);
         actionChooser.addOption("Balance", Action.Balance);
+        actionChooser.addOption("Two Piece Move Right", Action.TwoPieceMoveRight);
+        actionChooser.addOption("Two Piece Move Left", Action.TwoPieceMoveLeft);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
         locationChooser.addOption(Location.Left.name(), Location.Left);	
@@ -92,6 +97,14 @@ public class AutonomousChooser {
             y = 64;
         } else if (action == Action.OnePieceMoveRight && location == Location.Left) {
             y = 194;
+        } else if (action == Action.TwoPieceMoveLeft && location == Location.Left) {
+            y = 150;
+        } else if (action == Action.TwoPieceMoveRight && location == Location.Left) {
+            y = 194;
+        } else if (action == Action.TwoPieceMoveRight && location == Location.Right) {
+            y = 64;
+        } else if (action == Action.TwoPieceMoveLeft && location == Location.Right) {
+            y = 20;
         } else {
             y = 108;
         }
@@ -168,6 +181,28 @@ public class AutonomousChooser {
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
+            }
+        }
+        else if (action == Action.TwoPieceMoveLeft) {
+            if (location == Location.Left && allianceColor == Alliance.Blue) {
+                return new TwoGamepiece(drivetrain, arm, extender, gripper, -1);
+            }
+            else if (location == Location.Right && allianceColor == Alliance.Red) {
+                return new TwoGamepiece(drivetrain, arm, extender, gripper, -1);
+            }
+            else {
+                return new DoNothing(arm, extender, drivetrain);
+            }
+        }
+        else if (action == Action.TwoPieceMoveRight) {
+            if (location == Location.Left && allianceColor == Alliance.Blue) {
+                return new TwoGamepiece(drivetrain, arm, extender, gripper, 1);
+            }
+            else if (location == Location.Right && allianceColor == Alliance.Red) {
+                return new TwoGamepiece(drivetrain, arm, extender, gripper, 1);
+            }
+            else {
+                return new DoNothing(arm, extender, drivetrain);
             }
         }
         else if (action == Action.DepositOneAndBalance && location == Location.Middle) {
