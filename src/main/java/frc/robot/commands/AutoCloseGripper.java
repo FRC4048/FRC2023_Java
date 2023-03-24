@@ -5,15 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class AutoCloseGripper extends CommandBase {
+public class AutoCloseGripper extends LoggedCommand {
   /** Creates a new AutoCloseGripper. */
   private Arm arm;
   private GripperSubsystem gripper;
@@ -29,6 +28,7 @@ public class AutoCloseGripper extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     overSubstation = false;
     initTime = Timer.getFPGATimestamp();
     cycleCounter = 0;
@@ -53,7 +53,9 @@ public class AutoCloseGripper extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    super.end(interrupted);
+  }
 
   // Returns true when the command should end.
   @Override

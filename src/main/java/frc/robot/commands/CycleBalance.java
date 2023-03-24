@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class CycleBalance extends CommandBase {
+public class CycleBalance extends LoggedCommand {
   /** Creates a new CycleBalance. */
   private Drivetrain drivetrain;
   private int climbCounter;
@@ -24,6 +24,7 @@ public class CycleBalance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     climbCounter = 0;
     finishCounter = 0;
     climbing = false;
@@ -43,6 +44,7 @@ public class CycleBalance extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     drivetrain.drive(0, 0, 0, true);
   }
 
