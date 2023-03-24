@@ -17,6 +17,7 @@ public class OpenGripper extends LoggedCommand{
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
+        gripper.setHasPiece(false);
         gripper.stop();
     }
 

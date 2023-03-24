@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoCloseGripper;
 import frc.robot.commands.CancelAll;
 import frc.robot.commands.ChangeLedID;
 import frc.robot.commands.CrossPanel;
@@ -20,8 +19,8 @@ import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
+import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -33,8 +32,8 @@ import frc.robot.commands.sequences.CrossAndBalance;
 import frc.robot.commands.sequences.GroundPickup;
 import frc.robot.commands.sequences.PIDBalanceSequence;
 import frc.robot.commands.sequences.ResetEncoders;
-import frc.robot.commands.sequences.StationPickupManual;
 import frc.robot.commands.sequences.Stow;
+import frc.robot.commands.sequences.SubstationAutoPickup;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -136,8 +135,7 @@ public class RobotContainer {
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Button-Stow"));
     controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
-    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper((new StationPickupManual(drivetrain, arm, extender, gripper)), "-Button-Substation-Pickup"));
-
+    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender), "-Button-Substation-Pickup"));
 
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
@@ -188,7 +186,7 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
     SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender), "-Debug-Reset-Encoders"));
     SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    SmartShuffleboard.putCommand("Arm", "Auto Close", new AutoCloseGripper(arm, gripper));
+    SmartShuffleboard.putCommand("Arm", "Auto Close", new WaitForSubstationDistance(arm, gripper));
     SmartShuffleboard.putCommand("Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true), "-Debug-PID-Balance"));
   }
 

@@ -20,6 +20,7 @@ public class GripperSubsystem extends SubsystemBase {
   public WPI_TalonSRX gripperMotor;
   private DutyCycleEncoder gripperEncoder;
   private ProtectionMechanism protectionMechanism;
+  private boolean hasPiece = false;
 
   public GripperSubsystem() {
     gripperMotor = new WPI_TalonSRX(Constants.GRIPPER_MOTOR_ID);
@@ -40,6 +41,8 @@ public class GripperSubsystem extends SubsystemBase {
       SmartShuffleboard.put("Gripper", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed()==1);
       SmartShuffleboard.put("Gripper", "rev Limit", gripperMotor.isRevLimitSwitchClosed()==1);
     }
+    SmartShuffleboard.put("Driver", "HAS PIECE", hasPiece);
+
     Logger.logBoolean("/gripper/closedLimit", getClosedLimitSwitch(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/gripper/openLimit", getopenLimitSwitch(),Constants.ENABLE_LOGGING);
     Logger.logDouble("/gripper/encoder", gripperPosition(),Constants.ENABLE_LOGGING);
@@ -81,4 +84,12 @@ public class GripperSubsystem extends SubsystemBase {
     if ((volt > 0 && protectionMechanism.safeToOpenGripper()) || volt < 0) return volt;
     return 0;
   }
+
+  public void setHasPiece(boolean bool) {
+    hasPiece = bool;
+  }
+  public boolean getHasPiece() {
+    return hasPiece;
+  }
+
 }
