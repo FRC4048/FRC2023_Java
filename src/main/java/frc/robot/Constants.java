@@ -207,8 +207,6 @@ public final class Constants {
   public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
-  public static final double GROUND_PICKUP_ANGLE = 13.0;
-
 
   // LED outputs
   public static final int DIGITAL_OUTPUT_1 = 1;
