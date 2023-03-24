@@ -15,14 +15,14 @@ import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
 
 public class GroundPickup extends SequentialCommandGroup{
     public GroundPickup(Arm arm, Extender extender, GripperSubsystem gripper) {
-        setName("GroundPickupSequence");
+        setName("-Ground-Pickup");
         addCommands(
             new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.GROUND_PICKUP.getArmPosition()),
             new ParCommandGroupWrapper(new ParallelCommandGroup(
                 new ExtendToPosition(extender, ArmPositionGrid.GROUND_PICKUP.getExtenderPosition()),
                 new OpenGripper(gripper),
                 new HoldArmPID(arm, ArmPositionGrid.GROUND_PICKUP.getArmPosition())
-            ), "ArmGroundPickupPositionParCommand")
+            ), "-Ground-Pickup-drop")
         );
 
     }

@@ -16,7 +16,7 @@ public class MoveArmToGridPosition extends LoggedCommand {
           this.arm = arm;
           this.extender = extender;
           this.pieceGrid = pieceGrid;
-          setName("MoveArmToGridPosition");
+          setName("-Move-Arm-To-Grid-Position");
      }
 
      @Override
