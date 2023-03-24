@@ -22,6 +22,13 @@ import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.diag.DiagToFSensor;
 
+/**
+ * The RevRobotics distance sensor requires manual installation to work correctly.
+ * 
+ * Follow the instruments on this page to install the driver:
+ * 
+ * https://github.com/REVrobotics/2m-Distance-Sensor
+ */
 public class Arm extends SubsystemBase {
   private CANSparkMax neoMotor;
   private RelativeEncoder encoder;

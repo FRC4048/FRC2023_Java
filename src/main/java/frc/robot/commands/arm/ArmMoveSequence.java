@@ -13,14 +13,14 @@ import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
  */
 public class ArmMoveSequence extends SequentialCommandGroup {
     public ArmMoveSequence(Arm arm, Extender extender, double armTargetPosition, double extenderTargetPosition) {
-        setName("ArmMoveSequence");
+        setName("-Arm-Move");
         if (armTargetPosition > arm.getAnalogValue()) {
             addCommands(
                 new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
                 new ParCommandGroupWrapper(new ParallelCommandGroup(
                     new HoldArmPID(arm,armTargetPosition),
                     new ExtendToPosition(extender,extenderTargetPosition)
-                ), "ArmPositionParCommand")
+                ), "-Arm-Move-extend")
             );
         } else {
             addCommands(

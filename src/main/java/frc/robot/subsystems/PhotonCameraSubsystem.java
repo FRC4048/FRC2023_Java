@@ -113,7 +113,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
    * Return the camera latency from network tables, will return -1 if no value is available
    * @return
    */
-  public double getCameraLatency() {
+  public double getCameraLatencyMs() {
     return cameraLatency.getDouble(-1.0);
   }
   private void calculateUsingEstimator() {
@@ -181,7 +181,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       pose3dPosition = estimatedPose.estimatedPose;
     }
 
-    Logger.logPose2d("/ddometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
+    Logger.logPose2d("/odometry/vision", robotFieldPose, Constants.ENABLE_LOGGING);
     Logger.logInteger("/vision/tagID", targetId, Constants.ENABLE_LOGGING);
 
     if (Constants.APRILTAG_DEBUG) {
