@@ -42,8 +42,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private AprilTagPoseFilter rX3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
   private AprilTagPoseFilter rY3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
   private AprilTagPoseFilter rZ3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
-  private AprilTagPoseFilter positionXFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  private AprilTagPoseFilter positionYFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
 
   private boolean useFilters = true;
 
@@ -257,17 +255,10 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       }
 
       if (tagFieldPosition != null) {
-        if (useFilters) {
-          SmartShuffleboard.put("AprilTag", "position-x", positionXFilter.calculate(tagFieldPosition.getX()));
-          SmartShuffleboard.put("AprilTag", "position-y", positionYFilter.calculate(tagFieldPosition.getY()));
-        }
-        else {
-          SmartShuffleboard.put("AprilTag", "position-x", tagFieldPosition.getX());
-          SmartShuffleboard.put("AprilTag", "position-y", tagFieldPosition.getY());
-        }
-      } else {
-         positionXFilter.resetFilter();
-          positionYFilter.resetFilter();
+        SmartShuffleboard.put("AprilTag", "position-x", tagFieldPosition.getX());
+        SmartShuffleboard.put("AprilTag", "position-y", tagFieldPosition.getY());
+      } 
+      else {
           SmartShuffleboard.put("AprilTag", "position-x", 0);
           SmartShuffleboard.put("AprilTag", "position-y", 0);
       }
