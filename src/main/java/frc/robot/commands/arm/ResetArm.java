@@ -1,11 +1,11 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class ResetArm extends CommandBase{
+public class ResetArm extends LoggedCommand{
 
     private Arm arm;
     private boolean limitReached;
@@ -17,11 +17,8 @@ public class ResetArm extends CommandBase{
     }
 
     @Override
-    public void end(boolean interrupted) {
-    }
-
-    @Override
     public void initialize() {
+        super.initialize();
         limitReached = false;
         startTime = Timer.getFPGATimestamp();
     }

@@ -178,8 +178,9 @@ public final class Constants {
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double GRIPPER_TIMEOUT = 2.0;
-  public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 10;
+  public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 25;
   public static final int AUTO_CLOSE_GRIP_CYCLES = 5;
+  public static final double AUTO_CLOSE_GRIP_DISTANCE = 30;
   public static final double WANTED_TIME = 0.8;
 
   public static final double DIAG_TALONSRX_ROT = 5;
@@ -202,13 +203,8 @@ public final class Constants {
   public static final double CROSS_CLIMB = 20;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 29.4;
-  public static final double SUBSTATION_POST_PICKUP_ANGLE = 30.0;
-  public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
-  public static final double GROUND_PICKUP_ANGLE = 13.0;
-
 
   // LED outputs
   public static final int DIGITAL_OUTPUT_1 = 1;

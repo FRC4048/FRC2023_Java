@@ -1,21 +1,14 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class GyroOffseter extends CommandBase {
+public class GyroOffseter extends LoggedCommand {
     private Drivetrain drivetrain;
     private double offset;
     public GyroOffseter(Drivetrain drivetrain, double offset) {
         this.drivetrain = drivetrain;
         this.offset = offset;
-    }
-
-    public void end(boolean interrupted) {
-    }
-
-    @Override
-    public void initialize() {
     }
 
     @Override

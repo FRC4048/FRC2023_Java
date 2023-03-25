@@ -10,7 +10,6 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
-import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class Stow extends SequentialCommandGroup {
 

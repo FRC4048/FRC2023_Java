@@ -55,7 +55,15 @@ public class CloseGripper extends LoggedCommand {
     @Override
     public boolean isFinished() {
         if (grabStartTime != null) {
-            return (gripper.getClosedLimitSwitch()) || (Timer.getFPGATimestamp() - grabStartTime > Constants.WANTED_TIME);
+            if ((Timer.getFPGATimestamp() - grabStartTime > Constants.WANTED_TIME)) {
+                gripper.setHasPiece(true);
+                return true;
+            } else if (gripper.getClosedLimitSwitch()) {
+                return true;
+            } else {
+                return false;
+            }
+            
         } else {
             return (gripper.getClosedLimitSwitch()) || (Timer.getFPGATimestamp() - startTime > Constants.GRIPPER_TIMEOUT);
         }
