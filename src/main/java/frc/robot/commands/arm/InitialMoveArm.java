@@ -63,11 +63,6 @@ public class InitialMoveArm extends LoggedCommand {
         double armOutput = Math.abs(armPIDController.calculate(currentAngle,desiredAngle));
         double filteredOutput = accelFilter.calculate(armOutput);
         double voltage = MathUtil.clamp(filteredOutput, direction.boost, direction.maxPower);
-
-        SmartShuffleboard.put("bat", "error", desiredAngle - currentAngle);
-        SmartShuffleboard.put("bat", "filtered output", filteredOutput);
-        SmartShuffleboard.put("bat", "arm output", armOutput);
-        SmartShuffleboard.put("bat", "voltage", voltage);
         arm.setVoltage(voltage * direction.sign);
     }
 
@@ -79,6 +74,12 @@ public class InitialMoveArm extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(desiredAngle - arm.getAnalogValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
+        if ((direction == Direction.UP) && ((desiredAngle-arm.getAnalogValue()) <= Constants.ARM_MOVE_PID_THRESHOLD)) {
+            return true;
+        }
+        if ((direction == Direction.DOWN) && ((desiredAngle - arm.getAnalogValue()) >= Constants.ARM_MOVE_PID_THRESHOLD)) {
+            return true;
+        }
+        return ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
     }
 }
