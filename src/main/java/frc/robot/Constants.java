@@ -205,6 +205,8 @@ public final class Constants {
   //setpoints
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
+  public static final double SUBSTATION_DRIVE_FORWARD_TIMEOUT = 10;
+
 
   // LED outputs
   public static final int DIGITAL_OUTPUT_1 = 1;

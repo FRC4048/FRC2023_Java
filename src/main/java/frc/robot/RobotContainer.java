@@ -28,12 +28,7 @@ import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.CrossAndBalance;
-import frc.robot.commands.sequences.GroundPickup;
-import frc.robot.commands.sequences.PIDBalanceSequence;
-import frc.robot.commands.sequences.ResetEncoders;
-import frc.robot.commands.sequences.Stow;
-import frc.robot.commands.sequences.SubstationAutoPickup;
+import frc.robot.commands.sequences.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -134,8 +129,9 @@ public class RobotContainer {
     //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Button-Stow"));
-    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
+//    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
     controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender), "-Button-Substation-Pickup"));
+    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper, extender,drivetrain), "-Button-Substation-Pickup"));
 
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
