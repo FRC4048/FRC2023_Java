@@ -23,6 +23,7 @@ import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.drive.AlignToSubstation;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
@@ -71,6 +72,7 @@ public class RobotContainer {
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
   private JoystickButton joystickLeftButton = new JoystickButton(joyLeft, 2);
   private JoystickButton joystickRightButton = new JoystickButton(joyRight, 2);
+  private JoystickButton joystickLeftButton3 = new JoystickButton(joyLeft, 3);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
@@ -161,6 +163,8 @@ public class RobotContainer {
 
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+    
+    joystickLeftButton3.onTrue(new AlignToSubstation(drivetrain));
   }
 
   public void putShuffleboardCommands() {

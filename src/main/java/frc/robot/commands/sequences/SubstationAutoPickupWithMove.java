@@ -9,6 +9,7 @@ import frc.robot.commands.Autonomous.MoveDistanceOffset;
 import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.VoltageMoveArm;
+import frc.robot.commands.drive.AlignToSubstation;
 import frc.robot.commands.drive.MoveUntilCanceledOrTimeout;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
@@ -24,6 +25,7 @@ public class SubstationAutoPickupWithMove extends SequentialCommandGroup {
     public SubstationAutoPickupWithMove(Arm arm, GripperSubsystem gripper, Drivetrain drivetrain) {
         setName("-auto-substation-pickup-with-move-");
         addCommands(
+                new AlignToSubstation(drivetrain),
                 new ParallelRaceGroup(
                         new WaitForSubstationDistance(arm, gripper),
                         new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
@@ -35,7 +37,6 @@ public class SubstationAutoPickupWithMove extends SequentialCommandGroup {
                         new MoveDistanceOffset(drivetrain,-.5,0d,0.5), 
                         new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition())
             )
-            //slight lift after grab
         );
     }
 }
