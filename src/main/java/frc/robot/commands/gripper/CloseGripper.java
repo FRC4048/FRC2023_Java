@@ -1,13 +1,11 @@
 package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class CloseGripper extends CommandBase {
+public class CloseGripper extends LoggedCommand {
     private final GripperSubsystem gripper;
     private double startTime, prevTime;
     private double maxVelocity = 0;
@@ -23,16 +21,18 @@ public class CloseGripper extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
         gripper.stop();
     }
 
     @Override
     public void initialize() {
+        super.initialize();
         maxVelocity = 0;
         currentVelocity = 0;
         startTime = Timer.getFPGATimestamp();
         grabStartTime = null;
-
+        encoderPos = gripper.gripperPosition();
     }
 
     @Override
@@ -45,20 +45,27 @@ public class CloseGripper extends CommandBase {
         }
         prevTime = Timer.getFPGATimestamp();
         encoderPos = gripper.gripperPosition();
-        if (Math.abs(currentVelocity - maxVelocity) > .2) {
-            grabStartTime = Timer.getFPGATimestamp();
+        if (grabStartTime == null) {
+            if (Math.abs(maxVelocity - currentVelocity) > .2) {
+                grabStartTime = Timer.getFPGATimestamp();
+            }
         }
-
     }
 
     @Override
     public boolean isFinished() {
         if (grabStartTime != null) {
-            return Timer.getFPGATimestamp() - grabStartTime > Constants.WANTED_TIME; 
-        }
-        else {
-            return (Timer.getFPGATimestamp() - startTime > Constants.GRIPPER_TIMEOUT);
-        
+            if ((Timer.getFPGATimestamp() - grabStartTime > Constants.WANTED_TIME)) {
+                gripper.setHasPiece(true);
+                return true;
+            } else if (gripper.getClosedLimitSwitch()) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        } else {
+            return (gripper.getClosedLimitSwitch()) || (Timer.getFPGATimestamp() - startTime > Constants.GRIPPER_TIMEOUT);
         }
     }
 }

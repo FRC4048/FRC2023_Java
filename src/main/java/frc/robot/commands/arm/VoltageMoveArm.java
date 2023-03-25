@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class VoltageMoveArm extends LoggedCommand {
@@ -17,7 +18,7 @@ public class VoltageMoveArm extends LoggedCommand {
         this.arm = arm;
         this.upPower = upPower;
         this.downPower = downPower;
-        this.angle = angle;
+        this.angle = angle + Constants.ARM_OVERSHOOT;
         addRequirements(this.arm);
     }
 
@@ -30,7 +31,7 @@ public class VoltageMoveArm extends LoggedCommand {
     @Override
     public void execute() {
         //positive angle -> positive power
-        if (angle > arm.getEncoderValue()) {
+        if (angle > arm.getAnalogValue()) {
             arm.setVoltage(upPower);
         } else {
             arm.setVoltage(-downPower);
@@ -45,8 +46,10 @@ public class VoltageMoveArm extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(angle - arm.getEncoderValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
+        Logger.logDouble("/arm/angle", angle, Constants.ENABLE_LOGGING);
+        Logger.logDouble("/arm/analogValue", arm.getAnalogValue(), Constants.ENABLE_LOGGING);
+
+
+        return (Math.abs(angle - arm.getAnalogValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
     }
-
-
 }

@@ -7,13 +7,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class BalancePID extends CommandBase {
+public class BalancePID extends LoggedCommand {
   /** Creates a new AutoBalance. */
   private Drivetrain drivetrain;
   private int counter;
@@ -28,6 +28,7 @@ public class BalancePID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     counter = 0;
     startTime = Timer.getFPGATimestamp();
   }
@@ -37,7 +38,11 @@ public class BalancePID extends CommandBase {
   public void execute() {
     float roll = drivetrain.getFilterRoll();
     float dir = -Math.signum(roll); //- if battery away + if arm away
-    double speed = Math.abs(roll) > Constants.BALANCE_THRESH ? MathUtil.clamp(Math.abs((Math.abs(roll) - Constants.BALANCE_THRESH)) * Constants.BALANCE_kP, Constants.BALANCE_LOW_SPEED, Constants.BALANCE_HIGH_SPEED) : 0;
+    double speed = Math.abs(roll) > Constants.BALANCE_THRESH ? 
+      MathUtil.clamp(
+        Math.abs((Math.abs(roll) - Constants.BALANCE_THRESH)) * Constants.BALANCE_kP, 
+        Constants.BALANCE_LOW_SPEED, 
+        Constants.BALANCE_HIGH_SPEED) : 0;
 
     Logger.logDouble("/filterRoll", (double) roll, Constants.ENABLE_LOGGING);
 
@@ -55,6 +60,7 @@ public class BalancePID extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     drivetrain.stopMotors();
   }
 

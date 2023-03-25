@@ -11,10 +11,10 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 /** An example command that uses an example subsystem. */
 public class DoNothing extends SequentialCommandGroup {
   public DoNothing(Arm arm, Extender extender, Drivetrain drivetrain) {
-    setName("DoNothingSequence");
+    setName("-Auto-Do-Nothing");
     addCommands(
     new InstantCommand(drivetrain::stopMotors, drivetrain),
-    new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender)),
+    new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-Reset-Encoders"),
     new InstantCommand(drivetrain::stopMotors, drivetrain)
     );
     }

@@ -4,13 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class BalanceSteep extends CommandBase {
+public class BalanceSteep extends LoggedCommand {
   /** Creates a new BalanceSteep. */
   private Drivetrain drivetrain;
   private int counter;
@@ -26,6 +26,7 @@ public class BalanceSteep extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     counter = 0;
   }
 
@@ -50,6 +51,7 @@ public class BalanceSteep extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     drivetrain.stopMotors();
     SmartShuffleboard.put("Balance", "Steep End", "Steep End", counter > Constants.BALANCE_STEEP_END);
     SmartShuffleboard.put("Balance", "Steep Counter", "Steep Counter", counter);
