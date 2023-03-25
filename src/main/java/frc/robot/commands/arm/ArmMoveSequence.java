@@ -16,7 +16,7 @@ public class ArmMoveSequence extends SequentialCommandGroup {
         setName("-Arm-Move");
         if (armTargetPosition > arm.getAnalogValue()) {
             addCommands(
-                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
+                new InitialMoveArm(arm, armTargetPosition),
                 new ParCommandGroupWrapper(new ParallelCommandGroup(
                     new HoldArmPID(arm,armTargetPosition),
                     new ExtendToPosition(extender,extenderTargetPosition)
@@ -25,7 +25,7 @@ public class ArmMoveSequence extends SequentialCommandGroup {
         } else {
             addCommands(
                 new ExtendToPosition(extender,extenderTargetPosition),
-                new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, armTargetPosition), 
+                new InitialMoveArm(arm, armTargetPosition),
                 new HoldArmPID(arm,armTargetPosition)
                 );
         }

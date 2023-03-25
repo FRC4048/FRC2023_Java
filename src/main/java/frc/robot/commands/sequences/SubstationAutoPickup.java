@@ -7,6 +7,7 @@ import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
 import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.arm.HoldArmPID;
+import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
@@ -21,7 +22,7 @@ public class SubstationAutoPickup extends SequentialCommandGroup {
     public SubstationAutoPickup(Arm arm, GripperSubsystem gripper, Extender extender) {
         setName("-auto-substation-pickup-");
         addCommands(
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
+            new InitialMoveArm(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                     new ParCommandGroupWrapper(new ParallelCommandGroup(
                         new ExtendToPosition(extender, ArmPositionGrid.SUBSTATION_PICKUP.getExtenderPosition()),

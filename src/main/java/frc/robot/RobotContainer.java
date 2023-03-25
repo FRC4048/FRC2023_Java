@@ -190,11 +190,10 @@ public class RobotContainer {
     SmartShuffleboard.putCommand("Arm", "Auto Close", new WaitForSubstationDistance(arm, gripper));
     SmartShuffleboard.putCommand("Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true), "-Debug-PID-Balance"));
 
-    SmartShuffleboard.putCommand("bat", "test 0 to 45", new InitialMoveArm(arm, 0, 45));
-    SmartShuffleboard.putCommand("bat", "test 20 to 45", new InitialMoveArm(arm, 20, 45));
-    SmartShuffleboard.putCommand("bat", "test 30 to 45", new InitialMoveArm(arm, 30, 45));
-    SmartShuffleboard.putCommand("bat", "test 40 to 45", new InitialMoveArm(arm, 40, 45));
-    SmartShuffleboard.putCommand("bat", "test 43 to 45", new InitialMoveArm(arm, 43, 45));
+    SmartShuffleboard.putCommand("bat", "test 10", new InitialMoveArm(arm,  10));
+    SmartShuffleboard.putCommand("bat", "test 30", new InitialMoveArm(arm,  30));
+    SmartShuffleboard.putCommand("bat", "test 40", new InitialMoveArm(arm,  40));
+    SmartShuffleboard.putCommand("bat", "test 0", new InitialMoveArm(arm,  0));
   }
 
   /**

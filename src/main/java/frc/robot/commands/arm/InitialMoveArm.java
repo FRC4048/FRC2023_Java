@@ -1,7 +1,8 @@
 package frc.robot.commands.arm;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
@@ -13,45 +14,61 @@ public class InitialMoveArm extends LoggedCommand {
 
     private Arm arm;
     private double desiredAngle;
-    private double currentAngle;
-    private double startAngle;
     private double startTime;
-    private ProfiledPIDController armPIDController;
-    private double armMinimumSpeed;
+    private PIDController armPIDController;
+    private SlewRateLimiter accelFilter;
+    private Direction direction;
 
-    public InitialMoveArm(Arm arm, double currentAngle, double desiredAngle) {
+    private enum Direction {
+        UP(1.5, 1.0, 0.6, Constants.ARM_MAX_POWER_UP),
+        DOWN(0.5, -1.0, 0.3, Constants.ARM_MAX_POWER_DOWN);
+
+        Direction(double boost, double sign, double kP, double maxPower) {
+            this.boost = boost;
+            this.sign = sign;
+            this.kP = kP;
+            this.maxPower = maxPower;
+        }
+
+        public double boost;
+        public double sign;
+        public double kP;
+        public double maxPower;
+    }
+
+    public InitialMoveArm(Arm arm, double desiredAngle) {
         this.arm = arm;
         this.desiredAngle = desiredAngle;
-        this.startAngle = currentAngle;
         addRequirements(this.arm);
     }
 
     @Override
     public void initialize() {
         super.initialize();
-        currentAngle = startAngle;
         startTime = Timer.getFPGATimestamp();
-        if (desiredAngle > currentAngle) {
-            // going up
-            armMinimumSpeed = 0; //was 1.5
-            armPIDController = new ProfiledPIDController(0.3, 0, 0, new TrapezoidProfile.Constraints(5.0, 2.0));
+        accelFilter = new SlewRateLimiter(Constants.ARM_MAX_VOLTAGE_ACCELERATION);
+        if (desiredAngle > arm.getAnalogValue()) {
+            this.direction = Direction.UP;
+            desiredAngle += Constants.ARM_OVERSHOOT;
         } else {
-            // going down
-            armMinimumSpeed = 0;
-            armPIDController = new ProfiledPIDController(0.1, 0, 0, new TrapezoidProfile.Constraints(5.0, 1.0));
+            this.direction = Direction.DOWN;
         }
+        armPIDController = new PIDController(direction.kP, 0, 0);
     }
 
     @Override
     public void execute() {
         //positive angle -> positive power
-        final double armOutput = armPIDController.calculate(currentAngle, desiredAngle);
-        double voltage = -armOutput + armMinimumSpeed;
+        double currentAngle = arm.getAnalogValue();
+        double armOutput = Math.abs(armPIDController.calculate(currentAngle,desiredAngle));
+        double filteredOutput = accelFilter.calculate(armOutput);
+        double voltage = MathUtil.clamp(filteredOutput, direction.boost, direction.maxPower);
+
         SmartShuffleboard.put("bat", "error", desiredAngle - currentAngle);
+        SmartShuffleboard.put("bat", "filtered output", filteredOutput);
+        SmartShuffleboard.put("bat", "arm output", armOutput);
         SmartShuffleboard.put("bat", "voltage", voltage);
-        SmartShuffleboard.put("bat", "pid output", armOutput);
-        currentAngle += 0.1;
-        arm.setVoltage(voltage);
+        arm.setVoltage(voltage * direction.sign);
     }
 
     @Override
@@ -62,8 +79,6 @@ public class InitialMoveArm extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
-        Logger.logDouble("/arm/angle", currentAngle, Constants.ENABLE_LOGGING);
-        Logger.logDouble("/arm/analogValue", arm.getAnalogValue(), Constants.ENABLE_LOGGING);
-        return (Math.abs(desiredAngle - currentAngle) < Constants.ARM_MOVE_PID_THRESHOLD);
+        return (Math.abs(desiredAngle - arm.getAnalogValue()) < Constants.ARM_MOVE_PID_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
     }
 }
