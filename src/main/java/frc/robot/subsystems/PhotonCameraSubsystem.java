@@ -162,14 +162,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
 
   }
 
-  public Integer getTargetId() {
-    if (targetId != 0) {
-      return targetId;
-    } else {
-      return null;
-    }
-  }
-
   public Pose3d getTargetFieldPose() {
     calculateUsingEstimator();
     return tagFieldPosition;
