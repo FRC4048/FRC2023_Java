@@ -11,7 +11,7 @@ import edu.wpi.first.util.CircularBuffer;
 public class FilterUnitTests {
     @Test
     public void testBasicFilter() {
-        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 5);
+        PoseFilter filter = new PoseFilter(3, 5);
 
        double result = filter.calculate(50);
        assertEquals(50, result, .001);
@@ -46,7 +46,7 @@ public class FilterUnitTests {
 
     @Test 
     public void testIsValid() {
-        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 50);
+        PoseFilter filter = new PoseFilter(3, 50);
         filter.calculate(50);
         filter.calculate(50);
         filter.calculate(50);
@@ -66,7 +66,7 @@ public class FilterUnitTests {
 
     @Test
     public void testNegativeFilter() {
-        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 10);
+        PoseFilter filter = new PoseFilter(3, 10);
         filter.calculate(10);
         filter.calculate(0);
         filter.calculate(-1);
@@ -89,7 +89,7 @@ public class FilterUnitTests {
 
     @Test
     public void testFilterInput() {
-        AprilTagPoseFilter filter = new AprilTagPoseFilter(3, 10);
+        PoseFilter filter = new PoseFilter(3, 10);
         filter.calculate(10);
         filter.calculate(0);
         filter.calculate(-1);
