@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.apriltags.AprilTagMap;
-import frc.robot.apriltags.AprilTagPoseFilter;
+import frc.robot.apriltags.PoseFilter;
 import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagPhotonVision;
@@ -33,15 +33,15 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   private static final String FMSINFO_TABLE = "FMSInfo";
   private static final String IS_RED_ALLIANCE = "IsRedAlliance";
 
-  private AprilTagPoseFilter x2DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  private AprilTagPoseFilter y2DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  private AprilTagPoseFilter angleFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
-  private AprilTagPoseFilter x3DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  private AprilTagPoseFilter y3DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  private AprilTagPoseFilter z3DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
-  private AprilTagPoseFilter rX3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
-  private AprilTagPoseFilter rY3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
-  private AprilTagPoseFilter rZ3DFilter = new AprilTagPoseFilter(3, 0.15708); //Placeholder value in radians
+  private PoseFilter x2DFilter = new PoseFilter(3, 1); //Placeholder value in meters
+  private PoseFilter y2DFilter = new PoseFilter(3, 1); //Placeholder value in meters
+  private PoseFilter angleFilter = new PoseFilter(3, 0.15708); //Placeholder value in radians
+  private PoseFilter x3DFilter = new PoseFilter(3, 1); //Placeholder value in meters
+  private PoseFilter y3DFilter = new PoseFilter(3, 1); //Placeholder value in meters
+  private PoseFilter z3DFilter = new PoseFilter(3, 1); //Placeholder value in meters
+  private PoseFilter rX3DFilter = new PoseFilter(3, 0.15708); //Placeholder value in radians
+  private PoseFilter rY3DFilter = new PoseFilter(3, 0.15708); //Placeholder value in radians
+  private PoseFilter rZ3DFilter = new PoseFilter(3, 0.15708); //Placeholder value in radians
 
   private boolean useFilters = true;
 

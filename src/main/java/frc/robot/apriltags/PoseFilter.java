@@ -2,7 +2,7 @@ package frc.robot.apriltags;
 
 import edu.wpi.first.util.CircularBuffer;
 
-public class AprilTagPoseFilter {
+public class PoseFilter {
 
     private int counter = 0;
     private double average = 1;
@@ -19,7 +19,7 @@ public class AprilTagPoseFilter {
      *                  range of 5 will allow new inputs to be 5 less than and 5
      *                  greater than the average
      */
-    public AprilTagPoseFilter(int maxInputs, double tolerance) {
+    public PoseFilter(int maxInputs, double tolerance) {
         this.maxInputs = maxInputs;
         this.tolerance = tolerance;
         values = new CircularBuffer(maxInputs);
