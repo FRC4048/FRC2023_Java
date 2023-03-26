@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
@@ -26,7 +27,7 @@ public class WaitForSubstationDistance extends LoggedCommand {
   @Override
   public void initialize() {
     super.initialize();
-    overSubstation = false;
+    overSubstation = false;  
     initTime = Timer.getFPGATimestamp();
     cycleCounter = 0;
   }
@@ -34,6 +35,7 @@ public class WaitForSubstationDistance extends LoggedCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Logger.logDouble("/arm/distanceSensor", arm.getDistance(), Constants.ENABLE_LOGGING);
     if (arm.getDistance() < Constants.AUTO_CLOSE_GRIP_DISTANCE && arm.getDistance() > 0) {
       cycleCounter++;
     } else {
@@ -54,6 +56,7 @@ public class WaitForSubstationDistance extends LoggedCommand {
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);
+    Logger.logDouble("/arm/distanceSensor", 0, Constants.ENABLE_LOGGING);
   }
 
   // Returns true when the command should end.

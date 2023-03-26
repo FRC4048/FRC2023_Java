@@ -7,6 +7,7 @@ import frc.robot.ArmPositionGrid;
 import frc.robot.AutonomousChooser;
 import frc.robot.Constants;
 import frc.robot.commands.arm.HoldArmPID;
+import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.OpenGripper;
@@ -27,7 +28,7 @@ public class DepositOneAndBalance extends SequentialCommandGroup {
         setName("-Auto-1GP-Balance");
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender), "-Auto-Reset-Encoders"),
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
+            new InitialMoveArm(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
             new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                 new SequentialCommandGroupWrapper(new SequentialCommandGroup(
                     new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),

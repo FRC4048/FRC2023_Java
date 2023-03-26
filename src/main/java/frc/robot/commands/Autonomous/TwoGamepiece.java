@@ -8,6 +8,7 @@ import frc.robot.ArmPositionGrid;
 import frc.robot.Constants;
 import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.arm.HoldArmPID;
+import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
@@ -31,7 +32,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
         setName("Two Gamepiece Sequence");
         addCommands(
             new ResetEncoders(arm, extender),
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
+            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParRaceCommandGroupWrapper(
                 new ParallelRaceGroup(
                     new SequentialCommandGroupWrapper(
@@ -65,7 +66,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
             new MoveDistanceSpinTraj(drivetrain, 0, -.205 * direction, Math.toRadians(180)),
             
             //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
+            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParRaceCommandGroupWrapper(
                 new ParallelRaceGroup(
                     new ParCommandGroupWrapper(
