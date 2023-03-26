@@ -25,8 +25,8 @@ public class SubstationAutoPickup extends SequentialCommandGroup {
             new InitialMoveArm(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                     new ParCommandGroupWrapper(new ParallelCommandGroup(
-                        new ExtendToPosition(extender, ArmPositionGrid.SUBSTATION_PICKUP.getExtenderPosition()),
-                        new OpenGripper(gripper),
+                        new ExtendToPosition(extender, ArmPositionGrid.SUBSTATION_PICKUP.getExtenderPosition()), 
+                        new OpenGripper(gripper), 
                         new WaitForSubstationDistance(arm, gripper)
                     ), "-auto-substation-wait-for-dist"),
                     new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition())

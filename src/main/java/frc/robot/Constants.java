@@ -168,6 +168,9 @@ public final class Constants {
 
   public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
   public static final double LOCK_WHEELS_TIMEOUT = 0.1;
+  public static final double AUTO_TURN_SPEED = .75;
+  public static final double AUTO_TURN_TIMEOUT = 1;
+  public static final double SUBSTATION_ALIGN_THRESHOLD = 2;
 
 
   public static class OperatorConstants {
@@ -211,6 +214,8 @@ public final class Constants {
   //setpoints
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
+  public static final double SUBSTATION_DRIVE_FORWARD_TIMEOUT = 10;
+
 
   // LED outputs
   public static final int DIGITAL_OUTPUT_1 = 1;
