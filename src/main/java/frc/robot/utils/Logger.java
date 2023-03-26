@@ -1,10 +1,14 @@
 package frc.robot.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DataLogEntry;
@@ -51,6 +55,25 @@ public class Logger {
         }
         double[] entry = new double[]{value.getX(), value.getY(), value.getRotation().getRadians()};
         poseEntry.append(entry);
+    }
+
+    public static void logTrajectory(String topicName, Trajectory trajectory, boolean logThis) {
+        if (!logThis) {
+            return;
+        }
+        if (trajectory == null) {
+            return;
+        }
+        DoubleArrayLogEntry poseEntry = (DoubleArrayLogEntry)getEntry(topicName + "_Trajectory", (name) -> new DoubleArrayLogEntry(dataLog, name));
+        double [] entries = new double [trajectory.getStates().size() * 3];
+        for (int i=0; i < trajectory.getStates().size(); i = i + 3) {
+            State s = trajectory.getStates().get(i);
+            Pose2d pose = s.poseMeters;
+            entries[i] = (pose.getX());
+            entries[i + 1] = (pose.getY());
+            entries[i + 2] = (pose.getRotation().getRadians());
+        }
+        poseEntry.append(entries);
     }
 
     private static DataLogEntry getEntry(String name, Function<String,? extends DataLogEntry> func) {

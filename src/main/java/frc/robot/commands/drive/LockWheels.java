@@ -5,11 +5,11 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class LockWheels extends CommandBase {
+public class LockWheels extends LoggedCommand {
   /** Creates a new LockWheels. */
   Drivetrain drivetrain;
   double startTime;
@@ -22,6 +22,7 @@ public class LockWheels extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     startTime = Timer.getFPGATimestamp();
   }
 
@@ -30,10 +31,6 @@ public class LockWheels extends CommandBase {
   public void execute() {
     drivetrain.drive(0, 0, Constants.LOCK_WHEEL_ROT_SPEED, true);
   }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

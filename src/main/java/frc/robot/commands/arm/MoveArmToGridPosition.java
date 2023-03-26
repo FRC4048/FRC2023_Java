@@ -16,17 +16,13 @@ public class MoveArmToGridPosition extends LoggedCommand {
           this.arm = arm;
           this.extender = extender;
           this.pieceGrid = pieceGrid;
-          setName("MoveArmToGridPosition");
+          setName("-Move-Arm-To-Grid-Position");
      }
 
      @Override
      public void initialize() {
           super.initialize();
           CommandScheduler.getInstance().schedule(new SequentialCommandGroupWrapper(new ArmMoveSequence(arm, extender, pieceGrid.getSelectedGridSlot().getArmPosition(), pieceGrid.getSelectedGridSlot().getExtenderPosition())));
-     }
-
-     @Override
-     public void execute() {
      }
 
      @Override

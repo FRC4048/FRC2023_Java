@@ -16,9 +16,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public static final boolean DRIVETRAIN_DEBUG = false;
-  public static final boolean ARM_DEBUG = true;
-  public static final boolean EXTENDER_DEBUG = true;
-  public static final boolean GRIPPER_DEBUG = true;
+  public static final boolean ARM_DEBUG = false;
+  public static final boolean EXTENDER_DEBUG = false;
+  public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
 
@@ -203,13 +203,8 @@ public final class Constants {
   public static final double CROSS_CLIMB = 20;
 
   //setpoints
-  public static final double SUBSTATION_PICKUP_ANGLE = 33;
-  public static final double SUBSTATION_POST_PICKUP_ANGLE = 30.0;
-  public static final double SUBSTATION_PICKUP_EXTENSION = 2000.0;
   public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
   public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
-  public static final double GROUND_PICKUP_ANGLE = 13.0;
-
 
   // LED outputs
   public static final int DIGITAL_OUTPUT_1 = 1;
@@ -223,7 +218,7 @@ public final class Constants {
 
   // vision constants
   public static final boolean ADD_VISION_TO_ODOMETRY = true;
-  public static final double VISION_MAX_LATENCY = 0.3;
+  public static final double VISION_MAX_LATENCY = 50;
   //MoveCommand Timeouts
   public static final double MOVE_OFFSET_TIMEOUT = 5.0;
 

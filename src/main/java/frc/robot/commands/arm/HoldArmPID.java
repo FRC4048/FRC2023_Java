@@ -1,14 +1,13 @@
 package frc.robot.commands.arm;
 
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
+<<<<<<< HEAD
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.Logging;
+=======
+>>>>>>> 68065f26de54574017a0025762233f6f1eb1f2ce
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class HoldArmPID extends LoggedCommand {
@@ -26,6 +25,8 @@ public class HoldArmPID extends LoggedCommand {
     public void initialize() {
         super.initialize();
         arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
+        Logger.logDouble("arm/pid/angle", angle, Constants.ENABLE_LOGGING);
+
     }
 
     @Override
@@ -38,9 +39,7 @@ public class HoldArmPID extends LoggedCommand {
     public void end(boolean Interrupted) {
         super.end(Interrupted);
         arm.setPidding(false);
-        Logger.logDouble("arm/pid/voltage", arm.getNeoMotor().getBusVoltage(), Constants.ENABLE_LOGGING);
-        Logger.logDouble("arm/pid/current", angle, Constants.ENABLE_LOGGING);
-        Logger.logDouble("arm/pid/desired", arm.getAnalogValue(), Constants.ENABLE_LOGGING);
+        Logger.logDouble("arm/pid/angle", 0, Constants.ENABLE_LOGGING);
 
     }
 

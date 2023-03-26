@@ -17,7 +17,7 @@ import frc.robot.subsystems.Drivetrain;
 public class PIDBalanceSequence extends SequentialCommandGroup {
   /** Creates a new PIDBalanceSequence. */
   public PIDBalanceSequence(Drivetrain drivetrain, boolean forward) {
-    setName("PIDBalanceSequence");
+    setName("-PID-Balance");
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
