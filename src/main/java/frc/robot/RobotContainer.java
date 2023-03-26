@@ -155,8 +155,8 @@ public class RobotContainer {
     controller.button(XboxController.Button.kLeftStick.value).onTrue(new SetLEDID(ledPanel, Constants.ROBOT_ID));
     controller.button(XboxController.Button.kRightStick.value).onTrue(new ChangeLedID(ledPanel, 1));
 
-    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
+    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
     manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
 

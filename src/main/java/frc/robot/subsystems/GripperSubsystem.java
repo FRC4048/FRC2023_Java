@@ -46,6 +46,7 @@ public class GripperSubsystem extends SubsystemBase {
     Logger.logBoolean("/gripper/closedLimit", getClosedLimitSwitch(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/gripper/openLimit", getopenLimitSwitch(),Constants.ENABLE_LOGGING);
     Logger.logDouble("/gripper/encoder", gripperPosition(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/gripper/current", gripperMotor.getSupplyCurrent(), Constants.ENABLE_LOGGING);
   }
 
   public void open() {
