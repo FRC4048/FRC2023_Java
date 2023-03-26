@@ -3,11 +3,8 @@ package frc.robot.commands.arm;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
-<<<<<<< HEAD
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.Logging;
-=======
->>>>>>> 68065f26de54574017a0025762233f6f1eb1f2ce
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class HoldArmPID extends LoggedCommand {
