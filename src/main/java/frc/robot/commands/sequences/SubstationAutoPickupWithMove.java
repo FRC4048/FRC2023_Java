@@ -3,11 +3,10 @@ package frc.robot.commands.sequences;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
-import frc.robot.Constants;
 import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.Autonomous.MoveDistanceOffset;
 import frc.robot.commands.arm.HoldArmPID;
-import frc.robot.commands.arm.VoltageMoveArm;
+import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.drive.AlignToSubstation;
 import frc.robot.commands.drive.MoveUntilCanceledOrTimeout;
 import frc.robot.commands.gripper.CloseGripper;
@@ -27,7 +26,7 @@ public class SubstationAutoPickupWithMove extends SequentialCommandGroup {
                         new MoveUntilCanceledOrTimeout(drivetrain,.3)
                 ), "-auto-substation-move-in"),
                 new CloseGripper(gripper),
-                new VoltageMoveArm(arm, 3, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition()), 
+                new InitialMoveArm(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition()),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                         new MoveDistanceOffset(drivetrain,-.5,0d,0.5), 
                         new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition())
