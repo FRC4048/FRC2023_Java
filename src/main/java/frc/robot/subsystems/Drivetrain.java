@@ -90,7 +90,7 @@ public class Drivetrain extends SubsystemBase{
   private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
 
   /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
-  private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1.5, 1.5, 1.5);
+  private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(5, 5, 5);
 
 
 

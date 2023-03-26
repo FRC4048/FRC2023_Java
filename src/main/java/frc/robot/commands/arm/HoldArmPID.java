@@ -9,8 +9,9 @@ import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.Logging;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class HoldArmPID extends CommandBase {
+public class HoldArmPID extends LoggedCommand {
 
     private Arm arm;
     private Double angle;
@@ -23,6 +24,7 @@ public class HoldArmPID extends CommandBase {
 
     @Override
     public void initialize() {
+        super.initialize();
         arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
     }
 
@@ -34,6 +36,7 @@ public class HoldArmPID extends CommandBase {
 
     @Override
     public void end(boolean Interrupted) {
+        super.end(Interrupted);
         arm.setPidding(false);
         Logger.logDouble("arm/pid/voltage", arm.getNeoMotor().getBusVoltage(), Constants.ENABLE_LOGGING);
         Logger.logDouble("arm/pid/current", angle, Constants.ENABLE_LOGGING);

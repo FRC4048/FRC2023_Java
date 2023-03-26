@@ -109,7 +109,7 @@ public final class Constants {
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
   public static final double MAX_VELOCITY = 4.0; // 4 meters per second
-  public static final double MAX_ACCELERATION = 6.0;
+  public static final double MAX_ACCELERATION = 3.0;
   public static final double MAX_ANGULAR_SPEED = Math.PI * 6; // 1 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
   public static final double ARM_OUT_ROBOT_MIN = 6;
