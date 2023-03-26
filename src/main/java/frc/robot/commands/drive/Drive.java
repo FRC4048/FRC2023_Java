@@ -40,12 +40,13 @@ public class Drive extends CommandBase{
         double fwd = MathUtil.applyDeadband(fwdSupplier.getAsDouble()*Constants.MAX_VELOCITY,0.1);
         double str = MathUtil.applyDeadband(strSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
         double rcw = MathUtil.applyDeadband(rtSupplier.getAsDouble()*Constants.MAX_VELOCITY, 0.1);
-        
+
         if (decreaseSpeedButton.getAsBoolean()) {
-            drivetrain.drive(-0.4 * Math.signum(fwd), -0.1 * str, -0.13 * Math.signum(rcw), true);
-        } else {
-            drivetrain.drive(-fwd, -str, -rcw, true);
+            fwd *= 0.1;
+            str *= 0.1;
+            rcw *= 0.1;
         }
+        drivetrain.drive(-fwd, -str, -rcw, true);
     }
 
 
