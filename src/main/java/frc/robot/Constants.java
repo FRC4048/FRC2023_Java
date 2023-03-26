@@ -223,7 +223,7 @@ public final class Constants {
 
 
   // vision constants
-  public static final boolean ADD_VISION_TO_ODOMETRY = true;
+  public static final boolean ADD_VISION_TO_ODOMETRY = false;
   public static final double VISION_MAX_LATENCY = 50;
   //MoveCommand Timeouts
   public static final double MOVE_OFFSET_TIMEOUT = 5.0;

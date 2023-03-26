@@ -6,8 +6,6 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
-import frc.robot.utils.Logger;
-import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class InitialMoveArm extends LoggedCommand {
