@@ -29,9 +29,10 @@ public class AlignToSubstation extends LoggedCommand {
      // Called every time the scheduler runs while the command is scheduled.
      @Override
      public void execute() {
-          super.execute();
           double currentDegrees = drivetrain.getOdometry().getEstimatedPosition().getRotation().getDegrees();
-          if (Math.abs(currentDegrees) < Constants.SUBSTATION_ALIGN_THRESHOLD) arrived = true;
+          if (Math.abs(currentDegrees) < Constants.SUBSTATION_ALIGN_THRESHOLD) {
+               arrived = true;
+          }
           else {
                double turnAtSpeed = (Constants.AUTO_TURN_SPEED) * Math.signum(currentDegrees) * degreeTurnDirection;
                drivetrain.drive(0,0, turnAtSpeed, true);
@@ -41,7 +42,7 @@ public class AlignToSubstation extends LoggedCommand {
      // Returns true when the command should end.
      @Override
      public boolean isFinished() {
-          return arrived || Timer.getFPGATimestamp() - startTime > Constants.AUTO_TURN_TIMEOUT;
+          return arrived || ((Timer.getFPGATimestamp() - startTime) > Constants.AUTO_TURN_TIMEOUT);
      }
 
      @Override
