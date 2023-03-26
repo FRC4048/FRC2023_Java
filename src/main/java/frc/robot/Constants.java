@@ -168,7 +168,7 @@ public final class Constants {
 
   public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
   public static final double LOCK_WHEELS_TIMEOUT = 0.1;
-  public static final double AUTO_TURN_SPEED = .5;
+  public static final double AUTO_TURN_SPEED = .75;
   public static final double AUTO_TURN_TIMEOUT = 1;
   public static final double SUBSTATION_ALIGN_THRESHOLD = 2;
 
