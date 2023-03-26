@@ -19,18 +19,18 @@ import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
-import frc.robot.commands.WaitForSubstationDistance;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
-import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
-import frc.robot.commands.drive.AlignToSubstation;
+import frc.robot.commands.drive.AlignToGrid;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.*;
+import frc.robot.commands.sequences.CrossAndBalance;
+import frc.robot.commands.sequences.Stow;
+import frc.robot.commands.sequences.SubstationAutoPickup;
+import frc.robot.commands.sequences.SubstationAutoPickupWithMove;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -165,7 +165,7 @@ public class RobotContainer {
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     
-    joystickLeftButton3.onTrue(new AlignToSubstation(drivetrain));
+    joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
   }
 
   public void putShuffleboardCommands() {

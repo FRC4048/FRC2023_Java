@@ -31,15 +31,11 @@ public class AlignToGrid extends LoggedCommand {
             // 0 to -180 turn negative
             degreeTurnDirection = -1;
         }
-
-        Logger.logInteger("/AlignToGrid/Direction", degreeTurnDirection, true);
     }
 
     @Override
     public void execute() {
         double turnAtSpeed = (Constants.AUTO_TURN_SPEED) * degreeTurnDirection;
-        double currentDeg = drivetrain.getOdometry().getEstimatedPosition().getRotation().getDegrees();
-        Logger.logDouble("/AlignToGrid/Degrees", currentDeg, true);
         drivetrain.drive(0,0, turnAtSpeed, true);
     }
 
@@ -52,15 +48,7 @@ public class AlignToGrid extends LoggedCommand {
     @Override
     public boolean isFinished() {
         double currentDeg = drivetrain.getOdometry().getEstimatedPosition().getRotation().getDegrees();
-        if (Math.abs((Math.abs(currentDeg) - 180.0)) < Constants.SUBSTATION_ALIGN_THRESHOLD) {
-            return true;
-        }
-        if ((Timer.getFPGATimestamp() - startTime) > 1.5) {
-            return true;
-        } 
-        return false;
-    }
-
-    
-    
+        return ((Math.abs((Math.abs(currentDeg) - 180.0)) < Constants.SUBSTATION_ALIGN_THRESHOLD) || 
+        ((Timer.getFPGATimestamp() - startTime) > 1.5));
+    }    
 }
