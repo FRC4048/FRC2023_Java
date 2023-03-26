@@ -97,7 +97,7 @@ public final class Constants {
   public static final double ARM_STOW_SPEED = 3.0; //volts
   public static final double ARM_RAISE_SPEED = 4.5; //volts
   public static final double ARM_MAX_VOLTS = 4.5;
-  public static final double ARM_MOVE_PID_THRESHOLD = 1.0;
+  public static final double ARM_MOVE_PID_THRESHOLD = 0.5; //was 1.0
   //in inches
   public static final int ARM_HEIGHT = 47;
 
@@ -152,8 +152,14 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
-  public static final double ARM_AUTO_VOLTAGE_UP = 4d;
-  public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
+  public static final double ARM_MAX_POWER_UP = 4.5;  // 5.5??
+  public static final double ARM_MAX_POWER_DOWN = 3; //3.5??
+  public static final double ARM_MAX_VOLTAGE_ACCELERATION = 4.0; // 2 volts/sec
+
+
+
+  //public static final double ARM_AUTO_VOLTAGE_UP = 4d;
+  //public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
   public static final double ARM_AUTO_VOLTAGE = 3d;
 
   public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
@@ -217,7 +223,7 @@ public final class Constants {
 
 
   // vision constants
-  public static final boolean ADD_VISION_TO_ODOMETRY = true;
+  public static final boolean ADD_VISION_TO_ODOMETRY = false;
   public static final double VISION_MAX_LATENCY = 50;
   //MoveCommand Timeouts
   public static final double MOVE_OFFSET_TIMEOUT = 5.0;

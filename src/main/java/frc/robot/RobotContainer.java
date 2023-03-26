@@ -21,6 +21,7 @@ import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
 import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
 import frc.robot.commands.drive.Drive;
@@ -182,12 +183,7 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Driver", "Cross+Balance", new CrossAndBalance(drivetrain));
     }
-
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
-    SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender), "-Debug-Reset-Encoders"));
-    SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    SmartShuffleboard.putCommand("Arm", "Auto Close", new WaitForSubstationDistance(arm, gripper));
-    SmartShuffleboard.putCommand("Balance", "Auto Balance Sequence", new SequentialCommandGroupWrapper(new PIDBalanceSequence(drivetrain, true), "-Debug-PID-Balance"));
+    SmartShuffleboard.putCommand("Driver", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
   }
 
   /**

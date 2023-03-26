@@ -1,8 +1,6 @@
 package frc.robot.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -15,11 +13,20 @@ import edu.wpi.first.util.datalog.DataLogEntry;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.IntegerLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 
 public class Logger {
     private static DataLog dataLog = DataLogManager.getLog();
     private static Map<String, DataLogEntry> entryMap = new HashMap<>();
+
+    public static void logString(String topicName, String value, boolean logThis) {
+        if (!logThis) {
+            return;
+        }
+        StringLogEntry stringEntry = (StringLogEntry)getEntry(topicName + "_String" , (name) -> new StringLogEntry(dataLog, name));
+        stringEntry.append(value);
+    }
 
     public static void logDouble(String topicName, double value, boolean logThis) {
         if (!logThis) {
