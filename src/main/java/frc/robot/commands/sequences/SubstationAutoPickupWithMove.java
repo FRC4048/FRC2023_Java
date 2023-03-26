@@ -23,12 +23,12 @@ public class SubstationAutoPickupWithMove extends SequentialCommandGroup {
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                         new WaitForSubstationDistance(arm, gripper),
                         new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
-                        new MoveUntilCanceledOrTimeout(drivetrain,.3)
+                        new MoveUntilCanceledOrTimeout(drivetrain, .4)
                 ), "-auto-substation-move-in"),
                 new CloseGripper(gripper),
                 new InitialMoveArm(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition()),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
-                        new MoveDistanceOffset(drivetrain,-.5,0d,0.5), 
+                        new MoveDistanceOffset(drivetrain, -.5, 0d, 0.5), 
                         new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition())
                 ), "-auto-substation-move-backup")
         );
