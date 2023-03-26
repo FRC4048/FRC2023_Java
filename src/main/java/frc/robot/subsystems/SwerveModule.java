@@ -167,10 +167,6 @@ public class SwerveModule {
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
     if (Constants.DRIVETRAIN_DEBUG && (id == 1)) {
-      SmartShuffleboard.put("Diag", "aTurnPID" + id, turnOutput);
-      SmartShuffleboard.put("Diag", "aTurnFF" + id, turnFeedforward);
-      SmartShuffleboard.put("Diag", "aDrivePID" + id, driveOutput);
-      SmartShuffleboard.put("Diag", "aDriveFF" + id, driveFeedforward);
       SmartShuffleboard.put("Drive", "CPos" + id, getSteerEncPosition());
       SmartShuffleboard.put("Drive", "DPos" + id, state.angle.getRadians());
       SmartShuffleboard.put("Drive", "Feed forward" + id, driveFeedforward);

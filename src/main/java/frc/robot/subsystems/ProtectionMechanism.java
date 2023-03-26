@@ -19,11 +19,9 @@ public final class ProtectionMechanism extends SubsystemBase {
      @Override
      public void periodic() {
          if(Constants.ARM_DEBUG || Constants.EXTENDER_DEBUG || Constants.GRIPPER_DEBUG) {
-              SmartShuffleboard.put("DEBUG","CanExtend",safeToExtend());
-              SmartShuffleboard.put("DEBUG","CanLowerArm",safeToLowerArm());
-              SmartShuffleboard.put("DEBUG","CanOpenGripper",safeToOpenGripper());
-              SmartShuffleboard.put("DEBUG","estAngle", armEncoderToAngle(arm.getEncoderValue()));
-              SmartShuffleboard.put("DEBUG","extMax", maxExtenderFromArmAngle(arm.getEncoderValue()));
+              SmartShuffleboard.put("Extender","CanExtend",safeToExtend());
+              SmartShuffleboard.put("Arm","CanLowerArm",safeToLowerArm());
+              SmartShuffleboard.put("Gripper","CanOpenGripper",safeToOpenGripper());
          }
          Logger.logBoolean("/protection/safeToExtend", safeToExtend(), Constants.ENABLE_LOGGING);
          Logger.logBoolean("/protection/safeToLowerArm", safeToLowerArm(), Constants.ENABLE_LOGGING);
