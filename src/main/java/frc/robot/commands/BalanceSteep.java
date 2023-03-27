@@ -35,7 +35,7 @@ public class BalanceSteep extends LoggedCommand {
   public void execute() {
     double speed = forward ? Constants.BALANCE_STEEP_SPEED : -Constants.BALANCE_STEEP_SPEED;
 
-    Logger.logDouble("/filterRoll", (double) drivetrain.getFilterRoll(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("/auto/filterRoll", (double) drivetrain.getFilterRoll(), Constants.ENABLE_LOGGING);
 
     drivetrain.drive(speed, 0, 0, true);
     

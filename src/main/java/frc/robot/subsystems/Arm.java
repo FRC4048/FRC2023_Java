@@ -81,10 +81,7 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
       }
-    Logger.logDouble("/arm/encoder", getEncoderValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/arm/analogEncoder", getAnalogValue(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("/arm/encoderRatio", getEncoderValue()/getAnalogValue(), Constants.ENABLE_LOGGING);
-    Logger.logBoolean("/arm/pidding", pidding, Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
   }

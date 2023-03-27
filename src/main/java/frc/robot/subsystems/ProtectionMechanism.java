@@ -23,9 +23,9 @@ public final class ProtectionMechanism extends SubsystemBase {
               SmartShuffleboard.put("Arm","CanLowerArm",safeToLowerArm());
               SmartShuffleboard.put("Gripper","CanOpenGripper",safeToOpenGripper());
          }
-         Logger.logBoolean("/protection/safeToExtend", safeToExtend(), Constants.ENABLE_LOGGING);
-         Logger.logBoolean("/protection/safeToLowerArm", safeToLowerArm(), Constants.ENABLE_LOGGING);
-         Logger.logBoolean("/protection/safeToOpenGripper", safeToOpenGripper(), Constants.ENABLE_LOGGING);
+         //Logger.logBoolean("/protection/safeToExtend", safeToExtend(), Constants.ENABLE_LOGGING);
+         //Logger.logBoolean("/protection/safeToLowerArm", safeToLowerArm(), Constants.ENABLE_LOGGING);
+         //Logger.logBoolean("/protection/safeToOpenGripper", safeToOpenGripper(), Constants.ENABLE_LOGGING);
      }
 
      public boolean safeToExtend(){
