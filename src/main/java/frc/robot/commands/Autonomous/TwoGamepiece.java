@@ -54,7 +54,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
             
             new GroundPickup(arm, extender, gripper),
 
-            new CloseGripper(gripper).withTimeout(1.5),
+            new CloseGripper(gripper),
 
             new Stow(arm, gripper, extender),
 

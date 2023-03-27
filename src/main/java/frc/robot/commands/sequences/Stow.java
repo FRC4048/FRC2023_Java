@@ -16,7 +16,7 @@ public class Stow extends SequentialCommandGroup {
         addCommands(
             new ExtendToPosition(extender, 0),
             new ParCommandGroupWrapper(new ParallelCommandGroup(
-                new CloseGripper(gripper).withTimeout(3),
+                new CloseGripper(gripper),
                 new InitialMoveArm(arm, 0.0)
                 ), "-Stow-Lower-Arm")
         );
