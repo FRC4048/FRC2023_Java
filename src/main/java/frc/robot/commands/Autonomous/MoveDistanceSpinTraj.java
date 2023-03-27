@@ -71,7 +71,7 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
         desiredPos,
         config);
 
-        Logger.logTrajectory("/movedistancetraj", trajectory, Constants.ENABLE_LOGGING);
+        //Logger.logTrajectory("/movedistancetraj", trajectory, Constants.ENABLE_LOGGING);
 
         drivetrain.getField().getObject("traj").setTrajectory(trajectory);
 

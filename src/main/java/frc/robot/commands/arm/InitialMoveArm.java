@@ -6,6 +6,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class InitialMoveArm extends LoggedCommand {
@@ -78,6 +79,11 @@ public class InitialMoveArm extends LoggedCommand {
         if ((direction == Direction.DOWN) && ((desiredAngle - arm.getAnalogValue()) >= Constants.ARM_MOVE_PID_THRESHOLD)) {
             return true;
         }
-        return ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT);
+        if ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT) {
+            Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

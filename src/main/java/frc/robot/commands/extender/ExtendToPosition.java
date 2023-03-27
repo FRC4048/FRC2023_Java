@@ -4,6 +4,7 @@ package frc.robot.commands.extender;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Extender;
+import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class ExtendToPosition extends LoggedCommand {
@@ -48,6 +49,13 @@ public class ExtendToPosition extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) || ((Timer.getFPGATimestamp() - startTime) > Constants.EXTEND_TO_POSITION_TIMEOUT);
+        if (Math.abs(extender.getEncoder() - position) < Constants.EXTENDER_DESTINATION_THRESHOLD) {
+            return true;
+        }
+        if ((Timer.getFPGATimestamp() - startTime) > Constants.EXTEND_TO_POSITION_TIMEOUT) {
+            Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
+            return true;
+        }
+        return false;
     }
 }

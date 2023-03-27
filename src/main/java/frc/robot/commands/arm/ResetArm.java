@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class ResetArm extends LoggedCommand{
@@ -36,7 +37,13 @@ public class ResetArm extends LoggedCommand{
 
     @Override
     public boolean isFinished() {
-        return limitReached || Timer.getFPGATimestamp() - startTime > Constants.ARM_RESET_TIMEOUT;
+        if (limitReached) {
+            return true;
+        }
+        if ((Timer.getFPGATimestamp() - startTime) > Constants.ARM_RESET_TIMEOUT) {
+            Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
+            return true;
+        }
+        return false;
     }
-    
 }
