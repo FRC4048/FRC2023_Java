@@ -83,6 +83,10 @@ public class Logger {
         poseEntry.append(entries);
     }
 
+    public static void logTimeout(String commandName, boolean logThis) {
+        logString("/robot/timeouts", commandName + " Timed out.", logThis);
+    }
+
     private static DataLogEntry getEntry(String name, Function<String,? extends DataLogEntry> func) {
         return entryMap.computeIfAbsent(name, func);
     }

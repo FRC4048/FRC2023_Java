@@ -36,7 +36,13 @@ public class ResetArm extends LoggedCommand{
 
     @Override
     public boolean isFinished() {
-        return limitReached || Timer.getFPGATimestamp() - startTime > Constants.ARM_RESET_TIMEOUT;
+        if (limitReached) {
+            return true;
+        }
+        if ((Timer.getFPGATimestamp() - startTime) > Constants.ARM_RESET_TIMEOUT) {
+            return true;
+        }
+        return false;
     }
     
 }
