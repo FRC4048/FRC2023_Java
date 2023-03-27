@@ -23,7 +23,7 @@ public class SetGridSlot extends LoggedCommand {
   @Override
   public void execute() {
     pieceGrid.setSelectedGridSlot(gridSlot);
-    Logger.logString("/pieceGrip/selection", gridSlot.name(), Constants.ENABLE_LOGGING);
+    Logger.logString("/pieceGrid/selection", gridSlot.name(), Constants.ENABLE_LOGGING);
   }
 
   @Override
