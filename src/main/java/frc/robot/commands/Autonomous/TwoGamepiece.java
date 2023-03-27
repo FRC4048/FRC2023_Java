@@ -5,11 +5,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
-import frc.robot.Constants;
-import frc.robot.commands.ResetOdometry;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.InitialMoveArm;
-import frc.robot.commands.arm.VoltageMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
@@ -29,7 +26,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation;
 
     public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
-        setName("Two Gamepiece Sequence");
+        setName("-auto-two-gamepiece-");
         addCommands(
             new ResetEncoders(arm, extender),
             new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
@@ -39,7 +36,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
                         new SequentialCommandGroup(
                             new ExtendToPosition(extender, ArmPositionGrid.TOP_RIGHT.getExtenderPosition()),
                             new OpenGripper(gripper)
-                        ), "Drop Gamepiece Sequence"),
+                        ), "-auto-two-drop-seq-"),
                     new HoldArmPID(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition())
                 )
             ),
@@ -50,10 +47,10 @@ public class TwoGamepiece extends SequentialCommandGroup {
                         new Stow(arm, gripper, extender)
                     ),
                     new MoveDistanceSpinTraj(drivetrain, 0.2, -0.4 * direction, Math.toRadians(180))
-                ), "Moving To Pickup"
+                ), "-auto-two-diag-move-"
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, 4.9, .2 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
+            new MoveDistanceSpinTraj(drivetrain, 5.1, .3 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
             
             new GroundPickup(arm, extender, gripper),
 
@@ -61,24 +58,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
 
             new Stow(arm, gripper, extender),
 
-            new MoveDistanceSpinTraj(drivetrain, -4.9, 0, Math.toRadians(180)),
-
-            new MoveDistanceSpinTraj(drivetrain, 0, -.205 * direction, Math.toRadians(180)),
-            
-            //new MoveDistanceSpinTraj(drivetrain, -0.2, 0.1 * direction, Math.toRadians(180)), Change this
-            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
-            new ParRaceCommandGroupWrapper(
-                new ParallelRaceGroup(
-                    new ParCommandGroupWrapper(
-                        new ParallelCommandGroup(
-                            new ExtendToPosition(extender, ArmPositionGrid.TOP_MIDDLE.getExtenderPosition()),
-                            new OpenGripper(gripper)
-                        ), "Extend To Drop Off"
-                    ),
-                    new HoldArmPID(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition())
-                ), "Drop Off On Grid"
-            ),
-            new Stow(arm, gripper, extender)
+            new MoveDistanceSpinTraj(drivetrain, -4.9, -.4 * direction, Math.toRadians(180))
         );
     }
 }
