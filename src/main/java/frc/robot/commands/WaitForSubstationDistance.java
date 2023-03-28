@@ -30,6 +30,7 @@ public class WaitForSubstationDistance extends LoggedCommand {
     overSubstation = false;  
     initTime = Timer.getFPGATimestamp();
     cycleCounter = 0;
+    arm.setSubstationDistance(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,6 +57,7 @@ public class WaitForSubstationDistance extends LoggedCommand {
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);
+    arm.setSubstationDistance(false);
     Logger.logDouble("/arm/distanceSensor", 0, Constants.ENABLE_LOGGING);
   }
 

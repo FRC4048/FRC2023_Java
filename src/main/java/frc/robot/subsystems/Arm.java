@@ -13,6 +13,10 @@ import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -21,6 +25,8 @@ import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.diag.DiagToFSensor;
+
+import java.util.Map;
 
 /**
  * The RevRobotics distance sensor requires manual installation to work correctly.
@@ -39,7 +45,10 @@ public class Arm extends SubsystemBase {
   private double pidreference;
   private SparkMaxAnalogSensor analogSensor;
   private SparkMaxPIDController pidController;
-  
+  private ShuffleboardTab driverTab;
+  private GenericEntry distanceEntry;
+  private boolean substationActive;
+
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();
@@ -64,13 +73,14 @@ public class Arm extends SubsystemBase {
     distanceSensor.setDistanceUnits(Unit.kInches);
     distanceSensor.setRangeProfile(RangeProfile.kHighSpeed);
 
-
+    substationActive = false;
+    driverTab = Shuffleboard.getTab("Driver");
+    distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withSize(6,4).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
   }
 
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-
       SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
       SmartShuffleboard.put("Arm", "analog encoder",getAnalogValue());
       SmartShuffleboard.put("Arm", "analog raw encoder",analogSensor.getPosition());
@@ -80,10 +90,12 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
-      }
+    }
     Logger.logDouble("/arm/analogEncoder", getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
+
+    distanceEntry.setDouble(substationActive ? getDistance() : 0);
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -154,12 +166,18 @@ public class Arm extends SubsystemBase {
   public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
     this.protectionMechanism = protectionMechanism;
   }
+
   public double clampVolts(double value, double min, double max){
     return Math.min(Math.max(value, min), max);
   }
+
   public double validateArmVolt(double volt){
     volt = clampVolts(volt,-Constants.ARM_MAX_VOLTS,Constants.ARM_MAX_VOLTS);
     if ((volt < 0 && protectionMechanism.safeToLowerArm()) || volt > 0) return volt;
     return 0;
+  }
+
+  public void setSubstationDistance(boolean substationActive) {
+    this.substationActive = substationActive;
   }
 }
