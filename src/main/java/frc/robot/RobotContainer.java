@@ -21,6 +21,7 @@ import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.arm.MoveVoltage;
 import frc.robot.commands.drive.AlignToGrid;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -184,6 +185,16 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Driver", "Cross+Balance", new CrossAndBalance(drivetrain));
     }
     SmartShuffleboard.putCommand("Driver", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
+    SmartShuffleboard.putCommand("Sahil", "1V", new MoveVoltage(arm, 1));
+    SmartShuffleboard.putCommand("Sahil", "1.25V", new MoveVoltage(arm, 1.25));
+    SmartShuffleboard.putCommand("Sahil", "1.5V", new MoveVoltage(arm, 1.5));
+    SmartShuffleboard.putCommand("Sahil", "1.75V", new MoveVoltage(arm, 1.75));
+    SmartShuffleboard.putCommand("Sahil", "2V", new MoveVoltage(arm, 2));
+    SmartShuffleboard.putCommand("Sahil", "2.25V", new MoveVoltage(arm, 2.25));
+    SmartShuffleboard.putCommand("Sahil", "2.5V", new MoveVoltage(arm, 2.5));
+    SmartShuffleboard.putCommand("Sahil", "2.75V", new MoveVoltage(arm, 2.75));
+
+
   }
 
   /**
