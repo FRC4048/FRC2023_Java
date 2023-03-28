@@ -19,7 +19,7 @@ public class InitialMoveArm extends LoggedCommand {
     private Direction direction;
 
     private enum Direction {
-        UP(1.5, 1.0, 0.6, Constants.ARM_MAX_POWER_UP),
+        UP(1.5, 1.0, 0.4, Constants.ARM_MAX_POWER_UP),
         DOWN(0.5, -1.0, 0.3, Constants.ARM_MAX_POWER_DOWN);
 
         Direction(double boost, double sign, double kP, double maxPower) {
