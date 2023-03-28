@@ -85,7 +85,7 @@ public final class Constants {
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARMVOLTAGE_TIMEOUT = 5;
   public static final int ARM_MONITOR_ZONE = 25;
-  public static final double ARM_PID_P_IN = 0.2;
+  public static final double ARM_PID_P_IN = 0.1;
   public static final double ARM_PID_I_IN = 0.0;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
@@ -152,9 +152,9 @@ public final class Constants {
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
   public static final int IMU = 42;
-  public static final double ARM_MAX_POWER_UP = 4.5;  // 5.5??
-  public static final double ARM_MAX_POWER_DOWN = 3; //3.5??
-  public static final double ARM_MAX_VOLTAGE_ACCELERATION = 4.0; // 2 volts/sec
+  public static final double ARM_MAX_POWER_UP = 6.0;  // 5.5??
+  public static final double ARM_MAX_POWER_DOWN = 4; //3.5??
+  public static final double ARM_MAX_VOLTAGE_ACCELERATION = 6.0; // 2 volts/sec
 
 
 
