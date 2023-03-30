@@ -8,9 +8,9 @@ import frc.robot.utils.logging.wrappers.LoggedCommand;
 public class HoldArmPID extends LoggedCommand {
 
     private Arm arm;
-    private Double angle;
+    private double angle;
 
-    public HoldArmPID(Arm arm, Double angle) {
+    public HoldArmPID(Arm arm, double angle) {
         this.angle = angle;
         this.arm = arm;
         addRequirements(this.arm);

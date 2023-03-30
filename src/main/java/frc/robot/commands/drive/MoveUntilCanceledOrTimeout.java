@@ -15,7 +15,7 @@ public class MoveUntilCanceledOrTimeout extends LoggedCommand {
   private double speed;
   private double startTime;
   
-  public MoveUntilCanceledOrTimeout(Drivetrain drivetrain, Double speed) {
+  public MoveUntilCanceledOrTimeout(Drivetrain drivetrain, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
