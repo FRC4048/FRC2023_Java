@@ -4,6 +4,7 @@ package frc.robot.commands.extender;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
@@ -56,6 +57,8 @@ public class ExtendToPosition extends LoggedCommand {
             Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
             return true;
         }
+        //if we are extending out, and it is not safe to extend return true
+        if(extender.getEncoder() - position < 0 && !extender.safeToExtend()) return true;
         return false;
     }
 }

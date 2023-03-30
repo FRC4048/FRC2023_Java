@@ -70,7 +70,7 @@ public class CloseGripper extends LoggedCommand {
                 return true;
             }
 
-            if ((Timer.getFPGATimestamp() - startTime) > Constants.GRIPPER_TIMEOUT) {
+            if ((Timer.getFPGATimestamp() - startTime) > Constants.CLOSE_GRIPPER_TIMEOUT) {
                 Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
                 return true;
             }
