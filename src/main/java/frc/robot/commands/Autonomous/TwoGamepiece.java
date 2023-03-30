@@ -26,28 +26,25 @@ public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation;
 
     public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
-        setName("-auto-two-gamepiece-");
+        setName("-Auto-2GP-");
         addCommands(
-            new ResetEncoders(arm, extender),
-            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
+            new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-2GP-Reset-Encoders"),            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParRaceCommandGroupWrapper(
                 new ParallelRaceGroup(
                     new SequentialCommandGroupWrapper(
                         new SequentialCommandGroup(
                             new ExtendToPosition(extender, ArmPositionGrid.TOP_RIGHT.getExtenderPosition()),
                             new OpenGripper(gripper)
-                        ), "-auto-two-drop-seq-"),
+                        ), "-Auto-2GP-drop-seq-"),
                     new HoldArmPID(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition())
-                )
+                ), "-Auto-2GP-deposit"
             ),
 
             new ParCommandGroupWrapper(
                 new ParallelCommandGroup(
-                    new SequentialCommandGroupWrapper(
-                        new Stow(arm, gripper, extender)
-                    ),
+                    new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Auto-2GP-stow"),
                     new MoveDistanceSpinTraj(drivetrain, 0.2, -0.4 * direction, Math.toRadians(180))
-                ), "-auto-two-diag-move-"
+                ), "-Auto-2GP-diag-move-"
             ),
 
             new MoveDistanceSpinTraj(drivetrain, 5.1, .3 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
@@ -56,7 +53,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
 
             new CloseGripper(gripper),
 
-            new Stow(arm, gripper, extender),
+            new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Auto-2gp-stow"),
 
             new MoveDistanceSpinTraj(drivetrain, -4.9, -.4 * direction, Math.toRadians(180))
         );

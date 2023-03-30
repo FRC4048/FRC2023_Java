@@ -55,7 +55,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     loopTime = 0;
-    SmartShuffleboard.put("Autonomous", "Chosen Action, Location", m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name());
+    SmartShuffleboard.put("Autonomous", "Chosen Action, Location",
+            m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name()).withPosition(0,2).withSize(4,1);
     m_robotContainer.getDisabledLedCycleCommand().refresh();
 
   }
