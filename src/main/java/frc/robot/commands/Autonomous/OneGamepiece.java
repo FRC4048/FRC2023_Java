@@ -22,7 +22,7 @@ public class OneGamepiece extends SequentialCommandGroup{
     public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
         setName("-Auto-1GP");
         addCommands(
-        new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-Reset-Encoders"),
+        new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-1GP-Reset-Encoders"),
         new InitialMoveArm(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
         new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
             new SequentialCommandGroupWrapper(new SequentialCommandGroup(

@@ -180,10 +180,9 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
     }
     if (Constants.DRIVETRAIN_DEBUG) {
-      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
-      SmartShuffleboard.putCommand("Driver", "Cross+Balance", new CrossAndBalance(drivetrain));
+      SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
+      SmartShuffleboard.putCommand("Drive", "Cross+Balance", new CrossAndBalance(drivetrain));
     }
-    SmartShuffleboard.putCommand("Driver", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
   }
 
   /**
