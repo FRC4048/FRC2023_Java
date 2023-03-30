@@ -25,6 +25,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -117,7 +118,7 @@ public class Drivetrain extends SubsystemBase{
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
 
     driverTab = Shuffleboard.getTab("Driver");
-    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget("Gyro").withSize(2, 4).getEntry();
+    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget(BuiltInWidgets.kGyro).withSize(2, 2).getEntry();
 
     rollFilter = new MedianFilter(5);
 
@@ -281,9 +282,8 @@ public class Drivetrain extends SubsystemBase{
     Logger.logDouble("/drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
-    SmartShuffleboard.put("Auto Balance", "FilterRoll", filterRoll);
-
     if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Drive", "FilterRoll", filterRoll);
       SmartShuffleboard.put("Drive", "distance to desired", 2 - poseEstimator.getEstimatedPosition().getX());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", frontRightCanCoder.getAbsolutePosition());
       SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", frontLeftCanCoder.getAbsolutePosition());
