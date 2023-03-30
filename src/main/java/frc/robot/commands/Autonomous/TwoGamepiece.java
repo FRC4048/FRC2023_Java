@@ -4,6 +4,7 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.ArmPositionGrid;
 import frc.robot.commands.arm.HoldArmPID;
 import frc.robot.commands.arm.InitialMoveArm;
@@ -50,6 +51,8 @@ public class TwoGamepiece extends SequentialCommandGroup {
             new MoveDistanceSpinTraj(drivetrain, 5.1, .3 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
             
             new GroundPickup(arm, extender, gripper),
+
+            new WaitCommand(.5),
 
             new CloseGripper(gripper),
 

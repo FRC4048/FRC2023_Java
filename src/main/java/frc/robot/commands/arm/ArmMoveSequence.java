@@ -2,7 +2,6 @@ package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;

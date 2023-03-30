@@ -88,4 +88,7 @@ public class Extender extends SubsystemBase {
         if ((volt > 0 && protectionMechanism.safeToExtend()) || volt < 0) return volt;
         return 0;
     }
+    public boolean safeToExtend(){
+        return protectionMechanism.safeToExtend();
+    }
 }
