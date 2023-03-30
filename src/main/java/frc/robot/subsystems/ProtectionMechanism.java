@@ -29,12 +29,12 @@ public final class ProtectionMechanism extends SubsystemBase {
      }
 
      public boolean safeToExtend(){
-          return (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) || (extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()) && arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN);
+          return (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) || (extender.getEncoder() < maxExtenderFromArmAngle(arm.getEncoderValue()) && arm.getEncoderValue() > Constants.ARM_OUT_ROBOT_MIN);
      }
      public boolean safeToLowerArm(){
           if (arm.getEncoderValue() > Constants.ARM_MONITOR_ZONE) return true;
           if (arm.getEncoderValue() < Constants.GRIP_NEEDS_CLOSE_ZONE && gripper.getopenLimitSwitch()) return false;
-          return (extender.getExtenderSensorPos() < maxExtenderFromArmAngle(arm.getEncoderValue()));
+          return (extender.getEncoder() < maxExtenderFromArmAngle(arm.getEncoderValue()));
      }
      public boolean safeToOpenGripper(){
           return arm.getEncoderValue() > Constants.GRIP_NEEDS_CLOSE_ZONE;
