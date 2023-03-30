@@ -118,7 +118,7 @@ public class Drivetrain extends SubsystemBase{
     backRightCanCoder = new WPI_CANCoder(Constants.DRIVE_CANCODER_BACK_RIGHT);
 
     driverTab = Shuffleboard.getTab("Driver");
-    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget(BuiltInWidgets.kGyro).withSize(2, 4).getEntry();
+    gyroEntry = driverTab.add("Gyro Value", 0).withPosition(5, 0).withWidget(BuiltInWidgets.kGyro).withSize(2, 2).getEntry();
 
     rollFilter = new MedianFilter(5);
 
