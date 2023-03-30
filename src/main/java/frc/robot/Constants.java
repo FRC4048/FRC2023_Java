@@ -35,7 +35,6 @@ public final class Constants {
   public static final int DRIVE_FRONT_RIGHT_D = 49;
   public static final int DRIVE_BACK_RIGHT_S = 46;
   public static final int DRIVE_BACK_RIGHT_D = 43;
-
   public static final int DRIVE_FRONT_LEFT_S = 50;
   public static final int DRIVE_FRONT_LEFT_D = 51;
   public static final int DRIVE_BACK_LEFT_S = 31;
@@ -62,10 +61,8 @@ public final class Constants {
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
   public static final int MAX_EXTENDER_ENCODER_VALUE = 7342;
-  // in inches
-  public static final int EXTENDER_MAX_LENGTH = 74;
-  // in inches
-  public static final int EXTENDER_MIN_LENGTH = 44;
+  public static final int EXTENDER_MAX_LENGTH = 74; //in inches
+  public static final int EXTENDER_MIN_LENGTH = 44; // in inches
 
   //PID Constants
   public static final double DRIVE_PID_P = 1;
@@ -99,24 +96,17 @@ public final class Constants {
   //in inches
   public static final int ARM_HEIGHT = 47;
 
-  public static final int ARM_LOWER_DISTANCE = 3;
-
   public static final double WHEEL_RADIUS = 0.0508;
-  public static final int ENCODER_RESOLUTION = 4096;
   public static final double CHASSIS_DRIVE_GEAR_RATIO = 8.142857; // this value should be x:1
   public static final double CHASSIS_STEER_GEAR_RATIO = 12.8; // this value should be x:1
 
   public static final double MAX_VELOCITY = 4.0; // 4 meters per second
-  public static final double MAX_ACCELERATION = 6.0;
   public static final double MAX_ANGULAR_SPEED = Math.PI * 6; // 1 rotation per second
   public static final double MAX_ANGULAR_ACCELERATION = Math.PI * 3;
   public static final double ARM_OUT_ROBOT_MIN = 6;
 
   public static final double NO_EXTENSION_ZONE = 15; //max arm angle for no extension
-  public static final double NO_ARM_LOWER_ZONE = 2000; //max extension for no arm lower
-  public static final double MANUAL_EXTEND_SPEED = 0.3;
   public static final double MANUAL_ARM_SPEED = 1.5; //volts
-  public static final double MANUAL_GRIP_SPEED = 0.8;
 
   //autonomous values
   public static final double MAX_VELOCITY_AUTO = 3.0;
@@ -142,27 +132,13 @@ public final class Constants {
             MAX_ANGULAR_SPEED_AUTO, MAX_ANGULAR_ACCELERATION_AUTO);
 
 
-
-  public static final double ARM_TOP_ROW = 1000; //placeholder values for arm.angle
-  public static final double ARM_MID_ROW = 500;
-  public static final double ARM_BOTTOM_ROW = 0;
-
   public static final double ROBOT_WIDTH = 0.5969;
   public static final double ROBOT_LENGTH = 0.5969;
-  public static final int IMU = 42;
   public static final double ARM_MAX_POWER_UP = 8.0;  // was 6.0
   public static final double ARM_MAX_POWER_DOWN = 4;
   public static final double ARM_MAX_VOLTAGE_ACCELERATION = 8.0; // 8 volts/sec
 
-
-
-  //public static final double ARM_AUTO_VOLTAGE_UP = 4d;
-  //public static final double ARM_AUTO_VOLTAGE_DOWN = 2.5d;
-  public static final double ARM_AUTO_VOLTAGE = 3d;
-
-  public static final double PRECISION_DRIVE_AND_STEER_SPD = .30f;
   public static final double GRIP_NEEDS_CLOSE_ZONE = 12.85;
-  public static final double TURBO_DRIVE_AND_STEER_SPD = 1.3;
 
   public static final double LOCK_WHEEL_ROT_SPEED = 0.3;
   public static final double LOCK_WHEELS_TIMEOUT = 0.1;
@@ -170,18 +146,12 @@ public final class Constants {
   public static final double AUTO_TURN_TIMEOUT = 1;
   public static final double SUBSTATION_ALIGN_THRESHOLD = 2;
 
-
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
-
   public static final double BACK_RIGHT_ABS_ENCODER_ZERO = 218.76;
   public static final double FRONT_LEFT_ABS_ENCODER_ZERO = 9.0;
   public static final double BACK_LEFT_ABS_ENCODER_ZERO = 351.3;
   public static final double FRONT_RIGHT_ABS_ENCODER_ZERO = 299.13;
 
 
-  public static final double GYRO_ACCEL_FILTER = 10;
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
   public static final double CLOSE_GRIPPER_TIMEOUT = 0.5;
@@ -211,8 +181,6 @@ public final class Constants {
   public static final double CROSS_CLIMB = 20;
 
   //setpoints
-  public static final double SUBSTATION_DRIVE_BACK_DISTANCE = 0.63;
-  public static final double SUBSTATION_DRIVE_BACK_TIMEOUT = 5;
   public static final double SUBSTATION_DRIVE_FORWARD_TIMEOUT = 10;
 
 
