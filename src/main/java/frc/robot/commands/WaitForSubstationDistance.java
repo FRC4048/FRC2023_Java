@@ -36,8 +36,9 @@ public class WaitForSubstationDistance extends LoggedCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Logger.logDouble("/arm/distanceSensor", arm.getDistance(), Constants.ENABLE_LOGGING);
-    if (arm.getDistance() < Constants.AUTO_CLOSE_GRIP_DISTANCE && arm.getDistance() > 0) {
+    double distance = arm.getDistance();
+    Logger.logDouble("/arm/distanceSensor", distance, Constants.ENABLE_LOGGING);
+    if (arm.getDistance() < Constants.AUTO_CLOSE_GRIP_DISTANCE && distance > 0) {
       cycleCounter++;
     } else {
       cycleCounter = 0;
