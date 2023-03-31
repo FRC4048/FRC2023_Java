@@ -88,7 +88,7 @@ public final class Constants {
   public static final double ARM_PID_FF_IN = 0.0;
   public static final double ARM_OVERSHOOT = 1.0;
 
-  public static final double ARM_MIN_ENC_VAL = 2.0;
+  public static final double ARM_MIN_ENC_VAL = 2.1;
   public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
 
   public static final double ARM_MAX_VOLTS = 4.5;
@@ -154,7 +154,7 @@ public final class Constants {
 
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
-  public static final double CLOSE_GRIPPER_TIMEOUT = 0.5;
+  public static final double CLOSE_GRIPPER_TIMEOUT = 1.2;
   public static final double OPEN_GRIPPER_TIMEOUT = 0.8;
   public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 25;
   public static final int AUTO_CLOSE_GRIP_CYCLES = 5;
