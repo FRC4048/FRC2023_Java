@@ -81,17 +81,19 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
-      SmartShuffleboard.put("Arm", "analog encoder",getAnalogValue());
-      SmartShuffleboard.put("Arm", "analog raw encoder",analogSensor.getPosition());
-      SmartShuffleboard.put("Arm", "arm pidding", pidding);
+      //SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
+      //SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
     }
-    Logger.logDouble("/arm/analogEncoder", getAnalogValue(), Constants.ENABLE_LOGGING);
+    SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
+    SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
+
+    Logger.logDouble("/arm/encoderAngle", getAnalogValue(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
 
