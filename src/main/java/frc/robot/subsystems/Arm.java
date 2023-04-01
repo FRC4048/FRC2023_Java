@@ -78,7 +78,7 @@ public class Arm extends SubsystemBase {
 
     substationActive = false;
     driverTab = Shuffleboard.getTab("Driver");
-    armMinEncoderEntry = driverTab.add("ArmMinEncoder", 2.06).withProperties(Map.of("min", 2.04, "max", 2.12));
+    armMinEncoderEntry = driverTab.add("ArmMinEncoder", 2.06).withProperties(Map.of("min", 2.00, "max", 2.12));
     distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withPosition(4,0).withSize(3,2).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
     
   }
