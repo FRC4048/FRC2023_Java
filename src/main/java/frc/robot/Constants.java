@@ -88,7 +88,7 @@ public final class Constants {
   public static final double ARM_PID_FF_IN = 0.0;
   public static final double ARM_OVERSHOOT = 1.0;
 
-  public static final double ARM_MIN_ENC_VAL = 2.02;
+  public static final double ARM_MIN_ENC_VAL = 2.1;
   public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
 
   public static final double ARM_MAX_VOLTS = 4.5;
