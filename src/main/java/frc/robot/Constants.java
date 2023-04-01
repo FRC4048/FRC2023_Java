@@ -154,7 +154,7 @@ public final class Constants {
 
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
-  public static final double CLOSE_GRIPPER_TIMEOUT = 1.2;
+  public static final double CLOSE_GRIPPER_TIMEOUT = 2;
   public static final double OPEN_GRIPPER_TIMEOUT = 0.8;
   public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 25;
   public static final int AUTO_CLOSE_GRIP_CYCLES = 5;

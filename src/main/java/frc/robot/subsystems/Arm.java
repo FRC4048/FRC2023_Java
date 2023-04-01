@@ -44,13 +44,11 @@ public class Arm extends SubsystemBase {
   private ProtectionMechanism protectionMechanism;
   private Rev2mDistanceSensor distanceSensor;
   private double pidreference;
-  private SimpleWidget armMinEncoderEntry;
   private SparkMaxAnalogSensor analogSensor;
   private SparkMaxPIDController pidController;
   private ShuffleboardTab driverTab;
   private GenericEntry distanceEntry;
   private boolean substationActive;
-  private double armInEnc = 2.06;
 
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -78,7 +76,6 @@ public class Arm extends SubsystemBase {
 
     substationActive = false;
     driverTab = Shuffleboard.getTab("Driver");
-    armMinEncoderEntry = driverTab.add("ArmMinEncoder", 2.06).withProperties(Map.of("min", 2.00, "max", 2.12));
     distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withPosition(4,0).withSize(3,2).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
     
   }
@@ -118,7 +115,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getAnalogValue(){
-    return (analogSensor.getPosition() - armMinEncoderEntry.getEntry().getDouble(2.06)) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
+    return (analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
   }
 
   public void setPidding(boolean bool) {
