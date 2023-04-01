@@ -83,12 +83,12 @@ public final class Constants {
   public static final int ARMVOLTAGE_TIMEOUT = 3; //was 5
   public static final int ARM_MONITOR_ZONE = 25;
   public static final double ARM_PID_P_IN = 0.35;
-  public static final double ARM_PID_I_IN = 0.005;
+  public static final double ARM_PID_I_IN = 0.000;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
   public static final double ARM_OVERSHOOT = 0.0;
 
-  public static final double ARM_MIN_ENC_VAL = 2.06;
+  public static final double ARM_MIN_ENC_VAL = 2.11;
   public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
 
   public static final double ARM_MAX_VOLTS = 4.5;
