@@ -93,6 +93,7 @@ public class Arm extends SubsystemBase {
     }
     SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
     SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
+    SmartShuffleboard.put("Arm","ArmTarget",pidreference);
 
     Logger.logDouble("/arm/encoderAngle", getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);

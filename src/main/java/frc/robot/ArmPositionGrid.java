@@ -2,7 +2,7 @@ package frc.robot;
 
 
 public enum ArmPositionGrid {
-     TOP_LEFT(39.0,7410),
+     TOP_LEFT(40,7410),
      TOP_MIDDLE(36.0,6355),
      TOP_RIGHT(39.0,7410),
      MIDDLE_LEFT(34.2,3570),
