@@ -9,15 +9,14 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.MoveDistanceOffset;
 import frc.robot.commands.CancelAll;
 import frc.robot.commands.ChangeLedID;
 import frc.robot.commands.CrossPanel;
 import frc.robot.commands.CycleLED;
 import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ManualMoveArm;
@@ -43,6 +42,8 @@ import frc.robot.subsystems.PowerDistributionBoard;
 import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
+
+import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -75,10 +76,15 @@ public class RobotContainer {
   private JoystickButton joystickLeftButton = new JoystickButton(joyLeft, 2);
   private JoystickButton joystickRightButton = new JoystickButton(joyRight, 2);
   private JoystickButton joystickLeftButton3 = new JoystickButton(joyLeft, 3);
+  private JoystickButton joystickLeftButton14 = new JoystickButton(joyLeft, 14);
+  private JoystickButton joystickLeftButton16 = new JoystickButton(joyLeft, 16);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
+  double armSubstationOffset = 0;
+  
+  private DoubleSupplier armSubOffset = () -> armSubstationOffset;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -134,7 +140,7 @@ public class RobotContainer {
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Button-Stow"));
 //    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
-    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender), "-Button-Substation-Pickup"));
+    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender,armSubOffset), "-Button-Substation-Pickup"));
     controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper,drivetrain), "-Button-Substation-Pickup"));
 
 
@@ -167,6 +173,8 @@ public class RobotContainer {
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     
     joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
+    joystickLeftButton14.onTrue(new InstantCommand(()-> armSubstationOffset +=.25));
+    joystickLeftButton16.onTrue(new InstantCommand(()-> armSubstationOffset -=.25));
   }
 
   public void putShuffleboardCommands() {

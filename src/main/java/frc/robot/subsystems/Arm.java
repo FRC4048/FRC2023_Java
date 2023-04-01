@@ -49,6 +49,7 @@ public class Arm extends SubsystemBase {
   private ShuffleboardTab driverTab;
   private GenericEntry distanceEntry;
   private boolean substationActive;
+  private double substationOffset = 0;
 
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -184,5 +185,13 @@ public class Arm extends SubsystemBase {
 
   public void setSubstationDistance(boolean substationActive) {
     this.substationActive = substationActive;
+  }
+
+  public double getSubstationOffset() {
+    return substationOffset;
+  }
+
+  public void setSubstationOffset(double substationOffset) {
+    this.substationOffset = substationOffset;
   }
 }

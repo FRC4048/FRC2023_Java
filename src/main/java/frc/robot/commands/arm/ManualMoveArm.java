@@ -32,7 +32,7 @@ public class ManualMoveArm extends LoggedCommand {
     public void end(boolean Interrupted) {
         super.end(Interrupted);
         arm.setVoltage(0.0);
-        new HoldArmPID(arm, arm.getAnalogValue()).schedule();
+        new HoldArmPID(arm, arm.getAnalogValue()+2).schedule();
     }
 
     @Override

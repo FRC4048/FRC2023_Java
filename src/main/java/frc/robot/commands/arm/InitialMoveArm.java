@@ -7,10 +7,15 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
+import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
+
+import java.util.function.DoubleSupplier;
 
 public class InitialMoveArm extends LoggedCommand {
 
+    private final double orginDestAngle;
+    private  DoubleSupplier doubleSupplier = ()->0;
     private Arm arm;
     private double desiredAngle;
     private double startTime;
@@ -38,6 +43,14 @@ public class InitialMoveArm extends LoggedCommand {
     public InitialMoveArm(Arm arm, double desiredAngle) {
         this.arm = arm;
         this.desiredAngle = desiredAngle;
+        this.orginDestAngle = desiredAngle;
+        addRequirements(this.arm);
+    }
+    public InitialMoveArm(Arm arm, double desiredAngle, DoubleSupplier doubleSupplier) {
+        this.arm = arm;
+        this.desiredAngle = desiredAngle;
+        this.orginDestAngle = desiredAngle;
+        this.doubleSupplier = doubleSupplier;
         addRequirements(this.arm);
     }
 
@@ -46,6 +59,7 @@ public class InitialMoveArm extends LoggedCommand {
         super.initialize();
         startTime = Timer.getFPGATimestamp();
         accelFilter = new SlewRateLimiter(Constants.ARM_MAX_VOLTAGE_ACCELERATION);
+        desiredAngle = orginDestAngle + doubleSupplier.getAsDouble();
         if (desiredAngle > arm.getAnalogValue()) {
             this.direction = Direction.UP;
             desiredAngle += Constants.ARM_OVERSHOOT;
@@ -73,6 +87,7 @@ public class InitialMoveArm extends LoggedCommand {
 
     @Override
     public boolean isFinished() {
+        SmartShuffleboard.put("Arm","InitalMoveArmFinish", arm.getAnalogValue());
         if ((direction == Direction.UP) && ((desiredAngle-arm.getAnalogValue()) <= Constants.ARM_MOVE_PID_THRESHOLD)) {
             return true;
         }

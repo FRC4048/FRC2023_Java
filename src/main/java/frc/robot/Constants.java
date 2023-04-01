@@ -53,11 +53,11 @@ public final class Constants {
 
   //EXTENDER
   public static final int EXTENDER_RESET_TIMEOUT = 2;
-  public static final double EXTEND_TO_POSITION_TIMEOUT = 3;
+  public static final double EXTEND_TO_POSITION_TIMEOUT = 5;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
-  public static final double EXTENDER_AUTO_MAX_SPEED = 1;
+  public static final double EXTENDER_AUTO_MAX_SPEED = .6;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
   public static final int MAX_EXTENDER_ENCODER_VALUE = 7342;
@@ -86,7 +86,7 @@ public final class Constants {
   public static final double ARM_PID_I_IN = 0.005;
   public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
-  public static final double ARM_OVERSHOOT = 1.0;
+  public static final double ARM_OVERSHOOT = 0.0;
 
   public static final double ARM_MIN_ENC_VAL = 2.06;
   public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
@@ -207,4 +207,5 @@ public final class Constants {
   // field
   public static final double FIELD_LENGTH_X_FEET = 54.25;
   public static final double FIELD_LENGTH_Y_FEET = 26.5;
+  public static final double ARM_PID_OFFSET = 0;
 }
