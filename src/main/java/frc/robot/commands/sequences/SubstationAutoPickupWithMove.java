@@ -15,21 +15,23 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
 
+import java.util.function.DoubleSupplier;
+
 public class SubstationAutoPickupWithMove extends SequentialCommandGroup {
-    public SubstationAutoPickupWithMove(Arm arm, GripperSubsystem gripper, Drivetrain drivetrain) {
+    public SubstationAutoPickupWithMove(Arm arm, GripperSubsystem gripper, Drivetrain drivetrain, DoubleSupplier supplier) {
         setName("-auto-substation-pickup-with-move-");
         addCommands(
                 new AlignToSubstation(drivetrain),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                         new WaitForSubstationDistance(arm, gripper),
-                        new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition()),
+                        new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition(),supplier),
                         new MoveUntilCanceledOrTimeout(drivetrain, .4)
                 ), "-auto-substation-move-in"),
                 new CloseGripper(gripper),
-                new InitialMoveArm(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition()),
+                new InitialMoveArm(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition(),supplier),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                         new MoveDistanceOffset(drivetrain, -.5, 0d, 0.5), 
-                        new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition())
+                        new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_POST_PICKUP.getArmPosition(),supplier)
                 ), "-auto-substation-move-backup")
         );
     }

@@ -76,8 +76,8 @@ public class RobotContainer {
   private JoystickButton joystickLeftButton = new JoystickButton(joyLeft, 2);
   private JoystickButton joystickRightButton = new JoystickButton(joyRight, 2);
   private JoystickButton joystickLeftButton3 = new JoystickButton(joyLeft, 3);
-  private JoystickButton joystickLeftButton14 = new JoystickButton(joyLeft, 14);
-  private JoystickButton joystickLeftButton16 = new JoystickButton(joyLeft, 16);
+  private JoystickButton joystickLeftButton14 = new JoystickButton(joyRight, 14);
+  private JoystickButton joystickLeftButton16 = new JoystickButton(joyRight, 16);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
@@ -141,7 +141,7 @@ public class RobotContainer {
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Button-Stow"));
 //    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
     controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender,armSubOffset), "-Button-Substation-Pickup"));
-    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper,drivetrain), "-Button-Substation-Pickup"));
+    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper,drivetrain,armSubOffset), "-Button-Substation-Pickup"));
 
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
@@ -173,8 +173,8 @@ public class RobotContainer {
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     
     joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
-    joystickLeftButton14.onTrue(new InstantCommand(()-> armSubstationOffset +=.25));
-    joystickLeftButton16.onTrue(new InstantCommand(()-> armSubstationOffset -=.25));
+    joystickLeftButton14.onTrue(new InstantCommand(()-> armSubstationOffset -=.25));
+    joystickLeftButton16.onTrue(new InstantCommand(()-> armSubstationOffset +=.25));
   }
 
   public void putShuffleboardCommands() {
@@ -192,7 +192,7 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Drive", "Cross+Balance", new CrossAndBalance(drivetrain));
     }
-  }
+   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
