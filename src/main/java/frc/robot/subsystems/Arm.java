@@ -100,6 +100,7 @@ public class Arm extends SubsystemBase {
     Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/ArmMinEncoder",Constants.ARM_MIN_ENC_VAL,Constants.ENABLE_LOGGING);
 
     distanceEntry.setDouble(substationActive ? getDistance() : 0);
   }
