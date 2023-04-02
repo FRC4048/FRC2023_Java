@@ -40,6 +40,7 @@ import frc.robot.subsystems.PhotonCameraSubsystem;
 import frc.robot.subsystems.PieceGrid;
 import frc.robot.subsystems.PowerDistributionBoard;
 import frc.robot.subsystems.ProtectionMechanism;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
@@ -173,8 +174,15 @@ public class RobotContainer {
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     
     joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
-    joystickLeftButton14.onTrue(new InstantCommand(()-> armSubstationOffset -=.25));
-    joystickLeftButton16.onTrue(new InstantCommand(()-> armSubstationOffset +=.25));
+
+    joystickLeftButton14.onTrue(new InstantCommand(()-> {
+      armSubstationOffset -=.25;
+      Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
+    }));
+    joystickLeftButton16.onTrue(new InstantCommand(()-> {
+      armSubstationOffset +=.25;
+      Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
+    }));
   }
 
   public void putShuffleboardCommands() {
