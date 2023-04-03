@@ -26,6 +26,7 @@ public class HoldArmPID extends LoggedCommand {
         this.angle = angle;
         this.originAngle = angle;
         this.substationOffset = substationOffset;
+        addRequirements(this.arm);
     }
 
     @Override
