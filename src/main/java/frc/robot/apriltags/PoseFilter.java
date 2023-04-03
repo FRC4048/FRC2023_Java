@@ -1,5 +1,7 @@
 package frc.robot.apriltags;
 
+import java.util.Arrays;
+
 import edu.wpi.first.util.CircularBuffer;
 
 public class PoseFilter {
@@ -28,16 +30,22 @@ public class PoseFilter {
     /**
      * Checks if the inputed value should be filtered or not using the tolerence given and the average of the last few values
      * 
-     * @param averageLast average of the past few values
+     * @param average average of the past few values
      * @param input       new value to check if valid or not
      * @param tolerance   The size of the range that the value can deviate from. ex.
      *                    range of 5 will allow new inputs to be 5 less than and 5
      *                    greater than the average
+     * @param median the median
      * 
      * @return if the value is valid or not
      */
-    public boolean isValid(double averageLast, double input, double tolerance) {
-        return (input <= (averageLast + tolerance) && input >= (averageLast - tolerance));
+    public boolean isValid(double average, double input, double tolerance, double median) {
+        if((average + tolerance) < median || (average - tolerance) > median) {
+            return(input <= (median + tolerance));
+        }
+        else {
+            return (input <= (average + tolerance) && input >= (average - tolerance));
+        }
     }
 
     /**
@@ -49,7 +57,7 @@ public class PoseFilter {
      * @return new calculated values
      */
     public double calculate(double newInput) {
-        if (!isValid(average, newInput, tolerance) && counter >= maxInputs) {
+        if (counter >= maxInputs && !isValid(average, newInput, tolerance, getMedian())) {
             newInput = values.getLast();
         } else {
             values.addLast(newInput);
@@ -89,5 +97,19 @@ public class PoseFilter {
             output[i] = values.get(i);
         }
         return output;
+    }
+
+    /**
+     * @return The median of the filtered values
+     */
+    public double getMedian() {
+        double[] listOfValues = getValuesInFilter();
+        Arrays.sort(listOfValues);
+        if ((values.size() % 2) == 1) {
+            return ((listOfValues[values.size()/2] + listOfValues[values.size()/2])/2);
+        }
+        else {
+            return listOfValues[values.size()/2];
+        }
     }
 }
