@@ -17,6 +17,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -48,6 +49,10 @@ public class Arm extends SubsystemBase {
   private ShuffleboardTab driverTab;
   private GenericEntry distanceEntry;
   private boolean substationActive;
+  private double substationOffset = 0;
+  private double pidP = Constants.ARM_PID_P_IN;
+  private double pidI = Constants.ARM_PID_I_IN;
+  private double pidD = Constants.ARM_PID_D_IN;
 
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -76,6 +81,9 @@ public class Arm extends SubsystemBase {
     substationActive = false;
     driverTab = Shuffleboard.getTab("Driver");
     distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withPosition(4,0).withSize(3,2).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
+    SmartShuffleboard.put("Arm","PID P",pidP);
+    SmartShuffleboard.put("Arm","PID I",pidI);
+    SmartShuffleboard.put("Arm","PID D",pidD);
   }
 
   @Override
@@ -88,16 +96,22 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
+      SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
+      SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
+      SmartShuffleboard.put("Arm","ArmTarget",pidreference);
     }
-    SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
-    SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
+    pidP = SmartShuffleboard.getDouble("Arm","PID P",pidP);
+    pidI = SmartShuffleboard.getDouble("Arm","PID I",pidI);
+    pidD = SmartShuffleboard.getDouble("Arm","PID D",pidD);
 
     Logger.logDouble("/arm/encoderAngle", getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/ArmMinEncoder",Constants.ARM_MIN_ENC_VAL,Constants.ENABLE_LOGGING);
 
     distanceEntry.setDouble(substationActive ? getDistance() : 0);
+    
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -181,5 +195,13 @@ public class Arm extends SubsystemBase {
 
   public void setSubstationDistance(boolean substationActive) {
     this.substationActive = substationActive;
+  }
+
+  public double getSubstationOffset() {
+    return substationOffset;
+  }
+
+  public void setSubstationOffset(double substationOffset) {
+    this.substationOffset = substationOffset;
   }
 }

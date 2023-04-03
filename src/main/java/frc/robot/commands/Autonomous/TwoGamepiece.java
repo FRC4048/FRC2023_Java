@@ -48,7 +48,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
                 ), "-Auto-2GP-diag-move-"
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, 5.1, .3 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
+            new MoveDistanceSpinTraj(drivetrain, 5.0, .4 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
             
             new GroundPickup(arm, extender, gripper),
 

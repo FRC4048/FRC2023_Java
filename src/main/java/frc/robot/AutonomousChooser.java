@@ -191,7 +191,7 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));  
             }
         }
         else if (action == Action.TwoPieceMoveRight) {
@@ -202,7 +202,7 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.DepositOneAndBalance && location == Location.Middle) {
