@@ -83,7 +83,7 @@ public class InitialMoveArm extends LoggedCommand {
     public void end(boolean Interrupted) {
         super.end(Interrupted);
         arm.setVoltage(0.0);
-        SmartShuffleboard.put("Arm","InitalMoveArmFinish", arm.getAnalogValue());
+        Logger.logDouble("arm/InitialMoveArmFinishValue",arm.getAnalogValue(),Constants.ENABLE_LOGGING);
     }
 
     @Override
