@@ -50,6 +50,9 @@ public class Arm extends SubsystemBase {
   private GenericEntry distanceEntry;
   private boolean substationActive;
   private double substationOffset = 0;
+  private double pidP = Constants.ARM_PID_P_IN;
+  private double pidI = Constants.ARM_PID_I_IN;
+  private double pidD = Constants.ARM_PID_D_IN;
 
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -78,7 +81,9 @@ public class Arm extends SubsystemBase {
     substationActive = false;
     driverTab = Shuffleboard.getTab("Driver");
     distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withPosition(4,0).withSize(3,2).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
-    
+    SmartShuffleboard.put("Arm","PID P",pidP);
+    SmartShuffleboard.put("Arm","PID I",pidI);
+    SmartShuffleboard.put("Arm","PID D",pidD);
   }
 
   @Override
@@ -95,7 +100,9 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
       SmartShuffleboard.put("Arm","ArmTarget",pidreference);
     }
-
+    pidP = SmartShuffleboard.getDouble("Arm","PID P",pidP);
+    pidI = SmartShuffleboard.getDouble("Arm","PID I",pidI);
+    pidD = SmartShuffleboard.getDouble("Arm","PID D",pidD);
 
     Logger.logDouble("/arm/encoderAngle", getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
@@ -104,6 +111,7 @@ public class Arm extends SubsystemBase {
     Logger.logDouble("/arm/ArmMinEncoder",Constants.ARM_MIN_ENC_VAL,Constants.ENABLE_LOGGING);
 
     distanceEntry.setDouble(substationActive ? getDistance() : 0);
+    
   }
 
   public boolean isFwdLimitSwitchReached() {
