@@ -83,11 +83,11 @@ public class InitialMoveArm extends LoggedCommand {
     public void end(boolean Interrupted) {
         super.end(Interrupted);
         arm.setVoltage(0.0);
+        SmartShuffleboard.put("Arm","InitalMoveArmFinish", arm.getAnalogValue());
     }
 
     @Override
     public boolean isFinished() {
-        SmartShuffleboard.put("Arm","InitalMoveArmFinish", arm.getAnalogValue());
         if ((direction == Direction.UP) && ((desiredAngle-arm.getAnalogValue()) <= Constants.ARM_MOVE_PID_THRESHOLD)) {
             return true;
         }

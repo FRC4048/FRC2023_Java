@@ -91,10 +91,11 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
+      SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
+      SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
+      SmartShuffleboard.put("Arm","ArmTarget",pidreference);
     }
-    SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
-    SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
-    SmartShuffleboard.put("Arm","ArmTarget",pidreference);
+
 
     Logger.logDouble("/arm/encoderAngle", getAnalogValue(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
