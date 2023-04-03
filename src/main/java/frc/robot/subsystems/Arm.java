@@ -1,23 +1,25 @@
 package frc.robot.subsystems;
 
 
+import java.util.Map;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 import com.revrobotics.Rev2mDistanceSensor.Unit;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -26,8 +28,6 @@ import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagSparkMaxEncoder;
 import frc.robot.utils.diag.DiagSparkMaxSwitch;
 import frc.robot.utils.diag.DiagToFSensor;
-
-import java.util.Map;
 
 /**
  * The RevRobotics distance sensor requires manual installation to work correctly.
@@ -64,6 +64,7 @@ public class Arm extends SubsystemBase {
     distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
 
     pidController = neoMotor.getPIDController();
+    pidController.setFeedbackDevice(analogSensor);
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
@@ -140,6 +141,10 @@ public class Arm extends SubsystemBase {
 
   public SparkMaxAnalogSensor getAnalogSensor(){
     return analogSensor;
+  }
+
+  public double getAnalogSensorPosition() {
+    return analogSensor.getPosition();
   }
 
   public void zeroPID() {

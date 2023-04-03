@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
+import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 import java.util.function.DoubleSupplier;
@@ -15,7 +16,7 @@ public class HoldArmPID extends LoggedCommand {
     private double angle;
 
     public HoldArmPID(Arm arm, double angle) {
-        this.angle = angle;
+        this.angle = (angle / Constants.ARM_ENCODER_CONVERSION_FACTOR) + Constants.ARM_MIN_ENC_VAL;
         this.arm = arm;
         this.originAngle = angle;
         addRequirements(this.arm);
@@ -43,6 +44,8 @@ public class HoldArmPID extends LoggedCommand {
     public void execute() {
         arm.setPidding(true);
         arm.setPIDReference(angle);
+        SmartShuffleboard.put("BZ Arm", "HoldArmPID Angle", angle);
+
     }
 
     @Override
