@@ -53,11 +53,11 @@ public final class Constants {
 
   //EXTENDER
   public static final int EXTENDER_RESET_TIMEOUT = 2;
-  public static final double EXTEND_TO_POSITION_TIMEOUT = 5;
+  public static final double EXTEND_TO_POSITION_TIMEOUT = 3;
   public static final int EXTENDER_MOTOR_ID = 6;
   public static final double EXTENDER_MANUAL_SPEED = 0.5;
   public static final double EXTENDER_AUTO_MIN_SPEED = 0.3;
-  public static final double EXTENDER_AUTO_MAX_SPEED = .6;
+  public static final double EXTENDER_AUTO_MAX_SPEED = 1;
   public static final double EXTENDER_SPEED_SLOW_THRESHOLD = 1750;
   public static final double EXTENDER_DESTINATION_THRESHOLD = 50;
   public static final int MAX_EXTENDER_ENCODER_VALUE = 7342;
