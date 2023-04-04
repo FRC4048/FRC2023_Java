@@ -37,14 +37,13 @@ public class HoldArmPID extends LoggedCommand {
         angle = originAngle + substationOffset.getAsDouble();
         arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
         Logger.logDouble("/arm/pid/angle", angle, Constants.ENABLE_LOGGING);
-
+        SmartShuffleboard.put("BZ Arm", "HoldArmPID Angle", angle);
     }
 
     @Override
     public void execute() {
         arm.setPidding(true);
         arm.setPIDReference(angle);
-        SmartShuffleboard.put("BZ Arm", "HoldArmPID Angle", angle);
 
     }
 
