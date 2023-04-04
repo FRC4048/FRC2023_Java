@@ -176,11 +176,11 @@ public class RobotContainer {
     joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
 
     joystickLeftButton14.onTrue(new InstantCommand(()-> {
-      armSubstationOffset -=.25;
+      armSubstationOffset -=(.25 / Constants.ARM_ENCODER_CONVERSION_FACTOR);
       Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
     }));
     joystickLeftButton16.onTrue(new InstantCommand(()-> {
-      armSubstationOffset +=.25;
+      armSubstationOffset += (.25 / Constants.ARM_ENCODER_CONVERSION_FACTOR);
       Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
     }));
   }

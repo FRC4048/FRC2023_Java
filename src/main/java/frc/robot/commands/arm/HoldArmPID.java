@@ -16,19 +16,15 @@ public class HoldArmPID extends LoggedCommand {
     private double angle;
 
     public HoldArmPID(Arm arm, double angle) {
-        this.angle = (angle / Constants.ARM_ENCODER_CONVERSION_FACTOR) + Constants.ARM_MIN_ENC_VAL;
         this.arm = arm;
-        this.originAngle = angle;
+        this.angle = (angle / Constants.ARM_ENCODER_CONVERSION_FACTOR) + Constants.ARM_MIN_ENC_VAL;
+        this.originAngle = this.angle;
         addRequirements(this.arm);
     }
 
     public HoldArmPID(Arm arm, double angle, DoubleSupplier substationOffset) {
-        this.arm = arm;
-        this.angle = angle;
-        this.originAngle = angle;
+        this(arm, angle);
         this.substationOffset = substationOffset;
-        addRequirements(this.arm);
-        
     }
 
     @Override
