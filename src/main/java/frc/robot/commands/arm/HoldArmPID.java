@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
+import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 import java.util.function.DoubleSupplier;
@@ -15,19 +16,15 @@ public class HoldArmPID extends LoggedCommand {
     private double angle;
 
     public HoldArmPID(Arm arm, double angle) {
-        this.angle = angle;
         this.arm = arm;
-        this.originAngle = angle;
+        this.angle = (angle / Constants.ARM_ENCODER_CONVERSION_FACTOR) + Constants.ARM_MIN_ENC_VAL;
+        this.originAngle = this.angle;
         addRequirements(this.arm);
     }
 
     public HoldArmPID(Arm arm, double angle, DoubleSupplier substationOffset) {
-        this.arm = arm;
-        this.angle = angle;
-        this.originAngle = angle;
+        this(arm, angle);
         this.substationOffset = substationOffset;
-        addRequirements(this.arm);
-        
     }
 
     @Override
@@ -36,13 +33,16 @@ public class HoldArmPID extends LoggedCommand {
         angle = originAngle + substationOffset.getAsDouble();
         arm.setPID(Constants.ARM_PID_P_IN, Constants.ARM_PID_I_IN, Constants.ARM_PID_D_IN, Constants.ARM_PID_FF_IN);
         Logger.logDouble("/arm/pid/angle", angle, Constants.ENABLE_LOGGING);
-
+        if (Constants.ARM_DEBUG) {
+            SmartShuffleboard.put("Arm", "HoldArmPID Target Angle", angle);
+        }
     }
 
     @Override
     public void execute() {
         arm.setPidding(true);
         arm.setPIDReference(angle);
+
     }
 
     @Override

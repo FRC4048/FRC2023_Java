@@ -25,7 +25,7 @@ public class InitialMoveArm extends LoggedCommand {
 
     private enum Direction {
         UP(1.5, 1.0, 0.4, Constants.ARM_MAX_POWER_UP),
-        DOWN(0.5, -1.0, 0.3, Constants.ARM_MAX_POWER_DOWN);
+        DOWN(0.5, -1.0, 0.2, Constants.ARM_MAX_POWER_DOWN);
 
         Direction(double boost, double sign, double kP, double maxPower) {
             this.boost = boost;
