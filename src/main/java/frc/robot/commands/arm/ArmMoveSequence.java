@@ -13,7 +13,7 @@ import frc.robot.utils.logging.wrappers.ParCommandGroupWrapper;
 public class ArmMoveSequence extends SequentialCommandGroup {
     public ArmMoveSequence(Arm arm, Extender extender, double armTargetPosition, double extenderTargetPosition) {
         setName("-Arm-Move");
-        if (armTargetPosition > arm.getAnalogValue()) {
+        if (armTargetPosition > arm.getScaledAnalogEncoderVal()) {
             addCommands(
                 new InitialMoveArm(arm, armTargetPosition),
                 new ParCommandGroupWrapper(new ParallelCommandGroup(

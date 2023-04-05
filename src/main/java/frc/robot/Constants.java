@@ -89,10 +89,10 @@ public final class Constants {
   public static final double ARM_OVERSHOOT = 0.0;
 
   public static final double ARM_MIN_ENC_VAL = 2.13;
-  public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
+  public static final double ARM_ENCODER_CONVERSION_FACTOR = 60;   // *60
 
   public static final double ARM_MAX_VOLTS = 4.5;
-  public static final double ARM_MOVE_PID_THRESHOLD = 0.5;
+  public static final double ARM_MOVE_PID_THRESHOLD = .5;
   //in inches
   public static final int ARM_HEIGHT = 47;
 

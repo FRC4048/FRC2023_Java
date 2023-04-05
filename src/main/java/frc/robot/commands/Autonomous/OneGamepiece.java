@@ -23,7 +23,7 @@ public class OneGamepiece extends SequentialCommandGroup{
         setName("-Auto-1GP");
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-1GP-Reset-Encoders"),
-        new InitialMoveArm(arm, ArmPositionGrid.TOP_MIDDLE.getArmPosition()),
+        new InitialMoveArm(arm, ArmPositionGrid.TOP_LEFT.getArmPosition()),
         new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
             new SequentialCommandGroupWrapper(new SequentialCommandGroup(
                 new ExtendToPosition(extender, ArmPositionGrid.TOP_LEFT.getExtenderPosition()),

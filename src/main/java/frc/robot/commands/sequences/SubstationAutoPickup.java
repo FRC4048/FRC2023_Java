@@ -30,7 +30,7 @@ public class SubstationAutoPickup extends SequentialCommandGroup {
                         new OpenGripper(gripper), 
                         new WaitForSubstationDistance(arm, gripper)
                     ), "-auto-substation-wait-for-dist"),
-                    new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition(), substationOffset)
+                    new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition(),substationOffset)
                 ), "-auto-substation-par-race"),
             new CloseGripper(gripper),
             //slight lift after grab

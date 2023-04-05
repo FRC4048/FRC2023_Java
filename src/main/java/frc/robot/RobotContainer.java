@@ -27,10 +27,7 @@ import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.CrossAndBalance;
-import frc.robot.commands.sequences.Stow;
-import frc.robot.commands.sequences.SubstationAutoPickup;
-import frc.robot.commands.sequences.SubstationAutoPickupWithMove;
+import frc.robot.commands.sequences.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -84,7 +81,6 @@ public class RobotContainer {
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
   double armSubstationOffset = 0;
-  
   private DoubleSupplier armSubOffset = () -> armSubstationOffset;
 
 
@@ -195,6 +191,8 @@ public class RobotContainer {
     if (Constants.ARM_DEBUG) {
       SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
+      SmartShuffleboard.putCommand("Arm","SetpointDebugExecute",new SetpointDebug(arm));
+      SmartShuffleboard.put("Arm","SetpointDebugValue",0);
     }
     if (Constants.DRIVETRAIN_DEBUG) {
       SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
