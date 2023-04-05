@@ -37,7 +37,7 @@ public class SetpointDebug extends LoggedCommand {
     @Override
     public void execute() {
         double height = SmartShuffleboard.getDouble("Arm","SetpointDebugValue",0);
-        new SequentialCommandGroup(new InitialMoveArm(arm,height), new HoldArmPID(arm,height));
+        new SequentialCommandGroup(new InitialMoveArm(arm,height), new HoldArmPID(arm,height)).schedule();
     }
 
     @Override
