@@ -83,9 +83,7 @@ public class Arm extends SubsystemBase {
     substationActive = false;
     driverTab = Shuffleboard.getTab("Driver");
     distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withPosition(4,0).withSize(3,2).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
-    SmartShuffleboard.put("Arm","PID P",pidP);
-    SmartShuffleboard.put("Arm","PID I",pidI);
-    SmartShuffleboard.put("Arm","PID D",pidD);
+
   }
 
   @Override
@@ -101,10 +99,15 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "Scaled Encoder Value", getScaledAnalogEncoderVal());
       SmartShuffleboard.put("Arm", "Raw Encoder Value",analogSensor.getPosition());
       SmartShuffleboard.put("Arm","ArmTarget",pidreference);
+      //pid turning
+      SmartShuffleboard.put("Arm","PID P",pidP);
+      SmartShuffleboard.put("Arm","PID I",pidI);
+      SmartShuffleboard.put("Arm","PID D",pidD);
+      pidP = SmartShuffleboard.getDouble("Arm","PID P",pidP);
+      pidI = SmartShuffleboard.getDouble("Arm","PID I",pidI);
+      pidD = SmartShuffleboard.getDouble("Arm","PID D",pidD);
     }
-    pidP = SmartShuffleboard.getDouble("Arm","PID P",pidP);
-    pidI = SmartShuffleboard.getDouble("Arm","PID I",pidI);
-    pidD = SmartShuffleboard.getDouble("Arm","PID D",pidD);
+
 
     Logger.logDouble("/arm/scaledAnalogEncoderValue", getScaledAnalogEncoderVal(), Constants.ENABLE_LOGGING);
     Logger.logDouble("/arm/rawAnalogEncoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);

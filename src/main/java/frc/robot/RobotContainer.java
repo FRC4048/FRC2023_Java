@@ -179,7 +179,6 @@ public class RobotContainer {
       armSubstationOffset += (.25 / Constants.ARM_ENCODER_CONVERSION_FACTOR);
       Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
     }));
-    SmartShuffleboard.put("Arm","SetpointDebugValue",0);
   }
 
   public void putShuffleboardCommands() {
@@ -193,6 +192,7 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
       SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
       SmartShuffleboard.putCommand("Arm","SetpointDebugExecute",new SetpointDebug(arm));
+      SmartShuffleboard.put("Arm","SetpointDebugValue",0);
     }
     if (Constants.DRIVETRAIN_DEBUG) {
       SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
