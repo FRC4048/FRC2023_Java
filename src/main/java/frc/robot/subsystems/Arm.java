@@ -53,6 +53,7 @@ public class Arm extends SubsystemBase {
   private double pidP = Constants.ARM_PID_P_IN;
   private double pidI = Constants.ARM_PID_I_IN;
   private double pidD = Constants.ARM_PID_D_IN;
+  private double armMinEncoderPosition = Constants.ARM_MIN_ENC_VAL;
 
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
@@ -97,19 +98,19 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
-      SmartShuffleboard.put("Arm", "Encoder angle",getAnalogValue());
-      SmartShuffleboard.put("Arm", "Encoder",analogSensor.getPosition());
+      SmartShuffleboard.put("Arm", "Scaled Encoder Value", getScaledAnalogEncoderVal());
+      SmartShuffleboard.put("Arm", "Raw Encoder Value",analogSensor.getPosition());
       SmartShuffleboard.put("Arm","ArmTarget",pidreference);
     }
     pidP = SmartShuffleboard.getDouble("Arm","PID P",pidP);
     pidI = SmartShuffleboard.getDouble("Arm","PID I",pidI);
     pidD = SmartShuffleboard.getDouble("Arm","PID D",pidD);
 
-    Logger.logDouble("/arm/encoderAngle", getAnalogValue(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("/arm/encoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/scaledAnalogEncoderValue", getScaledAnalogEncoderVal(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/rawAnalogEncoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
-    Logger.logDouble("/arm/ArmMinEncoder",Constants.ARM_MIN_ENC_VAL,Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/ArmMinEncoder",getArmMinEncoderPosition(),Constants.ENABLE_LOGGING);
 
     distanceEntry.setDouble(substationActive ? getDistance() : 0);
     
@@ -127,8 +128,8 @@ public class Arm extends SubsystemBase {
     return encoder.getPosition();
   }
 
-  public double getAnalogValue(){
-    return (analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
+  public double getScaledAnalogEncoderVal(){
+    return (analogSensor.getPosition() - armMinEncoderPosition) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
   }
 
   public void setPidding(boolean bool) {
@@ -171,6 +172,7 @@ public class Arm extends SubsystemBase {
 
   public void resetEncoder() {
     encoder.setPosition(0);
+    armMinEncoderPosition = analogSensor.getPosition();
   }
 
   public double getDistance() {
@@ -208,5 +210,13 @@ public class Arm extends SubsystemBase {
 
   public void setSubstationOffset(double substationOffset) {
     this.substationOffset = substationOffset;
+  }
+
+  public double getArmMinEncoderPosition() {
+    return armMinEncoderPosition;
+  }
+
+  public void setArmMinEncoderPosition(double armMinEncoderPosition) {
+    this.armMinEncoderPosition = armMinEncoderPosition;
   }
 }

@@ -7,17 +7,17 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.utils.Logger;
-import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
+import java.time.Duration;
 import java.util.function.DoubleSupplier;
 
 public class InitialMoveArm extends LoggedCommand {
 
-    private final double orginDestAngle;
+    private final double orginDestValue;
     private  DoubleSupplier doubleSupplier = ()->0;
     private Arm arm;
-    private double desiredAngle;
+    private double desiredScaledValue;
     private double startTime;
     private PIDController armPIDController;
     private SlewRateLimiter accelFilter;
@@ -40,16 +40,16 @@ public class InitialMoveArm extends LoggedCommand {
         public double maxPower;
     }
 
-    public InitialMoveArm(Arm arm, double desiredAngle) {
+    public InitialMoveArm(Arm arm, double desiredScaledValue) {
         this.arm = arm;
-        this.desiredAngle = desiredAngle;
-        this.orginDestAngle = desiredAngle;
+        this.desiredScaledValue = desiredScaledValue;
+        this.orginDestValue = desiredScaledValue;
         addRequirements(this.arm);
     }
-    public InitialMoveArm(Arm arm, double desiredAngle, DoubleSupplier doubleSupplier) {
+    public InitialMoveArm(Arm arm, double desiredScaledValue, DoubleSupplier doubleSupplier) {
         this.arm = arm;
-        this.desiredAngle = desiredAngle;
-        this.orginDestAngle = desiredAngle;
+        this.desiredScaledValue = desiredScaledValue;
+        this.orginDestValue = desiredScaledValue;
         this.doubleSupplier = doubleSupplier;
         addRequirements(this.arm);
     }
@@ -59,10 +59,10 @@ public class InitialMoveArm extends LoggedCommand {
         super.initialize();
         startTime = Timer.getFPGATimestamp();
         accelFilter = new SlewRateLimiter(Constants.ARM_MAX_VOLTAGE_ACCELERATION);
-        desiredAngle = orginDestAngle + doubleSupplier.getAsDouble();
-        if (desiredAngle > arm.getAnalogValue()) {
+        desiredScaledValue = orginDestValue + doubleSupplier.getAsDouble();
+        if (desiredScaledValue > arm.getScaledAnalogEncoderVal()) {
             this.direction = Direction.UP;
-            desiredAngle += Constants.ARM_OVERSHOOT;
+            desiredScaledValue += Constants.ARM_OVERSHOOT;
         } else {
             this.direction = Direction.DOWN;
         }
@@ -72,8 +72,8 @@ public class InitialMoveArm extends LoggedCommand {
     @Override
     public void execute() {
         //positive angle -> positive power
-        double currentAngle = arm.getAnalogValue();
-        double armOutput = Math.abs(armPIDController.calculate(currentAngle,desiredAngle));
+        double currentAngle = arm.getScaledAnalogEncoderVal();
+        double armOutput = Math.abs(armPIDController.calculate(currentAngle, desiredScaledValue));
         double filteredOutput = accelFilter.calculate(armOutput);
         double voltage = MathUtil.clamp(filteredOutput, direction.boost, direction.maxPower);
         arm.setVoltage(voltage * direction.sign);
@@ -83,15 +83,15 @@ public class InitialMoveArm extends LoggedCommand {
     public void end(boolean Interrupted) {
         super.end(Interrupted);
         arm.setVoltage(0.0);
-        Logger.logDouble("arm/InitialMoveArmFinishValue",arm.getAnalogValue(),Constants.ENABLE_LOGGING);
+        Logger.logDouble("arm/InitialMoveArmFinishValue",arm.getScaledAnalogEncoderVal(),Constants.ENABLE_LOGGING);
     }
 
     @Override
     public boolean isFinished() {
-        if ((direction == Direction.UP) && ((desiredAngle-arm.getAnalogValue()) <= Constants.ARM_MOVE_PID_THRESHOLD)) {
+        if ((direction == Direction.UP) && ((desiredScaledValue - arm.getScaledAnalogEncoderVal()) <= Constants.ARM_MOVE_PID_THRESHOLD)) {
             return true;
         }
-        if ((direction == Direction.DOWN) && ((desiredAngle - arm.getAnalogValue()) >= Constants.ARM_MOVE_PID_THRESHOLD)) {
+        if ((direction == Direction.DOWN) && ((desiredScaledValue - arm.getScaledAnalogEncoderVal()) >= Constants.ARM_MOVE_PID_THRESHOLD)) {
             return true;
         }
         if ((Timer.getFPGATimestamp() - startTime) > Constants.ARMVOLTAGE_TIMEOUT) {
