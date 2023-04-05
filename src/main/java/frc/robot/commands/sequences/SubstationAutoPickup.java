@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
 import frc.robot.commands.WaitForSubstationDistance;
 import frc.robot.commands.arm.HoldArmPID;
-import frc.robot.commands.arm.HoldArmPIDUnscaled;
 import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.CloseGripper;
