@@ -22,7 +22,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private static Diagnostics diagnostics;
   private double loopTime = 0;
- 
+  private int aliveCounter = 0;
+
   @Override
   public void robotInit() {
     if (Constants.ENABLE_LOGGING) {
@@ -55,6 +56,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     loopTime = 0;
+    SmartShuffleboard.put("Autonomous","AliveIncrease",aliveCounter).withPosition(6,2);
+    aliveCounter++;
+    aliveCounter %= 1000;
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location",
             m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name()).withPosition(0,2).withSize(4,1);
     m_robotContainer.getDisabledLedCycleCommand().refresh();
