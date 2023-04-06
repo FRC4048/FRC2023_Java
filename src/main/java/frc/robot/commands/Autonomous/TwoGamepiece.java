@@ -29,7 +29,8 @@ public class TwoGamepiece extends SequentialCommandGroup {
     public TwoGamepiece(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
         setName("-Auto-2GP-");
         addCommands(
-            new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-2GP-Reset-Encoders"),            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
+            new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-2GP-Reset-Encoders"),            
+            new InitialMoveArm(arm, ArmPositionGrid.TOP_RIGHT.getArmPosition()),
             new ParRaceCommandGroupWrapper(
                 new ParallelRaceGroup(
                     new SequentialCommandGroupWrapper(
@@ -48,7 +49,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
                 ), "-Auto-2GP-diag-move-"
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, 5.0, .4 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
+            new MoveDistanceSpinTraj(drivetrain, 4.9, .4 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
             
             new GroundPickup(arm, extender, gripper),
 
