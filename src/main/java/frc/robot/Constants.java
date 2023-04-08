@@ -18,6 +18,7 @@ public final class Constants {
   public static final boolean DRIVETRAIN_DEBUG = false;
   public static final boolean ARM_DEBUG = false;
   public static final boolean EXTENDER_DEBUG = false;
+  
   public static final boolean GRIPPER_DEBUG = false;
   public static final boolean PDB_DEBUG = false;
   public static final boolean APRILTAG_DEBUG = false;
@@ -82,17 +83,17 @@ public final class Constants {
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARMVOLTAGE_TIMEOUT = 3; //was 5
   public static final int ARM_MONITOR_ZONE = 25;
-  public static final double ARM_PID_P_IN = 0.1;
-  public static final double ARM_PID_I_IN = 0.0;
-  public static final double ARM_PID_D_IN = 0.0;
+  public static final double ARM_PID_P_IN = 2.00;
+  public static final double ARM_PID_I_IN = 0.000;
+  public static final double ARM_PID_D_IN = 0.1;
   public static final double ARM_PID_FF_IN = 0.0;
-  public static final double ARM_OVERSHOOT = 1.0;
+  public static final double ARM_OVERSHOOT = 0.0;
 
-  public static final double ARM_MIN_ENC_VAL = 2.02;
-  public static final double ARM_ENCODER_CONVERSION_FACTOR = 1.0 / 0.7 * 42;   // *60
+  public static final double ARM_MIN_ENC_VAL = 2.13;
+  public static final double ARM_ENCODER_CONVERSION_FACTOR = 60;   // *60
 
   public static final double ARM_MAX_VOLTS = 4.5;
-  public static final double ARM_MOVE_PID_THRESHOLD = 0.5;
+  public static final double ARM_MOVE_PID_THRESHOLD = .5;
   //in inches
   public static final int ARM_HEIGHT = 47;
 
@@ -136,7 +137,7 @@ public final class Constants {
   public static final double ROBOT_LENGTH = 0.5969;
   public static final double ARM_MAX_POWER_UP = 8.0;  // was 6.0
   public static final double ARM_MAX_POWER_DOWN = 4;
-  public static final double ARM_MAX_VOLTAGE_ACCELERATION = 8.0; // 8 volts/sec
+  public static final double ARM_MAX_VOLTAGE_ACCELERATION = 6.0; // 8 volts/sec
 
   public static final double GRIP_NEEDS_CLOSE_ZONE = 12.85;
 
@@ -154,7 +155,7 @@ public final class Constants {
 
   public static final double GRIPPER_OPENING_SPEED = 1;
   public static final double GRIPPER_CLOSING_SPEED = -1;
-  public static final double CLOSE_GRIPPER_TIMEOUT = 1.2;
+  public static final double CLOSE_GRIPPER_TIMEOUT = 2;
   public static final double OPEN_GRIPPER_TIMEOUT = 0.8;
   public static final double AUTO_CLOSE_GRIPPER_TIMEOUT = 25;
   public static final int AUTO_CLOSE_GRIP_CYCLES = 5;
@@ -207,4 +208,5 @@ public final class Constants {
   // field
   public static final double FIELD_LENGTH_X_FEET = 54.25;
   public static final double FIELD_LENGTH_Y_FEET = 26.5;
+  public static final double ARM_PID_OFFSET = 0;
 }
