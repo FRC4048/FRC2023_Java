@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ArmPositionGrid;
 import frc.robot.utils.SmartShuffleboard;
@@ -9,6 +8,8 @@ public class PieceGrid extends SubsystemBase {
 
      private ArmPositionGrid selectedGridSlot = ArmPositionGrid.MIDDLE_MIDDLE;
      ArmPositionGrid grid;
+
+     private static final int ITEMS_ON_SHUFFLEBOARD = 9;
 
      public PieceGrid() {
           setupGrid();
@@ -24,7 +25,7 @@ public class PieceGrid extends SubsystemBase {
       */
      private void setupGrid() {
           int j = 0;
-          for (int i = 0; i < ArmPositionGrid.values().length; i++) {
+          for (int i = 0; i < ITEMS_ON_SHUFFLEBOARD; i++) {
                if (i%3 == 0) {
                     j++;
                }

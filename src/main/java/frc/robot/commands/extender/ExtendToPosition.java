@@ -1,17 +1,17 @@
 package frc.robot.commands.extender;
 
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Extender;
-import frc.robot.utils.SmartShuffleboard;
+import frc.robot.subsystems.ProtectionMechanism;
+import frc.robot.utils.Logger;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class ExtendToPosition extends CommandBase {
+public class ExtendToPosition extends LoggedCommand {
     private Extender extender;
     private double position;
-    private long startTime;
-    private final long timeout = 5000;
+    private double startTime;
 
     public ExtendToPosition(Extender extender, double position) {
         this.extender = extender;
@@ -21,13 +21,15 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
         extender.stop();
         if (extender.revLimitReached()) extender.resetEncoder();
     }
 
     @Override
     public void initialize() {
-        startTime = System.currentTimeMillis();
+        super.initialize();
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -48,6 +50,15 @@ public class ExtendToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extender.getEncoder()-position) < Constants.EXTENDER_DESTINATION_THRESHOLD) || (System.currentTimeMillis() - startTime >= timeout);
+        if (Math.abs(extender.getEncoder() - position) < Constants.EXTENDER_DESTINATION_THRESHOLD) {
+            return true;
+        }
+        if ((Timer.getFPGATimestamp() - startTime) > Constants.EXTEND_TO_POSITION_TIMEOUT) {
+            Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
+            return true;
+        }
+        //if we are extending out, and it is not safe to extend return true
+        if(extender.getEncoder() - position < 0 && !extender.safeToExtend()) return true;
+        return false;
     }
 }

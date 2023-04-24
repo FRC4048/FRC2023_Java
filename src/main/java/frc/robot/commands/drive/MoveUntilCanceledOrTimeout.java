@@ -4,17 +4,18 @@
 
 package frc.robot.commands.drive;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class StationMoveBack extends CommandBase {
+public class MoveUntilCanceledOrTimeout extends LoggedCommand {
   /** Creates a new MoveDistanceX. */
   private Drivetrain drivetrain;
-  private double startPos;
   private double speed;
+  private double startTime;
   
-  public StationMoveBack(Drivetrain drivetrain, Double speed) {
+  public MoveUntilCanceledOrTimeout(Drivetrain drivetrain, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
@@ -24,7 +25,9 @@ public class StationMoveBack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startPos = drivetrain.getPoseX();
+    super.initialize();
+    startTime = Timer.getFPGATimestamp();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,12 +39,13 @@ public class StationMoveBack extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     drivetrain.stopMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(startPos - drivetrain.getPoseX()) > Constants.SUBSTATION_DRIVE_BACK_DISTANCE;
+    return ((Timer.getFPGATimestamp() - startTime) > Constants.SUBSTATION_DRIVE_FORWARD_TIMEOUT);
   }
 }

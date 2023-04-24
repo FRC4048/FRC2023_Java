@@ -1,16 +1,15 @@
 package frc.robot.commands.gripper;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.Logger;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class OpenGripper extends CommandBase{
+public class OpenGripper extends LoggedCommand{
     private final GripperSubsystem gripper;
 
     private double startTime;
-
-
 
     public OpenGripper(GripperSubsystem gripper) {
         this.gripper = gripper;
@@ -18,6 +17,8 @@ public class OpenGripper extends CommandBase{
     }
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
+        gripper.setHasPiece(false);
         gripper.stop();
     }
 
@@ -28,12 +29,20 @@ public class OpenGripper extends CommandBase{
 
     @Override
     public void initialize() {
+        super.initialize();
         startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public boolean isFinished() {
-        return (gripper.getopenLimitSwitch() == true || (Timer.getFPGATimestamp() - startTime) > Constants.GRIPPER_TIMEOUT);
-    
-}
+        if (gripper.getopenLimitSwitch()) {
+            return true;
+        }
+
+        if ((Timer.getFPGATimestamp() - startTime) > Constants.OPEN_GRIPPER_TIMEOUT) {
+            Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
+            return true;
+        }
+        return false;
+    }
 }

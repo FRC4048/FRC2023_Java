@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.diag.DiagDutyCycleEncoder;
 import frc.robot.utils.diag.DiagTalonSrxSwitch;
@@ -19,6 +20,7 @@ public class GripperSubsystem extends SubsystemBase {
   public WPI_TalonSRX gripperMotor;
   private DutyCycleEncoder gripperEncoder;
   private ProtectionMechanism protectionMechanism;
+  private boolean hasPiece = false;
 
   public GripperSubsystem() {
     gripperMotor = new WPI_TalonSRX(Constants.GRIPPER_MOTOR_ID);
@@ -29,7 +31,6 @@ public class GripperSubsystem extends SubsystemBase {
     Robot.getDiagnostics().addDiagnosable(new DiagDutyCycleEncoder("Gripper", "Encoder", 10, gripperEncoder));
     Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Gripper", "Open Switch", gripperMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.FORWARD));
     Robot.getDiagnostics().addDiagnosable(new DiagTalonSrxSwitch("Gripper", "Close Switch", gripperMotor, frc.robot.utils.diag.DiagTalonSrxSwitch.Direction.REVERSE));
-
   }
  
  
@@ -37,9 +38,14 @@ public class GripperSubsystem extends SubsystemBase {
   public void periodic() {
     if (Constants.GRIPPER_DEBUG) {
       SmartShuffleboard.put("Gripper", "Encoder", gripperPosition());
-      SmartShuffleboard.put("Gripper", "Limit Switches", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed());
-      SmartShuffleboard.put("Gripper", "Limit Switches", "rev Limit", gripperMotor.isRevLimitSwitchClosed());
+      SmartShuffleboard.put("Gripper", "Fwd Limit", gripperMotor.isFwdLimitSwitchClosed()==1);
+      SmartShuffleboard.put("Gripper", "rev Limit", gripperMotor.isRevLimitSwitchClosed()==1);
     }
+    SmartShuffleboard.put("Driver", "HAS PIECE", hasPiece);
+
+    Logger.logBoolean("/gripper/closedLimit", getClosedLimitSwitch(),Constants.ENABLE_LOGGING);
+    Logger.logBoolean("/gripper/openLimit", getopenLimitSwitch(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/gripper/encoder", gripperPosition(),Constants.ENABLE_LOGGING);
   }
 
   public void open() {
@@ -64,6 +70,9 @@ public class GripperSubsystem extends SubsystemBase {
   public boolean getopenLimitSwitch() {
     return gripperMotor.isFwdLimitSwitchClosed() == 1;
   }
+  public boolean getClosedLimitSwitch() {
+    return gripperMotor.isRevLimitSwitchClosed() == 1;
+  }
   public double getSpeed(){
     return gripperMotor.get();
   }
@@ -75,4 +84,12 @@ public class GripperSubsystem extends SubsystemBase {
     if ((volt > 0 && protectionMechanism.safeToOpenGripper()) || volt < 0) return volt;
     return 0;
   }
+
+  public void setHasPiece(boolean bool) {
+    hasPiece = bool;
+  }
+  public boolean getHasPiece() {
+    return hasPiece;
+  }
+
 }

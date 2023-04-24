@@ -4,39 +4,44 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
-import frc.robot.commands.*;
-
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.MoveDistanceTraj;
+import frc.robot.commands.CancelAll;
 import frc.robot.commands.ChangeLedID;
+import frc.robot.commands.CrossPanel;
+import frc.robot.commands.CycleLED;
 import frc.robot.commands.GyroOffseter;
-import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
-import frc.robot.commands.arm.ArmMoveSequence;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
-import frc.robot.commands.arm.VoltageMoveArm;
+import frc.robot.commands.drive.AlignToGrid;
 import frc.robot.commands.drive.Drive;
-import frc.robot.commands.drive.LockWheels;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
-import frc.robot.commands.gripper.ManualMoveGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.AutoBalanceSequence;
-import frc.robot.commands.sequences.GroundPickup;
-import frc.robot.commands.sequences.ResetEncoders;
-import frc.robot.commands.sequences.StationPickupManual;
-import frc.robot.commands.sequences.Stow;
-import frc.robot.subsystems.*;
+import frc.robot.commands.sequences.*;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.LedPanel;
+import frc.robot.subsystems.PhotonCameraSubsystem;
+import frc.robot.subsystems.PieceGrid;
+import frc.robot.subsystems.PowerDistributionBoard;
+import frc.robot.subsystems.ProtectionMechanism;
+import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
+
+import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,29 +73,16 @@ public class RobotContainer {
   private JoystickButton RightGyroButton= new JoystickButton(joyRight, 1);
   private JoystickButton joystickLeftButton = new JoystickButton(joyLeft, 2);
   private JoystickButton joystickRightButton = new JoystickButton(joyRight, 2);
+  private JoystickButton joystickLeftButton3 = new JoystickButton(joyLeft, 3);
+  private JoystickButton joystickLeftButton14 = new JoystickButton(joyRight, 14);
+  private JoystickButton joystickLeftButton16 = new JoystickButton(joyRight, 16);
 
   //Xbox controllers
   private CommandXboxController manualController = new CommandXboxController(Constants.MANUAL_CONTROLLER_ID);
   private CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_ID);
-  
+  double armSubstationOffset = 0;
+  private DoubleSupplier armSubOffset = () -> armSubstationOffset;
 
-  /*
-  controller bindings:
-    - a: grid select
-    - b: stow
-    - x: substation pickup
-    - y: ground pickup
-
-    - rTrigger: drop gamePiece
-    - lTrigger: grab gamePiece
-
-    - start: extend to position
-    - logitechButton: abort alt
-    - dPad: grid select
-    - leftStickPress: station pickup
-
-  manualController bindings:
-  */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
@@ -98,7 +90,8 @@ public class RobotContainer {
 
 
     // Configure the trigger bindings
-    drivetrain = new Drivetrain();
+    photonSubsystem = new PhotonCameraSubsystem();
+    drivetrain = new Drivetrain(photonSubsystem);
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
@@ -116,13 +109,15 @@ public class RobotContainer {
     extender.setProtectionMechanism(protectionMechanism);
     gripper.setProtectionMechanism(protectionMechanism);
 
-    m_PDB = new PowerDistributionBoard();
-    photonSubsystem = new PhotonCameraSubsystem();
+//    m_PDB = new PowerDistributionBoard();
     pieceGrid = new PieceGrid();
     configureBindings();
     putShuffleboardCommands();
 
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton, joystickRightButton));
+
+    UsbCamera camera = CameraServer.startAutomaticCapture(0);
+
   }
 
 
@@ -137,72 +132,73 @@ public class RobotContainer {
     controller.povUpRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.TOP_RIGHT));
     controller.povRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.MIDDLE_RIGHT));
     controller.povDownRight().onTrue(new SetGridSlot(pieceGrid, ArmPositionGrid.DOWN_RIGHT));
-    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
-    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+
+    //controls
     controller.button(XboxController.Button.kA.value).onTrue(new MoveArmToGridPosition(arm,extender,pieceGrid));
-    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-    controller.button(XboxController.Button.kB.value).onTrue(new Stow(arm, gripper, extender));
-    controller.button(XboxController.Button.kY.value).onTrue(new GroundPickup(arm, extender, gripper));
-    controller.button(XboxController.Button.kX.value).onTrue(new StationPickupManual(drivetrain, arm, extender, gripper));
-
-    // controller.axisGreaterThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
-    // controller.axisLessThan(XboxController.Axis.kRightY.value, .2).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
-
-    // manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_PID_SPEED));
-    // manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_PID_SPEED));
-
-    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP - 1));
-    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.ARM_AUTO_VOLTAGE_DOWN - 1));
-    
+    controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Button-Stow"));
+//    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
+    controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender,armSubOffset), "-Button-Substation-Pickup"));
+    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper,drivetrain,armSubOffset), "-Button-Substation-Pickup"));
 
 
-    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
-    controller.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
-
+    controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
+    controller.button(XboxController.Button.kRightBumper.value).onTrue(new CloseGripper(gripper));
     controller.button(XboxController.Button.kStart.value).onTrue(new CancelAll(drivetrain));
 
-    extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
-    gripper.setDefaultCommand(new ManualMoveGripper(gripper, () -> manualController.getRightX()));
+    //arm move on stick
+    controller.axisGreaterThan(XboxController.Axis.kRightY.value, 0.1).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    controller.axisLessThan(XboxController.Axis.kRightY.value, -0.1).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
 
+    //extender move on stick
+    controller.axisGreaterThan(XboxController.Axis.kRightTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> -Constants.EXTENDER_MANUAL_SPEED));
+    controller.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, 0.1).whileTrue(new ManualMoveExtender(extender, () -> Constants.EXTENDER_MANUAL_SPEED));
+
+    //led panel
     controller.axisGreaterThan(XboxController.Axis.kLeftY.value, 0.1).onTrue(new SetLEDID(ledPanel, Constants.CONE_ID));
     controller.axisLessThan(XboxController.Axis.kLeftY.value, -0.1).onTrue(new SetLEDID(ledPanel, Constants.CUBE_ID));
     controller.button(XboxController.Button.kLeftStick.value).onTrue(new SetLEDID(ledPanel, Constants.ROBOT_ID));
     controller.button(XboxController.Button.kRightStick.value).onTrue(new ChangeLedID(ledPanel, 1));
+
+    manualController.button(XboxController.Button.kLeftBumper.value).onTrue(new CloseGripper(gripper));
+    manualController.button(XboxController.Button.kRightBumper.value).onTrue(new OpenGripper(gripper));
+    manualController.button(XboxController.Button.kX.value).whileTrue(new ManualMoveArm(arm, -Constants.MANUAL_ARM_SPEED));
+    manualController.button(XboxController.Button.kY.value).whileTrue(new ManualMoveArm(arm, Constants.MANUAL_ARM_SPEED));
+
+    extender.setDefaultCommand((new ManualMoveExtender(extender, () -> manualController.getLeftY())));
+
+    LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
+    RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
+    
+    joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
+
+    joystickLeftButton14.onTrue(new InstantCommand(()-> {
+      armSubstationOffset -=(.25 / Constants.ARM_ENCODER_CONVERSION_FACTOR);
+      Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
+    }));
+    joystickLeftButton16.onTrue(new InstantCommand(()-> {
+      armSubstationOffset += (.25 / Constants.ARM_ENCODER_CONVERSION_FACTOR);
+      Logger.logDouble("/arm/substationOffset",armSubstationOffset,Constants.ENABLE_LOGGING);
+    }));
   }
 
   public void putShuffleboardCommands() {
     if (Constants.EXTENDER_DEBUG) {
       SmartShuffleboard.putCommand("Extender", "Set position=5709", new ExtendToPosition(extender, 5709));
       SmartShuffleboard.putCommand("Extender", "Set position=4000", new ExtendToPosition(extender, 4000));
-    SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
-      SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
-      SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
-      SmartShuffleboard.putCommand("Arm", "GO TO 10", new ArmMoveSequence(arm,extender,10,0));
-      SmartShuffleboard.putCommand("Arm", "GO TO 15", new ArmMoveSequence(arm,extender,15,0));
-      SmartShuffleboard.putCommand("Arm", "GO TO 25", new ArmMoveSequence(arm,extender,25,0));
-      SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
-      //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-  
-      SmartShuffleboard.putCommand("Extender", "Stow", new Stow(arm, gripper, extender));
-      SmartShuffleboard.putCommand("Extender", "Reset Encoders (Arm and Extender)", new ResetEncoders(arm, extender));
+      SmartShuffleboard.putCommand("Extender", "Stow", new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender),"-Debug-Stow"));
     }
 
     if (Constants.ARM_DEBUG) {
-      SmartShuffleboard.putCommand("Driver", "Cross", new CrossPanel(drivetrain));
-    SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
-    SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));SmartShuffleboard.putCommand("Arm", "GO TO 10", new ArmMoveSequence(arm,extender,10,0));
-      SmartShuffleboard.putCommand("Arm", "GO TO 15", new ArmMoveSequence(arm,extender,15,0));
-      SmartShuffleboard.putCommand("Arm", "GO TO 25", new ArmMoveSequence(arm,extender,25,0));
+      SmartShuffleboard.putCommand("Arm", "Manual UP", new ManualMoveArm(arm, 3.0));
+      SmartShuffleboard.putCommand("Arm", "Manual DOWN", new ManualMoveArm(arm, -1.5));
+      SmartShuffleboard.putCommand("Arm","SetpointDebugExecute",new SetpointDebug(arm));
+      SmartShuffleboard.put("Arm","SetpointDebugValue",0);
     }
-    SmartShuffleboard.putCommand("Drive", "ResetGyro", new ResetGyro(getDrivetrain(), 0));
-    SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-    SmartShuffleboard.putCommand("Auto Balance", "Auto Balance Sequence", new AutoBalanceSequence(drivetrain, arm, extender));
-    //SmartShuffleboard.putCommand("Driver", "MoveDistance", new MoveDistanceTraj(drivetrain, 0.5, 0.5));
-
-  }
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
+      SmartShuffleboard.putCommand("Drive", "Cross+Balance", new CrossAndBalance(drivetrain));
+    }
+   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -215,11 +211,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return autonomousChooser.getAutonomousCommand();
   }
-
-  // return new SequentialCommandGroup(
-  //   new MoveDistanceSpinTraj(drivetrain, 0.5, 0.30, Math.toRadians(180)),
-  //   new MoveDistanceSpinTraj(drivetrain, 4.35, 0.35, Math.toRadians(0))
-  //   );
 
   public Drivetrain getDrivetrain() {
     return drivetrain;

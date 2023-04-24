@@ -9,12 +9,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.logging.wrappers.LoggedCommand;
 
-public class MoveDistanceTraj extends CommandBase {
+public class MoveDistanceTraj extends LoggedCommand {
     
     private Drivetrain drivetrain;
     private Pose2d currentPos;
@@ -46,6 +46,7 @@ public class MoveDistanceTraj extends CommandBase {
 
     @Override
     public void initialize() {
+        super.initialize();
         //differential drive trajectory generation does not drive in a straight line unless
         //the starting and ending angle are the same, and the starting angle is pointing towards
         //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
@@ -73,7 +74,7 @@ public class MoveDistanceTraj extends CommandBase {
         moveCommand =
         new SwerveControllerCommand(
             trajectory,                                                                                                                                                                                                                        
-            drivetrain.getOdometry()::getPoseMeters, // Functionalp interface to feed supplier
+            drivetrain.getOdometry()::getEstimatedPosition, // Functionalp interface to feed supplier
             drivetrain.getKinematics(),
             new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
             new PIDController(Constants.kP_Y_AUTO, Constants.kI_Y_AUTO, Constants.kD_Y_AUTO),

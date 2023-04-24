@@ -14,10 +14,12 @@ import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DepositOneAndBalance;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.commands.Autonomous.OneGamepiece;
+import frc.robot.commands.Autonomous.TwoGamepiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class AutonomousChooser {
     private Drivetrain drivetrain;
@@ -31,10 +33,11 @@ public class AutonomousChooser {
 
     enum Action {
         Balance, 
+        TwoPieceMoveLeft,
+        TwoPieceMoveRight, 
         //DepositTwo, 
-        DepositOneAndBalanceRight,
-        DepositOneAndBalanceLeft,
-        DoNothing, 
+        DepositOneAndBalance,
+        DoNothing,
         CrossLine,  
         OnePieceMoveLeft, 
         OnePieceMoveRight;
@@ -62,9 +65,10 @@ public class AutonomousChooser {
         actionChooser.addOption("One Piece Move Left", Action.OnePieceMoveLeft);
         actionChooser.addOption("One Piece Move Right", Action.OnePieceMoveRight);
         actionChooser.addOption("Cross the Line", Action.CrossLine);
-        actionChooser.addOption("One Piece Move Right Balance", Action.DepositOneAndBalanceRight);
-        actionChooser.addOption("One Piece Move Left Balance", Action.DepositOneAndBalanceLeft);
+        actionChooser.addOption("One Piece and Balance", Action.DepositOneAndBalance);
         actionChooser.addOption("Balance", Action.Balance);
+        actionChooser.addOption("Two Piece Move Right", Action.TwoPieceMoveRight);
+        actionChooser.addOption("Two Piece Move Left", Action.TwoPieceMoveLeft);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
         locationChooser.addOption(Location.Left.name(), Location.Left);	
@@ -83,10 +87,8 @@ public class AutonomousChooser {
             y = 30;
         } else if (action == Action.Balance) {
             y = 108;
-        } else if (action == Action.DepositOneAndBalanceRight) {
-            y = 130;
-        } else if (action == Action.DepositOneAndBalanceLeft) {
-            y = 86;
+        } else if (action == Action.DepositOneAndBalance) {
+            y = 108;
         } else if (action == Action.OnePieceMoveLeft && location == Location.Right) {
             y = 20;
         } else if (action == Action.OnePieceMoveLeft && location == Location.Left) {
@@ -95,6 +97,14 @@ public class AutonomousChooser {
             y = 64;
         } else if (action == Action.OnePieceMoveRight && location == Location.Left) {
             y = 194;
+        } else if (action == Action.TwoPieceMoveLeft && location == Location.Left) {
+            y = 150;
+        } else if (action == Action.TwoPieceMoveRight && location == Location.Left) {
+            y = 194;
+        } else if (action == Action.TwoPieceMoveRight && location == Location.Right) {
+            y = 64;
+        } else if (action == Action.TwoPieceMoveLeft && location == Location.Right) {
+            y = 20;
         } else {
             y = 108;
         }
@@ -109,8 +119,8 @@ public class AutonomousChooser {
     
     public void initialize() {
         ShuffleboardTab tab = Shuffleboard.getTab("Autonomous");
-        tab.add("Autonomous Action", actionChooser);
-        tab.add("Location Chooser", locationChooser);
+        tab.add("Autonomous Action", actionChooser).withPosition(0,0).withSize(4,1);
+        tab.add("Location Chooser", locationChooser).withPosition(0,1).withSize(4,1);
 
     }
 
@@ -141,49 +151,68 @@ public class AutonomousChooser {
         setOdometry(drivetrain, location, action, allianceColor);
 
         if (action == Action.DoNothing) {
-            return new DoNothing(arm, extender, drivetrain);
+            return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
         }
         else if (action == Action.CrossLine) {
             if ((location == Location.Right) || (location == Location.Left)) {
-                return new CrossTheLine(drivetrain, arm, extender, location);
+                return new SequentialCommandGroupWrapper(new CrossTheLine(drivetrain, arm, extender, location));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.OnePieceMoveLeft) {
             if (location == Location.Right) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, 0.2, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 0.2, location));
             }
             else if (location == Location.Left) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, 0.6, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 0.6, location));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.OnePieceMoveRight) {
             if (location == Location.Right) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, -0.6, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -0.6, location));
             }
             else if (location == Location.Left) {
-                return new OneGamepiece(drivetrain, arm, extender, gripper, -0.2, location);
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -0.2, location));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
-        else if (action == Action.DepositOneAndBalanceRight && location == Location.Middle) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, -0.2, location);
+        else if (action == Action.TwoPieceMoveLeft) {
+            if (location == Location.Left && allianceColor == Alliance.Blue) {
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
+            }
+            else if (location == Location.Right && allianceColor == Alliance.Red) {
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
+            }
+            else {
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));  
+            }
         }
-        else if (action == Action.DepositOneAndBalanceLeft && location == Location.Middle) {
-            return new DepositOneAndBalance(drivetrain, arm, extender, gripper, 0.2, location);
+        else if (action == Action.TwoPieceMoveRight) {
+            if (location == Location.Left && allianceColor == Alliance.Blue) {
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
+            }
+            else if (location == Location.Right && allianceColor == Alliance.Red) {
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
+            }
+            else {
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
+            }
+        }
+        else if (action == Action.DepositOneAndBalance && location == Location.Middle) {
+            return new SequentialCommandGroupWrapper(new DepositOneAndBalance(drivetrain, arm, extender, gripper, -0.2, location));
         }
         else if (action == Action.Balance && location == Location.Middle) {
-            return new Balance(drivetrain, arm, extender, gripper, location);
+            return new SequentialCommandGroupWrapper(new Balance(drivetrain, arm, extender, gripper, location));
         }
         else {
-            return new DoNothing(arm, extender, drivetrain);
+            return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
         }
     }
 }
