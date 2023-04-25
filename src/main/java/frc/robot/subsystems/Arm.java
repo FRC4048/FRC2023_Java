@@ -1,18 +1,25 @@
 package frc.robot.subsystems;
 
 
+import java.util.Map;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 import com.revrobotics.Rev2mDistanceSensor.Unit;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.SparkMaxAnalogSensor;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import com.revrobotics.SparkMaxPIDController;
+
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -39,7 +46,15 @@ public class Arm extends SubsystemBase {
   private double pidreference;
   private SparkMaxAnalogSensor analogSensor;
   private SparkMaxPIDController pidController;
-  
+  private ShuffleboardTab driverTab;
+  private GenericEntry distanceEntry;
+  private boolean substationActive;
+  private double substationOffset = 0;
+  private double pidP = Constants.ARM_PID_P_IN;
+  private double pidI = Constants.ARM_PID_I_IN;
+  private double pidD = Constants.ARM_PID_D_IN;
+  private double armMinEncoderPosition = Constants.ARM_MIN_ENC_VAL;
+
   public Arm() {
     neoMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
     encoder = neoMotor.getEncoder();
@@ -50,6 +65,7 @@ public class Arm extends SubsystemBase {
     distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
 
     pidController = neoMotor.getPIDController();
+    pidController.setFeedbackDevice(analogSensor);
 
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxEncoder("Arm", "Encoder", Constants.DIAG_SPARK_ROT, neoMotor));
     Robot.getDiagnostics().addDiagnosable(new DiagSparkMaxSwitch("Arm", "Extended Switch", neoMotor, frc.robot.utils.diag.DiagSparkMaxSwitch.Direction.FORWARD));
@@ -64,29 +80,43 @@ public class Arm extends SubsystemBase {
     distanceSensor.setDistanceUnits(Unit.kInches);
     distanceSensor.setRangeProfile(RangeProfile.kHighSpeed);
 
+    substationActive = false;
+    driverTab = Shuffleboard.getTab("Driver");
+    distanceEntry = driverTab.add("Distance", 0).withWidget(BuiltInWidgets.kDial).withPosition(4,0).withSize(3,2).withProperties(Map.of("min",Constants.AUTO_CLOSE_GRIP_DISTANCE,"max",60)).getEntry();
 
   }
 
   @Override
   public void periodic() {
     if (Constants.ARM_DEBUG) {
-
-      SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
-      SmartShuffleboard.put("Arm", "analog encoder",getAnalogValue());
-      SmartShuffleboard.put("Arm", "analog raw encoder",analogSensor.getPosition());
-      SmartShuffleboard.put("Arm", "arm pidding", pidding);
+      //SmartShuffleboard.put("Arm", "arm encoder", getEncoderValue());
+      //SmartShuffleboard.put("Arm", "arm pidding", pidding);
       SmartShuffleboard.put("Arm", "P Gain", pidController.getP());
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
       SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
-      }
-    Logger.logDouble("/arm/encoder", getEncoderValue(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("/arm/analogEncoder", getAnalogValue(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("/arm/encoderRatio", getEncoderValue()/getAnalogValue(), Constants.ENABLE_LOGGING);
-    Logger.logBoolean("/arm/pidding", pidding, Constants.ENABLE_LOGGING);
+      SmartShuffleboard.put("Arm", "Scaled Encoder Value", getScaledAnalogEncoderVal());
+      SmartShuffleboard.put("Arm", "Raw Encoder Value",analogSensor.getPosition());
+      SmartShuffleboard.put("Arm","ArmTarget",pidreference);
+      //pid turning
+      SmartShuffleboard.put("Arm","PID P",pidP);
+      SmartShuffleboard.put("Arm","PID I",pidI);
+      SmartShuffleboard.put("Arm","PID D",pidD);
+      pidP = SmartShuffleboard.getDouble("Arm","PID P",pidP);
+      pidI = SmartShuffleboard.getDouble("Arm","PID I",pidI);
+      pidD = SmartShuffleboard.getDouble("Arm","PID D",pidD);
+    }
+
+
+    Logger.logDouble("/arm/scaledAnalogEncoderValue", getScaledAnalogEncoderVal(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/rawAnalogEncoder", analogSensor.getPosition(), Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/fwdLimit", isFwdLimitSwitchReached(),Constants.ENABLE_LOGGING);
     Logger.logBoolean("/arm/revLimit",isRevLimitSwitchReached(),Constants.ENABLE_LOGGING);
+    Logger.logDouble("/arm/ArmMinEncoder",getArmMinEncoderPosition(),Constants.ENABLE_LOGGING);
+
+    distanceEntry.setDouble(substationActive ? getDistance() : 0);
+    
   }
 
   public boolean isFwdLimitSwitchReached() {
@@ -101,8 +131,8 @@ public class Arm extends SubsystemBase {
     return encoder.getPosition();
   }
 
-  public double getAnalogValue(){
-    return (analogSensor.getPosition() - Constants.ARM_MIN_ENC_VAL) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
+  public double getScaledAnalogEncoderVal(){
+    return (analogSensor.getPosition() - armMinEncoderPosition) * Constants.ARM_ENCODER_CONVERSION_FACTOR;
   }
 
   public void setPidding(boolean bool) {
@@ -115,6 +145,10 @@ public class Arm extends SubsystemBase {
 
   public SparkMaxAnalogSensor getAnalogSensor(){
     return analogSensor;
+  }
+
+  public double getAnalogSensorPosition() {
+    return analogSensor.getPosition();
   }
 
   public void zeroPID() {
@@ -141,6 +175,7 @@ public class Arm extends SubsystemBase {
 
   public void resetEncoder() {
     encoder.setPosition(0);
+    armMinEncoderPosition = analogSensor.getPosition();
   }
 
   public double getDistance() {
@@ -157,12 +192,34 @@ public class Arm extends SubsystemBase {
   public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
     this.protectionMechanism = protectionMechanism;
   }
+
   public double clampVolts(double value, double min, double max){
     return Math.min(Math.max(value, min), max);
   }
+
   public double validateArmVolt(double volt){
     volt = clampVolts(volt,-Constants.ARM_MAX_VOLTS,Constants.ARM_MAX_VOLTS);
     if ((volt < 0 && protectionMechanism.safeToLowerArm()) || volt > 0) return volt;
     return 0;
+  }
+
+  public void setSubstationDistance(boolean substationActive) {
+    this.substationActive = substationActive;
+  }
+
+  public double getSubstationOffset() {
+    return substationOffset;
+  }
+
+  public void setSubstationOffset(double substationOffset) {
+    this.substationOffset = substationOffset;
+  }
+
+  public double getArmMinEncoderPosition() {
+    return armMinEncoderPosition;
+  }
+
+  public void setArmMinEncoderPosition(double armMinEncoderPosition) {
+    this.armMinEncoderPosition = armMinEncoderPosition;
   }
 }

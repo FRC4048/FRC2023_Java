@@ -119,8 +119,8 @@ public class AutonomousChooser {
     
     public void initialize() {
         ShuffleboardTab tab = Shuffleboard.getTab("Autonomous");
-        tab.add("Autonomous Action", actionChooser);
-        tab.add("Location Chooser", locationChooser);
+        tab.add("Autonomous Action", actionChooser).withPosition(0,0).withSize(4,1);
+        tab.add("Location Chooser", locationChooser).withPosition(0,1).withSize(4,1);
 
     }
 
@@ -185,24 +185,24 @@ public class AutonomousChooser {
         }
         else if (action == Action.TwoPieceMoveLeft) {
             if (location == Location.Left && allianceColor == Alliance.Blue) {
-                return new TwoGamepiece(drivetrain, arm, extender, gripper, -1);
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new TwoGamepiece(drivetrain, arm, extender, gripper, -1);
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));  
             }
         }
         else if (action == Action.TwoPieceMoveRight) {
             if (location == Location.Left && allianceColor == Alliance.Blue) {
-                return new TwoGamepiece(drivetrain, arm, extender, gripper, 1);
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new TwoGamepiece(drivetrain, arm, extender, gripper, 1);
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
             }
             else {
-                return new DoNothing(arm, extender, drivetrain);
+                return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
             }
         }
         else if (action == Action.DepositOneAndBalance && location == Location.Middle) {

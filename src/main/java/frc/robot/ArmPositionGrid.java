@@ -8,12 +8,13 @@ public enum ArmPositionGrid {
      MIDDLE_LEFT(34.2,3570,-0.5588),
      MIDDLE_MIDDLE(30.0,2865,0),
      MIDDLE_RIGHT(34.2,3570,0.5588),
-     DOWN_LEFT(13.8,3300,-0.5588),
+     DOWN_LEFT(13.8,3300,0.5588),
      DOWN_MIDDLE(13.8,3300,0),
      DOWN_RIGHT(13.8,3300,0.5588),
      GROUND_PICKUP(13.0, 4600,-0.5588),
      SUBSTATION_PICKUP(29.4, 2000.0,0),
-     SUBSTATION_POST_PICKUP(32.4, 2000.0,0.5588);
+     SUBSTATION_POST_PICKUP(32.4, 2000.0,0),
+     STOW(3,50,0);
 
      private final double armPosition;
      private final double extenderPosition;

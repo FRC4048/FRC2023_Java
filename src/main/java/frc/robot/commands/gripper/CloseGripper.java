@@ -3,6 +3,7 @@ package frc.robot.commands.gripper;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class CloseGripper extends LoggedCommand {
@@ -65,7 +66,15 @@ public class CloseGripper extends LoggedCommand {
             }
             
         } else {
-            return (gripper.getClosedLimitSwitch()) || (Timer.getFPGATimestamp() - startTime > Constants.GRIPPER_TIMEOUT);
+            if (gripper.getClosedLimitSwitch()) {
+                return true;
+            }
+
+            if ((Timer.getFPGATimestamp() - startTime) > Constants.CLOSE_GRIPPER_TIMEOUT) {
+                Logger.logTimeout(getName(), Constants.ENABLE_LOGGING);
+                return true;
+            }
+            return false;
         }
     }
 }

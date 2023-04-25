@@ -44,7 +44,7 @@ public class BalancePID extends LoggedCommand {
         Constants.BALANCE_LOW_SPEED, 
         Constants.BALANCE_HIGH_SPEED) : 0;
 
-    Logger.logDouble("/filterRoll", (double) roll, Constants.ENABLE_LOGGING);
+    Logger.logDouble("/auto/filterRoll", (double) roll, Constants.ENABLE_LOGGING);
 
     counter = Math.abs(roll) < Constants.BALANCE_THRESH ? counter + 1 : 0;
 

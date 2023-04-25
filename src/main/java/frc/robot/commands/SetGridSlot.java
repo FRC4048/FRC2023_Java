@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import frc.robot.ArmPositionGrid;
+import frc.robot.Constants;
 import frc.robot.subsystems.PieceGrid;
+import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class SetGridSlot extends LoggedCommand {
@@ -21,6 +23,7 @@ public class SetGridSlot extends LoggedCommand {
   @Override
   public void execute() {
     pieceGrid.setSelectedGridSlot(gridSlot);
+    Logger.logString("/pieceGrid/selection", gridSlot.name(), Constants.ENABLE_LOGGING);
   }
 
   @Override

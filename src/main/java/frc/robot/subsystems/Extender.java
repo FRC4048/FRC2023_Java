@@ -76,10 +76,7 @@ public class Extender extends SubsystemBase {
         Logger.logBoolean("/extender/fwdLimit", fwdLimitReached(),Constants.ENABLE_LOGGING);
         Logger.logBoolean("/extender/revLimit", revLimitReached(),Constants.ENABLE_LOGGING);
     }
-
-    public double getExtenderSensorPos() {
-        return extenderMotor.getSelectedSensorPosition();
-    }
+    
 
     public void setProtectionMechanism(ProtectionMechanism protectionMechanism) {
         this.protectionMechanism = protectionMechanism;
@@ -87,5 +84,8 @@ public class Extender extends SubsystemBase {
     public double validateExtenderVolt(double volt){
         if ((volt > 0 && protectionMechanism.safeToExtend()) || volt < 0) return volt;
         return 0;
+    }
+    public boolean safeToExtend(){
+        return protectionMechanism.safeToExtend();
     }
 }

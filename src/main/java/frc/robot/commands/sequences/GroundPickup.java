@@ -4,9 +4,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
-import frc.robot.Constants;
 import frc.robot.commands.arm.HoldArmPID;
-import frc.robot.commands.arm.VoltageMoveArm;
+import frc.robot.commands.arm.InitialMoveArm;
 import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.gripper.OpenGripper;
 import frc.robot.subsystems.Arm;
@@ -19,7 +18,7 @@ public class GroundPickup extends SequentialCommandGroup{
     public GroundPickup(Arm arm, Extender extender, GripperSubsystem gripper) {
         setName("-Ground-Pickup");
         addCommands(
-            new VoltageMoveArm(arm, Constants.ARM_AUTO_VOLTAGE_UP, Constants.ARM_AUTO_VOLTAGE_DOWN, ArmPositionGrid.GROUND_PICKUP.getArmPosition()),
+            new InitialMoveArm(arm, ArmPositionGrid.GROUND_PICKUP.getArmPosition()),
             new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                 new ParCommandGroupWrapper(new ParallelCommandGroup(
                     new ExtendToPosition(extender, ArmPositionGrid.GROUND_PICKUP.getExtenderPosition()),
