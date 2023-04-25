@@ -15,7 +15,7 @@ public class AprilTagPoseFilter {
      * 
      * @param maxInputs The number of inputs taken by before the filter starts
      *                  filtering.
-     * @param tolerence The size of the range that the value can deviate from. ex.
+     * @param tolerance The size of the range that the value can deviate from. ex.
      *                  range of 5 will allow new inputs to be 5 less than and 5
      *                  greater than the average
      */
