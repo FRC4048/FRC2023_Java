@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonCameraSubsystem;
 import frc.robot.subsystems.PieceGrid;
+import frc.robot.utils.SmartShuffleboard;
 
 public class AlignAprilTag extends CommandBase {
 
   private Pose2d robotFieldPose;
   private Pose3d tagPose;
-  private MoveDistanceSpinTraj moveDistanceSpinTraj; //This is needed ignore the warning
   private PhotonCameraSubsystem photonSubsystem;
   private Drivetrain drivetrain;
   private double desiredYChange;
@@ -38,7 +38,7 @@ public class AlignAprilTag extends CommandBase {
     tagPose = photonSubsystem.getTargetFieldPose();
     if (robotFieldPose != null && tagPose != null) {
       desiredYChange = tagPose.getY() - robotFieldPose.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); // TODO: Check math on this
-      moveDistanceSpinTraj = new MoveDistanceSpinTraj(drivetrain, 0.0, desiredYChange, Math.PI);
+      new MoveDistanceSpinTraj(drivetrain, 0.0, desiredYChange, Math.PI).schedule();
     }
   }
 
