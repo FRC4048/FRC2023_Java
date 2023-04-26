@@ -5,20 +5,20 @@
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.ArmPositionGrid;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PhotonCameraSubsystem;
 import frc.robot.subsystems.PieceGrid;
+import frc.robot.utils.SmartShuffleboard;
 
 public class GridAlignment extends SequentialCommandGroup {
 
   public GridAlignment(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain, PieceGrid pieceGrid, ArmPositionGrid gridSlot) {
     setName("DepositOneAndBalanceSequence");
-    new AlignAprilTag(photonSubsystem, drivetrain, pieceGrid);
-    new WaitCommand(1);// Just to be safe, also placeholder
-    new SetGridSlot(pieceGrid, gridSlot);
-    addCommands();
+    addCommands(
+            new AlignAprilTag(photonSubsystem, drivetrain, pieceGrid),
+            new SetGridSlot(pieceGrid, gridSlot)
+    );
   }
 }
