@@ -37,8 +37,9 @@ public class AlignAprilTag extends CommandBase {
     robotFieldPose = photonSubsystem.getRobot2dFieldPose();
     tagPose = photonSubsystem.getTargetFieldPose();
     if (robotFieldPose != null && tagPose != null) {
-      desiredYChange = tagPose.getY() - robotFieldPose.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); // TODO: Check math on this
-      new MoveDistanceSpinTraj(drivetrain, 0.0, desiredYChange, Math.PI).schedule();
+      desiredYChange = tagPose.getY() - robotFieldPose.getY() + pieceGrid.getSelectedGridSlot().getDistanceFromTagPosition(); 
+      //TODO get rid of xChange (zero doesnt work)
+      new MoveDistanceSpinTraj(drivetrain, 0.2, desiredYChange, Math.toRadians(180)).schedule();
     }
   }
 

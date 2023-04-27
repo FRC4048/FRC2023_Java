@@ -54,14 +54,18 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
         //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
         //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
         double angle = getTargetAngle();
+        
+        double poseX = drivetrain.getPoseX();
+        double poseY = drivetrain.getPoseY();
+        
         currentPos = new Pose2d(
-        drivetrain.getPoseX(), 
-        drivetrain.getPoseY(), 
+            poseX,
+            poseY,
         new Rotation2d(angle));
 
         desiredPos = new Pose2d(
-        drivetrain.getPoseX() + xChange, 
-        drivetrain.getPoseY() + yChange, 
+            poseX + xChange, 
+        poseY + yChange, 
         new Rotation2d(angle));
 
 

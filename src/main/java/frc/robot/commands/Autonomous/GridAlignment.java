@@ -17,8 +17,8 @@ public class GridAlignment extends SequentialCommandGroup {
   public GridAlignment(PhotonCameraSubsystem photonSubsystem, Drivetrain drivetrain, PieceGrid pieceGrid, ArmPositionGrid gridSlot) {
     setName("DepositOneAndBalanceSequence");
     addCommands(
-            new AlignAprilTag(photonSubsystem, drivetrain, pieceGrid),
-            new SetGridSlot(pieceGrid, gridSlot)
+            new SetGridSlot(pieceGrid, gridSlot), 
+            new AlignAprilTag(photonSubsystem, drivetrain, pieceGrid)
     );
   }
 }

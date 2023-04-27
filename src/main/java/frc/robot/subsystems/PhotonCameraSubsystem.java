@@ -68,7 +68,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
   Transform3d camToRobot = new Transform3d(
-      new Translation3d(0.0, 0, -.47),
+      new Translation3d(0.0, 0.305, 0.305),
       new Rotation3d(0, 0, 0));
 
   public PhotonCameraSubsystem() {
