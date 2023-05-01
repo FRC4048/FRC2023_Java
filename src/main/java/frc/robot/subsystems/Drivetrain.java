@@ -281,11 +281,6 @@ public class Drivetrain extends SubsystemBase{
     gyroEntry.setDouble(getNavxGyroValue());
     Logger.logDouble("/drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
 
-    Logger.logDouble("drivetrain/FR abs", frontRightCanCoder.getAbsolutePosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/FL abs", frontLeftCanCoder.getAbsolutePosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BR abs", backRightCanCoder.getAbsolutePosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BL abs", backLeftCanCoder.getAbsolutePosition(), Constants.ENABLE_LOGGING);
-
     Logger.logDouble("drivetrain/BR S", Math.toDegrees(m_backRight.getSteerEncPosition()), Constants.ENABLE_LOGGING);
     Logger.logDouble("drivetrain/BL S", Math.toDegrees(m_backLeft.getSteerEncPosition()), Constants.ENABLE_LOGGING);
     Logger.logDouble("drivetrain/FR S", Math.toDegrees(m_frontRight.getSteerEncPosition()), Constants.ENABLE_LOGGING);
