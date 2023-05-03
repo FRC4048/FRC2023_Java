@@ -176,7 +176,7 @@ public class RobotContainer {
     LeftGyroButton.onTrue(new GyroOffseter(drivetrain, +5));
     RightGyroButton.onTrue(new GyroOffseter(drivetrain, -5));
     
-    joystickLeftButton3.onTrue(new AlignToGrid(drivetrain));
+    joystickLeftButton3.onTrue(new AlignToGrid(drivetrain, odometry));
 
     joystickLeftButton14.onTrue(new InstantCommand(()-> {
       armSubstationOffset -=(.25 / Constants.ARM_ENCODER_CONVERSION_FACTOR);

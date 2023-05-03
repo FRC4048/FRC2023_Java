@@ -22,7 +22,7 @@ public class SubstationAutoPickupWithMove extends SequentialCommandGroup {
     public SubstationAutoPickupWithMove(Arm arm, GripperSubsystem gripper, Drivetrain drivetrain, Odometry odometry, DoubleSupplier supplier) {
         setName("-auto-substation-pickup-with-move-");
         addCommands(
-                new AlignToSubstation(drivetrain),
+                new AlignToSubstation(drivetrain, odometry),
                 new ParRaceCommandGroupWrapper(new ParallelRaceGroup(
                         new WaitForSubstationDistance(arm, gripper),
                         new HoldArmPID(arm, ArmPositionGrid.SUBSTATION_PICKUP.getArmPosition(),supplier),
