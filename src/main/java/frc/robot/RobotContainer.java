@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
@@ -27,12 +29,17 @@ import frc.robot.commands.extender.ExtendToPosition;
 import frc.robot.commands.extender.ManualMoveExtender;
 import frc.robot.commands.gripper.CloseGripper;
 import frc.robot.commands.gripper.OpenGripper;
-import frc.robot.commands.sequences.*;
+import frc.robot.commands.sequences.CrossAndBalance;
+import frc.robot.commands.sequences.SetpointDebug;
+import frc.robot.commands.sequences.Stow;
+import frc.robot.commands.sequences.SubstationAutoPickup;
+import frc.robot.commands.sequences.SubstationAutoPickupWithMove;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.LedPanel;
+import frc.robot.subsystems.Odometry;
 import frc.robot.subsystems.PhotonCameraSubsystem;
 import frc.robot.subsystems.PieceGrid;
 import frc.robot.subsystems.PowerDistributionBoard;
@@ -40,8 +47,6 @@ import frc.robot.subsystems.ProtectionMechanism;
 import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
-
-import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,6 +58,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private ProtectionMechanism protectionMechanism;
   private Drivetrain drivetrain;
+  private Odometry odometry;
   private Arm arm;
   private Extender extender;
   private LedPanel ledPanel;
@@ -91,7 +97,8 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     photonSubsystem = new PhotonCameraSubsystem();
-    drivetrain = new Drivetrain(photonSubsystem);
+    drivetrain = new Drivetrain();
+    odometry = new Odometry(photonSubsystem, drivetrain);
     gripper = new GripperSubsystem();
     arm = new Arm();
     extender = new Extender();
@@ -100,7 +107,7 @@ public class RobotContainer {
     testCycleLED = new CycleLED(ledPanel,1,1,2,3,4,5,6,7);
     disabledCycleLED = new CycleLED(ledPanel,1,4);
     autoCycleLED = new CycleLED(ledPanel,1,7);
-    autonomousChooser = new AutonomousChooser(drivetrain, arm, extender, gripper);
+    autonomousChooser = new AutonomousChooser(drivetrain, odometry, arm, extender, gripper);
     autonomousChooser.addOptions();
 
     autonomousChooser.initialize();
@@ -138,7 +145,7 @@ public class RobotContainer {
     controller.button(XboxController.Button.kB.value).onTrue(new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Button-Stow"));
 //    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new GroundPickup(arm, extender, gripper), "-Button-Ground-Pickup"));
     controller.button(XboxController.Button.kX.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickup(arm, gripper, extender,armSubOffset), "-Button-Substation-Pickup"));
-    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper,drivetrain,armSubOffset), "-Button-Substation-Pickup"));
+    controller.button(XboxController.Button.kY.value).onTrue(new SequentialCommandGroupWrapper(new SubstationAutoPickupWithMove(arm, gripper,drivetrain, odometry, armSubOffset), "-Button-Substation-Pickup"));
 
 
     controller.button(XboxController.Button.kLeftBumper.value).onTrue(new OpenGripper(gripper));
@@ -214,6 +221,10 @@ public class RobotContainer {
 
   public Drivetrain getDrivetrain() {
     return drivetrain;
+  }
+
+  public Odometry getOdometry() {
+    return odometry;
   }
 
   public Arm getArm() {

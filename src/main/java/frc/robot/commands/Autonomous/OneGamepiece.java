@@ -14,12 +14,13 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.Odometry;
 import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class OneGamepiece extends SequentialCommandGroup{
     
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
+    public OneGamepiece (Drivetrain drivetrain, Odometry odometry, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
         setName("-Auto-1GP");
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-1GP-Reset-Encoders"),
@@ -33,8 +34,8 @@ public class OneGamepiece extends SequentialCommandGroup{
         ), "-Auto-1GP-Deposit"),
 
         new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender),"Auto-1GP-Stow"),
-        new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),
-        new MoveDistanceSpinTraj(drivetrain, 4.7, 0, Math.toRadians(180))
+        new MoveDistanceSpinTraj(drivetrain, odometry, 0.2, yChange, Math.toRadians(180)),
+        new MoveDistanceSpinTraj(drivetrain, odometry, 4.7, 0, Math.toRadians(180))
         //change it back to 4.7
     );
     }

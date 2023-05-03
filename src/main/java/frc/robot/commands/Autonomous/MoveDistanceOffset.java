@@ -3,14 +3,16 @@ package frc.robot.commands.Autonomous;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Odometry;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class MoveDistanceOffset extends LoggedCommand{
     private Drivetrain drivetrain;
+    private Odometry odometry;
     private double changeX, changeY, startPosX, startPosY, speedX, speedY, maxSpeed, startTime, ratioCalc;
     
 
-    public MoveDistanceOffset(Drivetrain drivetrain, double changeX, double changeY, double maxSpeed) {
+    public MoveDistanceOffset(Drivetrain drivetrain, Odometry odometry, double changeX, double changeY, double maxSpeed) {
         this.drivetrain = drivetrain;
         this.changeX = changeX;
         this.changeY = changeY;
@@ -25,8 +27,8 @@ public class MoveDistanceOffset extends LoggedCommand{
         
         startTime = Timer.getFPGATimestamp();
 
-        startPosX = drivetrain.getPoseX();
-        startPosY = drivetrain.getPoseY();
+        startPosX = odometry.getPoseX();
+        startPosY = odometry.getPoseY();
 
         if(Math.abs(changeX) > Math.abs(changeY)) {
             speedX = Math.signum(changeX) * maxSpeed;
@@ -54,7 +56,7 @@ public class MoveDistanceOffset extends LoggedCommand{
 
     @Override
     public boolean isFinished() {
-        if(Math.abs(startPosX - drivetrain.getPoseX()) > Math.abs(changeX) && Math.abs(startPosY - drivetrain.getPoseY()) > Math.abs(changeY)) {
+        if(Math.abs(startPosX - odometry.getPoseX()) > Math.abs(changeX) && Math.abs(startPosY - odometry.getPoseY()) > Math.abs(changeY)) {
             return true;
         }
         return (Timer.getFPGATimestamp() - startTime) > Constants.MOVE_OFFSET_TIMEOUT;

@@ -73,32 +73,16 @@ public class Drivetrain extends SubsystemBase{
   private final AHRS navxGyro;
   private double navxGyroValue;
 
-  private final Field2d m_field = new Field2d();
-  private DriverStation.Alliance allianceColor = DriverStation.Alliance.Invalid;
-
   private final MedianFilter rollFilter;
 
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
           m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
-  private final SwerveDrivePoseEstimator poseEstimator;
-
-  /* standard deviation of robot states, the lower the numbers arm, the more we trust odometry */
-  private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
-
-  /* standard deviation of vision readings, the lower the numbers arm, the more we trust vision */
-  private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1.5, 1.5, 1.5);
-
-
-
-  public Drivetrain(PhotonCameraSubsystem photonVision) {
-    this.photonVision = photonVision;
+  public Drivetrain() {
     navxGyro = new AHRS();
 
     navxGyroValue = -1;
-
-    SmartDashboard.putData("Field", m_field);
     
     m_frontLeftDrive = new CANSparkMax(Constants.DRIVE_FRONT_LEFT_D, MotorType.kBrushless);
     m_frontRightDrive = new CANSparkMax(Constants.DRIVE_FRONT_RIGHT_D, MotorType.kBrushless);
@@ -146,18 +130,6 @@ public class Drivetrain extends SubsystemBase{
     m_backRightDrive.setInverted(false);
     m_backLeftDrive.setInverted(true);
 
-    poseEstimator =  new SwerveDrivePoseEstimator(
-            m_kinematics,
-            new Rotation2d(getNavxGyroValue()),
-            new SwerveModulePosition[] {
-                    m_frontLeft.getPosition(),
-                    m_frontRight.getPosition(),
-                    m_backLeft.getPosition(),
-                    m_backRight.getPosition()
-            },
-            new Pose2d(),
-            stateStdDevs,
-            visionMeasurementStdDevs);
 
     setGyroOffset(180);
   }
@@ -278,6 +250,10 @@ public class Drivetrain extends SubsystemBase{
     navxGyroValue = getGyro();
     gyroEntry.setDouble(getNavxGyroValue());
     Logger.logDouble("/drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
+    filterRoll = (float)rollFilter.calculate((double)getRoll());
+    if(Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Drive", "FilterRoll", filterRoll);
+    }
   }
  
   public CANSparkMax getM_frontLeftTurn() {
@@ -332,18 +308,6 @@ public class Drivetrain extends SubsystemBase{
     return m_kinematics;
   }
 
-  public SwerveDrivePoseEstimator getOdometry () {
-    return poseEstimator;
-  }
-
-  public double getPoseX() {
-    return poseEstimator.getEstimatedPosition().getX();
-  }
-
-  public double getPoseY() {
-    return poseEstimator.getEstimatedPosition().getY();
-  }
-
   public void setGyroOffset(double offset) {
     gyroOffset = offset;
     navxGyro.setAngleAdjustment(gyroOffset);
@@ -352,13 +316,5 @@ public class Drivetrain extends SubsystemBase{
   
   public double getGyroOffset() {
     return gyroOffset;
-  }
-
-  public Field2d getField() {
-    return m_field;
-  }
-
-  public void setAllianceColor(DriverStation.Alliance color) {
-    allianceColor = color;
   }
 }

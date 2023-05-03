@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
-    new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
+    new ResetOdometry(m_robotContainer.getOdometry(), 0, 13.5, Math.toRadians(180), 3).schedule();
   }
 
 
@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_robotContainer.getDrivetrain().setAllianceColor(DriverStation.getAlliance());
+    m_robotContainer.getOdometry().setAllianceColor(DriverStation.getAlliance());
     autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
