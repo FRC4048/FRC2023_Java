@@ -59,11 +59,6 @@ public class Odometry extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    Logger.logDouble("drivetrain/FR abs", drivetrain.getFrontRightCanCoder().getAbsolutePosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/FL abs", drivetrain.getFrontLeftCanCoder().getAbsolutePosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BR abs", drivetrain.getBackRightCanCoder().getAbsolutePosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BL abs", drivetrain.getBackLeftCanCoder().getAbsolutePosition(), Constants.ENABLE_LOGGING);
-
     Logger.logDouble("drivetrain/BR S", Math.toDegrees(drivetrain.getM_backRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
     Logger.logDouble("drivetrain/BL S", Math.toDegrees(drivetrain.getM_backLeft().getSteerEncPosition()), Constants.ENABLE_LOGGING);
     Logger.logDouble("drivetrain/FR S", Math.toDegrees(drivetrain.getM_frontRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
