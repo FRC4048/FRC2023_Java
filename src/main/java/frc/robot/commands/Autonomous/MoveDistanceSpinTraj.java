@@ -40,6 +40,7 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
         double yChange, 
         double desiredRotRadians) {
         this.drivetrain = drivetrain;
+        this.odometry = odometry;
         this.xChange = xChange;
         this.yChange = yChange;
         this.desiredRotRadians = desiredRotRadians;

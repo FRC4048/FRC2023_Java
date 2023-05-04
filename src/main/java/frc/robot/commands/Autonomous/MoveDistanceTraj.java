@@ -31,6 +31,7 @@ public class MoveDistanceTraj extends LoggedCommand {
     //Command used to move a specific distance without any rotation/angle change
     public MoveDistanceTraj(Drivetrain drivetrain, Odometry odometry, double xChange, double yChange) {
         this.drivetrain = drivetrain;
+        this.odometry = odometry;
         this.xChange = xChange;
         this.yChange = yChange;
         thetaController.enableContinuousInput(-Math.PI, Math.PI);

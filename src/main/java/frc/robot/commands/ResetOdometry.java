@@ -21,7 +21,6 @@ public class ResetOdometry extends LoggedCommand {
         this.x = x;
         this.y = y;
         this.rot = rot;
-        addRequirements(drivetrain); //Needed?
     }
 
     @Override

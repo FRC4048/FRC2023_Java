@@ -14,6 +14,7 @@ public class MoveDistanceOffset extends LoggedCommand{
 
     public MoveDistanceOffset(Drivetrain drivetrain, Odometry odometry, double changeX, double changeY, double maxSpeed) {
         this.drivetrain = drivetrain;
+        this.odometry = odometry;
         this.changeX = changeX;
         this.changeY = changeY;
         this.maxSpeed = maxSpeed;

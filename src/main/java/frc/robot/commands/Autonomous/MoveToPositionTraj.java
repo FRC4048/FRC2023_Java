@@ -32,6 +32,7 @@ public class MoveToPositionTraj extends LoggedCommand {
     //close to the position then the robot will take off towards it. Does not affect rotation.
     public MoveToPositionTraj(Drivetrain drivetrain, Odometry odometry, double desiredX, double desiredY) {
         this.drivetrain = drivetrain;
+        this.odometry = odometry;
         this.desiredX = desiredX;
         this.desiredY = desiredY;
         config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
