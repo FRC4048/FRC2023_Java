@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -20,6 +22,9 @@ import frc.robot.utils.diag.Diagnostics;
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private RobotContainer m_robotContainer;
+  private DoubleArrayPublisher gyro;
+  private DoubleArrayPublisher num;
+  private double x = 0.0;
   private static Diagnostics diagnostics;
   private double loopTime = 0;
  
@@ -31,6 +36,10 @@ public class Robot extends TimedRobot {
     }
     diagnostics = new Diagnostics();
     m_robotContainer = new RobotContainer();
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("Shuffleboard/Test");
+    gyro = table.getDoubleArrayTopic("Gyro").publish();
+    num = table.getDoubleArrayTopic("Number").publish();
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
@@ -40,6 +49,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    refreshIMUInShuffleboard(m_robotContainer.getImu());
+    x += 1.0;
+    sendDouble(x);
+  }
+
+  private void sendDouble(double x) {
+    num.set(new double[] {x, x, x});
+  }
+
+  private void refreshIMUInShuffleboard(AHRS imu) {
+    SmartShuffleboard.put("navx", "IMU X", imu.getDisplacementX());
+    SmartShuffleboard.put("navx", "IMU Y", imu.getDisplacementY());
+    SmartShuffleboard.put("navx", "IMU Angle", imu.getAngle());
+
+    gyro.set(new double[] {imu.getDisplacementX(),imu.getDisplacementY(), imu.getAngle()});
 
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
