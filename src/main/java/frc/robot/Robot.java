@@ -63,7 +63,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_robotContainer.getOdometry().setAllianceColor(DriverStation.getAlliance());
     autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();

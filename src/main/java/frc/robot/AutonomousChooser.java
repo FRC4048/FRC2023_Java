@@ -81,6 +81,7 @@ public class AutonomousChooser {
     public void setOdometry(Drivetrain drivetrain, Location location, Action action, Alliance alliance) {
         double x = 72;
         double y = 0;
+        double rot = 180;
 
         if (action == Action.CrossLine && location == Location.Left) {
             y = 186;
@@ -113,10 +114,11 @@ public class AutonomousChooser {
         }
 
         if (alliance == Alliance.Red) {
-            y += 99;
+            x += 508;
+            rot = 0;
         }
         
-        odometry.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(180))));
+        odometry.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(rot))));
     }
 
     
@@ -191,7 +193,7 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1));
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1)); //this seems useless
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));  
@@ -202,7 +204,7 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1));
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1)); //this seems useless
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));

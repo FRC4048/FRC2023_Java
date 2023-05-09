@@ -79,7 +79,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     NetworkTable cameraTable = NetworkTableInstance.getDefault().getTable(Constants.PHOTON_VISION_ID).getSubTable(Constants.PHOTON_CAMERA_ID);
     cameraLatency = cameraTable.getEntry(Constants.PHOTON_LATENCY);
 
-    layout = AprilTagMap.getAprilTagLayout(currentAlliance);
+    layout = AprilTagMap.getAprilTagLayout();
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
     Robot.getDiagnostics().addDiagnosable(new DiagPhotonVision("PV","CanReadTags") {
@@ -102,7 +102,7 @@ public class PhotonCameraSubsystem extends SubsystemBase {
     if (currentAlliance != DriverStation.getAlliance()) {
       currentAlliance = DriverStation.getAlliance();
 
-      layout = AprilTagMap.getAprilTagLayout(currentAlliance);
+      layout = AprilTagMap.getAprilTagLayout();
       estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
       SmartShuffleboard.put("AprilTag", "currentAlliance", currentAlliance == Alliance.Red);
