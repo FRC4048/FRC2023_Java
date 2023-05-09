@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Autonomous.Balance;
 import frc.robot.commands.Autonomous.CrossTheLine;
 import frc.robot.commands.Autonomous.DepositOneAndBalance;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.commands.Autonomous.OneGamepiece;
 import frc.robot.commands.Autonomous.TwoGamepiece;
+import frc.robot.commands.sequences.TestTraj;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
@@ -40,7 +42,8 @@ public class AutonomousChooser {
         DoNothing,
         CrossLine,  
         OnePieceMoveLeft, 
-        OnePieceMoveRight;
+        OnePieceMoveRight,
+        TestTraj;
     }
 
     public enum Location {	
@@ -69,6 +72,7 @@ public class AutonomousChooser {
         actionChooser.addOption("Balance", Action.Balance);
         actionChooser.addOption("Two Piece Move Right", Action.TwoPieceMoveRight);
         actionChooser.addOption("Two Piece Move Left", Action.TwoPieceMoveLeft);
+        actionChooser.addOption("TestTraj", Action.TestTraj);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
         locationChooser.addOption(Location.Left.name(), Location.Left);	
@@ -152,6 +156,9 @@ public class AutonomousChooser {
 
         if (action == Action.DoNothing) {
             return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
+        }
+        if (action == Action.TestTraj) {
+            return new SequentialCommandGroup(new TestTraj(drivetrain));
         }
         else if (action == Action.CrossLine) {
             if ((location == Location.Right) || (location == Location.Left)) {
