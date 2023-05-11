@@ -10,11 +10,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Odometry;
-import frc.robot.utils.Logger;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 
@@ -57,6 +57,9 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
         //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
         //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
         //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+            xChange*=-1;
+        }
         double angle = getTargetAngle();
         currentPos = new Pose2d(
         odometry.getPoseX(), 

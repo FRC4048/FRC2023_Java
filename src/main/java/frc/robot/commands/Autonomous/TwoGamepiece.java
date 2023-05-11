@@ -1,6 +1,7 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -25,9 +26,14 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 
 public class TwoGamepiece extends SequentialCommandGroup {
-    public double rotation;
+    public double rotation = 180;
+    public double pickupAngle = 45;
 
     public TwoGamepiece(Drivetrain drivetrain, Odometry odometry, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+            rotation = 0;
+            pickupAngle = 135;
+        }
         setName("-Auto-2GP-");
         addCommands(
             new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-2GP-Reset-Encoders"),            
@@ -46,11 +52,11 @@ public class TwoGamepiece extends SequentialCommandGroup {
             new ParCommandGroupWrapper(
                 new ParallelCommandGroup(
                     new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Auto-2GP-stow"),
-                    new MoveDistanceSpinTraj(drivetrain, odometry, 0.2, -0.4 * direction, Math.toRadians(180))
+                    new MoveDistanceSpinTraj(drivetrain, odometry, 0.2, -0.4 * direction, Math.toRadians(rotation))
                 ), "-Auto-2GP-diag-move-"
             ),
 
-            new MoveDistanceSpinTraj(drivetrain, odometry, 4.9, .4 * direction , (direction > 0) ? (Math.toRadians(-45)) : (Math.toRadians(45))),
+            new MoveDistanceSpinTraj(drivetrain, odometry, 4.9, .4 * direction , (Math.toRadians(pickupAngle))),
             
             new GroundPickup(arm, extender, gripper),
 
@@ -60,7 +66,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
 
             new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender), "-Auto-2gp-stow"),
 
-            new MoveDistanceSpinTraj(drivetrain, odometry, -4.9, -.4 * direction, Math.toRadians(180))
+            new MoveDistanceSpinTraj(drivetrain, odometry, -4.9, -.4 * direction, Math.toRadians(rotation))
         );
     }
 }

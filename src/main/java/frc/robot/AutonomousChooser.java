@@ -193,7 +193,7 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1)); //this seems useless
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));  
@@ -204,7 +204,7 @@ public class AutonomousChooser {
                 return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1)); //this seems useless
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
