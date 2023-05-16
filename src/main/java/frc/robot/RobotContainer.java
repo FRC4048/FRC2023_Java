@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
@@ -53,7 +52,6 @@ import java.util.function.DoubleSupplier;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private ProtectionMechanism protectionMechanism;
-  private AHRS imu;
   private Drivetrain drivetrain;
   private Arm arm;
   private Extender extender;
@@ -114,7 +112,6 @@ public class RobotContainer {
 //    m_PDB = new PowerDistributionBoard();
     pieceGrid = new PieceGrid();
     configureBindings();
-    imu = new AHRS();
     putShuffleboardCommands();
 
     drivetrain.setDefaultCommand(new Drive(drivetrain, () -> joyLeft.getY(), () -> joyLeft.getX(), ()-> joyRight.getX(),joystickLeftButton, joystickRightButton));
@@ -258,9 +255,6 @@ public class RobotContainer {
   }
   public CycleLED getTestLedCycleCommand() {
     return testCycleLED;
-  }
-  public AHRS getImu() {
-    return imu;
   }
 }
 

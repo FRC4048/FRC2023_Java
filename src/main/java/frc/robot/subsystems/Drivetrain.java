@@ -434,4 +434,8 @@ public class Drivetrain extends SubsystemBase{
   public void setAllianceColor(DriverStation.Alliance color) {
     allianceColor = color;
   }
+
+  public double getPoseAngleRad() {
+    return poseEstimator.getEstimatedPosition().getRotation().getRadians();
+  }
 }
