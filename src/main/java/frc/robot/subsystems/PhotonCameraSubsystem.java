@@ -10,6 +10,7 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -18,8 +19,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.apriltags.AprilTagMap;
@@ -28,9 +27,6 @@ import frc.robot.utils.Logger;
 import frc.robot.utils.SmartShuffleboard;
 
 public class PhotonCameraSubsystem extends SubsystemBase {
-
-  private static final String FMSINFO_TABLE = "FMSInfo";
-  private static final String IS_RED_ALLIANCE = "IsRedAlliance";
 
   private AprilTagPoseFilter x2DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
   private AprilTagPoseFilter y2DFilter = new AprilTagPoseFilter(3, 1); //Placeholder value in meters
@@ -53,8 +49,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   PhotonPoseEstimator estimator;
   private Pose3d tagFieldPosition;
   private int noTagDetectedCounter;
-  // private boolean isRedAlliance;
-  private Alliance currentAlliance;
   private double timestamp;
   private EstimatedRobotPose estimatedPose;
   private int periodicCounter = 0;
@@ -62,8 +56,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   int targetId;
 
   private NetworkTableEntry cameraLatency;
-
-
 
   // TODO Adjust constant based on actual camera to robot height
   // TODO: Add constant to shift to center of robot (or wherever needed)
@@ -74,12 +66,15 @@ public class PhotonCameraSubsystem extends SubsystemBase {
   public PhotonCameraSubsystem() {
     camera = new PhotonCamera(Constants.PHOTON_CAMERA_ID);
     camera.setDriverMode(false);
-    currentAlliance = DriverStation.getAlliance();
 
     NetworkTable cameraTable = NetworkTableInstance.getDefault().getTable(Constants.PHOTON_VISION_ID).getSubTable(Constants.PHOTON_CAMERA_ID);
     cameraLatency = cameraTable.getEntry(Constants.PHOTON_LATENCY);
 
-    layout = AprilTagMap.getAprilTagLayout();
+    try {
+      layout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+    } catch (Exception e) {
+      layout = AprilTagMap.getAprilTagLayout();
+    }
     estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
 
     Robot.getDiagnostics().addDiagnosable(new DiagPhotonVision("PV","CanReadTags") {
@@ -95,18 +90,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
         return getDetectionTimestamp();
       }
     });
-
-  }
-
-  private void updateAlliance() {
-    if (currentAlliance != DriverStation.getAlliance()) {
-      currentAlliance = DriverStation.getAlliance();
-
-      layout = AprilTagMap.getAprilTagLayout();
-      estimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, camera, camToRobot);
-
-      SmartShuffleboard.put("AprilTag", "currentAlliance", currentAlliance == Alliance.Red);
-    }
   }
 
 /**
@@ -174,7 +157,6 @@ public class PhotonCameraSubsystem extends SubsystemBase {
       return;  //break out
     }
 
-    updateAlliance();
     calculateUsingEstimator();
     Pose3d pose3dPosition = null;
     if (estimatedPose != null) {
