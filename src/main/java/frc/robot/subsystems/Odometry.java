@@ -59,33 +59,9 @@ public class Odometry extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    Logger.logDouble("drivetrain/BR S", Math.toDegrees(drivetrain.getM_backRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BL S", Math.toDegrees(drivetrain.getM_backLeft().getSteerEncPosition()), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/FR S", Math.toDegrees(drivetrain.getM_frontRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BR S", Math.toDegrees(drivetrain.getM_backRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
 
-    Logger.logDouble("drivetrain/BR D", drivetrain.getM_backRight().getDriveEncPosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/BL D", drivetrain.getM_backLeft().getDriveEncPosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/FR D", drivetrain.getM_frontRight().getDriveEncPosition(), Constants.ENABLE_LOGGING);
-    Logger.logDouble("drivetrain/FL D", drivetrain.getM_frontLeft().getDriveEncPosition(), Constants.ENABLE_LOGGING);
-
-    if (Constants.DRIVETRAIN_DEBUG) {
+    if (Constants.ODOMETRY_DEBUG) {
       SmartShuffleboard.put("Drive", "distance to desired", 2 - poseEstimator.getEstimatedPosition().getX());
-      SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", drivetrain.getFrontRightCanCoder().getAbsolutePosition());
-      SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", drivetrain.getFrontLeftCanCoder().getAbsolutePosition());
-      SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", drivetrain.getBackRightCanCoder().getAbsolutePosition());
-      SmartShuffleboard.put("Drive", "Abs Encoder", "BL abs", drivetrain.getBackLeftCanCoder().getAbsolutePosition());
-
-      SmartShuffleboard.put("Drive", "Steer Encoders", "BR S", Math.toDegrees(drivetrain.getM_backRight().getSteerEncPosition()));
-      SmartShuffleboard.put("Drive", "Steer Encoders", "BL S", Math.toDegrees(drivetrain.getM_backLeft().getSteerEncPosition()));
-      SmartShuffleboard.put("Drive", "Steer Encoders", "FR S", Math.toDegrees(drivetrain.getM_frontRight().getSteerEncPosition()));
-      SmartShuffleboard.put("Drive", "Steer Encoders", "FL S", Math.toDegrees(drivetrain.getM_frontLeft().getSteerEncPosition()));
-
-      SmartShuffleboard.put("Drive", "Drive Encoders", "BR D", drivetrain.getM_backRight().getDriveEncPosition());
-      SmartShuffleboard.put("Drive", "Drive Encoders", "BL D", drivetrain.getM_backLeft().getDriveEncPosition());
-      SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", drivetrain.getM_frontRight().getDriveEncPosition());
-      SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", drivetrain.getM_frontLeft().getDriveEncPosition());
-
       SmartShuffleboard.put("Drive", "Odometry","odometry x", poseEstimator.getEstimatedPosition().getX());
       SmartShuffleboard.put("Drive", "Odometry","odometry y", poseEstimator.getEstimatedPosition().getY());
       SmartShuffleboard.put("Drive", "Odometry","odometry angle", poseEstimator.getEstimatedPosition().getRotation().getDegrees());

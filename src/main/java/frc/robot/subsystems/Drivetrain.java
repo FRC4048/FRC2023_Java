@@ -247,13 +247,36 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic() {
+    Logger.logDouble("drivetrain/BR S", Math.toDegrees(getM_backRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/BL S", Math.toDegrees(getM_backLeft().getSteerEncPosition()), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/BR S", Math.toDegrees(getM_backRight().getSteerEncPosition()), Constants.ENABLE_LOGGING);
+
+    Logger.logDouble("drivetrain/BR D", getM_backRight().getDriveEncPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/BL D", getM_backLeft().getDriveEncPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/FR D", getM_frontRight().getDriveEncPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/FL D", getM_frontLeft().getDriveEncPosition(), Constants.ENABLE_LOGGING);
+
+    if (Constants.DRIVETRAIN_DEBUG) {
+      SmartShuffleboard.put("Drive", "Abs Encoder", "FR abs", getFrontRightCanCoder().getAbsolutePosition());
+      SmartShuffleboard.put("Drive", "Abs Encoder", "FL abs", getFrontLeftCanCoder().getAbsolutePosition());
+      SmartShuffleboard.put("Drive", "Abs Encoder", "BR abs", getBackRightCanCoder().getAbsolutePosition());
+      SmartShuffleboard.put("Drive", "Abs Encoder", "BL abs", getBackLeftCanCoder().getAbsolutePosition());
+
+      SmartShuffleboard.put("Drive", "Steer Encoders", "BR S", Math.toDegrees(getM_backRight().getSteerEncPosition()));
+      SmartShuffleboard.put("Drive", "Steer Encoders", "BL S", Math.toDegrees(getM_backLeft().getSteerEncPosition()));
+      SmartShuffleboard.put("Drive", "Steer Encoders", "FR S", Math.toDegrees(getM_frontRight().getSteerEncPosition()));
+      SmartShuffleboard.put("Drive", "Steer Encoders", "FL S", Math.toDegrees(getM_frontLeft().getSteerEncPosition()));
+
+      SmartShuffleboard.put("Drive", "Drive Encoders", "BR D", getM_backRight().getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Drive Encoders", "BL D", getM_backLeft().getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Drive Encoders", "FR D", getM_frontRight().getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "Drive Encoders", "FL D", getM_frontLeft().getDriveEncPosition());
+      SmartShuffleboard.put("Drive", "FilterRoll", filterRoll);
+    }
     navxGyroValue = getGyro();
     gyroEntry.setDouble(getNavxGyroValue());
     Logger.logDouble("/drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
-    if(Constants.DRIVETRAIN_DEBUG) {
-      SmartShuffleboard.put("Drive", "FilterRoll", filterRoll);
-    }
   }
  
   public CANSparkMax getM_frontLeftTurn() {
