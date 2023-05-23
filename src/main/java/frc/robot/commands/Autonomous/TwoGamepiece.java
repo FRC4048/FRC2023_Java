@@ -27,12 +27,12 @@ import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class TwoGamepiece extends SequentialCommandGroup {
     public double rotation = 180;
-    public double pickupAngle = 45;
+    public double pickupAngle = 315;
 
     public TwoGamepiece(Drivetrain drivetrain, Odometry odometry, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
         if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
             rotation = 0;
-            pickupAngle = 135;
+            pickupAngle = 225;
         }
         setName("-Auto-2GP-");
         addCommands(
