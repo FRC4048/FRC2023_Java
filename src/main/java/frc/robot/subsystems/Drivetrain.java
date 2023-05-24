@@ -280,6 +280,16 @@ public class Drivetrain extends SubsystemBase{
     navxGyroValue = getGyro();
     gyroEntry.setDouble(getNavxGyroValue());
     Logger.logDouble("/drivetrain/gyro", navxGyroValue, Constants.ENABLE_LOGGING);
+
+    Logger.logDouble("drivetrain/BR S", Math.toDegrees(m_backRight.getSteerEncPosition()), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/BL S", Math.toDegrees(m_backLeft.getSteerEncPosition()), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/FR S", Math.toDegrees(m_frontRight.getSteerEncPosition()), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/BR S", Math.toDegrees(m_backRight.getSteerEncPosition()), Constants.ENABLE_LOGGING);
+
+    Logger.logDouble("drivetrain/BR D", m_backRight.getDriveEncPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/BL D", m_backLeft.getDriveEncPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/FR D", m_frontRight.getDriveEncPosition(), Constants.ENABLE_LOGGING);
+    Logger.logDouble("drivetrain/FL D", m_frontLeft.getDriveEncPosition(), Constants.ENABLE_LOGGING);
     filterRoll = (float)rollFilter.calculate((double)getRoll());
 
     if (Constants.DRIVETRAIN_DEBUG) {
