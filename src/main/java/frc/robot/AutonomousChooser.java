@@ -35,9 +35,10 @@ public class AutonomousChooser {
         Balance(108,108), 
         TwoPieceMoveLeft(20,150),
         TwoPieceMoveRight(64,194), 
-        //DepositTwo, 
+        //DepositTwo,
+        Lidar(0,0),
         DepositOneAndBalance(108,108),
-        DoNothing(0,0),
+        DoNothing(72,72),
         CrossLine(30,186),  
         OnePieceMoveLeft(20,150), 
         OnePieceMoveRight(64,194);
@@ -95,6 +96,7 @@ public class AutonomousChooser {
         actionChooser.addOption("Balance", Action.Balance);
         actionChooser.addOption("Two Piece Move Right", Action.TwoPieceMoveRight);
         actionChooser.addOption("Two Piece Move Left", Action.TwoPieceMoveLeft);
+        actionChooser.addOption("Lidar Debug",Action.Lidar);
 
         locationChooser.setDefaultOption(Location.Middle.name(), Location.Middle);	
         locationChooser.addOption(Location.Left.name(), Location.Left);	
@@ -104,39 +106,6 @@ public class AutonomousChooser {
     public void setOdometry(Drivetrain drivetrain, Location location, Action action, Alliance alliance) {
         double x = 72;
         double y = action.getYCord(location,alliance);
-//        if (action == Action.CrossLine && location == Location.Left) {
-//            y = 186;
-//        } else if (action == Action.CrossLine && location == Location.Middle) {
-//            y = 108;
-//        } else if (action == Action.CrossLine && location == Location.Right) {
-//            y = 30;
-//        } else if (action == Action.Balance) {
-//            y = 108;
-//        } else if (action == Action.DepositOneAndBalance) {
-//            y = 108;
-//        } else if (action == Action.OnePieceMoveLeft && location == Location.Right) {
-//            y = 20;
-//        } else if (action == Action.OnePieceMoveLeft && location == Location.Left) {
-//            y = 150;
-//        } else if (action == Action.OnePieceMoveRight && location == Location.Right) {
-//            y = 64;
-//        } else if (action == Action.OnePieceMoveRight && location == Location.Left) {
-//            y = 194;
-//        } else if (action == Action.TwoPieceMoveLeft && location == Location.Left) {
-//            y = 150;
-//        } else if (action == Action.TwoPieceMoveRight && location == Location.Left) {
-//            y = 194;
-//        } else if (action == Action.TwoPieceMoveRight && location == Location.Right) {
-//            y = 64;
-//        } else if (action == Action.TwoPieceMoveLeft && location == Location.Right) {
-//            y = 20;
-//        } else {
-//            y = 108;
-//        }
-//        if (alliance == Alliance.Red) {
-//            y += 99;
-//        }
-//        
         drivetrain.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(180))));
     }
 
