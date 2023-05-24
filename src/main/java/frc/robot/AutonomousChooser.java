@@ -114,6 +114,7 @@ public class AutonomousChooser {
         }
 
         if (alliance == Alliance.Red) {
+            y = 225 - y;
             x += 508;
             rot = 0;
         }
