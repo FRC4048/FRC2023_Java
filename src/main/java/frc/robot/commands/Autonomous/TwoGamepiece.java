@@ -32,6 +32,7 @@ public class TwoGamepiece extends SequentialCommandGroup {
     public TwoGamepiece(Drivetrain drivetrain, Odometry odometry, Arm arm, Extender extender, GripperSubsystem gripper, double direction) {
         if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
             rotation = 0;
+            direction *= -1;
             pickupAngle = 225;
         }
         setName("-Auto-2GP-");

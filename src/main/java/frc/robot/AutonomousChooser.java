@@ -117,6 +117,12 @@ public class AutonomousChooser {
             y = 215 - y;
             x += 508;
             rot = 0;
+            if(location == Location.Right) {
+                location = Location.Left;
+            }
+            else if(location == Location.Left) {
+                location = Location.Right;
+            }
         }
         
         odometry.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(rot))));
