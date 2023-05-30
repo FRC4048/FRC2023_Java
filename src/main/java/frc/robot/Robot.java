@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
+import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -26,6 +29,7 @@ public class Robot extends TimedRobot {
   private static Diagnostics diagnostics;
   private double loopTime = 0;
   private DoubleArrayPublisher gyro;
+  private DoubleArraySubscriber localizationResult;
  
   @Override
   public void robotInit() {
@@ -41,6 +45,7 @@ public class Robot extends TimedRobot {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("Shuffleboard/Test");
     gyro = table.getDoubleArrayTopic("Gyro").publish();
+    localizationResult = table.getDoubleArrayTopic("LocalizationResult").subscribe(new double[]{-1,-1,-1});
   }
 
 
@@ -53,6 +58,8 @@ public class Robot extends TimedRobot {
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
     Logger.logDouble("/robot/loopTime", time, Constants.ENABLE_LOGGING);
+    Pose2d amclPose = new Pose2d(localizationResult.get()[0], localizationResult.get()[1], new Rotation2d(localizationResult.get()[2]));
+    Logger.logPose2d("/odometry/amclResult",amclPose, Constants.ENABLE_LOGGING);
   }
 
 
