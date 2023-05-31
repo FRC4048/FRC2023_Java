@@ -1,5 +1,6 @@
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.ArmPositionGrid;
@@ -14,12 +15,17 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.Odometry;
 import frc.robot.utils.logging.wrappers.ParRaceCommandGroupWrapper;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class OneGamepiece extends SequentialCommandGroup{
-    
-    public OneGamepiece (Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
+    double rotation = 180;
+    public OneGamepiece (Drivetrain drivetrain, Odometry odometry, Arm arm, Extender extender, GripperSubsystem gripper, double yChange, AutonomousChooser.Location location) {
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+            rotation = 0;
+            yChange*=-1;
+        }
         setName("-Auto-1GP");
         addCommands(
         new SequentialCommandGroupWrapper(new ResetEncoders(arm, extender),"-Auto-1GP-Reset-Encoders"),
@@ -33,8 +39,8 @@ public class OneGamepiece extends SequentialCommandGroup{
         ), "-Auto-1GP-Deposit"),
 
         new SequentialCommandGroupWrapper(new Stow(arm, gripper, extender),"Auto-1GP-Stow"),
-        new MoveDistanceSpinTraj(drivetrain, 0.2, yChange, Math.toRadians(180)),
-        new MoveDistanceSpinTraj(drivetrain, 4.7, 0, Math.toRadians(180))
+        new MoveDistanceSpinTraj(drivetrain, odometry, 0.2, yChange, Math.toRadians(rotation)),
+        new MoveDistanceSpinTraj(drivetrain, odometry, 4.7, 0, Math.toRadians(rotation))
         //change it back to 4.7
     );
     }

@@ -19,10 +19,12 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Extender;
 import frc.robot.subsystems.GripperSubsystem;
+import frc.robot.subsystems.Odometry;
 import frc.robot.utils.logging.wrappers.SequentialCommandGroupWrapper;
 
 public class AutonomousChooser {
     private Drivetrain drivetrain;
+    private Odometry odometry;
     private Arm arm;
     private Extender extender;
     private GripperSubsystem gripper;
@@ -49,11 +51,12 @@ public class AutonomousChooser {
         Left;	
     }
     
-    public AutonomousChooser(Drivetrain drivetrain, Arm arm, Extender extender, GripperSubsystem gripper) {
+    public AutonomousChooser(Drivetrain drivetrain, Odometry odometry, Arm arm, Extender extender, GripperSubsystem gripper) {
         this.arm = arm;
         this.drivetrain = drivetrain;
         this.extender = extender;
         this.gripper = gripper;
+        this.odometry = odometry;
         actionChooser = new SendableChooser<Action>();
         locationChooser = new SendableChooser<Location>();
 
@@ -78,6 +81,7 @@ public class AutonomousChooser {
     public void setOdometry(Drivetrain drivetrain, Location location, Action action, Alliance alliance) {
         double x = 72;
         double y = 0;
+        double rot = 180;
 
         if (action == Action.CrossLine && location == Location.Left) {
             y = 186;
@@ -110,10 +114,11 @@ public class AutonomousChooser {
         }
 
         if (alliance == Alliance.Red) {
-            y += 99;
+            x += 508;
+            rot = 0;
         }
         
-        drivetrain.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(180))));
+        odometry.resetOdometry(new Pose2d(Units.inchesToMeters(x), Units.inchesToMeters(y), new Rotation2d(Math.toRadians(rot))));
     }
 
     
@@ -155,7 +160,7 @@ public class AutonomousChooser {
         }
         else if (action == Action.CrossLine) {
             if ((location == Location.Right) || (location == Location.Left)) {
-                return new SequentialCommandGroupWrapper(new CrossTheLine(drivetrain, arm, extender, location));
+                return new SequentialCommandGroupWrapper(new CrossTheLine(drivetrain, odometry, arm, extender, location));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
@@ -163,10 +168,10 @@ public class AutonomousChooser {
         }
         else if (action == Action.OnePieceMoveLeft) {
             if (location == Location.Right) {
-                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 0.2, location));
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, odometry, arm, extender, gripper, 0.2, location));
             }
             else if (location == Location.Left) {
-                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, 0.6, location));
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, odometry, arm, extender, gripper, 0.6, location));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
@@ -174,10 +179,10 @@ public class AutonomousChooser {
         }
         else if (action == Action.OnePieceMoveRight) {
             if (location == Location.Right) {
-                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -0.6, location));
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, odometry, arm, extender, gripper, -0.6, location));
             }
             else if (location == Location.Left) {
-                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, arm, extender, gripper, -0.2, location));
+                return new SequentialCommandGroupWrapper(new OneGamepiece(drivetrain, odometry, arm, extender, gripper, -0.2, location));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));
@@ -185,10 +190,10 @@ public class AutonomousChooser {
         }
         else if (action == Action.TwoPieceMoveLeft) {
             if (location == Location.Left && allianceColor == Alliance.Blue) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, -1));
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, -1));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));  
@@ -196,10 +201,10 @@ public class AutonomousChooser {
         }
         else if (action == Action.TwoPieceMoveRight) {
             if (location == Location.Left && allianceColor == Alliance.Blue) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1));
             }
             else if (location == Location.Right && allianceColor == Alliance.Red) {
-                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, arm, extender, gripper, 1));
+                return new SequentialCommandGroupWrapper(new TwoGamepiece(drivetrain, odometry, arm, extender, gripper, 1));
             }
             else {
                 return new SequentialCommandGroupWrapper(new DoNothing(arm, extender, drivetrain));

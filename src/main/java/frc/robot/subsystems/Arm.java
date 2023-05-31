@@ -62,7 +62,7 @@ public class Arm extends SubsystemBase {
     neoMotor.getForwardLimitSwitch(Type.kNormallyOpen);
     neoMotor.getReverseLimitSwitch(Type.kNormallyOpen);
 
-    distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
+    //distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
 
     pidController = neoMotor.getPIDController();
     pidController.setFeedbackDevice(analogSensor);
@@ -76,9 +76,11 @@ public class Arm extends SubsystemBase {
     neoMotor.setIdleMode(IdleMode.kBrake);
     encoder.setPosition(0);
 
+    /*
     distanceSensor.setAutomaticMode(true);
     distanceSensor.setDistanceUnits(Unit.kInches);
     distanceSensor.setRangeProfile(RangeProfile.kHighSpeed);
+    */
 
     substationActive = false;
     driverTab = Shuffleboard.getTab("Driver");
@@ -95,7 +97,7 @@ public class Arm extends SubsystemBase {
       SmartShuffleboard.put("Arm", "I Gain", pidController.getI());
       SmartShuffleboard.put("Arm", "D Gain", pidController.getD());
       SmartShuffleboard.put("Arm", "FF Gain", pidController.getFF());
-      SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
+      //SmartShuffleboard.put("Arm", "Distance Sensor Inches", distanceSensor.getRange(Unit.kInches));
       SmartShuffleboard.put("Arm", "Scaled Encoder Value", getScaledAnalogEncoderVal());
       SmartShuffleboard.put("Arm", "Raw Encoder Value",analogSensor.getPosition());
       SmartShuffleboard.put("Arm","ArmTarget",pidreference);

@@ -10,16 +10,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utils.Logger;
+import frc.robot.subsystems.Odometry;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 
 public class MoveDistanceSpinTraj extends LoggedCommand {
     
     private Drivetrain drivetrain;
+    private Odometry odometry;
     private Pose2d currentPos;
     private Pose2d desiredPos;
     private double xChange;
@@ -33,10 +35,12 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
     //Command used to move a specific distance and turn to a specific angle
     public MoveDistanceSpinTraj(
         Drivetrain drivetrain, 
+        Odometry odometry, 
         double xChange, 
         double yChange, 
         double desiredRotRadians) {
         this.drivetrain = drivetrain;
+        this.odometry = odometry;
         this.xChange = xChange;
         this.yChange = yChange;
         this.desiredRotRadians = desiredRotRadians;
@@ -53,15 +57,18 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
         //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
         //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
         //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
+            xChange*=-1;
+        }
         double angle = getTargetAngle();
         currentPos = new Pose2d(
-        drivetrain.getPoseX(), 
-        drivetrain.getPoseY(), 
+        odometry.getPoseX(), 
+        odometry.getPoseY(), 
         new Rotation2d(angle));
 
         desiredPos = new Pose2d(
-        drivetrain.getPoseX() + xChange, 
-        drivetrain.getPoseY() + yChange, 
+        odometry.getPoseX() + xChange, 
+        odometry.getPoseY() + yChange, 
         new Rotation2d(angle));
 
 
@@ -73,12 +80,12 @@ public class MoveDistanceSpinTraj extends LoggedCommand {
 
         //Logger.logTrajectory("/movedistancetraj", trajectory, Constants.ENABLE_LOGGING);
 
-        drivetrain.getField().getObject("traj").setTrajectory(trajectory);
+        odometry.getField().getObject("traj").setTrajectory(trajectory);
 
         moveCommand =
         new SwerveControllerCommand(
           trajectory,                                                                                                                                                                                                                        
-          drivetrain.getOdometry()::getEstimatedPosition, // Functionalp interface to feed supplier
+          odometry.getOdometry()::getEstimatedPosition, // Functionalp interface to feed supplier
           drivetrain.getKinematics(),
           new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
           new PIDController(Constants.kP_Y_AUTO, Constants.kI_Y_AUTO, Constants.kD_Y_AUTO),

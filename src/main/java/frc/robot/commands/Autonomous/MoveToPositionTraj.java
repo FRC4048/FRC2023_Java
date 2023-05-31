@@ -12,11 +12,13 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Odometry;
 import frc.robot.utils.logging.wrappers.LoggedCommand;
 
 public class MoveToPositionTraj extends LoggedCommand {
     
     private Drivetrain drivetrain;
+    private Odometry odometry;
     private Pose2d currentPos;
     private Pose2d desiredPos;
     private double desiredX;
@@ -28,8 +30,9 @@ public class MoveToPositionTraj extends LoggedCommand {
 
     //Command to move to specific field coordinates. Be careful using this, if you are not
     //close to the position then the robot will take off towards it. Does not affect rotation.
-    public MoveToPositionTraj(Drivetrain drivetrain, double desiredX, double desiredY) {
+    public MoveToPositionTraj(Drivetrain drivetrain, Odometry odometry, double desiredX, double desiredY) {
         this.drivetrain = drivetrain;
+        this.odometry = odometry;
         this.desiredX = desiredX;
         this.desiredY = desiredY;
         config = new TrajectoryConfig(Constants.MAX_VELOCITY_AUTO, Constants.MAX_ACCELERATION_AUTO).setKinematics(drivetrain.getKinematics());
@@ -44,10 +47,10 @@ public class MoveToPositionTraj extends LoggedCommand {
         //the final point. "Math.atan(yChange/xChange)" creates an angle pointing from currentPos
         //to desiredPos. This angle is ONLY used for generation. Any swerve rotational movement 
         //should be done by passing a rotation2d supplier into the swerveControllerCommand object.
-        double angle = Math.atan((desiredY - drivetrain.getPoseY()) / (desiredX - drivetrain.getPoseX()));
+        double angle = Math.atan((desiredY - odometry.getPoseY()) / (desiredX - odometry.getPoseX()));
         currentPos = new Pose2d(
-        drivetrain.getPoseX(), 
-        drivetrain.getPoseY(), 
+        odometry.getPoseX(), 
+        odometry.getPoseY(), 
         new Rotation2d(angle));
 
         desiredPos = new Pose2d(
@@ -62,12 +65,12 @@ public class MoveToPositionTraj extends LoggedCommand {
         desiredPos,
         config);
 
-        drivetrain.getField().getObject("traj").setTrajectory(trajectory);
+        odometry.getField().getObject("traj").setTrajectory(trajectory);
 
         moveCommand =
       new SwerveControllerCommand(
           trajectory,
-          drivetrain.getOdometry()::getEstimatedPosition, // Functional interface to feed supplier
+          odometry.getOdometry()::getEstimatedPosition, // Functional interface to feed supplier
           drivetrain.getKinematics(),
           new PIDController(Constants.kP_X_AUTO, Constants.kI_X_AUTO, Constants.kD_X_AUTO),
           new PIDController(Constants.kP_Y_AUTO, 0, 0),
