@@ -317,16 +317,4 @@ public class Drivetrain extends SubsystemBase{
   public double getGyroOffset() {
     return gyroOffset;
   }
-
-  public Field2d getField() {
-    return m_field;
-  }
-
-  public void setAllianceColor(DriverStation.Alliance color) {
-    allianceColor = color;
-  }
-
-  public double getPoseAngleRad() {
-    return poseEstimator.getEstimatedPosition().getRotation().getRadians();
-  }
 }

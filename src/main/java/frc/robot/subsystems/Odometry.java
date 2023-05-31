@@ -132,6 +132,9 @@ public class Odometry extends SubsystemBase {
   public double getPoseY() {
     return poseEstimator.getEstimatedPosition().getY();
   }
+  public double getPoseAngleRad() {
+    return poseEstimator.getEstimatedPosition().getRotation().getRadians();
+  }
 
   public Field2d getField() {
     return m_field;

@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     if (DriverStation.isEnabled()){
-      gyro.set(new double[] {m_robotContainer.getDrivetrain().getPoseX()*-1,m_robotContainer.getDrivetrain().getPoseY()*-1, m_robotContainer.getDrivetrain().getPoseAngleRad()});
+      gyro.set(new double[] {m_robotContainer.getOdometry().getPoseX()*-1,m_robotContainer.getOdometry().getPoseY()*-1, m_robotContainer.getOdometry().getPoseAngleRad()});
     }
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
