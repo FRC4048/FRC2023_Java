@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
     Logger.logDouble("/robot/loopTime", time, Constants.ENABLE_LOGGING);
-    Pose2d amclPose = new Pose2d(localizationResult.get()[0], localizationResult.get()[1], new Rotation2d(localizationResult.get()[2]));
+    Pose2d amclPose = new Pose2d(localizationResult.get()[0]*-1, localizationResult.get()[1]*-1, new Rotation2d(localizationResult.get()[2]));
     Logger.logPose2d("/odometry/amclResult",amclPose, Constants.ENABLE_LOGGING);
   }
 
