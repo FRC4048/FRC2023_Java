@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ResetGyro;
@@ -22,7 +26,11 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private static Diagnostics diagnostics;
   private double loopTime = 0;
- 
+  private DoubleArrayPublisher gyro;
+  private DoubleArraySubscriber localizationResult;
+  private BooleanPublisher matchStartPublisher;
+  private boolean started = false;
+
   @Override
   public void robotInit() {
     if (Constants.ENABLE_LOGGING) {
@@ -34,22 +42,33 @@ public class Robot extends TimedRobot {
     new WheelAlign(m_robotContainer.getDrivetrain()).schedule();
     new ResetGyro(m_robotContainer.getDrivetrain(), 2).schedule();
     new ResetOdometry(m_robotContainer.getDrivetrain(), 0, 13.5, Math.toRadians(180), 3).schedule();
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("Shuffleboard/Test");
+    gyro = table.getDoubleArrayTopic("Gyro").publish();
+    matchStartPublisher = table.getBooleanTopic("matchStartPublisher").publish();
+    localizationResult = table.getDoubleArrayTopic("LocalizationResult").subscribe(new double[]{-1,-1,-1});
   }
 
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
+    if (DriverStation.isEnabled()){
+      gyro.set(new double[] {m_robotContainer.getDrivetrain().getPoseX()*-1,m_robotContainer.getDrivetrain().getPoseY()*-1, m_robotContainer.getDrivetrain().getPoseAngleRad()});
+    }
+    matchStartPublisher.set(started);
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
     Logger.logDouble("/robot/loopTime", time, Constants.ENABLE_LOGGING);
+    Pose2d amclPose = new Pose2d(localizationResult.get()[0], localizationResult.get()[1], new Rotation2d(localizationResult.get()[2]));
+    Logger.logPose2d("/odometry/amclResult",amclPose, Constants.ENABLE_LOGGING);
   }
 
 
   @Override
   public void disabledInit() {
     m_robotContainer.getDisabledLedCycleCommand().initialize();
+    started = false;
   }
 
   @Override
@@ -58,12 +77,12 @@ public class Robot extends TimedRobot {
     SmartShuffleboard.put("Autonomous", "Chosen Action, Location",
             m_robotContainer.getAutonomousChooser().getAction().name() + ", " + m_robotContainer.getAutonomousChooser().getLocation().name()).withPosition(0,2).withSize(4,1);
     m_robotContainer.getDisabledLedCycleCommand().refresh();
-
+    matchStartPublisher.set(started);
   }
 
   @Override
   public void autonomousInit() {
-    m_robotContainer.getDrivetrain().setAllianceColor(DriverStation.getAlliance());
+    started = true;
     autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();

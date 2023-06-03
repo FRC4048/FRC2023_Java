@@ -94,6 +94,9 @@ public class Drivetrain extends SubsystemBase{
 
 
 
+  public double getPoseAngleRad() {
+    return poseEstimator.getEstimatedPosition().getRotation().getRadians();
+  }
   public Drivetrain(PhotonCameraSubsystem photonVision) {
     this.photonVision = photonVision;
     navxGyro = new AHRS();
