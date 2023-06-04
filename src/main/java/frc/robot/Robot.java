@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
       started = 1;
     }else { started = 0; }
     matchStartPublisher.set(started);
+    //     matchStartPublisher.set(DriverStation.isEnabled() ? 1 : 0);
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
     Logger.logDouble("/robot/loopTime", time, Constants.ENABLE_LOGGING);
