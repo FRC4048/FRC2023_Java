@@ -28,8 +28,8 @@ public class Robot extends TimedRobot {
   private double loopTime = 0;
   private DoubleArrayPublisher gyro;
   private DoubleArraySubscriber localizationResult;
-  private BooleanPublisher matchStartPublisher;
-  private boolean started = false;
+  private DoublePublisher matchStartPublisher;
+  private double started = 0;
 
   @Override
   public void robotInit() {
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("Shuffleboard/Test");
     gyro = table.getDoubleArrayTopic("Gyro").publish();
-    matchStartPublisher = table.getBooleanTopic("matchStartPublisher").publish();
+    matchStartPublisher = table.getDoubleTopic("matchHasStarted").publish();
     localizationResult = table.getDoubleArrayTopic("LocalizationResult").subscribe(new double[]{-1,-1,-1});
   }
 
@@ -55,7 +55,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     if (DriverStation.isEnabled()){
       gyro.set(new double[] {m_robotContainer.getDrivetrain().getPoseX()*-1,m_robotContainer.getDrivetrain().getPoseY()*-1, m_robotContainer.getDrivetrain().getPoseAngleRad()});
-    }
+      started = 1;
+    }else { started = 0; }
     matchStartPublisher.set(started);
     // Logger should stay at the end of robotPeriodic()
     double time = (loopTime == 0) ? 0 : (Timer.getFPGATimestamp() - loopTime) * 1000;
@@ -68,7 +69,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.getDisabledLedCycleCommand().initialize();
-    started = false;
   }
 
   @Override
@@ -82,7 +82,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    started = true;
     autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
