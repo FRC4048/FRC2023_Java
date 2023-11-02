@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-    m_robotContainer.getArm().zeroPID();
+    //m_robotContainer.getArm().zeroPID();
   }
 
   @Override
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
     diagnostics.reset();
-    m_robotContainer.getArm().zeroPID();
+    //m_robotContainer.getArm().zeroPID();
     m_robotContainer.getTestLedCycleCommand().initialize();
   }
 
