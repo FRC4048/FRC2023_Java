@@ -83,9 +83,9 @@ public final class Constants {
   public static final int ARM_RESET_TIMEOUT = 2;
   public static final int ARMVOLTAGE_TIMEOUT = 3; //was 5
   public static final int ARM_MONITOR_ZONE = 25;
-  public static final double ARM_PID_P_IN = 2.00;
+  public static final double ARM_PID_P_IN = 0.10;
   public static final double ARM_PID_I_IN = 0.000;
-  public static final double ARM_PID_D_IN = 0.1;
+  public static final double ARM_PID_D_IN = 0.0;
   public static final double ARM_PID_FF_IN = 0.0;
   public static final double ARM_OVERSHOOT = 0.0;
 

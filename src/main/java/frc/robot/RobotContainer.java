@@ -21,6 +21,8 @@ import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
 import frc.robot.commands.arm.ManualMoveArm;
 import frc.robot.commands.arm.MoveArmToGridPosition;
+import frc.robot.commands.arm.SetArmPID;
+import frc.robot.commands.arm.SetArmPositionPID;
 import frc.robot.commands.drive.AlignToGrid;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -199,6 +201,9 @@ public class RobotContainer {
       SmartShuffleboard.putCommand("Drive", "Cross", new CrossPanel(drivetrain));
       SmartShuffleboard.putCommand("Drive", "Cross+Balance", new CrossAndBalance(drivetrain));
     }
+
+    SmartShuffleboard.putCommand("Arm", "SetArmPID", new SetArmPositionPID(arm, 10.0));
+    SmartShuffleboard.putCommand("Arm", "SetPID", new SetArmPID(arm));
    }
 
   /**
