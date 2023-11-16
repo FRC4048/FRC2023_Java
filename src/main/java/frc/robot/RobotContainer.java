@@ -19,10 +19,7 @@ import frc.robot.commands.CycleLED;
 import frc.robot.commands.GyroOffseter;
 import frc.robot.commands.SetGridSlot;
 import frc.robot.commands.SetLEDID;
-import frc.robot.commands.arm.ManualMoveArm;
-import frc.robot.commands.arm.MoveArmToGridPosition;
-import frc.robot.commands.arm.SetArmPID;
-import frc.robot.commands.arm.SetArmPositionPID;
+import frc.robot.commands.arm.*;
 import frc.robot.commands.drive.AlignToGrid;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.extender.ExtendToPosition;
@@ -203,6 +200,8 @@ public class RobotContainer {
     }
 
     SmartShuffleboard.putCommand("Arm", "SetArmPID", new SetArmPositionPID(arm, 10.0));
+    SmartShuffleboard.putCommand("Arm", "Up", new ChangeArmPositionPID(arm, 10.0));
+    SmartShuffleboard.putCommand("Arm", "Down", new ChangeArmPositionPID(arm, -9.0));
     SmartShuffleboard.putCommand("Arm", "SetPID", new SetArmPID(arm));
    }
 

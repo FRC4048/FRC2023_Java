@@ -66,6 +66,11 @@ public class ArmPID extends SubsystemBase {
         this.armpos = position;
     }
 
+    public void changeArmPos(double increment) {
+        double newPos = Math.max(0.0, Math.min(40.0, this.armpos + increment));
+        setArmPos(newPos);
+    }
+
     public void setPid() {
         pidController.setP(pidP);
         pidController.setI(pidI);
